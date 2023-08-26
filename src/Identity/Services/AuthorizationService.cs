@@ -197,8 +197,15 @@ public class AuthorizationService: IAuthorizationService
 
         await _identityUnitOfWork.ExecuteWithExecutionStrategyAsync(async () =>
         {
+            var identityToken = await _tokenRepository
+                .GetTokenByUserAndIpAddress(identityUser.Id, loginRequest.IpAddress);
+
+            refreshToken = identityToken is null
+                ? await _tokenService.GenerateRefreshTokenAsync(identityUser.Id, loginRequest.IpAddress, loginRequest.DeviceName)
+                : await _tokenService.UpdateRefreshTokenAsync(identityUser.Id,loginRequest.IpAddress);
+            
             accessToken = _tokenService.GenerateAccessToken(identityUser);
-            refreshToken = await _tokenService.UpdateRefreshTokenAsync(identityUser.Id);
+            
         });
         
         return new LoginResponse(accessToken, refreshToken);
@@ -224,7 +231,7 @@ public class AuthorizationService: IAuthorizationService
             var identityUser = await _identityUserRepository.GetUserByIdAsync(userId);
             
             accessToken = _tokenService.GenerateAccessToken(identityUser!);
-            refreshToken = await _tokenService.UpdateRefreshTokenAsync(identityUser!.Id);
+            refreshToken = await _tokenService.UpdateRefreshTokenAsync(identityUser!.Id,refreshTokenRequest.IpAddress);
         });
 
         return new RefreshTokenResponse(accessToken, refreshToken);

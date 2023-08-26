@@ -24,7 +24,7 @@ public class TokenService: ITokenService
     public string GenerateAccessToken(IdentityUser identityUser)
     {
         var securityKey = _jwtOptions.GetSymmetricSecurityKey();
-        var credintials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
         {
@@ -33,7 +33,7 @@ public class TokenService: ITokenService
         };
 
         var token = new JwtSecurityToken(_jwtOptions.Issuer, _jwtOptions.Audience, claims,
-            expires: DateTime.Now.AddMinutes(_jwtOptions.AccessExpirationMinutes), signingCredentials: credintials);
+            expires: DateTime.Now.AddMinutes(_jwtOptions.AccessExpirationMinutes), signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
@@ -90,7 +90,7 @@ public class TokenService: ITokenService
         return newRefreshToken;
     }
 
-    public async Task<string> UpdateRefreshTokenAsync(long userId)
+    public async Task<string> UpdateRefreshTokenAsync(long userId,string ipAddress)
     {
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
@@ -98,9 +98,9 @@ public class TokenService: ITokenService
         
         var newRefreshToken = Convert.ToBase64String(randomNumber);
 
-        var refreshIdentityToken = await _tokenRepository.GetTokenByUserId(userId);
+        var refreshIdentityToken = await _tokenRepository.GetTokenByUserAndIpAddress(userId,ipAddress);
         
-        refreshIdentityToken.Token = newRefreshToken;
+        refreshIdentityToken!.Token = newRefreshToken;
         refreshIdentityToken.Expiration = DateTime.Now.AddDays(_jwtOptions.RefreshExpirationDays);
 
         var updatedToken = await _tokenRepository.UpdateTokenAsync(refreshIdentityToken);

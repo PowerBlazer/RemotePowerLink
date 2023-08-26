@@ -2,10 +2,13 @@
 
 public class LoginRequest
 {
-    public LoginRequest(string email, string password)
+    public LoginRequest(string email, string password, string ipAddress, 
+        string? deviceName = null)
     {
         Email = email;
         Password = password;
+        IpAddress = ipAddress;
+        DeviceName = deviceName;
     }
     
     /// <summary>
@@ -16,4 +19,9 @@ public class LoginRequest
     /// Пароль пользователя
     /// </summary>
     public string Password { get; }
+    /// <summary>
+    /// Ip адрес пользователя
+    /// </summary>
+    public string IpAddress { get; }
+    public string? DeviceName { get; }
 }

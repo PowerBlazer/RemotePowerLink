@@ -1,0 +1,9 @@
+{
+    "extends": "stylelint-config-standard-scss",
+    "rules": {
+        "scss/at-import-partial-extension":null,
+        "selector-class-pattern":null,
+        "indentation": [4]
+        
+    }
+}

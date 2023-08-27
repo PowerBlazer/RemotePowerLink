@@ -5,7 +5,7 @@ EXPOSE 6001
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["RemotePowerLink/RemotePowerLink.csproj", "RemotePowerLink/"]
+COPY ["RemotePowerLink.csproj", "RemotePowerLink/"]
 RUN dotnet restore "RemotePowerLink/RemotePowerLink.csproj"
 COPY . .
 WORKDIR "/src/RemorePowerLink"

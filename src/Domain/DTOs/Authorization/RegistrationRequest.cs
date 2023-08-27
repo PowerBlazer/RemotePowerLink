@@ -1,6 +1,9 @@
 ﻿
+using JetBrains.Annotations;
+
 namespace Domain.DTOs.Authorization;
 
+[UsedImplicitly]
 public class RegistrationRequest
 {
     public RegistrationRequest(string sessionId, 

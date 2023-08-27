@@ -1,5 +1,8 @@
-﻿namespace Domain.DTOs.Authorization;
+﻿using JetBrains.Annotations;
 
+namespace Domain.DTOs.Authorization;
+
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class LoginResponse
 {
     public LoginResponse(string accessToken, 

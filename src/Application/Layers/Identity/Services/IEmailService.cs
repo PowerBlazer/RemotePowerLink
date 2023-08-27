@@ -1,4 +1,4 @@
-﻿namespace PowerMessenger.Application.Layers.Identity.Services;
+﻿namespace Application.Layers.Identity.Services;
 
 public interface IEmailService
 {

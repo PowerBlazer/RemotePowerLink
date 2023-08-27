@@ -1,4 +1,4 @@
-﻿namespace PowerMessenger.Infrastructure.MessageQueues;
+﻿namespace MessageQueues;
 
 public class RabbitConfiguration
 {

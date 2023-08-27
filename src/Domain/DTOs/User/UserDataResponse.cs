@@ -1,5 +1,8 @@
-﻿namespace Domain.DTOs.User;
+﻿using JetBrains.Annotations;
 
+namespace Domain.DTOs.User;
+
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class UserDataResponse
 {
     public long UserId { get; set; }

@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using Application.Layers.Identity.Services;
+using FluentValidation;
 using JetBrains.Annotations;
-using PowerMessenger.Application.Layers.Identity.Services;
 
 namespace Application.Features.AuthorizationFeature.SendEmailVerificationCode;
 

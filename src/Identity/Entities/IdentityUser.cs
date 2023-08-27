@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Abstractions;
+// ReSharper disable CollectionNeverUpdated.Global
 
 namespace Identity.Entities;
 

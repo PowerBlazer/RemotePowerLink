@@ -29,7 +29,7 @@ public class IdentityTokenConfiguration: IEntityTypeConfiguration<IdentityToken>
                 UserId = 1,
                 Token = "121212121212121",
                 Expiration = DateTime.Now.AddDays(7),
-                IpAddress = "0"
+                IpAddress = "023424924"
             }, 
             new IdentityToken
             {
@@ -37,7 +37,7 @@ public class IdentityTokenConfiguration: IEntityTypeConfiguration<IdentityToken>
                 UserId = 2,
                 Token = "1212121212121212",
                 Expiration = DateTime.Now.AddDays(7),
-                IpAddress = "0"
+                IpAddress = "12034024"
             });
 
         #endregion

@@ -1,10 +1,9 @@
-﻿
-using Identity.Contexts;
+﻿using Identity.Contexts;
 using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace PowerMessenger.Infrastructure.Identity.Repositories;
+namespace Identity.Repositories;
 
 public class IdentityUserRepository: IIdentityUserRepository
 {

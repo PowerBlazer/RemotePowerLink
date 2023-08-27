@@ -1,5 +1,8 @@
-﻿namespace Application.Layers.MessageQueues.UserRegistered;
+﻿using JetBrains.Annotations;
 
+namespace Application.Layers.MessageQueues.UserRegistered;
+
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class UserRegisteredEvent
 {
     public UserRegisteredEvent(long userId,string userName)

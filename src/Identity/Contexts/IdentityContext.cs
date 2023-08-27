@@ -19,25 +19,4 @@ public class IdentityContext : DbContext
         modelBuilder.ApplyConfiguration(new IdentityUserConfiguration());
         modelBuilder.ApplyConfiguration(new IdentityTokenConfiguration());
     }
-    
-    public async Task ExecuteWithExecutionStrategyAsync(Func<Task> action)
-    {
-        var executionStrategy = Database.CreateExecutionStrategy();
-
-        await executionStrategy.ExecuteAsync(async () =>
-        {
-            await using var transaction = await Database.BeginTransactionAsync(); 
-
-            try
-            {
-                await action();
-                await transaction.CommitAsync();
-            }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync();
-                throw new Exception(e.Message);
-            }
-        });
-    }
 }

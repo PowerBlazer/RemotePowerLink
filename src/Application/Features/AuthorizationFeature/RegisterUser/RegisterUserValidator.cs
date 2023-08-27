@@ -22,5 +22,9 @@ public class RegisterUserValidator: AbstractValidator<RegisterUserCommand>
             .NotNull().WithMessage("Поле не может быть пустым")
             .NotEmpty().WithMessage("Поле не может быть пустым")
             .MinimumLength(3).WithMessage("Длина имя пользователя должно быть больше 3 символов");
+
+        RuleFor(p => p.IpAddress)
+            .NotNull().WithMessage("Поле не может быть пустым")
+            .NotEmpty().WithMessage("Поле не может быть пустым");
     }
 }

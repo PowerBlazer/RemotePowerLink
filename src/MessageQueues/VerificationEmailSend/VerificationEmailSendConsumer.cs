@@ -1,11 +1,13 @@
 ﻿using Application.Layers.Email.Services;
 using Application.Layers.MessageQueues.VerificationEmailSend;
+using JetBrains.Annotations;
 using MassTransit;
 using RazorLight;
 
 namespace MessageQueues.VerificationEmailSend;
 
 
+[UsedImplicitly]
 public class VerificationEmailSendConsumer: IConsumer<VerificationEmailSendEvent>
 {
     private readonly ISmtpEmailService _smtpEmailService;

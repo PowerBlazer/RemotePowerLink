@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace PowerMessenger.Infrastructure.Identity.Migrations
+namespace Identity.Migrations
 {
     /// <inheritdoc />
     public partial class IdentityMigration : Migration
@@ -40,7 +40,9 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
                     token = table.Column<string>(type: "text", nullable: false),
-                    expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ip_address = table.Column<string>(type: "text", nullable: false),
+                    device_name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,18 +60,24 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                 columns: new[] { "id", "date_created", "email", "email_confirmed", "password_hash", "phone_number", "two_factor_enabled" },
                 values: new object[,]
                 {
-                    { 1L, new DateTimeOffset(new DateTime(2023, 6, 4, 16, 57, 6, 311, DateTimeKind.Unspecified).AddTicks(5616), new TimeSpan(0, 0, 0, 0, 0)), "yak.ainur@yandex.ru", true, "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", null, false },
-                    { 2L, new DateTimeOffset(new DateTime(2023, 6, 4, 16, 57, 6, 311, DateTimeKind.Unspecified).AddTicks(5620), new TimeSpan(0, 0, 0, 0, 0)), "power.blaze@mail.ru", true, "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", null, false }
+                    { 1L, new DateTimeOffset(new DateTime(2023, 8, 27, 7, 47, 25, 635, DateTimeKind.Unspecified).AddTicks(5145), new TimeSpan(0, 0, 0, 0, 0)), "yak.ainur@yandex.ru", true, "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", null, false },
+                    { 2L, new DateTimeOffset(new DateTime(2023, 8, 27, 7, 47, 25, 635, DateTimeKind.Unspecified).AddTicks(5151), new TimeSpan(0, 0, 0, 0, 0)), "power.blaze@mail.ru", true, "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", null, false }
                 });
 
             migrationBuilder.InsertData(
                 table: "identity_tokens",
-                columns: new[] { "id", "expiration", "token", "user_id" },
+                columns: new[] { "id", "device_name", "expiration", "ip_address", "token", "user_id" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2023, 6, 11, 19, 57, 6, 311, DateTimeKind.Local).AddTicks(8521), "121212121212121", 1L },
-                    { 2L, new DateTime(2023, 6, 11, 19, 57, 6, 311, DateTimeKind.Local).AddTicks(8541), "1212121212121212", 2L }
+                    { 1L, null, new DateTime(2023, 9, 3, 10, 47, 25, 636, DateTimeKind.Local).AddTicks(3506), "023424924", "121212121212121", 1L },
+                    { 2L, null, new DateTime(2023, 9, 3, 10, 47, 25, 636, DateTimeKind.Local).AddTicks(3546), "12034024", "1212121212121212", 2L }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_identity_tokens_ip_address",
+                table: "identity_tokens",
+                column: "ip_address",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_identity_tokens_token",
@@ -80,8 +88,7 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_identity_tokens_user_id",
                 table: "identity_tokens",
-                column: "user_id",
-                unique: true);
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_identity_users_email",

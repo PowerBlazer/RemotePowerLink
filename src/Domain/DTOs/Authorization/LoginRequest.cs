@@ -1,5 +1,8 @@
-﻿namespace Domain.DTOs.Authorization;
+﻿using JetBrains.Annotations;
 
+namespace Domain.DTOs.Authorization;
+
+[UsedImplicitly]
 public class LoginRequest
 {
     public LoginRequest(string email, string password, string ipAddress, 

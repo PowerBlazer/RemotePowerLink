@@ -1,9 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
+using Application.Layers.Identity.Services;
 using Identity.Interfaces;
-using PowerMessenger.Application.Layers.Identity.Services;
 
 namespace Identity.Services;
 
+[SuppressMessage("GeneratedRegex", "SYSLIB1045:Преобразовать в \"GeneratedRegexAttribute\".")]
 public class EmailService: IEmailService
 {
     private readonly IIdentityUserRepository _identityUserRepository;

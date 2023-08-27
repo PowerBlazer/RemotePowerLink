@@ -1,5 +1,8 @@
-﻿namespace Domain.DTOs.Authorization;
+﻿using JetBrains.Annotations;
 
+namespace Domain.DTOs.Authorization;
+
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class RegistrationResponse
 {
     public RegistrationResponse(string accessToken, string refreshToken)

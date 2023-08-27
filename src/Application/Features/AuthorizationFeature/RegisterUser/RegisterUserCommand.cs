@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Authorization;
+﻿using System.Text.Json.Serialization;
+using Domain.DTOs.Authorization;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -8,7 +9,8 @@ namespace Application.Features.AuthorizationFeature.RegisterUser;
 public class RegisterUserCommand: IRequest<RegistrationResponse>
 {
     public RegisterUserCommand(string sessionId, string userName, 
-        string password, string passwordConfirm)
+        string password, 
+        string passwordConfirm)
     {
         SessionId = sessionId;
         UserName = userName;
@@ -32,4 +34,11 @@ public class RegisterUserCommand: IRequest<RegistrationResponse>
     /// Повторный пароль
     /// </summary>
     public string PasswordConfirm { get; }
+    /// <summary>
+    /// Ip адрес пользователя
+    /// </summary>
+    [JsonIgnore]
+    public string? IpAddress { get; set; }
+    [JsonIgnore]
+    public string? DeviceName { get; set; }
 }

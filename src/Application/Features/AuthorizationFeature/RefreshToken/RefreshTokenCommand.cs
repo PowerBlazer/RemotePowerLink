@@ -19,4 +19,5 @@ public class RefreshTokenCommand: IRequest<RefreshTokenResponse>
     /// Токен обновления
     /// </summary>
     public string RefreshToken { get; }
+    public string? IpAddress { get; set; }
 }

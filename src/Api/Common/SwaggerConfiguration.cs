@@ -13,9 +13,11 @@ public static class SwaggerConfiguration
         {
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = @"JWT Authorization header using the Bearer scheme.
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      Example: 'Bearer 12345abcdef'",
+                Description = """
+                              JWT Authorization header using the Bearer scheme.
+                              Enter 'Bearer' [space] and then your token in the text input below.
+                              Example: 'Bearer 12345abcdef'
+                              """,
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,

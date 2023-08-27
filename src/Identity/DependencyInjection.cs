@@ -7,8 +7,6 @@ using Identity.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PowerMessenger.Application.Layers.Identity.Services;
-using PowerMessenger.Infrastructure.Identity.Repositories;
 
 namespace Identity;
 

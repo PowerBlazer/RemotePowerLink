@@ -1,7 +1,10 @@
 ﻿
 
+using JetBrains.Annotations;
+
 namespace Application.Layers.MessageQueues.VerificationEmailSend;
 
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class VerificationEmailSendEvent
 {
     public VerificationEmailSendEvent(string email, string? confirmLink, 

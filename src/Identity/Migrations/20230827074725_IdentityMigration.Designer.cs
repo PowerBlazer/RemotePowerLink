@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace PowerMessenger.Infrastructure.Identity.Migrations
+namespace Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20230604165706_IdentityMigration")]
+    [Migration("20230827074725_IdentityMigration")]
     partial class IdentityMigration
     {
         /// <inheritdoc />
@@ -20,12 +20,12 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PowerMessenger.Infrastructure.Identity.Entities.IdentityToken", b =>
+            modelBuilder.Entity("Identity.Entities.IdentityToken", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,9 +34,18 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("DeviceName")
+                        .HasColumnType("text")
+                        .HasColumnName("device_name");
+
                     b.Property<DateTime>("Expiration")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("expiration");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("ip_address");
 
                     b.Property<string>("Token")
                         .IsRequired()
@@ -50,12 +59,15 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                     b.HasKey("Id")
                         .HasName("pk_identity_tokens");
 
+                    b.HasIndex("IpAddress")
+                        .IsUnique()
+                        .HasDatabaseName("ix_identity_tokens_ip_address");
+
                     b.HasIndex("Token")
                         .IsUnique()
                         .HasDatabaseName("ix_identity_tokens_token");
 
                     b.HasIndex("UserId")
-                        .IsUnique()
                         .HasDatabaseName("ix_identity_tokens_user_id");
 
                     b.ToTable("identity_tokens", (string)null);
@@ -64,20 +76,22 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                         new
                         {
                             Id = 1L,
-                            Expiration = new DateTime(2023, 6, 11, 19, 57, 6, 311, DateTimeKind.Local).AddTicks(8521),
+                            Expiration = new DateTime(2023, 9, 3, 10, 47, 25, 636, DateTimeKind.Local).AddTicks(3506),
+                            IpAddress = "023424924",
                             Token = "121212121212121",
                             UserId = 1L
                         },
                         new
                         {
                             Id = 2L,
-                            Expiration = new DateTime(2023, 6, 11, 19, 57, 6, 311, DateTimeKind.Local).AddTicks(8541),
+                            Expiration = new DateTime(2023, 9, 3, 10, 47, 25, 636, DateTimeKind.Local).AddTicks(3546),
+                            IpAddress = "12034024",
                             Token = "1212121212121212",
                             UserId = 2L
                         });
                 });
 
-            modelBuilder.Entity("PowerMessenger.Infrastructure.Identity.Entities.IdentityUser", b =>
+            modelBuilder.Entity("Identity.Entities.IdentityUser", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +140,7 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                         new
                         {
                             Id = 1L,
-                            DateCreated = new DateTimeOffset(new DateTime(2023, 6, 4, 16, 57, 6, 311, DateTimeKind.Unspecified).AddTicks(5616), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2023, 8, 27, 7, 47, 25, 635, DateTimeKind.Unspecified).AddTicks(5145), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "yak.ainur@yandex.ru",
                             EmailConfirmed = true,
                             PasswordHash = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
@@ -135,7 +149,7 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                         new
                         {
                             Id = 2L,
-                            DateCreated = new DateTimeOffset(new DateTime(2023, 6, 4, 16, 57, 6, 311, DateTimeKind.Unspecified).AddTicks(5620), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2023, 8, 27, 7, 47, 25, 635, DateTimeKind.Unspecified).AddTicks(5151), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "power.blaze@mail.ru",
                             EmailConfirmed = true,
                             PasswordHash = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
@@ -143,11 +157,11 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PowerMessenger.Infrastructure.Identity.Entities.IdentityToken", b =>
+            modelBuilder.Entity("Identity.Entities.IdentityToken", b =>
                 {
-                    b.HasOne("PowerMessenger.Infrastructure.Identity.Entities.IdentityUser", "User")
-                        .WithOne("IdentityToken")
-                        .HasForeignKey("PowerMessenger.Infrastructure.Identity.Entities.IdentityToken", "UserId")
+                    b.HasOne("Identity.Entities.IdentityUser", "User")
+                        .WithMany("IdentityToken")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_identity_tokens_identity_users_user_id");
@@ -155,7 +169,7 @@ namespace PowerMessenger.Infrastructure.Identity.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PowerMessenger.Infrastructure.Identity.Entities.IdentityUser", b =>
+            modelBuilder.Entity("Identity.Entities.IdentityUser", b =>
                 {
                     b.Navigation("IdentityToken");
                 });

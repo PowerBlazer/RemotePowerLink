@@ -98,6 +98,7 @@ public class AuthorizationController: BaseController
     public async Task<ApiActionResult<RegistrationResponse>> RegisterUser(
         [FromBody] RegisterUserCommand registerUserCommand)
     {
+        registerUserCommand.IpAddress = IpAddress;
         var result = await _mediator.Send(registerUserCommand);
 
         return new ApiActionResult<RegistrationResponse>
@@ -121,6 +122,7 @@ public class AuthorizationController: BaseController
     public async Task<ApiActionResult<LoginResponse>> LoginUser([FromBody] 
         LoginUserCommand loginUserCommand)
     {
+        loginUserCommand.IpAddress = IpAddress;
         var result = await _mediator.Send(loginUserCommand);
 
         return new ApiActionResult<LoginResponse>
@@ -142,6 +144,7 @@ public class AuthorizationController: BaseController
     public async Task<ApiActionResult<RefreshTokenResponse>> RefreshToken([FromBody]
         RefreshTokenCommand refreshTokenCommand)
     {
+        refreshTokenCommand.IpAddress = IpAddress;
         var result = await _mediator.Send(refreshTokenCommand);
 
         return new ApiActionResult<RefreshTokenResponse>

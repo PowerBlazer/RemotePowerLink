@@ -5,7 +5,6 @@ using MessageQueues.UserRegistered;
 using MessageQueues.VerificationEmailSend;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PowerMessenger.Infrastructure.MessageQueues;
 
 namespace MessageQueues;
 

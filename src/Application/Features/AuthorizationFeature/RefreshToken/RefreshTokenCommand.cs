@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Authorization;
+﻿using System.Text.Json.Serialization;
+using Domain.DTOs.Authorization;
 using MediatR;
 
 namespace Application.Features.AuthorizationFeature.RefreshToken;
@@ -19,5 +20,6 @@ public class RefreshTokenCommand: IRequest<RefreshTokenResponse>
     /// Токен обновления
     /// </summary>
     public string RefreshToken { get; }
+    [JsonIgnore]
     public string? IpAddress { get; set; }
 }

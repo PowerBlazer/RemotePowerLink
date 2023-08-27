@@ -12,8 +12,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resource", "Resource", "{AD2C5F75-9153-4E60-A189-D086409FC3E2}"
 	ProjectSection(SolutionItems) = preProject
-		docker-compose.yml = docker-compose.yml
-		.env = .env
+		Resource\docker-compose.yml = Resource\docker-compose.yml
+		Resource\.env = Resource\.env
+		Resource\nginx.conf = Resource\nginx.conf
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email", "Email\Email.csproj", "{AB59BA55-F0E6-429C-A434-B0C33124205F}"
@@ -25,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Identity\Identity.csproj", "{3B2D64E9-5572-408A-A713-08F39D3CD439}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5046C795-BF77-46A2-982E-27C93D193E86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Infrastructure\Persistence\Persistence.csproj", "{F5099B23-185D-4E32-8DF3-A9913DC9A6E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +63,10 @@ Global
 		{3B2D64E9-5572-408A-A713-08F39D3CD439}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B2D64E9-5572-408A-A713-08F39D3CD439}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B2D64E9-5572-408A-A713-08F39D3CD439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5099B23-185D-4E32-8DF3-A9913DC9A6E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5099B23-185D-4E32-8DF3-A9913DC9A6E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5099B23-185D-4E32-8DF3-A9913DC9A6E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5099B23-185D-4E32-8DF3-A9913DC9A6E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{960F64F8-570F-4FDC-B779-4ADAE9FE6FE2} = {84F497A0-9F63-4780-B8E5-27C61F99C787}
@@ -68,5 +75,6 @@ Global
 		{EF3897B4-EC3C-46F6-9ADA-BAAA3E6B532B} = {65806738-6D7C-484E-B336-EE33F1653FC4}
 		{6276C7AD-D763-4B05-A4C6-10A0925A25DA} = {65806738-6D7C-484E-B336-EE33F1653FC4}
 		{3B2D64E9-5572-408A-A713-08F39D3CD439} = {65806738-6D7C-484E-B336-EE33F1653FC4}
+		{F5099B23-185D-4E32-8DF3-A9913DC9A6E8} = {65806738-6D7C-484E-B336-EE33F1653FC4}
 	EndGlobalSection
 EndGlobal

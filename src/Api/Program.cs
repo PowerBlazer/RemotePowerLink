@@ -117,6 +117,6 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseSignalRHubs();
 app.MapControllers();
-//app.MigrateDatabase();
+app.MigrateDatabase();
 
 app.Run();

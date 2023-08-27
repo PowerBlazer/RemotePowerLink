@@ -8,6 +8,6 @@ public class BaseController: ControllerBase
 {
     internal long UserId => long.Parse(User.Claims.Single(p => p.Type == ClaimTypes.NameIdentifier).Value);
 
-    internal string? IpAddress => HttpContext.Connection.LocalIpAddress?.ToString();
+    internal string? IpAddress => HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
 
 }

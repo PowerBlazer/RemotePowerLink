@@ -41,17 +41,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Email\Email.csproj" />
       <ProjectReference Include="..\Identity\Identity.csproj" />
       <ProjectReference Include="..\MessageQueues\MessageQueues.csproj" />
       <ProjectReference Include="..\Redis\Redis.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

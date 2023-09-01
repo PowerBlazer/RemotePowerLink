@@ -20,12 +20,12 @@ export function buildPlugins ({ paths, isDev }: BuildOptions): WebpackPluginInst
         new HotModuleReplacementPlugin(),
         new ReactRefreshWebpackPlugin({
             overlay: false
-        }),
-        new BundleAnalyzerPlugin({
-            analyzerMode: 'server',
-            analyzerHost: 'localhost',
-            analyzerPort: 8888
         })
+        // new BundleAnalyzerPlugin({
+        //     analyzerMode: 'server',
+        //     analyzerHost: 'localhost',
+        //     analyzerPort: 8888
+        // })
     ]
 
     return plugins;

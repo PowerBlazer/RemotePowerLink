@@ -1,7 +1,69 @@
-/.vs
-/.vscode
-/.idea
+# Игнорирование временных файлов, создаваемых средой разработки Visual Studio
+.vscode/
+.idea/
+
+# Игнорирование папок и файлов, связанных с компиляцией и сборкой проекта
 bin/
 obj/
 Debug/
 Release/
+
+# Игнорирование файлов конфигурации пользователя для Visual Studio или Rider (персональные настройки)
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Игнорирование файлов журналов и отчетов об ошибках
+[Tt]est[Rr]esult*/
+*.log
+*.vspx
+*.trx
+*.swp
+
+# Игнорирование временных файлов
+[Tt]emp/
+[Tt]est[Tt]est[Tt]est/
+
+# Игнорирование файлов и папок, содержащих пакеты NuGet
+packages/
+
+# Игнорирование файлов настроек и персональных файлов проекта
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Игнорирование файлов конфигурации среды
+[Tt]humbs.db
+desktop.ini
+*.dbmdl
+*.dbproj.schemaview
+*.pfx
+*.publishsettings
+node_modules/
+__MACOSX/
+
+# Игнорирование файлов конфигурации сервера IIS Express
+iisexpress/
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Игнорирование файлов логов приложения
+app.log
+*.log
+
+# Игнорирование временных файлов отладки
+*.pdb
+
+# Игнорирование файлов кеша
+.vscode/
+
+# Игнорирование локальных файлов конфигурации
+launchSettings.json
+
+# Игнорирование файлов языка и сообщений об ошибках
+*.pot
+*.po
+*.mo

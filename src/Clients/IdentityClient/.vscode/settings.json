@@ -11,5 +11,9 @@
         "scss"
     ],
     "i18n-ally.keystyle": "flat",
+    "eslint.workingDirectories": [
+        "src"
+    ]
+
     
 }

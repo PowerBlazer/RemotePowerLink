@@ -23,7 +23,9 @@ export function ThemeSwitcher (props: ThemeSwitcherProps) {
             onClick={toggleTheme}
             theme={ThemeButton.CLEAR}
         >
-            {theme === Theme.LIGHT ? <LightIcon fill='#FFC300'/> : <DarkIcon fill='#FFF' color='#061DD1'/>}
+            {theme === Theme.LIGHT
+                ? <LightIcon fill='#FFC300'/>
+                : <DarkIcon fill='#FFF' color='#061DD1'/>}
         </Button>
     )
 }

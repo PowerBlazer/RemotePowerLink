@@ -1,7 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { classNames } from 'shared/lib/classNames/classNames';
-import { AppLink, AppLinkTheme } from 'shared/ui/AppLink/AppLink';
+import { IDropDownPanelConfig, DropDownPanelPosition, IDropDownPanelButtonConfig, ThemeDropDownPanel } from 'shared/ui/DropdownPanel/types/DropdownPanelTypes';
 import style from './Navbar.module.scss';
+import DropDownPanelItem from 'shared/ui/DropdownPanel/ui/DropDownPanelItem';
+import DropDownPanel from 'shared/ui/DropdownPanel/ui/DropDownPanel';
+import BurgerMenuIcon from '../assets/burger-menu-svgrepo-com.svg'
+import { useTheme } from 'app/providers/ThemeProvider';
+import { ThemeSwitcher } from 'features/ThemeSwitcher';
 
 interface NavbarProps {
     className?: string
@@ -12,8 +17,7 @@ export function Navbar ({ className }: NavbarProps) {
 
     return (
         <div className={classNames(style.navbar, {}, [className])}>
-            <AppLink theme={AppLinkTheme.SECONDARY} to={'/'}>{t('Главная')}</AppLink>
-            <AppLink theme={AppLinkTheme.SECONDARY} to='/about'>{t('О нас')}</AppLink>
+            <ThemeSwitcher />
         </div>
     )
 }

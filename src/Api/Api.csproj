@@ -43,16 +43,11 @@
     <ItemGroup>
       <ProjectReference Include="..\Core\Application\Application.csproj" />
       <ProjectReference Include="..\Core\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Email\Email.csproj" />
-      <ProjectReference Include="..\Identity\Identity.csproj" />
       <ProjectReference Include="..\Infrastructure\Email\Email.csproj" />
       <ProjectReference Include="..\Infrastructure\Identity\Identity.csproj" />
       <ProjectReference Include="..\Infrastructure\MessageQueues\MessageQueues.csproj" />
       <ProjectReference Include="..\Infrastructure\Persistence\Persistence.csproj" />
       <ProjectReference Include="..\Infrastructure\Redis\Redis.csproj" />
-      <ProjectReference Include="..\MessageQueues\MessageQueues.csproj" />
-      <ProjectReference Include="..\Redis\Redis.csproj" />
     </ItemGroup>
 
     <ItemGroup>

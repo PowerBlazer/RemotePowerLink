@@ -16,6 +16,8 @@ services:
     expose:
       - 15672
       - 5672
+    networks:
+      - app_network
   
   redis:
     image: "redis:alpine"
@@ -27,6 +29,8 @@ services:
     volumes:
       - redis-data:/data
       - redis-conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - app_network
 
   postgres:
     container_name: postgres_db_container
@@ -42,10 +46,14 @@ services:
     ports:
       - "5433:5433"
     networks:
-      - messenger_network
+      - app_network
     restart: unless-stopped
     command: -p 5433
 
+
+networks:
+  app_network:
+    driver: bridge
 
 volumes:
   postgres:

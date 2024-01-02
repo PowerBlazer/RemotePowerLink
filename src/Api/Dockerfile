@@ -6,12 +6,12 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Api/Api.csproj", "Api/"]
-COPY ["Domain/Domain.csproj", "Domain/"]
-COPY ["Email/Email.csproj", "Email/"]
-COPY ["Application/Application.csproj", "Application/"]
-COPY ["Identity/Identity.csproj", "Identity/"]
-COPY ["MessageQueues/MessageQueues.csproj", "MessageQueues/"]
-COPY ["Redis/Redis.csproj", "Redis/"]
+COPY ["Core/Domain/Domain.csproj", "Core/Domain/"]
+COPY ["Infrastructure/Email/Email.csproj", "Infrastructure/Email/"]
+COPY ["Core/Application/Application.csproj", "Core/Application/"]
+COPY ["Infrastructure/Identity/Identity.csproj", "Infrastructure/Identity/"]
+COPY ["Infrastructure/MessageQueues/MessageQueues.csproj", "Infrastructure/MessageQueues/"]
+COPY ["Infrastructure/Redis/Redis.csproj", "Infrastructure/Redis/"]
 RUN dotnet restore "Api/Api.csproj"
 COPY . .
 WORKDIR "/src/Api"

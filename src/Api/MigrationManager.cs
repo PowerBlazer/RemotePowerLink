@@ -13,10 +13,8 @@ public static class MigrationManager
         {
             try
             {
-                
                 using var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
                 identityContext.Database.Migrate();
-                
                 break;
             }
             catch   

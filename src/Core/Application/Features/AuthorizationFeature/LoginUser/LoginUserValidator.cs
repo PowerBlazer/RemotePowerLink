@@ -18,6 +18,5 @@ public class LoginUserValidator: AbstractValidator<LoginUserCommand>
         RuleFor(p => p.Password)
             .NotEmpty()
             .WithMessage("Поле не может быть пустым");
-
     }
 }

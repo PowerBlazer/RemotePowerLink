@@ -1,9 +1,9 @@
 import { ReactNode, useContext } from 'react';
-import { DropdownPanelContext } from '../types/DropDownPanelContext';
-import style from './assets/DropDownPanelItem.module.scss'
 import { useTheme } from 'app/providers/ThemeProvider';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
+import { DropdownPanelContext } from "shared/lib/DropdownPanel/DropDownPanelContext";
+import style from './assets/DropDownPanelItem.module.scss'
 
 interface IDropDownPanelItemProps {
     icon?: string,

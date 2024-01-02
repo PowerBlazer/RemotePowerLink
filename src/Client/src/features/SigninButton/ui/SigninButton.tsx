@@ -8,7 +8,7 @@ interface SigninButtonProps {
 export function SigninButton ({ className }: SigninButtonProps) {
     return (
         <div className={classNames(style.signinButton, {}, [className])}>
-
+            
         </div>
     );
 }

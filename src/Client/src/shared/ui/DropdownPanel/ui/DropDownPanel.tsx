@@ -1,11 +1,11 @@
 import clsx from 'clsx'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { useOutsideClickComponent } from 'shared/lib/DropdownPanel/useOutsideClickComponent'
 import { IDropDownPanelButtonConfig, IDropDownPanelConfig, DropDownPanelPosition } from '../types/DropdownPanelTypes';
-import { DropdownPanelContext } from '../types/DropDownPanelContext';
 import DropDownPanelButton from './DropDownButton';
-import style from './assets/DropDownPanel.module.scss';
 import { classNames } from 'shared/lib/classNames/classNames';
+import { DropdownPanelContext } from 'shared/lib/DropdownPanel/DropDownPanelContext';
+import { useOutsideClickComponent } from 'shared/lib/DropdownPanel/useOutsideClickComponent'
+import style from './assets/DropDownPanel.module.scss';
 
 interface IDropDownPanelProps {
     children?: React.ReactNode
@@ -48,10 +48,13 @@ function DropDownPanel ({ children, dropDownPanelConfig, buttonMenuConfig }: IDr
     return (
         <div className={classNames(style.dropDownPanel, {})} ref={menuRef}>
             <DropDownPanelButton config={buttonMenuConfig}/>
-            <div onMouseLeave={mouseLeaveHandler} className={classNames(style.dropDownPanel_items, {
-                [style.open]: dropDownPanelVisible,
-                [style.close]: !dropDownPanelVisible
-            }, [position, style[dropDownPanelConfig.theme]])} style={{ width: dropDownPanelConfig.width, top: buttonMenuConfig.style?.height && Number(buttonMenuConfig.style.height) + 15 }}>
+            <div 
+                 onMouseLeave={mouseLeaveHandler} 
+                 className={classNames(style.dropDownPanel_items, {
+                    [style.open]: dropDownPanelVisible,
+                    [style.close]: !dropDownPanelVisible
+                 }, [position, style[dropDownPanelConfig.theme]])} 
+                 style={{ width: dropDownPanelConfig.width, top: buttonMenuConfig.style?.height && Number(buttonMenuConfig.style.height) + 15 }}>
                 <DropdownPanelContext.Provider value={{ setDropDownPanelVisible }}>
                     {children}
                 </DropdownPanelContext.Provider>

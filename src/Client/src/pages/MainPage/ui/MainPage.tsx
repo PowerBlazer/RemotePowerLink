@@ -1,6 +1,6 @@
 import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { useTranslation } from 'react-i18next';
-import { LangSwitcher } from 'widgets/LangSwitcher';
+import { LangSwitcher } from 'features/LangSwitcher';
 
 function MainPage () {
     const { t } = useTranslation();

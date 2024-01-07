@@ -3,18 +3,51 @@
 @import "themes/dark.scss";
 @import "themes/normal.scss";
 
+
+@font-face {
+    font-family: CircularXX;
+    font-weight: 450;
+    font-style: normal;
+    src: url(shared/assets/fonts/CircularXXWeb-Book-884ec4af.woff2) format("woff2")
+}
+
+@font-face {
+    font-family: CircularXX;
+    font-weight: 500;
+    font-style: normal;
+    src: url(shared/assets/fonts/CircularXXWeb-Medium-d5ea45f8.woff2) format("woff2")
+}
+
+@font-face {
+    font-family: CircularXX;
+    font-weight: 700;
+    font-style: normal;
+    src: url(shared/assets/fonts/CircularXXWeb-Bold-d2d92ee9.woff2) format("woff2")
+}
+
+@font-face {
+    font-family: CircularXX;
+    font-weight: 900;
+    font-style: normal;
+    src: url(shared/assets/fonts/CircularXXWeb-Black-d2a82ee9.woff2) format("woff2")
+}
+
+input:focus{
+    outline: none;
+}
+
 .app{
     font: var(--font-m);
     background: var(--bg-color);
-    color: var(--primary-color);
+    color: var(--text-color);
     min-height: 100vh;
 }
 
 .content-page{
     display: flex;
+    flex-direction: column;
 }
 
 .page-wrapper{
     flex-grow: 1;
-    padding: 20px;
 }

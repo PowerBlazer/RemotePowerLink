@@ -1,0 +1,8 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="StartProject" type="CompoundRunConfigurationType">
+    <toRun name="Api: http" type="LaunchSettings" />
+    <toRun name="StartDockerCommon" type="docker-deploy" />
+    <toRun name="StartClient" type="ShConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

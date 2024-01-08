@@ -27,6 +27,8 @@
   min-height: 36px;
   font-family: var(--font-family-main);
   font-weight: 500;
+  
+  
 }
 
 .login_page input:focus{
@@ -68,3 +70,14 @@
   text-align: center;
 }
 
+.email_input{
+  &.error{
+    border-color:#F25E61;
+  }
+}
+
+.password_input{
+  &.error{
+    border-color:#F25E61;
+  }
+}

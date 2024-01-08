@@ -1,1 +1,1 @@
-﻿export { Logotype } from "./ui/Logotype";
+export { Logotype } from './ui/Logotype';

@@ -12,7 +12,7 @@ export interface BuildOptions {
     paths: BuildPaths,
     isDev: boolean,
     port: number,
-    apiHost:string
+    apiHost: string
 }
 
 export interface BuildEnv {

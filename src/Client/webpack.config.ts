@@ -23,7 +23,6 @@ export default (env: BuildEnv) => {
         port: PORT,
         apiHost
     });
-    
-    
+
     return config;
 }

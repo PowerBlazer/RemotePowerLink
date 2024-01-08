@@ -1,7 +1,7 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
-import { Button } from "shared/ui/Button/Button";
-import React, {ButtonHTMLAttributes, useCallback, useState} from "react";
-import { Loader } from "shared/ui/Loader/Loader";
+import { classNames } from 'shared/lib/classNames/classNames';
+import { Button } from 'shared/ui/Button/Button';
+import React, { ButtonHTMLAttributes, useCallback, useState } from 'react';
+import { Loader } from 'shared/ui/Loader/Loader';
 import style from './ButtonLoader.module.scss';
 
 interface ButtonLoaderProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,7 +9,7 @@ interface ButtonLoaderProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     actionAsync?: () => Promise<void>;
 }
 
-export function ButtonLoader(props: ButtonLoaderProps) {
+export function ButtonLoader (props: ButtonLoaderProps) {
     const {
         className,
         children,
@@ -25,7 +25,7 @@ export function ButtonLoader(props: ButtonLoaderProps) {
             await actionAsync();
             setLoading(false);
         }
-    },[actionAsync])
+    }, [actionAsync])
 
     return (
         <Button

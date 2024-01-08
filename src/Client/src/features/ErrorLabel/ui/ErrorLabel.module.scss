@@ -1,0 +1,17 @@
+﻿.errorLabel{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label_item{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.error_message{
+  color: #F25E61;
+  font-weight: 450;
+  font-size: 16px;
+}

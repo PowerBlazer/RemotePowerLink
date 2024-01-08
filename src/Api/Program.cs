@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Api;
 using Api.Common;
@@ -21,6 +22,7 @@ builder.Services
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 
 builder.Services
@@ -35,7 +37,7 @@ builder.Services.AddCors(coreOptions =>
     {
         options.AllowAnyHeader();
         options.AllowAnyMethod();
-        options.WithOrigins("http://127.0.0.1:5500/");
+        options.WithOrigins("http://127.0.0.1:6002/");
         options.AllowCredentials();
         options.SetIsOriginAllowed(_ => true);
     }));

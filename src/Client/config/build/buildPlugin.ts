@@ -5,7 +5,7 @@ import { BuildOptions } from './types/config';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-export function buildPlugins ({ paths, isDev }: BuildOptions): WebpackPluginInstance[] {
+export function buildPlugins ({ paths, isDev, apiHost }: BuildOptions): WebpackPluginInstance[] {
     const plugins = [
         new HtmlWebpackPlugin({
             template: paths.html
@@ -15,7 +15,8 @@ export function buildPlugins ({ paths, isDev }: BuildOptions): WebpackPluginInst
             chunkFilename: 'css/[name].[contenthash:8].css'
         }),
         new DefinePlugin({
-            __IS_DEV__: JSON.stringify(isDev)
+            __IS_DEV__: JSON.stringify(isDev),
+            'process.env.API_HOST': JSON.stringify(apiHost)
         }),
         new HotModuleReplacementPlugin(),
         new ReactRefreshWebpackPlugin({

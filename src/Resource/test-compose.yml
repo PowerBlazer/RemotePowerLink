@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=root
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    expose:
+      - 15672
+      - 5672
+    networks:
+      - app_network
+  
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass ${REDIS_PASS:-root}
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+      - redis-conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - app_network
+
+  postgres:
+    container_name: postgres_db_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    networks:
+      - app_network
+    restart: unless-stopped
+    command: -p 5433
+
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres:
+  redis-data:
+  redis-conf:

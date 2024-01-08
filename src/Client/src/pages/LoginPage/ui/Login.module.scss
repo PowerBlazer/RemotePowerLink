@@ -10,10 +10,19 @@
   padding-top: 100px;
 }
 
+.login_page a{
+  color: #2091f6;
+  text-decoration: underline;
+}
+
+.login_page a:hover{
+  color: #73b9f8;
+}
+
 .login_page input{
   padding: 5px 10px;
   border-radius: 5px;
-  border: 1px solid gray;
+  border: 1px solid #d0d0d0;
   font-size: 16px;
   min-height: 36px;
   font-family: var(--font-family-main);
@@ -28,7 +37,7 @@
 .login_form{
   background-color: var(--bg-color);
   padding: 30px;
-  min-width: 500px;
+  min-width: 530px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -41,7 +50,7 @@
 .form_inner{
   display: flex;
   flex-direction: column;
-  gap:25px;
+  gap:15px;
 }
 
 .header{
@@ -51,17 +60,11 @@
   margin: 5px 0;
 }
 
-.continue{
-  background-color: #2091f6;
-  padding: 10px 20px;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  transition: background-color .3s;
-  cursor: pointer;
+.signup{
+  color: #798C94;
 }
 
-.continue:hover{
-  background-color: #1eb0f4;
+.recover_password{
+  text-align: center;
 }
 

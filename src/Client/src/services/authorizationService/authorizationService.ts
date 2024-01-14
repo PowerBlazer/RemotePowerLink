@@ -1,23 +1,18 @@
 import { ApiResult, HostService } from 'services/hostService';
 import { LocalStorageKeys } from 'app/enums/LocalStorageKeys';
+import { LoginModel, LoginResponse } from './configs/loginConfig';
+import {
+    SendEmailVerificationModel,
+    SendEmailVerificationResponse
+} from 'services/authorizationService/configs/signupConfig';
 
-interface LoginModel {
-    email: string,
-    password: string
-}
-
-interface LoginResponse {
-    accessToken?: string,
-    refreshToken?: string,
-}
-
-interface LoginResult {
+interface AuthorizationResult {
     isSuccess: boolean,
     errors?: Record<string, string[]>
 }
 
 class AuthorizationService {
-    static login = async (loginModel: LoginModel): Promise<LoginResult> => {
+    static login = async (loginModel: LoginModel): Promise<AuthorizationResult> => {
         try {
             const response =
                 await HostService.api.post<ApiResult<LoginResponse>>('/v1/authorization/Login', loginModel);
@@ -33,6 +28,27 @@ class AuthorizationService {
                 isSuccess: false,
                 errors: error.response?.data.Errors
             }
+        }
+    }
+
+    static sendEmailVerification = async (sendEmailModel: SendEmailVerificationModel): Promise<AuthorizationResult> => {
+        try {
+            const response =
+                await HostService.api.post<ApiResult<SendEmailVerificationResponse>>(
+                    '/v1/authorization/SendEmailVerification',
+                    sendEmailModel
+                );
+
+            this.setSessionId(response.data.result.sessionId);
+            
+            return {
+                isSuccess: true
+            };
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            };
         }
     }
 
@@ -54,6 +70,16 @@ class AuthorizationService {
         window.localStorage.setItem(LocalStorageKeys.REFRESH_TOKEN, refreshToken);
 
         return refreshToken;
+    }
+
+    static getSessionId = (): string => {
+        return window.localStorage.getItem(LocalStorageKeys.AUTH_SESSION_ID)
+    }
+
+    static setSessionId = (sessionId: string): string => {
+        window.localStorage.setItem(LocalStorageKeys.AUTH_SESSION_ID, sessionId);
+
+        return sessionId;
     }
 }
 

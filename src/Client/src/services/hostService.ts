@@ -2,6 +2,10 @@ import axios, { AxiosError, AxiosInstance } from 'axios';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
+const allowAnonymousEndpoints: string[] = [
+    'Login',
+    'SendEmailVerification'
+] 
 
 export interface ApiResult<T> {
     result: T,
@@ -23,14 +27,19 @@ export class HostService {
             this._api.interceptors.response.use(
                 (response) => response,
                 (error: AxiosError) => {
-                    if (error.response?.status === 401 || error.response?.status === 400 && (error.request.responseURL.includes('Login'))) {
+                    if ((error.response?.status === 401 || 
+                        error.response?.status === 400) && 
+                        allowAnonymousEndpoints.some(
+                            endpoint => error.request.responseURL.includes(endpoint))
+                        )
+                    {
                         throw error;
                     }
-                    
-                    if(error.response?.status === 401){
+
+                    if (error.response?.status === 401) {
                         history.push('login')
                     }
-                    
+
                     alert(error.message)
                 }
             );

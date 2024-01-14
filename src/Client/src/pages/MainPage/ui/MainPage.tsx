@@ -2,7 +2,7 @@ import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { useTranslation } from 'react-i18next';
 import { LangSwitcher } from 'features/LangSwitcher';
 
-function MainPage () {
+export default function MainPage () {
     const { t } = useTranslation();
 
     return (
@@ -13,5 +13,3 @@ function MainPage () {
         </div>
     );
 }
-
-export default MainPage;

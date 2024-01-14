@@ -1,0 +1,16 @@
+{
+  "Войдите в свою учетную запись": "Log in to your account",
+  "Почта": "Email",
+  "Пароль": "Password",
+  "Продолжить": "Continue",
+  "У вас нет аккаунта?": "Don't you have an account? ",
+  "Регистрация": "Sign-Up",
+  "Забыли пароль?": "Forgot your password?",
+  "Поле не может быть пустым": "The field cannot be empty",
+  "Пользователь с такой почтой не зарегестрирован": "A user with such an email is not registered",
+  "Создать учетную запись": "Create an account",
+  "У вас уже есть учетная запись?" : "Do you already have an account? ",
+  "Неправильный формат почты": "Incorrect mail format",
+  "Войти": "Login",
+  "Пользователь с такой почтой уже зарегестрирован": "A user with such an email has already been registered"
+}

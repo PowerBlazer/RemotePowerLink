@@ -2,21 +2,20 @@ import { useTranslation } from 'react-i18next';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { Logotype } from 'features/Logotype';
 import { Link, useNavigate } from 'react-router-dom';
-import { ButtonLoader } from 'features/ButtonLoader';
-import { AuthorizationService } from 'services/authorizationService';
-import {useEffect, useState} from 'react';
+import { ButtonLoader } from 'shared/ui/ButtonLoader';
+import { AuthorizationService } from 'services/authorizationService/authorizationService';
+import { useState } from 'react';
+import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from './Login.module.scss';
-import {ErrorLabel} from "features/ErrorLabel";
 
 export default function LoginPage () {
-    const { t } = useTranslation('login');
+    const { t } = useTranslation('authorization');
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errors,setErrors] = useState<Record<string, string[]>>({});
-    
-    
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+
     const loginClickHandler = async () => {
         const loginModel = {
             email,
@@ -40,28 +39,28 @@ export default function LoginPage () {
                 <div className={classNames(style.form_inner)}>
                     <input
                         type="email"
-                        className={classNames(style.email_input,{
-                            [style.error]: errors && errors['Email'] !== undefined
+                        className={classNames(style.email_input, {
+                            [style.error]: errors && errors.Email !== undefined
                         })}
                         placeholder={t('Почта')}
-                        onChange={(e) => { 
-                            setEmail(e.target.value); 
+                        onChange={(e) => {
+                            setEmail(e.target.value);
                             setErrors({});
                         }}
                     />
-                    {errors && errors['Email'] && <ErrorLabel errors={ errors['Email'] }/>}
+                    {errors && errors.Email && <ErrorLabel errors={ errors.Email }/>}
                     <input
                         type="password"
-                        className={classNames(style.password_input,{
-                            [style.error]: errors && errors['Password'] !== undefined
+                        className={classNames(style.password_input, {
+                            [style.error]: errors && errors.Password !== undefined
                         })}
                         placeholder={t('Пароль')}
-                        onChange={(e) => { 
+                        onChange={(e) => {
                             setPassword(e.target.value);
-                            setErrors({}); 
+                            setErrors({});
                         }}
                     />
-                    {errors && errors['Password'] && <ErrorLabel errors={ errors['Password'] }/>}
+                    {errors && errors.Password && <ErrorLabel errors={ errors.Password }/>}
                     <ButtonLoader
                         type="button"
                         className={classNames(style.continue)}
@@ -76,7 +75,7 @@ export default function LoginPage () {
             </div>
             <p className={classNames(style.signup)}>
                 {t('У вас нет аккаунта?')}
-                <Link to="/" className={classNames(style.signup_link)}>{t('Регистрация')}</Link>
+                <Link to="/signup" className={classNames(style.signup_link)}>{t('Регистрация')}</Link>
             </p>
         </div>
     )

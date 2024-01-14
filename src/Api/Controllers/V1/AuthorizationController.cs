@@ -32,16 +32,19 @@ public class AuthorizationController: BaseController
     /// <response code="400">Неправильный формат почты или почта уже зарегестрирована</response>
     /// <response code="500">Ошибка на сервере</response>
     [HttpPost("SendEmailVerification")]
-    [ProducesResponseType(typeof(ApiActionResult<string>),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<string>),StatusCodes.Status400BadRequest)]
-    public async Task<ApiActionResult<string>> SendEmailVerification(
+    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>),StatusCodes.Status400BadRequest)]
+    public async Task<ApiActionResult<SendEmailVerificationResponse>> SendEmailVerification(
         [FromBody]SendEmailVerificationCommand verificationCommand)
     {
         var result = await _mediator.Send(verificationCommand);
         
-        return new ApiActionResult<string>
+        return new ApiActionResult<SendEmailVerificationResponse>
         {
-            Result = result
+            Result = new SendEmailVerificationResponse
+            {
+                SessionId = result
+            }
         };
     }
     
@@ -71,16 +74,19 @@ public class AuthorizationController: BaseController
     /// <response code="400">Неправильный формат почты</response>
     /// <response code="500">Ошибка на сервере</response>
     [HttpPut("ResendEmailVerification")]
-    [ProducesResponseType(typeof(ApiActionResult<string>),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<string>),StatusCodes.Status400BadRequest)]
-    public async Task<ApiActionResult<string>> ResendEmailVerification(
+    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>),StatusCodes.Status400BadRequest)]
+    public async Task<ApiActionResult<ResendEmailVerificationResponse>> ResendEmailVerification(
         [FromBody] ResendConfirmationCodeCommand resendConfirmationCodeCommand)
     {
         var result = await _mediator.Send(resendConfirmationCodeCommand);
         
-        return new ApiActionResult<string>
+        return new ApiActionResult<ResendEmailVerificationResponse>
         {
-            Result = result
+            Result = new ResendEmailVerificationResponse
+            {
+                SessionId = result
+            }
         };
     }
     

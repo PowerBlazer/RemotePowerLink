@@ -1,0 +1,60 @@
+import { classNames } from 'shared/lib/classNames/classNames';
+import { useTranslation } from 'react-i18next';
+import { ButtonLoader } from 'shared/ui/ButtonLoader';
+import { useContext, useState } from 'react';
+import { RegistrationContext, RegistrationSteps } from 'app/providers/RegistrationProvider';
+import { SendEmailVerificationModel } from 'services/authorizationService/configs/signupConfig';
+import { AuthorizationService } from 'services/authorizationService/authorizationService';
+import { ErrorLabel } from 'shared/ui/ErrorLabel';
+import style from "pages/SignupPage/ui/Signup.module.scss";
+
+export function SendEmailVerificationStep () {
+    const { t } = useTranslation('authorization');
+    const { setStepRegistration } = useContext(RegistrationContext);
+
+    const [email, setEmail] = useState('');
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+    const sendEmailVerificationHandler = async () => {
+        const sendEmailModel: SendEmailVerificationModel = {
+            email
+        };
+
+        const result = await AuthorizationService.sendEmailVerification(sendEmailModel);
+
+        if (result.isSuccess) {
+            setStepRegistration(RegistrationSteps.ConfirmEmail);
+            return;
+        }
+
+        setErrors(result.errors);
+    }
+
+    return (
+        <>
+            <h2 className={classNames(style.header)}>{t('Создать учетную запись')}</h2>
+            <div className={classNames(style.form_inner)}>
+                <input
+                    type="email"
+                    className={classNames(style.email_input, {
+                        [style.error]: errors && errors.Email !== undefined
+                    })}
+                    placeholder={t('Почта')}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setErrors({});
+                    }}
+                />
+                {errors && errors.Email && <ErrorLabel errors={ errors.Email }/>}
+
+                <ButtonLoader
+                    type="button"
+                    className={classNames(style.continue)}
+                    actionAsync={sendEmailVerificationHandler}
+                >
+                    {t('Продолжить')}
+                </ButtonLoader>
+            </div>
+        </>
+    );
+}

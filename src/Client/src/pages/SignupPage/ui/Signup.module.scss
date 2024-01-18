@@ -27,6 +27,10 @@
   min-height: 36px;
   font-family: var(--font-family-main);
   font-weight: 500;
+
+  &.error{
+    border-color:#F25E61;
+  }
 }
 
 .signup_page input::placeholder{
@@ -65,7 +69,7 @@
   font-size: 22px;
   font-weight: 900;
   font-family: var(--font-family-main);
-  margin: 5px 0;
+  margin: 10px 0px 5px 0px;
   line-height: 1.5; 
 }
 
@@ -128,4 +132,27 @@
 
 .back_step:hover{
   text-decoration: underline;
+}
+
+.timer{
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: #2091f6;
+}
+
+.timer{
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: #2091f6;
+}
+.time:hover{
+    text-decoration: underline;
+}
+.time_disabled{
+  cursor: default;
+  color: rgba(127, 127, 127, 0.58);
 }

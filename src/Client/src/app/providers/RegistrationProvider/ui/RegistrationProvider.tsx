@@ -1,18 +1,21 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { RegistrationContext,RegistrationSteps } from 'app/providers/RegistrationProvider';
+import { RegistrationContext, RegistrationSteps } from 'app/providers/RegistrationProvider';
+import { RegistrationStepModel } from 'app/providers/RegistrationProvider/context/RegistrationContext';
 
 interface RegistrationProviderProps {
     children?: ReactNode;
 }
 
 export default function RegistrationProvider ({ children }: RegistrationProviderProps) {
-    const defaultStepRegistration = RegistrationSteps.ConfirmEmail;
-    
-    const [step, setStepRegistration] = useState<RegistrationSteps>(defaultStepRegistration);
+    const defaultStepRegistration: RegistrationStepModel = {
+        step: RegistrationSteps.ConfirmEmail
+    };
+
+    const [stepModel, setStepRegistration] = useState<RegistrationStepModel>(defaultStepRegistration);
     const defaultProps = useMemo(() => ({
-        step,
+        stepModel,
         setStepRegistration
-    }), [step]);
+    }), [stepModel]);
 
     return (
         <RegistrationContext.Provider value={defaultProps}>

@@ -42,8 +42,8 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.SIGNUP]: {
         path: RoutePath.signup,
         element:
-            <RegistrationProvider>
-                <SignupPage/>
-            </RegistrationProvider>
+    <RegistrationProvider>
+        <SignupPage/>
+    </RegistrationProvider>
     }
 }

@@ -6,13 +6,13 @@ import { RegistrationContext, RegistrationSteps } from 'app/providers/Registrati
 import { SendEmailVerificationModel } from 'services/authorizationService/configs/signupConfig';
 import { AuthorizationService } from 'services/authorizationService/authorizationService';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
-import style from "pages/SignupPage/ui/Signup.module.scss";
+import style from 'pages/SignupPage/ui/Signup.module.scss';
 
 export function SendEmailVerificationStep () {
     const { t } = useTranslation('authorization');
-    const { setStepRegistration } = useContext(RegistrationContext);
-
-    const [email, setEmail] = useState('');
+    const { stepModel, setStepRegistration } = useContext(RegistrationContext);
+    
+    const [email, setEmail] = useState(stepModel.email);
     const [errors, setErrors] = useState<Record<string, string[]>>({});
 
     const sendEmailVerificationHandler = async () => {
@@ -23,7 +23,11 @@ export function SendEmailVerificationStep () {
         const result = await AuthorizationService.sendEmailVerification(sendEmailModel);
 
         if (result.isSuccess) {
-            setStepRegistration(RegistrationSteps.ConfirmEmail);
+            setStepRegistration({
+                step: RegistrationSteps.ConfirmEmail,
+                email
+            });
+
             return;
         }
 
@@ -40,6 +44,7 @@ export function SendEmailVerificationStep () {
                         [style.error]: errors && errors.Email !== undefined
                     })}
                     placeholder={t('Почта')}
+                    
                     onChange={(e) => {
                         setEmail(e.target.value);
                         setErrors({});

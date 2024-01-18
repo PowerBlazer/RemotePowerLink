@@ -14,7 +14,7 @@ export function ErrorLabel ({ className, errors }: ErrorLabelProps) {
     return (
         <div className={classNames(style.errorLabel, {}, [className])}>
             {
-                errors.map((errorMessage,key) => {
+                errors.map((errorMessage, key) => {
                     return (
                         <div className={classNames(style.label_item)} key={key}>
                             <ErrorIcon width={20} height={20}/>

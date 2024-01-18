@@ -2,11 +2,20 @@ import { ApiResult, HostService } from 'services/hostService';
 import { LocalStorageKeys } from 'app/enums/LocalStorageKeys';
 import { LoginModel, LoginResponse } from './configs/loginConfig';
 import {
+    ConfirmEmailModel,
+    RegistrationModel,
+    RegistrationResponse, ResendEmailVerificationModel, ResendEmailVerificationResponse,
     SendEmailVerificationModel,
     SendEmailVerificationResponse
 } from 'services/authorizationService/configs/signupConfig';
 
 interface AuthorizationResult {
+    isSuccess: boolean,
+    errors?: Record<string, string[]>
+}
+
+interface AuthorizationResultObject<T> {
+    result: T,
     isSuccess: boolean,
     errors?: Record<string, string[]>
 }
@@ -40,7 +49,69 @@ class AuthorizationService {
                 );
 
             this.setSessionId(response.data.result.sessionId);
+
+            return {
+                isSuccess: true
+            };
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            };
+        }
+    }
+
+    static confirmEmail = async (confirmEmailModel: ConfirmEmailModel) : Promise<AuthorizationResult> => {
+        try {
+            const response =
+                await HostService.api.put<ApiResult<SendEmailVerificationResponse>>(
+                    '/v1/authorization/ConfirmEmail',
+                    confirmEmailModel
+                );
+
+            return {
+                isSuccess: true
+            };
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            };
+        }
+    }
+    
+    static registration = async (registrationModel: RegistrationModel): Promise<AuthorizationResult> => {
+        try {
+            const response =
+                await HostService.api.post<ApiResult<RegistrationResponse>>(
+                    '/v1/authorization/Registration',
+                    registrationModel
+                );
+
+            this.setRefreshToken(response.data.result.refreshToken);
+            this.setAccessToken(response.data.result.accessToken);
+
+            return {
+                isSuccess: true
+            };
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            };
+        }
+    }
+    
+    static resendEmailVerification = async (resendEmailVerification: ResendEmailVerificationModel): Promise<AuthorizationResult> => {
+        try {
+            const response =
+                await HostService.api.put<ApiResult<ResendEmailVerificationResponse>>(
+                    '/v1/authorization/ResendEmailVerification',
+                    resendEmailVerification
+                );
             
+            this.setSessionId(response.data.result.sessionId);
+
             return {
                 isSuccess: true
             };

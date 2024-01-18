@@ -1,9 +1,14 @@
 import { RegistrationSteps } from 'app/providers/RegistrationProvider';
 import { createContext } from 'react';
 
-export interface RegistrationContextProps {
+export interface RegistrationStepModel {
     step?: RegistrationSteps,
-    setStepRegistration?: (registrationStep: RegistrationSteps) => void
+    email?: string
+}
+
+export interface RegistrationContextProps {
+    stepModel?: RegistrationStepModel,
+    setStepRegistration?: (stepModel: RegistrationStepModel) => void
 }
 
 export const RegistrationContext = createContext<RegistrationContextProps>({});

@@ -1,9 +1,6 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
-import { Button, ThemeButton } from 'shared/ui/Button/Button';
-import LightIcon from 'shared/assets/icons/sun.svg';
-import DarkIcon from 'shared/assets/icons/moon.svg';
 import style from './ThemeSwitcher.module.scss';
 
 interface ThemeSwitcherProps {
@@ -18,14 +15,29 @@ export function ThemeSwitcher (props: ThemeSwitcherProps) {
     const { toggleTheme, theme } = useTheme();
 
     return (
-        <Button
-            className={classNames(style.themeSwitcher, {}, [className])}
-            onClick={toggleTheme}
-            theme={ThemeButton.CLEAR}
-        >
-            {theme === Theme.LIGHT
-                ? <LightIcon fill='#FFC300'/>
-                : <DarkIcon fill='#FFF' color='#061DD1'/>}
-        </Button>
+        <div className={classNames(style.toggleWrapper,{},[className])}>
+            <input 
+                type="checkbox" 
+                className={style.dn} 
+                id="dn" 
+                checked={
+                    theme !== Theme.LIGHT
+                } 
+                onClick={toggleTheme}
+            />
+            <label htmlFor="dn" className={style.toggle}>
+                <span className={style.toggle__handler}>
+                  <span className={classNames(style.crater, {}, [style.crater__1])}></span>
+                  <span className={classNames(style.crater, {}, [style.crater__2])}></span>
+                  <span className={classNames(style.crater, {}, [style.crater__3])}></span>
+                </span>
+                <span className={classNames(style.star, {}, [style.star__1])}></span>
+                <span className={classNames(style.star, {}, [style.star__2])}></span>
+                <span className={classNames(style.star, {}, [style.star__3])}></span>
+                <span className={classNames(style.star, {}, [style.star__4])}></span>
+                <span className={classNames(style.star, {}, [style.star__5])}></span>
+                <span className={classNames(style.star, {}, [style.star__6])}></span>
+            </label>
+        </div>
     )
 }

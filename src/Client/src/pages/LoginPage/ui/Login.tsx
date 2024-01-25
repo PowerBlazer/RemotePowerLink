@@ -7,6 +7,7 @@ import { AuthorizationService } from 'services/authorizationService/authorizatio
 import { useState } from 'react';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from './Login.module.scss';
+import {NavbarBasic} from "widgets/NavbarBasic";
 
 export default function LoginPage () {
     const { t } = useTranslation('authorization');
@@ -48,7 +49,7 @@ export default function LoginPage () {
                             setErrors({});
                         }}
                     />
-                    {errors && errors.Email && <ErrorLabel errors={ errors.Email }/>}
+                    {errors && errors.Email && <ErrorLabel errors={errors.Email}/>}
                     <input
                         type="password"
                         className={classNames(style.password_input, {
@@ -60,7 +61,7 @@ export default function LoginPage () {
                             setErrors({});
                         }}
                     />
-                    {errors && errors.Password && <ErrorLabel errors={ errors.Password }/>}
+                    {errors && errors.Password && <ErrorLabel errors={errors.Password}/>}
                     <ButtonLoader
                         type="button"
                         className={classNames(style.continue)}
@@ -78,5 +79,6 @@ export default function LoginPage () {
                 <Link to="/signup" className={classNames(style.signup_link)}>{t('Регистрация')}</Link>
             </p>
         </div>
+
     )
 }

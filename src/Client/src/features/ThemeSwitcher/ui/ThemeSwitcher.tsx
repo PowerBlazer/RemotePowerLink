@@ -1,6 +1,6 @@
-import { classNames } from 'shared/lib/classNames/classNames';
-import { useTheme } from 'shared/lib/Theme/useTheme';
-import { Theme } from 'shared/lib/Theme/ThemeContext';
+import {classNames} from 'shared/lib/classNames/classNames';
+import {useTheme} from 'shared/lib/Theme/useTheme';
+import {Theme} from 'shared/lib/Theme/ThemeContext';
 import style from './ThemeSwitcher.module.scss';
 
 interface ThemeSwitcherProps {
@@ -11,7 +11,7 @@ export function ThemeSwitcher (props: ThemeSwitcherProps) {
     const {
         className
     } = props;
-
+    
     const { toggleTheme, theme } = useTheme();
 
     return (
@@ -22,8 +22,8 @@ export function ThemeSwitcher (props: ThemeSwitcherProps) {
                 id="dn" 
                 checked={
                     theme !== Theme.LIGHT
-                } 
-                onClick={toggleTheme}
+                }
+                onChange={toggleTheme}
             />
             <label htmlFor="dn" className={style.toggle}>
                 <span className={style.toggle__handler}>

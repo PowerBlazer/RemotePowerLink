@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { classNames } from 'shared/lib/classNames/classNames';
-import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import style from './LangSwitcher.module.scss';
 
 interface LangSwitcherProps {
@@ -15,12 +14,22 @@ export function LangSwitcher ({ className }: LangSwitcherProps) {
     }
 
     return (
-        <Button
-            className={classNames(style.langSwitcher, {}, [className])}
-            theme={ThemeButton.CLEAR}
-            onClick={toggle}
-        >
-            {t('Язык')}
-        </Button>
+        <label className={classNames(style.toggler_wrapper)}>
+            <input 
+                type="checkbox"
+                checked={i18n.language === 'ru'}
+                onChange={toggle}
+            />
+                <div className={classNames(style.toggler_slider)} data-lang={i18n.language.toUpperCase()}>
+                    <div className={classNames(style.toggler_knob)}></div>
+                </div>
+        </label>
+        // <Button
+        //     className={classNames(style.langSwitcher, {}, [className])}
+        //     theme={ThemeButton.CLEAR}
+        //     onClick={toggle}
+        // >
+        //     {t('Язык')}
+        // </Button>
     )
 }

@@ -50,4 +50,9 @@ input:focus{
 
 .page-wrapper{
     flex-grow: 1;
+    
+    &.vertical{
+        display: flex;
+        
+    }
 }

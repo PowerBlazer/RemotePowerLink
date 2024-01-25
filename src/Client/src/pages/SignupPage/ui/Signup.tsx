@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { RegistrationContext, RegistrationSteps, StepsElements } from 'app/providers/RegistrationProvider';
 import style from './Signup.module.scss';
 import { Button } from 'shared/ui/Button/Button';
+import {NavbarBasic} from "widgets/NavbarBasic";
 
 export default function Signup () {
     const { t } = useTranslation('authorization')

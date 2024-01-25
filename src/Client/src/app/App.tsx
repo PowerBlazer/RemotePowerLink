@@ -12,7 +12,6 @@ export default function App () {
         <div className={classNames('app', {}, [theme])}>
             <Suspense fallback="">
                 <div className='content-page'>
-                    <Navbar/>
                     <AppRouter/>
                 </div>
             </Suspense>

@@ -11,8 +11,7 @@ interface NavbarProps {
 export function Navbar ({ className }: NavbarProps) {
     return (
         <div className={classNames(style.navbar, {}, [className])}>
-            <ThemeSwitcher />
-            <LangSwitcher/>
+            
         </div>
     )
 }

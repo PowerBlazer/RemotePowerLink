@@ -1,6 +1,8 @@
 .button{
     cursor: pointer;
     color: var(--inverted-primary-color);
+    background-color: transparent;
+    border: none;
 }
 
 .clear{

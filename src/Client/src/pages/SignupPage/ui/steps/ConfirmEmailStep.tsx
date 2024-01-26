@@ -6,14 +6,14 @@ import { RegistrationContext, RegistrationSteps } from 'app/providers/Registrati
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import { ConfirmEmailModel } from 'services/authorizationService/configs/signupConfig';
 import { AuthorizationService } from 'services/authorizationService/authorizationService';
-import {Button} from "shared/ui/Button/Button";
-import { useTimer } from "react-timer-and-stopwatch";
+import { Button } from 'shared/ui/Button/Button';
+import { useTimer } from 'react-timer-and-stopwatch';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
 
 export function ConfirmEmailStep () {
     const { t } = useTranslation('authorization');
-    const { stepModel,setStepRegistration } = useContext(RegistrationContext);
-    
+    const { stepModel, setStepRegistration } = useContext(RegistrationContext);
+
     const [verificationCode, setVerificationCode] = useState('');
     const [errors, setErrors] = useState<Record<string, string[]>>({});
     const [isResend, setResendValue] = useState<boolean>(false);
@@ -27,28 +27,28 @@ export function ConfirmEmailStep () {
                 }
             }
         },
-        callbacks:{
-            onFinish: () => setResendValue(true)
+        callbacks: {
+            onFinish: () => { setResendValue(true); }
         },
         textOutputWithWords: true
     })
 
     const { timerText, resetTimer } = timer;
-    
+
     const resendEmailVerification = async () => {
-       if(isResend){
-           const result = await AuthorizationService.resendEmailVerification({
-               email: stepModel.email,
-               sessionId: AuthorizationService.getSessionId()
-           })
-           
-           if(result.isSuccess){
-               resetTimer();
-               setResendValue(false);
-           }
-       }
+        if (isResend) {
+            const result = await AuthorizationService.resendEmailVerification({
+                email: stepModel.email,
+                sessionId: AuthorizationService.getSessionId()
+            })
+
+            if (result.isSuccess) {
+                resetTimer();
+                setResendValue(false);
+            }
+        }
     }
-    
+
     const confirmEmailHandler = async () => {
         const confirmEmailModel: ConfirmEmailModel = {
             sessionId: AuthorizationService.getSessionId(),
@@ -84,7 +84,7 @@ export function ConfirmEmailStep () {
             />
             {errors && errors.VerificationCode && <ErrorLabel errors={ errors.VerificationCode }/>}
             {errors && errors.Session && <ErrorLabel errors={ errors.Session }/>}
-            
+
             <ButtonLoader
                 type="button"
                 className={classNames(style.continue)}
@@ -93,13 +93,13 @@ export function ConfirmEmailStep () {
                 {t('Продолжить')}
             </ButtonLoader>
 
-            <Button 
-                className={classNames(style.timer,{
+            <Button
+                className={classNames(style.timer, {
                     [style.time_disabled]: !isResend
-                },[])}
+                }, [])}
                 onClick={resendEmailVerification}
             >
-                {isResend ? 'Повтороно отправить на почту' :  `Повтороно отправить на почту через ${timerText}`}
+                {isResend ? 'Повтороно отправить на почту' : `Повтороно отправить на почту через ${timerText}`}
             </Button>
         </>
     );

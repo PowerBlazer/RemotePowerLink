@@ -18,7 +18,7 @@ export interface RegistrationModel {
     passwordConfirm: string
 }
 
-export interface RegistrationResponse{
+export interface RegistrationResponse {
     accessToken: string,
     refreshToken: string
 }
@@ -28,6 +28,6 @@ export interface ResendEmailVerificationModel {
     email: string
 }
 
-export interface  ResendEmailVerificationResponse{
+export interface ResendEmailVerificationResponse {
     sessionId: string
 }

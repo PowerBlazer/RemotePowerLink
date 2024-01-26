@@ -15,14 +15,14 @@ export function LangSwitcher ({ className }: LangSwitcherProps) {
 
     return (
         <label className={classNames(style.toggler_wrapper)}>
-            <input 
+            <input
                 type="checkbox"
                 checked={i18n.language === 'ru'}
                 onChange={toggle}
             />
-                <div className={classNames(style.toggler_slider)} data-lang={i18n.language.toUpperCase()}>
-                    <div className={classNames(style.toggler_knob)}></div>
-                </div>
+            <div className={classNames(style.toggler_slider)} data-lang={i18n.language.toUpperCase()}>
+                <div className={classNames(style.toggler_knob)}></div>
+            </div>
         </label>
         // <Button
         //     className={classNames(style.langSwitcher, {}, [className])}

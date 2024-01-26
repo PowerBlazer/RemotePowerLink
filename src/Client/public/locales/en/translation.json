@@ -7,5 +7,8 @@
     "О нас":"About Us",
     "Страница не найдена": "Notfound Page",
     "Произошла ошибка":"An error has occurred",
-    "Обновить страницу":"Reload Page"
+    "Обновить страницу":"Reload Page",
+    "Подключения": "Hosts",
+    "SFTP": "SFTP",
+    "Сниппеты": "Snippets"
 }

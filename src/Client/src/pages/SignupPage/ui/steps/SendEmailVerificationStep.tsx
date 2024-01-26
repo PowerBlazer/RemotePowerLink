@@ -11,7 +11,7 @@ import style from 'pages/SignupPage/ui/Signup.module.scss';
 export function SendEmailVerificationStep () {
     const { t } = useTranslation('authorization');
     const { stepModel, setStepRegistration } = useContext(RegistrationContext);
-    
+
     const [email, setEmail] = useState(stepModel.email);
     const [errors, setErrors] = useState<Record<string, string[]>>({});
 
@@ -44,7 +44,7 @@ export function SendEmailVerificationStep () {
                         [style.error]: errors && errors.Email !== undefined
                     })}
                     placeholder={t('Почта')}
-                    
+
                     onChange={(e) => {
                         setEmail(e.target.value);
                         setErrors({});

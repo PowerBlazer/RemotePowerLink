@@ -4,7 +4,7 @@ import { NotFoundPage } from 'pages/NotFoundPage'
 import { RouteProps } from 'react-router-dom'
 import { SignupPage } from 'pages/SignupPage';
 import RegistrationProvider from 'app/providers/RegistrationProvider/ui/RegistrationProvider';
-import { Navbar } from "widgets/Navbar";
+import { Navbar } from 'widgets/Navbar';
 
 export enum AppRoutes {
     MAIN = 'main',

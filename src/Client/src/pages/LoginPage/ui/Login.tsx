@@ -7,7 +7,7 @@ import { AuthorizationService } from 'services/authorizationService/authorizatio
 import { useState } from 'react';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from './Login.module.scss';
-import {NavbarBasic} from "widgets/NavbarBasic";
+import { NavbarBasic } from 'widgets/NavbarBasic';
 
 export default function LoginPage () {
     const { t } = useTranslation('authorization');

@@ -23,7 +23,7 @@ export function Logotype ({
     return (
         <div className={classNames(style.logotype, {}, [className])}>
             <LogoIcon width={width} height={height}/>
-            {isText && <h1 style={{ fontSize: `${fontSize}px` }}>RemotePowerlink</h1>}
+            {isText && <h1 style={{ fontSize: `${fontSize}px` }}>RemotePowerline</h1>}
         </div>
     );
 }

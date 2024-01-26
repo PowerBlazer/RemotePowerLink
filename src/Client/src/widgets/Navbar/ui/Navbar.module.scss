@@ -1,11 +1,61 @@
 .navbar{
-    width: 100px;
-    height: 100%;
+    width: 180px;
+    height: 100vh;
     background: var(--bg-color-auth);
     display: flex;
     flex-direction: column;
-    padding: 20px;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
+    background-color: var(--bg-color-inverted);
 }
 
+.common_block{
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid var(--line);
+    padding: 0 20px 10px 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.common_block path{
+    fill: var(--setting-button-color);
+}
+
+.personal{
+    font-size: 14px;
+}
+
+.nav_items{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 10px 25px 10px;
+    width: 100%;
+    border-bottom: 1px solid var(--line);
+}
+
+.server path{
+    fill: var(--setting-button-color);
+    stroke: var(--setting-button-color);
+}
+
+.sftp path{
+    fill: var(--setting-button-color);
+}
+
+.sftp svg{
+    top: 2px;
+}
+
+.snippets h1{
+  color: var(--setting-button-color);
+  font-size: 18px; 
+  letter-spacing: 2px;
+}
+
+.snippets svg{
+    top: 2px;
+}

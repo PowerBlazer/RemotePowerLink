@@ -61,7 +61,7 @@ class AuthorizationService {
         }
     }
 
-    static confirmEmail = async (confirmEmailModel: ConfirmEmailModel) : Promise<AuthorizationResult> => {
+    static confirmEmail = async (confirmEmailModel: ConfirmEmailModel): Promise<AuthorizationResult> => {
         try {
             const response =
                 await HostService.api.put<ApiResult<SendEmailVerificationResponse>>(
@@ -79,7 +79,7 @@ class AuthorizationService {
             };
         }
     }
-    
+
     static registration = async (registrationModel: RegistrationModel): Promise<AuthorizationResult> => {
         try {
             const response =
@@ -101,7 +101,7 @@ class AuthorizationService {
             };
         }
     }
-    
+
     static resendEmailVerification = async (resendEmailVerification: ResendEmailVerificationModel): Promise<AuthorizationResult> => {
         try {
             const response =
@@ -109,7 +109,7 @@ class AuthorizationService {
                     '/v1/authorization/ResendEmailVerification',
                     resendEmailVerification
                 );
-            
+
             this.setSessionId(response.data.result.sessionId);
 
             return {

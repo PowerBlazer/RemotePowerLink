@@ -1,14 +1,16 @@
 import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { useTranslation } from 'react-i18next';
 import { LangSwitcher } from 'features/LangSwitcher';
+import { classNames } from 'shared/lib/classNames/classNames';
+import style from './MainPage.module.scss';
 
 export default function MainPage () {
     const { t } = useTranslation();
 
     return (
-        <div>
+        <div className={classNames(style.main_page)}>
             {t('Главная страница')}
-          
+            <ThemeSwitcher/>
         </div>
     );
 }

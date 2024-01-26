@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <Folder Include="src\shared\assets\fonts\" />
+      <Folder Include="src\shared\assets\icons\navbar\" />
     </ItemGroup>
 
 </Project>

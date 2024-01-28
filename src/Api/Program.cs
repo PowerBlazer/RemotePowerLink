@@ -10,6 +10,7 @@ using Identity;
 using MessageQueues;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
+using Persistence;
 using Redis;
 
 
@@ -51,7 +52,8 @@ builder.Services
     .AddMessageQueue(builder.Configuration)
     .AddRedis(builder.Configuration)
     .AddEmail(builder.Configuration)
-    .AddIdentity(builder.Configuration);
+    .AddIdentity(builder.Configuration)
+    .AddPersistence(builder.Configuration);
 
 builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
 #endregion
@@ -93,7 +95,7 @@ builder.Services.AddAuthentication(options =>
                 var accessToken = context.Request.Query["access_token"];
                 var path = context.HttpContext.Request.Path;
                 if (!string.IsNullOrEmpty(accessToken) &&
-                    path.StartsWithSegments("/chat"))
+                    path.StartsWithSegments("/host"))
                 {
                     context.Token = accessToken;
                 }

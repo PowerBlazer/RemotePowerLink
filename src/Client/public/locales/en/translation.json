@@ -8,7 +8,10 @@
     "Страница не найдена": "Notfound Page",
     "Произошла ошибка":"An error has occurred",
     "Обновить страницу":"Reload Page",
-    "Подключения": "Hosts",
+    "Сервера": "Hosts",
     "SFTP": "SFTP",
-    "Сниппеты": "Snippets"
+    "Сниппеты": "Snippets",
+    "Поиск серверов или ssh root@hostname...": "Find a host or ssh user@hostname...",
+    "Подключиться": "Connect",
+    "Новый сервер": "New Host"
 }

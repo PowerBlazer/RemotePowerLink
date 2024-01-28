@@ -16,7 +16,7 @@ export default function LoginPage () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<Record<string, string[]>>({});
-
+   
     const loginClickHandler = async () => {
         const loginModel = {
             email,

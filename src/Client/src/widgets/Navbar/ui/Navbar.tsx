@@ -1,19 +1,22 @@
-import { classNames } from 'shared/lib/classNames/classNames';
-import { NavbarSetting } from 'widgets/NavbarSetting';
-import { NavbarItem } from 'features/NavbarItem';
-import { useTranslation } from 'react-i18next';
+import {classNames} from 'shared/lib/classNames/classNames';
+import {NavbarSetting} from 'widgets/NavbarSetting';
+import {NavbarItem} from 'features/NavbarItem';
+import {useTranslation} from 'react-i18next';
 import style from './Navbar.module.scss';
 
 import ServerIcon from 'shared/assets/icons/navbar/server.svg';
 import FolderIcon from 'shared/assets/icons/navbar/folder.svg';
 import PersonalIcon from 'shared/assets/icons/navbar/personal.svg';
+import {getAppRouteFromPath} from "app/providers/router";
+import {AppRoutes} from "app/providers/router/config/routeConfig";
 
 interface NavbarProps {
     className?: string
 }
 
 export function Navbar ({ className }: NavbarProps) {
-    const { t } = useTranslation('translation')
+    const { t } = useTranslation('translation');
+    
 
     return (
         <div className={classNames(style.navbar, {}, [className])}>
@@ -25,8 +28,10 @@ export function Navbar ({ className }: NavbarProps) {
             <div className={classNames(style.nav_items)}>
                 <NavbarItem
                     icon={<ServerIcon width={'22px'} height={'22px'}/>}
-                    label={t('Подключения')}
+                    label={t('Сервера')}
                     className={classNames(style.server)}
+                    isSelected={getAppRouteFromPath(location.pathname) == AppRoutes.MAIN}
+                    navigate={"/"}
                 />
                 <NavbarItem
                     icon={<FolderIcon width={'18px'} height={'18px'}/>}
@@ -42,3 +47,6 @@ export function Navbar ({ className }: NavbarProps) {
         </div>
     )
 }
+
+
+

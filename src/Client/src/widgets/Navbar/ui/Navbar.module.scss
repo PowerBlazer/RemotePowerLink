@@ -1,5 +1,5 @@
 .navbar{
-    width: 180px;
+    min-width: 180px;
     height: 100vh;
     background: var(--bg-color-auth);
     display: flex;
@@ -10,7 +10,7 @@
 }
 
 .common_block{
-    height: 40px;
+    height: 35px;
     width: 100%;
     border-bottom: 1px solid var(--line);
     padding: 0 20px 10px 20px;
@@ -32,7 +32,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 10px 10px 25px 10px;
+    padding: 10px 10px 18px 10px;
     width: 100%;
     border-bottom: 1px solid var(--line);
 }

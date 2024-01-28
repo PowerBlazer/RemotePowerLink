@@ -12,5 +12,5 @@ public class IdentityUser:BaseEntity<long>
     public bool EmailConfirmed { get; set; }
     public bool TwoFactorEnabled { get; set; }
     
-    public ICollection<IdentityToken>? IdentityToken { get; set; }
+    public IList<IdentityToken>? IdentityToken { get; set; }
 }

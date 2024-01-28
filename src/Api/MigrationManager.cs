@@ -1,5 +1,6 @@
 ﻿using Identity.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Context;
 
 namespace Api;
 
@@ -14,7 +15,9 @@ public static class MigrationManager
             try
             {
                 using var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+                using var persistenceContext = scope.ServiceProvider.GetRequiredService<PersistenceContext>();
                 identityContext.Database.Migrate();
+                persistenceContext.Database.Migrate();
                 break;
             }
             catch   
@@ -24,7 +27,8 @@ public static class MigrationManager
                     throw;
                 }
 
-                Thread.Sleep(1000 * i);
+                var delay = TimeSpan.FromSeconds(i);
+                Task.Delay(delay).Wait();
             }
         }
     }

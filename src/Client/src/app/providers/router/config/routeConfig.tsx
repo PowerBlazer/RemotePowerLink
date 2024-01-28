@@ -38,3 +38,13 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
         element: <RegistrationProvider><SignupPage/></RegistrationProvider>
     }
 }
+
+export function getAppRouteFromPath(path: string): AppRoutes | undefined {
+    // Перебираем ключи и значения объекта RoutePath
+    for (const key of Object.keys(RoutePath) as AppRoutes[]) {
+        if (RoutePath[key] === path) {
+            return key;
+        }
+    }
+    return undefined; // Если путь не найден, возвращаем undefined
+}

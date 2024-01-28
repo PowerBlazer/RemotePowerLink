@@ -28,6 +28,10 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Errors);
         }
+        catch (NotFoundException ex)
+        {
+            await HandleExceptionAsync(httpContext,HttpStatusCode.NotFound,ex.Errors);
+        }
         catch (AuthenticationValidException ex)
         {
             await HandleExceptionAsync(httpContext,HttpStatusCode.Unauthorized,ex.Errors);

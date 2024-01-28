@@ -26,9 +26,9 @@ public static class SwaggerConfiguration
             
             options.SwaggerDoc("v1",new OpenApiInfo
             {
-                Title = "PowerMessenger API",
+                Title = "RemotePowerLink API",
                 Version = "v1",
-                Description = "API документация мессенджера"
+                Description = "API документация RemotePowerLink"
             });
             
             options.AddSecurityRequirement(new OpenApiSecurityRequirement

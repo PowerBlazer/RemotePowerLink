@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { createBrowserHistory } from 'history';
+import { AuthorizationService } from 'services/AuthorizationService/authorizationService';
+import toast from "react-hot-toast";
 
-const history = createBrowserHistory();
+
 const allowAnonymousEndpoints: string[] = [
     'Login',
     'SendEmailVerification',
@@ -12,6 +14,11 @@ const allowAnonymousEndpoints: string[] = [
 export interface ApiResult<T> {
     result: T,
     errors: Record<string, string[]>
+}
+
+export interface ServiceResult<T> {
+    isSuccess: boolean,
+    result?: T
 }
 
 export class HostService {
@@ -26,9 +33,22 @@ export class HostService {
                 baseURL: this._apiHost + '/api/'
             });
 
+            this._api.interceptors.request.use(
+                (config) => {
+                    const accessToken = AuthorizationService.getAccessToken();
+                    if (accessToken) {
+                        config.headers.Authorization = `Bearer ${accessToken}`;
+                    }
+                    return config;
+                },
+                async (error) => {
+                    return await Promise.reject(error);
+                }
+            );
+
             this._api.interceptors.response.use(
                 (response) => response,
-                (error: AxiosError) => {
+                async (error: AxiosError) => {
                     if ((error.response?.status === 401 ||
                         error.response?.status === 400 ||
                         error.response?.status === 404) &&
@@ -39,10 +59,17 @@ export class HostService {
                     }
 
                     if (error.response?.status === 401) {
-                        history.push('login')
+                        const refreshTokenResult = await AuthorizationService.refreshToken();
+
+                        if (refreshTokenResult.isSuccess) {
+                            error.config.headers.Authorization = `Bearer ${AuthorizationService.getAccessToken()}`;
+                            return await axios.request(error.config);
+                        } else {
+                            location.pathname = '/login';
+                        }
                     }
 
-                    alert(error.message)
+                    toast.error(error.message);
                 }
             );
         }

@@ -39,7 +39,7 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     }
 }
 
-export function getAppRouteFromPath(path: string): AppRoutes | undefined {
+export function getAppRouteFromPath (path: string): AppRoutes | undefined {
     // Перебираем ключи и значения объекта RoutePath
     for (const key of Object.keys(RoutePath) as AppRoutes[]) {
         if (RoutePath[key] === path) {

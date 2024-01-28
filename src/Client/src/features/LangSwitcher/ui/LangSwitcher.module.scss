@@ -1,98 +1,97 @@
 /* stylelint-disable-next-line no-empty-source */
 
 .toggler_wrapper {
-  display: block;
-  width: 45px;
-  height: 25px;
-  cursor: pointer;
-  position: relative;
-  margin: 5px ;
-  margin-right: 40px;
+    display: block;
+    width: 45px;
+    height: 25px;
+    cursor: pointer;
+    position: relative;
+    margin: 5px ;
+    margin-right: 40px;
 }
 
 .toggler_wrapper input[type="checkbox"] {
-  display: none;
+    display: none;
 }
 
 .toggler_wrapper input[type="checkbox"]:checked+.toggler_slider {
-  background-color: #44cc66;
+    background-color: #4c6;
 }
 
 .toggler_wrapper .toggler_slider {
-  position: absolute;
-  border-radius: 100px;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  -webkit-transition: all 300ms ease;
-  transition: all 300ms ease;
-  background-color: transparent;
-  border: 1px solid #44cc66;
+    position: absolute;
+    border-radius: 100px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 300ms ease;
+    transition: all 300ms ease;
+    background-color: transparent;
+    border: 1px solid #4c6;
 }
 
 .toggler_wrapper .toggler_knob {
-  position: absolute;
-  -webkit-transition: all 300ms ease;
-  transition: all 300ms ease;
+    position: absolute;
+    transition: all 300ms ease;
+    transition: all 300ms ease;
 }
 
 
 .toggler_wrapper input[type="checkbox"]:checked+.toggler_slider {
-  background-color: transparent;
-  border-color: #44cc66;
+    background-color: transparent;
+    border-color: #4c6;
 }
 
-.toggler_wrapper input[type="checkbox"]:checked+.toggler_slider:before {
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 0.7;
+.toggler_wrapper input[type="checkbox"]:checked+.toggler_slider::before {
+    transform: translateY(0);
+    transform: translateY(0);
+    opacity: 0.7;
 }
 
-.toggler_wrapper input[type="checkbox"]:checked+.toggler_slider:after {
-  opacity: 0;
-  -webkit-transform: translateY(20px);
-  transform: translateY(20px);
+.toggler_wrapper input[type="checkbox"]:checked+.toggler_slider::after {
+    opacity: 0;
+    transform: translateY(20px);
+    transform: translateY(20px);
 }
 
 .toggler_wrapper input[type="checkbox"]:checked+.toggler_slider .toggler_knob {
-  left: calc(100% - 19px - 3px);
-  background-color: #44cc66;
+    left: calc(100% - 19px - 3px);
+    background-color: #4c6;
 }
 
 
-.toggler_wrapper .toggler_slider:before {
-  content: attr(data-lang);
-  position: absolute;
-  right: -30px;
-  font-size: 75%;
-  text-transform: uppercase;
-  font-weight: 500;
-  opacity: 0;
-  -webkit-transition: all 300ms ease;
-  transition: all 300ms ease;
-  -webkit-transform: translateY(-20px);
-  transform: translateY(-20px);
+.toggler_wrapper .toggler_slider::before {
+    content: attr(data-lang);
+    position: absolute;
+    right: -30px;
+    font-size: 75%;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 300ms ease;
+    transition: all 300ms ease;
+    transform: translateY(-20px);
+    transform: translateY(-20px);
 }
 
-.toggler_wrapper .toggler_slider:after {
-  content: attr(data-lang);
-  position: absolute;
-  
-  right: -30px;
-  font-size: 75%;
-  text-transform: uppercase;
-  font-weight: 500;
-  opacity: 0.7;
-  -webkit-transition: all 300ms ease;
-  transition: all 300ms ease;
+.toggler_wrapper .toggler_slider::after {
+    content: attr(data-lang);
+    position: absolute;
+    right: -30px;
+    font-size: 75%;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.7;
+    transition: all 300ms ease;
+    transition: all 300ms ease;
 }
 
 .toggler_wrapper .toggler_knob {
-  width: calc(25px - 6px);
-  height: calc(25px - 6px);
-  border-radius: 50%;
-  left: 2px;
-  top: 2px;
-  background-color: #44cc66;
+    width: calc(25px - 6px);
+    height: calc(25px - 6px);
+    border-radius: 50%;
+    left: 2px;
+    top: 2px;
+    background-color: #4c6;
 }

@@ -3,7 +3,7 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { Logotype } from 'features/Logotype';
 import { Link, useNavigate } from 'react-router-dom';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
-import { AuthorizationService } from 'services/authorizationService/authorizationService';
+import { AuthorizationService } from 'services/AuthorizationService/authorizationService';
 import { useState } from 'react';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from './Login.module.scss';
@@ -16,7 +16,7 @@ export default function LoginPage () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<Record<string, string[]>>({});
-   
+
     const loginClickHandler = async () => {
         const loginModel = {
             email,

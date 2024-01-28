@@ -1,58 +1,58 @@
-﻿.navbarSetting{
-  height: 80px;
-  width: 100%;
-  border-bottom: 1px solid var(--line);
-  padding: 10px 10px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+.navbarSetting{
+    height: 80px;
+    width: 100%;
+    border-bottom: 1px solid var(--line);
+    padding: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
 }
 
 .setting_button{
-  border-radius: 5px;
-  padding: 5px;
-  width: 30px;
-  height: 30px;
-  position: relative;
-  transition: background-color .2s;
+    border-radius: 5px;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    transition: background-color .2s;
 }
 
 .setting_button svg{
-  position: absolute;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    transform: translate(-50%, -50%);
 }
 
 .setting_button:hover{
-  background-color: rgba(164, 164, 164, 0.14);
+    background-color: rgb(164 164 164 / 14%);
 }
 
 .setting_button path{
-  fill: var(--setting-button-color);
+    fill: var(--setting-button-color);
 }
 
 .common_buttons{
-  display: flex;
-  align-items: center;
-  gap: 7px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 
 .common_buttons button{
-  border-radius: 5px;
-  padding: 5px;
-  width: 30px;
-  height: 30px;
-  position: relative;
-  transition: background-color .2s;
+    border-radius: 5px;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    transition: background-color .2s;
 }
 
 .common_buttons button:hover{
-  background-color: rgba(164, 164, 164, 0.14);
+    background-color: rgb(164 164 164 / 14%);
 }
 
 .common_buttons .terminal_button g{
-  fill: var(--setting-button-color);
+    fill: var(--setting-button-color);
 }
 
 .common_buttons .notification path{
-  stroke: var(--setting-button-color);
+    stroke: var(--setting-button-color);
 }

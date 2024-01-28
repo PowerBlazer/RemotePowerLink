@@ -1,9 +1,9 @@
 import { useTheme } from 'app/providers/ThemeProvider';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { AppRouter } from 'app/providers/router';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
+import { Toaster } from 'react-hot-toast';
 import './styles/index.scss';
-import { Navbar } from 'widgets/Navbar';
 
 export default function App () {
     const { theme } = useTheme();
@@ -13,6 +13,17 @@ export default function App () {
             <Suspense fallback="">
                 <div className='content-page'>
                     <AppRouter/>
+                    <Toaster
+                        position="bottom-right"
+                        reverseOrder={false}
+                        gutter={8}
+                        containerClassName=""
+                        containerStyle={{}}
+                        toastOptions={{
+                            className: '',
+                            duration: 3000,
+                        }}
+                    />
                 </div>
             </Suspense>
         </div>

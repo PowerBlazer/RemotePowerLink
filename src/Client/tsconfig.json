@@ -2,8 +2,8 @@
     "compilerOptions": {
         "outDir": "./dist/",
         "noImplicitAny": true,
-        "module":"ESNext",
-        "target":"es5",
+        "module": "ESNext",
+        "target": "es5",
         "jsx": "react-jsx",
         "allowJs": true,
         "moduleResolution": "node",
@@ -12,12 +12,13 @@
         "baseUrl": ".",
         "strictNullChecks": false,
         "paths": {
-            "*":["./src/*"]
-        }
+            "*": ["./src/*"]
+        },
+        "lib": ["dom", "es2015", "es2017", "esnext"]
     },
     "ts-node": {
         "compilerOptions": {
-          "module": "CommonJS"
+            "module": "CommonJS"
         }
     }
 }

@@ -1,6 +1,6 @@
 import { ApiResult, HostService } from 'services/hostService';
 import { LocalStorageKeys } from 'app/enums/LocalStorageKeys';
-import { LoginModel, LoginResponse } from './configs/loginConfig';
+import { LoginModel, LoginResponse, RefreshTokenModel, RefreshTokenResponse } from './configs/loginConfig';
 import {
     ConfirmEmailModel,
     RegistrationModel,
@@ -10,12 +10,6 @@ import {
 } from 'services/authorizationService/configs/signupConfig';
 
 interface AuthorizationResult {
-    isSuccess: boolean,
-    errors?: Record<string, string[]>
-}
-
-interface AuthorizationResultObject<T> {
-    result: T,
     isSuccess: boolean,
     errors?: Record<string, string[]>
 }
@@ -63,11 +57,10 @@ class AuthorizationService {
 
     static confirmEmail = async (confirmEmailModel: ConfirmEmailModel): Promise<AuthorizationResult> => {
         try {
-            const response =
-                await HostService.api.put<ApiResult<SendEmailVerificationResponse>>(
-                    '/v1/authorization/ConfirmEmail',
-                    confirmEmailModel
-                );
+            await HostService.api.put<ApiResult<SendEmailVerificationResponse>>(
+                '/v1/authorization/ConfirmEmail',
+                confirmEmailModel
+            );
 
             return {
                 isSuccess: true
@@ -120,6 +113,31 @@ class AuthorizationService {
                 isSuccess: false,
                 errors: error.response?.data.Errors
             };
+        }
+    }
+
+    static refreshToken = async (): Promise<AuthorizationResult> => {
+        const refreshTokenModel: RefreshTokenModel = {
+            accessToken: this.getAccessToken(),
+            refreshToken: this.getRefreshToken()
+        }
+
+        try {
+            const response = await HostService.api.post<ApiResult<RefreshTokenResponse>>(
+                '/v1/authorization/Refresh',
+                refreshTokenModel
+            );
+
+            this.setAccessToken(response.data.result.accessToken);
+            this.setRefreshToken(response.data.result.refreshToken);
+
+            return {
+                isSuccess: true
+            }
+        } catch (e) {
+            return {
+                isSuccess: false
+            }
         }
     }
 

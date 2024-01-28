@@ -1,33 +1,33 @@
-﻿.navbarItem{
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  padding: 6px 10px;
-  color: var(--text-color);
-  font-weight: 500;
-  font-size: 14px;
-  gap: 12px;
-  align-items: center;
-  border-radius: 10px;
-  transition: background-color .2s;
+.navbarItem{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 6px 10px;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 14px;
+    gap: 12px;
+    align-items: center;
+    border-radius: 10px;
+    transition: background-color .2s;
 }
 
 .icon_block{
-  width: 25px;
-  height: 25px;
-  position: relative;
+    width: 25px;
+    height: 25px;
+    position: relative;
 }
 
 .icon_block svg {
-  position: absolute;
-  transform: translate(-50%, 0%);
+    position: absolute;
+    transform: translate(-50%, 0%);
 }
 
 .navbarItem:not(.selected):hover{
-  background-color: rgba(164, 164, 164, 0.14);
+    background-color: rgb(164 164 164 / 14%);
 }
 
 .selected{
-  background-color: rgba(164, 164, 164, 0.32);
+    background-color: rgb(164 164 164 / 32%);
 }
 

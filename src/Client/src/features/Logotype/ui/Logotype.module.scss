@@ -1,13 +1,13 @@
-﻿.logotype{
-  font-family: var(--font-family-main);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: min-content;
-  padding: 5px;
+.logotype{
+    font-family: var(--font-family-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: min-content;
+    padding: 5px;
 }
 
 .logotype > h1 {
-  letter-spacing: 1px;
-  color: var(--logo-text-color);
+    letter-spacing: 1px;
+    color: var(--logo-text-color);
 }

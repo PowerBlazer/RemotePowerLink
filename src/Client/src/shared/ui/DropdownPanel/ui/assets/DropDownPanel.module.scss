@@ -12,24 +12,24 @@
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(9px);
-    box-shadow: 0px 0px 1px 1px rgba(113, 112, 112, 0.233);
-    
+    box-shadow: 0 0 1px 1px rgb(113 112 112 / 23.3%);
     padding: 6px;
     z-index: 60;
 }
 
 .clear{
-    background-color:rgba(255, 255, 255, 0.803);
+    background-color:rgb(255 255 255 / 80.3%);
 }
 
 .dark{
-    background-color:rgba(33, 33, 33, 0.803);
+    background-color:rgb(33 33 33 / 80.3%);
 }
 
 .close{
     visibility: hidden;
     opacity: 0;
 }
+
 .open{
     opacity: 1;
     visibility: visible;

@@ -1,7 +1,7 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './NavbarItem.module.scss';
 import { Button } from 'shared/ui/Button/Button';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 interface NavbarItemProps {
     className?: string;
@@ -12,21 +12,21 @@ interface NavbarItemProps {
 }
 
 export function NavbarItem ({
-    className, 
-    icon, 
-    label, 
+    className,
+    icon,
+    label,
     isSelected = false,
     navigate
 }: NavbarItemProps) {
     const location1 = useNavigate();
-    
+
     return (
-        <Button 
+        <Button
             className={classNames(style.navbarItem, {
                 [style.selected]: isSelected
             }, [className])}
-            onClick={()=>{
-                if(navigate){
+            onClick={() => {
+                if (navigate) {
                     location1(navigate);
                 }
             }}

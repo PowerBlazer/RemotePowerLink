@@ -1,87 +1,86 @@
-﻿.login_page{
-  background-color: var(--bg-color-inverted);
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  justify-content: start;
-  align-items: center;  
-  padding-top: 100px;
+.login_page{
+    background-color: var(--bg-color-inverted);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: start;
+    align-items: center;  
+    padding-top: 100px;
 }
 
 .login_page a{
-  color: #2091f6;
-  text-decoration: underline;
+    color: #2091f6;
+    text-decoration: underline;
 }
 
 .login_page a:hover{
-  color: #73b9f8;
+    color: #73b9f8;
 }
 
 .login_page input{
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 1px solid #d0d0d0;
-  font-size: 16px;
-  min-height: 36px;
-  font-family: var(--font-family-main);
-  font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #d0d0d0;
+    font-size: 16px;
+    min-height: 36px;
+    font-family: var(--font-family-main);
+    font-weight: 500;
 }
 
 .login_page input::placeholder{
-  font-size: 16px;
-  font-weight: 600;
-  color: rgba(168, 168, 168, 0.62);
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(168 168 168 / 62%);
 }
 
 .login_page input:focus{
-  border: 1px solid #2091F6;
-  border-radius: 5px;
+    border: 1px solid #2091F6;
+    border-radius: 5px;
 }
 
 .login_form{
-  background-color: var(--bg-color);
-  padding: 30px;
-  min-width: 530px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 10px 25px;
-  border-radius: 20px;
+    background-color: var(--bg-color);
+    padding: 30px;
+    min-width: 530px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: rgb(0 0 0 / 5%) 0 10px 25px;
+    border-radius: 20px;
   
 }
 
 .form_inner{
-  display: flex;
-  flex-direction: column;
-  gap:15px;
+    display: flex;
+    flex-direction: column;
+    gap:15px;
 }
 
 .header{
-  font-size: 22px;
-  font-weight: 900;
-  font-family: var(--font-family-main);
-  margin: 5px 0;
+    font-size: 22px;
+    font-weight: 900;
+    font-family: var(--font-family-main);
+    margin: 5px 0;
 }
 
 .signup{
-  color: #798C94;
+    color: #798C94;
 }
 
 .recover_password{
-  text-align: center;
+    text-align: center;
 }
 
 .email_input{
-  &.error{
-    border-color:#F25E61;
-  }
+    &.error{
+        border-color:#F25E61;
+    }
 }
 
 .password_input{
-  &.error{
-    border-color:#F25E61;
-  }
+    &.error{
+        border-color:#F25E61;
+    }
 }

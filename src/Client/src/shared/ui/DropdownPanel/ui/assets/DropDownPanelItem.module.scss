@@ -8,11 +8,11 @@
 }   
 
 .clear:hover{
-    background-color: rgba(58, 58, 58, 0.121);
+    background-color: rgb(58 58 58 / 12.1%);
 }
 
 .dark:hover{
-    background-color: rgba(255, 255, 255, 0.121);
+    background-color: rgb(255 255 255 / 12.1%);
 }
 
 .dropDownPanel_item_inner{
@@ -24,6 +24,6 @@
 .text{
     color: white;
     font-weight: 700;
-    font-family: 'Inter',sans-serif;
+    font-family: Inter,sans-serif;
     font-size: 15px; 
 }

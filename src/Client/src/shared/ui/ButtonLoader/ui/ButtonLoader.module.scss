@@ -1,23 +1,23 @@
-﻿.buttonLoader{
-  background-color: #2091f6;
-  padding: 0px 20px;
-  height: 40px;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  transition: background-color .3s;
-  cursor: pointer;
-  margin: 10px 0 0 0;
-  position: relative;
+.buttonLoader{
+    background-color: #2091f6;
+    padding: 0 20px;
+    height: 40px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: background-color .3s;
+    cursor: pointer;
+    margin: 10px 0 0;
+    position: relative;
 }
 
 .buttonLoader:hover {
-  background-color: #1eb0f4;
+    background-color: #1eb0f4;
 }
 
 .loader{
-  width: 20px;
-  height: 20px;
-  border-width: 2px;
-  border-color: white transparent;
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+    border-color: white transparent;
 }

@@ -1,8 +1,10 @@
 ﻿using Application.Layers.Persistence.Contexts;
+using Application.Layers.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
+using Persistence.Repository;
 
 namespace Persistence;
 
@@ -24,6 +26,8 @@ public static class DependencyInjection
             
             options.UseSnakeCaseNamingConvention();
         });
+
+        services.AddScoped<IUserRepository, UserRepository>();
         
         return services;
     }

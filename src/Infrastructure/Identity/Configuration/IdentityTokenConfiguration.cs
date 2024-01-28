@@ -10,8 +10,8 @@ public class IdentityTokenConfiguration: IEntityTypeConfiguration<IdentityToken>
     {
         builder.HasIndex(p => p.Token).IsUnique();
         builder.Property(p => p.Token).IsRequired();
-        
-        builder.HasIndex(p => p.IpAddress).IsUnique();
+
+        builder.HasIndex(p => p.IpAddress);
         builder.Property(p => p.IpAddress).IsRequired();
 
         builder

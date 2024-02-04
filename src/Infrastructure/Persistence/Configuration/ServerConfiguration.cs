@@ -8,9 +8,9 @@ public class ServerConfiguration: IEntityTypeConfiguration<Server>
 {
     public void Configure(EntityTypeBuilder<Server> builder)
     {
-        builder.HasIndex(p => new { p.Name, p.UserId });
+        builder.HasIndex(p => new { p.Title, p.UserId });
 
-        builder.Property(p => p.Name).HasMaxLength(255).IsRequired();
+        builder.Property(p => p.Title).HasMaxLength(255).IsRequired();
         builder.Property(p => p.Id).HasMaxLength(50).IsRequired();
     }
 }

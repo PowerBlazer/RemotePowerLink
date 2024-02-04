@@ -4,7 +4,7 @@ namespace Domain.Entities;
 
 public class Server: BaseEntity<long>
 {
-    public required string Name { get; set; }
+    public required string Title { get; set; }
     public required string Ip { get; set; }
     public int? Port { get; set; }
     public string? StartupCommand { get; set; }

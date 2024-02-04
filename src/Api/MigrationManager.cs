@@ -10,7 +10,7 @@ public static class MigrationManager
     {
         using var scope = host.Services.CreateScope();
 
-        for (var i = 1; i <= 10; i++)
+        for (var i = 1; i <= 5; i++)
         {
             try
             {
@@ -22,12 +22,13 @@ public static class MigrationManager
             }
             catch   
             {
-                if (i == 10)
+                if (i == 5)
                 {
                     throw;
                 }
 
-                var delay = TimeSpan.FromSeconds(i);
+                var delay = TimeSpan.FromSeconds(Enumerable.Range(1, i).Aggregate(1, (f, g) => f * g));
+                
                 Task.Delay(delay).Wait();
             }
         }

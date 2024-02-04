@@ -39,7 +39,7 @@
     font-size: 11px;
     background-color: #32364A;
     color: #5A5E73;
-    font-weight: 600;
+    font-weight: 700;
     padding: 6px 7px;
     border-radius: 4px;
     transition: background-color .2s;
@@ -65,11 +65,12 @@
     gap: 10px;
 }
 
-.newhost_button{
+
+.tool_button{
     color: var(--text-color);
     text-transform: uppercase;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     background-color: #3E4257;
     padding: 4px 10px;
     border-radius: 5px;
@@ -78,15 +79,23 @@
     align-items: center;
 }
 
-.newhost_button:hover{
+.tool_button:hover{
     background-color: #838696;
 }
 
-.newhost_button svg{
-    transform: translateY(-0.5px);
-}
+
 
 .newhost_button path{
     fill: var(--setting-button-color);
     stroke: var(--setting-button-color);
 }
+
+.newproxy_button path{
+    fill: var(--setting-button-color);
+    stroke: var(--setting-button-color);
+}
+
+.newidentity_button path{
+    stroke: var(--setting-button-color);
+}
+

@@ -13,5 +13,7 @@
     "Сниппеты": "Snippets",
     "Поиск серверов или ssh root@hostname...": "Find a host or ssh user@hostname...",
     "Подключиться": "Connect",
-    "Новый сервер": "New Host"
+    "Новый сервер": "New Host",
+    "Новый прокси": "New Proxy",
+    "Новый иденитификатор": "New Identity"
 }

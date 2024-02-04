@@ -1,16 +1,25 @@
-import { ThemeSwitcher } from 'features/ThemeSwitcher';
+
 import { useTranslation } from 'react-i18next';
-import { LangSwitcher } from 'features/LangSwitcher';
+
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './MainPage.module.scss';
 import { NavbarHosts } from 'widgets/NavbarHosts';
+import {observer} from "mobx-react-lite";
+import sidebarStore from "app/store/sidebarStore";
 
-export default function MainPage () {
+function MainPage () {
     const { t } = useTranslation();
+
+   
 
     return (
         <div className={classNames(style.main_page)}>
-            <NavbarHosts/>
+            <div className={classNames(style.content)}>
+                <NavbarHosts/>
+            </div>
+            {sidebarStore.mainSideBar && sidebarStore.mainSideBar.sidebar}
         </div>
     );
 }
+
+export default observer(MainPage);

@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosInstance } from 'axios';
 import { createBrowserHistory } from 'history';
 import { AuthorizationService } from 'services/AuthorizationService/authorizationService';
 import toast from "react-hot-toast";
+import {Exception} from "sass";
 
 
 const allowAnonymousEndpoints: string[] = [
@@ -25,6 +26,18 @@ export class HostService {
     static _apiHost: string = process.env.API_HOST;
 
     private static _api: AxiosInstance = null;
+    private static _apiWithoutInterceptors : AxiosInstance = null;
+    
+    static get apiWithoutInterceptors (): AxiosInstance {
+        if(!this._apiWithoutInterceptors){
+            this._apiWithoutInterceptors = axios.create({
+                withCredentials: true,
+                baseURL: this._apiHost + '/api/'
+            })
+        }
+        
+        return this._apiWithoutInterceptors;
+    }
 
     static get api (): AxiosInstance {
         if (!this._api) {
@@ -59,13 +72,19 @@ export class HostService {
                     }
 
                     if (error.response?.status === 401) {
-                        const refreshTokenResult = await AuthorizationService.refreshToken();
-
-                        if (refreshTokenResult.isSuccess) {
-                            error.config.headers.Authorization = `Bearer ${AuthorizationService.getAccessToken()}`;
-                            return await axios.request(error.config);
-                        } else {
-                            location.pathname = '/login';
+                        try {
+                            const refreshTokenResult = await AuthorizationService.refreshToken();
+                           
+                            if (refreshTokenResult.isSuccess) {
+                                error.config.headers.Authorization = `Bearer ${AuthorizationService.getAccessToken()}`;
+                                return await axios.request(error.config);
+                            } else {
+                                location.pathname = '/login';
+                                return ;
+                            }
+                        }
+                        catch (e){
+                            throw e;
                         }
                     }
 

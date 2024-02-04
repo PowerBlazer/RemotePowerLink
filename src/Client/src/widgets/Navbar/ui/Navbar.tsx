@@ -12,6 +12,8 @@ import FolderIcon from 'shared/assets/icons/navbar/folder.svg';
 import PersonalIcon from 'shared/assets/icons/navbar/personal.svg';
 import userStore from 'app/store/userStore';
 import style from './Navbar.module.scss';
+import {ThemeSwitcher} from "features/ThemeSwitcher";
+import {LangSwitcher} from "features/LangSwitcher";
 interface NavbarProps {
     className?: string
 }
@@ -46,7 +48,7 @@ function Navbar ({ className }: NavbarProps) {
                     navigate={'/'}
                 />
                 <NavbarItem
-                    icon={<FolderIcon width={'18px'} height={'18px'}/>}
+                    icon={<FolderIcon width={'22px'} height={'22px'}/>}
                     label={t('SFTP')}
                     className={classNames(style.sftp)}
                 />

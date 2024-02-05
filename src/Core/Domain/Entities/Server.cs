@@ -21,6 +21,10 @@ public class Server: BaseEntity<long>
     //Proxy
     public long? ProxyId { get; set; }
     public Proxy? Proxy { get; set; }
+    
+    //ServerType
+    public long? ServerTypeId { get; set; }
+    public ServerType? ServerType { get; set; }
 
     #endregion
 }

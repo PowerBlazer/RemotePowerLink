@@ -9,19 +9,20 @@ import sidebarStore from 'app/store/sidebarStore';
 import { SidebarNewHost } from 'widgets/SidebarNewHost';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
+import {observer} from "mobx-react-lite";
 
 interface NavbarHostsProps {
     className?: string;
 }
 
-export function NavbarHosts ({ className }: NavbarHostsProps) {
+function NavbarHosts ({ className }: NavbarHostsProps) {
     const { t } = useTranslation('translation');
 
     const createNewHostHandler = async () => {
         await sidebarStore.setSidebar({
             name: 'SidebarNewHost',
             sidebar: <SidebarNewHost isMain={true}/>
-        })
+        });
     }
 
     const createNewProxy = async () => {
@@ -78,3 +79,5 @@ export function NavbarHosts ({ className }: NavbarHostsProps) {
         </div>
     );
 }
+
+export default observer(NavbarHosts);

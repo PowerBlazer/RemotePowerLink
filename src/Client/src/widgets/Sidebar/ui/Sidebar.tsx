@@ -41,12 +41,11 @@ function Sidebar ({
             await sidebarStore.setSidebar(null);
         }
     }
-
     return (
         <div className={classNames(style.sidebar, {
-            [style.close_main]: !sidebarStore.isVisible && isMain,
             [style.active]: (sidebarStore.newProxyData?.isVisible || sidebarStore.newHostData?.isVisible),
-            [style.main]: isMain
+            [style.main]: isMain,
+            [style.main_active]: sidebarStore.isVisible && isMain,
         }, [className])}>
             {headerName && (
                 <div className={classNames(style.header)}>
@@ -59,7 +58,9 @@ function Sidebar ({
                     </div>
                 </div>
             )}
-            {children}
+            <div className={classNames(style.content)}>
+                {children}
+            </div>
         </div>
     );
 }

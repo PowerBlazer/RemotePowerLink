@@ -1,1 +1,21 @@
-﻿
+﻿.address_block{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.icon_server{
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#004878 ;
+  border-radius: 5px;
+}
+
+.icon_server path{
+  fill: var(--setting-button-color);
+}

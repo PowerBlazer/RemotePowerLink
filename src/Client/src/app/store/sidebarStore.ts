@@ -46,20 +46,36 @@ class SidebarStore {
 
     async setVisible (value: boolean) {
         this.isVisible = value;
-        // eslint-disable-next-line no-undef
-        await delay(300);
+        await delay(200);
     }
 
     async setSidebar (sideBar?: SidebarState) {
-        if ((sideBar == null || this.mainSideBar == null) || sideBar?.name !== this.mainSideBar?.name) {
-            this.isVisible = true;
+        if(this.mainSideBar == null && sideBar !== null){
+            this.isVisible = false;
+            this.mainSideBar = sideBar;
+            
+            setTimeout(()=>{
+                this.isVisible = true;
+            },0);
+            
+            return;
+        }
+        
+        if((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name !== sideBar.name){
             this.mainSideBar = sideBar;
             return;
         }
-
-        if (sideBar?.name === this.mainSideBar?.name) {
+        
+        if((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name === sideBar.name){
             await this.setVisible(false);
             this.mainSideBar = null;
+            return;
+        }
+        
+        if(sideBar === null){
+            this.isVisible = false
+            this.mainSideBar = null;
+            return;
         }
     }
 }

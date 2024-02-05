@@ -17,11 +17,13 @@ public class IdentityConfiguration: IEntityTypeConfiguration<Identity>
         builder.HasMany(p => p.Proxies)
             .WithOne(p => p.Identity)
             .HasForeignKey(p => p.IdentityId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
         
         builder.HasMany(p => p.Servers)
             .WithOne(p => p.Identity)
             .HasForeignKey(p => p.IdentityId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }
 }

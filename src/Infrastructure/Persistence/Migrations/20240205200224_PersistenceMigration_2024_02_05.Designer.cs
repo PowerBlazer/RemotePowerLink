@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Context;
@@ -11,9 +12,11 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(PersistenceContext))]
-    partial class PersistenceContextModelSnapshot : ModelSnapshot
+    [Migration("20240205200224_PersistenceMigration_2024_02_05")]
+    partial class PersistenceMigration_2024_02_05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,56 +197,6 @@ namespace Persistence.Migrations
                         .HasName("pk_server_types");
 
                     b.ToTable("server_types", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Windows",
-                            Photo = "/ServerTypes/windows.svg"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "ArchLinux",
-                            Photo = "/ServerTypes/arch-linux.svg"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "OpenSuse",
-                            Photo = "/ServerTypes/opensuse.svg"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "Fedora",
-                            Photo = "/ServerTypes/fedora.svg"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Name = "CentOS",
-                            Photo = "/ServerTypes/centos.svg"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Name = "Debian",
-                            Photo = "/ServerTypes/debian.svg"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Name = "MacOS",
-                            Photo = "/ServerTypes/macos.svg"
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Name = "Ubuntu",
-                            Photo = "/ServerTypes/ubuntu.svg"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

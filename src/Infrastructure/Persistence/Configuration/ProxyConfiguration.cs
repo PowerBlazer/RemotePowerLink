@@ -16,6 +16,7 @@ public class ProxyConfiguration: IEntityTypeConfiguration<Proxy>
 
         builder.HasMany(p => p.Servers)
             .WithOne(p => p.Proxy)
+            .OnDelete(DeleteBehavior.Cascade)
             .HasForeignKey(p => p.ProxyId);
     }
 }

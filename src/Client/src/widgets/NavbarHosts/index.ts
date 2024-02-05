@@ -1,1 +1,1 @@
-export { NavbarHosts } from './ui/NavbarHosts';
+export { default as NavbarHosts } from './ui/NavbarHosts';

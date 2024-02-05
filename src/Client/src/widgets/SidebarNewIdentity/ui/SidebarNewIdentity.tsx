@@ -14,7 +14,7 @@ function SidebarNewIdentity ({ className, isMain = true }: SidebarNewIdentityPro
             isMain={isMain}
             headerName={'Новый иденитификатор'}
         >
-
+            asdas
         </Sidebar>
     );
 }

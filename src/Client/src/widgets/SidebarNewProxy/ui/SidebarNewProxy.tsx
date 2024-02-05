@@ -14,7 +14,7 @@ function SidebarNewProxy ({ className, isMain = true }: SidebarNewProxyProps) {
             isMain={isMain}
             headerName={'Новый прокси'}
         >
-
+            dfdsf
         </Sidebar>
     );
 }

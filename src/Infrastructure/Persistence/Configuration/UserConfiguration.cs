@@ -17,16 +17,19 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
         builder.HasMany(p => p.Proxies)
             .WithOne(p => p.User)
             .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasMany(p => p.Identities)
             .WithOne(p => p.User)
             .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder.HasMany(p => p.Servers)
             .WithOne(p => p.User)
             .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         #region HasData

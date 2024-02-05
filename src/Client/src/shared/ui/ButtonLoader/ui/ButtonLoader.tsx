@@ -1,6 +1,6 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { Button } from 'shared/ui/Button/Button';
-import React, { ButtonHTMLAttributes, useCallback, useState } from 'react';
+import { ButtonHTMLAttributes, useCallback, useState } from 'react';
 import { Loader } from 'shared/ui/Loader/Loader';
 import style from './ButtonLoader.module.scss';
 

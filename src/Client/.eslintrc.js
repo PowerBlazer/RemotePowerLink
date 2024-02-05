@@ -59,9 +59,15 @@ module.exports = {
         '@typescript-eslint/prefer-nullish-coalescing': 'off',
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
+        '@typescript-eslint/no-extraneous-class': 'off',
         '@typescript-eslint/indent': [2, 4],
         'i18next/no-literal-string': ['error', { markupOnly: true }],
-        'n/handle-callback-err': 'off'
+        'n/handle-callback-err': 'off',
+        '@typescript-eslint/no-misused-promises': [
+            'error', {
+                checksVoidReturn: false
+            }
+        ]
     },
     globals: {
         __IS_DEV__: true

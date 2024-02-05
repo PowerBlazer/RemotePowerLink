@@ -1,5 +1,5 @@
 import { UserDataResult } from 'services/UserService/config/userConfig';
-import {ApiResult, HostService, ServiceResult} from 'services/hostService';
+import { ApiResult, HostService, ServiceResult } from 'services/hostService';
 
 export class UserService {
     static getUserData = async (): Promise<ServiceResult<UserDataResult>> => {
@@ -9,14 +9,12 @@ export class UserService {
 
             return {
                 isSuccess: true,
-                result:response.data.result
+                result: response.data.result
             };
-        }
-        catch (e){
+        } catch (e) {
             return {
-                isSuccess:false
+                isSuccess: false
             }
         }
-       
     }
 }

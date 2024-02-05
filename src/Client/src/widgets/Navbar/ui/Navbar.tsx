@@ -12,8 +12,7 @@ import FolderIcon from 'shared/assets/icons/navbar/folder.svg';
 import PersonalIcon from 'shared/assets/icons/navbar/personal.svg';
 import userStore from 'app/store/userStore';
 import style from './Navbar.module.scss';
-import {ThemeSwitcher} from "features/ThemeSwitcher";
-import {LangSwitcher} from "features/LangSwitcher";
+
 interface NavbarProps {
     className?: string
 }
@@ -23,7 +22,7 @@ function Navbar ({ className }: NavbarProps) {
 
     useEffect(() => {
         UserService.getUserData().then((userDataResult) => {
-            if(userDataResult.isSuccess){
+            if (userDataResult.isSuccess) {
                 userStore.setUserData({
                     id: userDataResult.result.userId,
                     username: userDataResult.result.userName
@@ -44,7 +43,7 @@ function Navbar ({ className }: NavbarProps) {
                     icon={<ServerIcon width={'22px'} height={'22px'}/>}
                     label={t('Сервера')}
                     className={classNames(style.server)}
-                    isSelected={getAppRouteFromPath(location.pathname) == AppRoutes.MAIN}
+                    isSelected={getAppRouteFromPath(location.pathname) === AppRoutes.MAIN}
                     navigate={'/'}
                 />
                 <NavbarItem

@@ -1,1 +1,1 @@
-﻿export { default as SidebarNewProxy } from "./ui/SidebarNewProxy";
+export { default as SidebarNewProxy } from './ui/SidebarNewProxy';

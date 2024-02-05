@@ -5,10 +5,10 @@ import { Button } from 'shared/ui/Button/Button';
 import ServerIcon from 'shared/assets/icons/navbar/server.svg';
 import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
 import Card from 'shared/assets/icons/navbar/card.svg';
-import sidebarStore from "app/store/sidebarStore";
-import {SidebarNewHost} from "widgets/SidebarNewHost";
-import {SidebarNewProxy} from "widgets/SidebarNewProxy";
-import SidebarNewIdentity from "widgets/SidebarNewIdentity/ui/SidebarNewIdentity";
+import sidebarStore from 'app/store/sidebarStore';
+import { SidebarNewHost } from 'widgets/SidebarNewHost';
+import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
+import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
 
 interface NavbarHostsProps {
     className?: string;
@@ -16,24 +16,24 @@ interface NavbarHostsProps {
 
 export function NavbarHosts ({ className }: NavbarHostsProps) {
     const { t } = useTranslation('translation');
-    
+
     const createNewHostHandler = async () => {
         await sidebarStore.setSidebar({
-            name: "SidebarNewHost",
-            sidebar:  <SidebarNewHost isMain={true}/>
+            name: 'SidebarNewHost',
+            sidebar: <SidebarNewHost isMain={true}/>
         })
     }
-    
+
     const createNewProxy = async () => {
         await sidebarStore.setSidebar({
-            name: "SidebarNewProxy",
+            name: 'SidebarNewProxy',
             sidebar: <SidebarNewProxy isMain={true}/>
         })
     }
-    
+
     const createNewIdentity = async () => {
         await sidebarStore.setSidebar({
-            name: "SidebarNewIdentity",
+            name: 'SidebarNewIdentity',
             sidebar: <SidebarNewIdentity isMain={true}/>
         })
     }
@@ -47,24 +47,24 @@ export function NavbarHosts ({ className }: NavbarHostsProps) {
 
             <div className={classNames(style.control_panel)}>
                 <div className={classNames(style.tools_panel)}>
-                    <Button 
-                        className={classNames(style.newhost_button,{},[style.tool_button])} 
+                    <Button
+                        className={classNames(style.newhost_button, {}, [style.tool_button])}
                         onClick={createNewHostHandler}
                     >
                         <ServerIcon width={'15px'} height={'15px'}/>
                         {t('Новый сервер')}
                     </Button>
 
-                    <Button 
-                        className={classNames(style.newproxy_button,{},[style.tool_button])} 
+                    <Button
+                        className={classNames(style.newproxy_button, {}, [style.tool_button])}
                         onClick={createNewProxy}
                     >
                         <DoubleArrow width={'15px'} height={'15px'}/>
                         {t('Новый прокси')}
                     </Button>
 
-                    <Button 
-                        className={classNames(style.newidentity_button,{},[style.tool_button])} 
+                    <Button
+                        className={classNames(style.newidentity_button, {}, [style.tool_button])}
                         onClick={createNewIdentity}
                     >
                         <Card width={'15px'} height={'15px'}/>

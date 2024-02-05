@@ -1,1 +1,1 @@
-﻿export { default as Sidebar, SidebarOptions } from './ui/Sidebar';
+export { default as Sidebar, type SidebarOptions } from './ui/Sidebar';

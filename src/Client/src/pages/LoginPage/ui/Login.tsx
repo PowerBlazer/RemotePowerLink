@@ -41,7 +41,7 @@ export default function LoginPage () {
                     <input
                         type="email"
                         className={classNames(style.email_input, {
-                            [style.error]: errors && errors.Email !== undefined
+                            [style.error]: errors?.Email !== undefined
                         })}
                         placeholder={t('Почта')}
                         onChange={(e) => {
@@ -49,11 +49,11 @@ export default function LoginPage () {
                             setErrors({});
                         }}
                     />
-                    {errors && errors.Email && <ErrorLabel errors={errors.Email}/>}
+                    {errors?.Email && <ErrorLabel errors={errors.Email}/>}
                     <input
                         type="password"
                         className={classNames(style.password_input, {
-                            [style.error]: errors && errors.Password !== undefined
+                            [style.error]: errors?.Password !== undefined
                         })}
                         placeholder={t('Пароль')}
                         onChange={(e) => {
@@ -61,7 +61,7 @@ export default function LoginPage () {
                             setErrors({});
                         }}
                     />
-                    {errors && errors.Password && <ErrorLabel errors={errors.Password}/>}
+                    {errors?.Password && <ErrorLabel errors={errors.Password}/>}
                     <ButtonLoader
                         type="button"
                         className={classNames(style.continue)}

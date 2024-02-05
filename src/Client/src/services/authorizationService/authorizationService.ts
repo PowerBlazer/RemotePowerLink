@@ -8,7 +8,7 @@ import {
     SendEmailVerificationModel,
     SendEmailVerificationResponse
 } from 'services/authorizationService/configs/signupConfig';
-import axios from "axios";
+import axios from 'axios';
 
 interface AuthorizationResult {
     isSuccess: boolean,
@@ -125,7 +125,7 @@ class AuthorizationService {
 
         try {
             const response = await HostService.apiWithoutInterceptors.post<ApiResult<RefreshTokenResponse>>(
-                `v1/authorization/Refresh`,
+                'v1/authorization/Refresh',
                 refreshTokenModel
             );
 
@@ -136,7 +136,7 @@ class AuthorizationService {
                 isSuccess: true
             }
         } catch (e) {
-            console.log("error")
+            console.log('error')
             return {
                 isSuccess: false
             }

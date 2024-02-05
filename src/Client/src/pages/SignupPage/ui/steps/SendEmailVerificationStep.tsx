@@ -41,7 +41,7 @@ export function SendEmailVerificationStep () {
                 <input
                     type="email"
                     className={classNames(style.email_input, {
-                        [style.error]: errors && errors.Email !== undefined
+                        [style.error]: errors?.Email !== undefined
                     })}
                     placeholder={t('Почта')}
 
@@ -50,7 +50,7 @@ export function SendEmailVerificationStep () {
                         setErrors({});
                     }}
                 />
-                {errors && errors.Email && <ErrorLabel errors={ errors.Email }/>}
+                {errors?.Email && <ErrorLabel errors={ errors.Email }/>}
 
                 <ButtonLoader
                     type="button"

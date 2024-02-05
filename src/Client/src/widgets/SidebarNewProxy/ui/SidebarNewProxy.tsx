@@ -1,20 +1,20 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SidebarNewProxy.module.scss';
-import {observer} from "mobx-react-lite";
-import {Sidebar, SidebarOptions} from "widgets/Sidebar";
+import { observer } from 'mobx-react-lite';
+import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
 
-interface SidebarNewProxyProps extends SidebarOptions{
+interface SidebarNewProxyProps extends SidebarOptions {
     className?: string;
 }
 
 function SidebarNewProxy ({ className, isMain = true }: SidebarNewProxyProps) {
     return (
-        <Sidebar 
-            className={classNames(style.sidebarNewProxy,{},[className])} 
+        <Sidebar
+            className={classNames(style.sidebarNewProxy, {}, [className])}
             isMain={isMain}
-            headerName={"Новый прокси"}
+            headerName={'Новый прокси'}
         >
-            
+
         </Sidebar>
     );
 }

@@ -73,8 +73,8 @@ export function ConfirmEmailStep () {
             <input
                 type="text"
                 className={classNames(style.code_vericifaction, {
-                    [style.error]: errors && errors.VerificationCode !== undefined,
-                    [style.error]: errors && errors.Session !== undefined
+                    [style.error]: errors?.VerificationCode !== undefined,
+                    [style.error]: errors?.Session !== undefined
                 })}
                 placeholder={t('Код верификации')}
                 onChange={(e) => {
@@ -82,8 +82,8 @@ export function ConfirmEmailStep () {
                     setErrors({});
                 }}
             />
-            {errors && errors.VerificationCode && <ErrorLabel errors={ errors.VerificationCode }/>}
-            {errors && errors.Session && <ErrorLabel errors={ errors.Session }/>}
+            {errors?.VerificationCode && <ErrorLabel errors={ errors.VerificationCode }/>}
+            {errors?.Session && <ErrorLabel errors={ errors.Session }/>}
 
             <ButtonLoader
                 type="button"
@@ -97,6 +97,7 @@ export function ConfirmEmailStep () {
                 className={classNames(style.timer, {
                     [style.time_disabled]: !isResend
                 }, [])}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onClick={resendEmailVerification}
             >
                 {isResend ? 'Повтороно отправить на почту' : `Повтороно отправить на почту через ${timerText}`}

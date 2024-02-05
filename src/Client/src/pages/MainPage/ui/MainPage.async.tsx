@@ -5,5 +5,5 @@ import { lazy } from 'react';
 //     // @ts-expect-error
 //     setTimeout(() => { resolve(import('./MainPage')); }, 0)
 // }));
-export const MainPageAsync = lazy(() => import('./MainPage')
+export const MainPageAsync = lazy(async () => await import('./MainPage')
     .then(module => ({ default: module.default })));

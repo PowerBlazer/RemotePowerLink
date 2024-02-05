@@ -54,16 +54,16 @@ export function RegistrationStep () {
                 <input
                     type="text"
                     className={classNames(style.userName_input, {
-                        [style.error]: errors && errors.UserName !== undefined
+                        [style.error]: errors?.UserName !== undefined
                     })}
                     placeholder={t('Имя пользователя')}
                     onChange={(e) => { handleInputChange('userName', e); } }
                 />
-                {errors && errors.UserName && <ErrorLabel errors={ errors.UserName }/>}
+                {errors?.UserName && <ErrorLabel errors={ errors.UserName }/>}
                 <input
                     type="password"
                     className={classNames(style.password_input, {
-                        [style.error]: errors && errors.Password !== undefined
+                        [style.error]: errors?.Password !== undefined
                     })}
                     placeholder={t('Пароль')}
                     onChange={(e) => { handleInputChange('password', e); } }
@@ -71,13 +71,13 @@ export function RegistrationStep () {
                 <input
                     type="password"
                     className={classNames(style.password_confirm_input, {
-                        [style.error]: errors && errors.Password !== undefined
+                        [style.error]: errors?.Password !== undefined
                     })}
                     placeholder={t('Повторный пароль')}
                     onChange={(e) => { handleInputChange('passwordConfirm', e); } }
                 />
-                {errors && errors.Password && <ErrorLabel errors={ errors.Password }/>}
-                {errors && errors.SessionId && <ErrorLabel errors={ errors.SessionId }/>}
+                {errors?.Password && <ErrorLabel errors={ errors.Password }/>}
+                {errors?.SessionId && <ErrorLabel errors={ errors.SessionId }/>}
                 <div className={classNames(style.info_block)}>
                     <InfoIcon/>
                     <p>{t('Пароль используется для шифрования ваших данных перед тем, как покинуть устройства. Если вы забудете его, вы можете потерять свои данные.')}</p>

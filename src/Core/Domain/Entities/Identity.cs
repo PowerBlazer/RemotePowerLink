@@ -11,7 +11,7 @@ public class Identity: BaseEntity<long>
     #region Relationships
 
     public required long UserId { get; set; }
-    public required User User { get; set; }
+    public User? User { get; set; }
 
     public IList<Proxy>? Proxies { get; set; }
     public IList<Server>? Servers { get; set; }

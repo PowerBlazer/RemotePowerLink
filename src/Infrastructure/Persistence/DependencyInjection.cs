@@ -26,8 +26,10 @@ public static class DependencyInjection
             
             options.UseSnakeCaseNamingConvention();
         });
-
+        
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IIdentityRepository, IdentityRepository>();
+        services.AddScoped<IProxyRepository, ProxyRepository>();
         
         return services;
     }

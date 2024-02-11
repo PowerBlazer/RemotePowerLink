@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Context;
@@ -11,9 +12,11 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(PersistenceContext))]
-    partial class PersistenceContextModelSnapshot : ModelSnapshot
+    [Migration("20240211232256_PersistenceMigration_2024_02_12T02_22")]
+    partial class PersistenceMigration_2024_02_12T02_22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,7 +71,7 @@ namespace Persistence.Migrations
                             Id = 1L,
                             Password = "123",
                             Title = "Test1",
-                            UserId = 2L,
+                            UserId = 1L,
                             Username = "root"
                         });
                 });
@@ -128,7 +131,7 @@ namespace Persistence.Migrations
                             Ip = "123",
                             Port = 0,
                             Title = "Test1",
-                            UserId = 2L
+                            UserId = 1L
                         });
                 });
 

@@ -9,6 +9,7 @@ public class ProxyConfiguration: IEntityTypeConfiguration<Proxy>
     public void Configure(EntityTypeBuilder<Proxy> builder)
     {
         builder.HasIndex(p => new { p.UserId, p.Title });
+        builder.HasIndex(p => p.UserId);
         
         builder.Property(p => p.Ip).HasMaxLength(50).IsRequired();
         builder.Property(p => p.Port).IsRequired();
@@ -18,5 +19,15 @@ public class ProxyConfiguration: IEntityTypeConfiguration<Proxy>
             .WithOne(p => p.Proxy)
             .OnDelete(DeleteBehavior.Cascade)
             .HasForeignKey(p => p.ProxyId);
+
+        builder.HasData(new Proxy
+        {
+            Id = 1,
+            UserId = 2,
+            IdentityId = 1,
+            Title = "Test1",
+            Ip = "123",
+            Port = 0
+        });
     }
 }

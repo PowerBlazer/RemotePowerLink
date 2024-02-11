@@ -16,10 +16,10 @@ namespace Api.Controllers.V1;
 [ApiVersion("1.0")]
 public class AuthorizationController: BaseController
 {
-    private readonly IMediator _mediator;
-    public AuthorizationController(IMediator mediator)
+   
+    public AuthorizationController(IMediator mediator): base(mediator)
     {
-        _mediator = mediator;
+       
     }
     
     /// <summary>
@@ -37,7 +37,7 @@ public class AuthorizationController: BaseController
     public async Task<ApiActionResult<SendEmailVerificationResponse>> SendEmailVerification(
         [FromBody]SendEmailVerificationCommand verificationCommand)
     {
-        var result = await _mediator.Send(verificationCommand);
+        var result = await Mediator.Send(verificationCommand);
         
         return new ApiActionResult<SendEmailVerificationResponse>
         {
@@ -62,7 +62,7 @@ public class AuthorizationController: BaseController
     public async Task ConfirmEmailWithVerificationCode(
         [FromBody] VerifyEmailCodeCommand verifyEmailCodeCommand)
     {
-        await _mediator.Send(verifyEmailCodeCommand);
+        await Mediator.Send(verifyEmailCodeCommand);
     }
     
     /// <summary>
@@ -79,7 +79,7 @@ public class AuthorizationController: BaseController
     public async Task<ApiActionResult<ResendEmailVerificationResponse>> ResendEmailVerification(
         [FromBody] ResendConfirmationCodeCommand resendConfirmationCodeCommand)
     {
-        var result = await _mediator.Send(resendConfirmationCodeCommand);
+        var result = await Mediator.Send(resendConfirmationCodeCommand);
         
         return new ApiActionResult<ResendEmailVerificationResponse>
         {
@@ -105,7 +105,7 @@ public class AuthorizationController: BaseController
         [FromBody] RegisterUserCommand registerUserCommand)
     {
         registerUserCommand.IpAddress = IpAddress;
-        var result = await _mediator.Send(registerUserCommand);
+        var result = await Mediator.Send(registerUserCommand);
 
         return new ApiActionResult<RegistrationResponse>
         {
@@ -129,7 +129,7 @@ public class AuthorizationController: BaseController
         LoginUserCommand loginUserCommand)
     {
         loginUserCommand.IpAddress = IpAddress;
-        var result = await _mediator.Send(loginUserCommand);
+        var result = await Mediator.Send(loginUserCommand);
 
         return new ApiActionResult<LoginResponse>
         {
@@ -151,7 +151,7 @@ public class AuthorizationController: BaseController
         RefreshTokenCommand refreshTokenCommand)
     {
         refreshTokenCommand.IpAddress = IpAddress;
-        var result = await _mediator.Send(refreshTokenCommand);
+        var result = await Mediator.Send(refreshTokenCommand);
 
         return new ApiActionResult<RefreshTokenResponse>
         {

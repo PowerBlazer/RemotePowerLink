@@ -13,11 +13,9 @@ namespace Api.Controllers.V1;
 [ApiVersion("1.0")]
 public class UserController: BaseController
 {
-    private readonly IMediator _mediator;
-
-    public UserController(IMediator mediator)
+    public UserController(IMediator mediator): base(mediator)
     {
-        _mediator = mediator;
+       
     }
     
     /// <summary>
@@ -32,7 +30,7 @@ public class UserController: BaseController
     [HttpGet]
     public async Task<ApiActionResult<UserDataResponse>> GetUserData()
     {
-        var result = await _mediator.Send(new GetUserDataCommand(UserId));
+        var result = await Mediator.Send(new GetUserDataCommand(UserId));
 
         return new ApiActionResult<UserDataResponse>()
         {

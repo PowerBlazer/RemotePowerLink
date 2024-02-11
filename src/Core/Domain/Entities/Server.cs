@@ -12,11 +12,11 @@ public class Server: BaseEntity<long>
     #region Relationships
     //Identity
     public required long IdentityId { get; set; }
-    public required Identity Identity { get; set; }
+    public Identity? Identity { get; set; }
     
     //User
     public required long UserId { get; set; }
-    public required User User { get; set; }
+    public User? User { get; set; }
     
     //Proxy
     public long? ProxyId { get; set; }

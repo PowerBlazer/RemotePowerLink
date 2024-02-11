@@ -9,6 +9,7 @@ public class IdentityConfiguration: IEntityTypeConfiguration<Identity>
     public void Configure(EntityTypeBuilder<Identity> builder)
     {
         builder.HasIndex(p => new { p.UserId, p.Title });
+        builder.HasIndex(p => p.UserId);
         
         builder.Property(p => p.Username).IsRequired();
         builder.Property(p => p.Password).IsRequired();
@@ -25,5 +26,14 @@ public class IdentityConfiguration: IEntityTypeConfiguration<Identity>
             .HasForeignKey(p => p.IdentityId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
+
+        builder.HasData(new Identity
+        {
+            Id = 1,
+            UserId = 2,
+            Username = "root",
+            Password = "123",
+            Title = "Test1"
+        });
     }
 }

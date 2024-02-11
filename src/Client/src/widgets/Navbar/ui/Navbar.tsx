@@ -53,7 +53,7 @@ function Navbar ({ className }: NavbarProps) {
                 />
                 <NavbarItem
                     icon={<h1>{'{}'}</h1>}
-                    label={t('Сниппеты')}
+                    label={t('Процедуры')}
                     className={classNames(style.snippets)}
                 />
             </div>

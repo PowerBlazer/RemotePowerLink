@@ -5,10 +5,15 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
 .header{
   font-weight: 600;
   color: var(--text-color);
+  font-size: 15px;
+}
+
+.content{
+  width: 100%;
 }

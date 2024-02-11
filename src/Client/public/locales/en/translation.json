@@ -10,10 +10,15 @@
     "Обновить страницу":"Reload Page",
     "Сервера": "Hosts",
     "SFTP": "SFTP",
-    "Сниппеты": "Snippets",
+    "Процедуры": "Scripts",
     "Поиск серверов или ssh root@hostname...": "Find a host or ssh user@hostname...",
     "Подключиться": "Connect",
     "Новый сервер": "New Host",
     "Новый прокси": "New Proxy",
-    "Новый иденитификатор": "New Identity"
+    "Новый иденитификатор": "New Identity",
+    "Адресс": "Address",
+    "IP или домен": "IP or Hostname",
+    "Название": "Title",
+    "Порт": "Port",
+    "Стартовая команда": "Startup Command"
 }

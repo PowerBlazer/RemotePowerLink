@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui/Button/Button';
 import ArrowRight from 'shared/assets/icons/arrow-right.svg';
 import sidebarStore from 'app/store/sidebarStore';
+import {Loader} from "shared/ui/Loader/Loader";
 
 export interface SidebarOptions {
     isMain?: boolean
@@ -17,6 +18,7 @@ interface SidebarProps extends SidebarOptions {
     close?: () => Promise<void>;
     headerName?: string;
     headerChildren?: ReactNode;
+    isLoad? : boolean
 }
 
 function Sidebar ({
@@ -25,7 +27,8 @@ function Sidebar ({
     children,
     headerName,
     headerChildren,
-    isMain
+    isMain,
+    isLoad
 }: SidebarProps) {
     const { t } = useTranslation('translation');
 
@@ -52,6 +55,7 @@ function Sidebar ({
                     <h1 className={classNames(style.header_name)}>{t(headerName)}</h1>
                     <div className={classNames(style.buttons_panel)}>
                         {headerChildren}
+                        {isLoad && <Loader className={classNames(style.loader)}/>}
                         <Button onClick={closeSidebarHandler} className={classNames(style.close_sidebar)}>
                             <ArrowRight width={20} height={20}></ArrowRight>
                         </Button>

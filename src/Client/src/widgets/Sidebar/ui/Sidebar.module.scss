@@ -74,7 +74,15 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  gap: 15px;
   padding: 20px 15px;
+}
+
+.loader{
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+  border-color: white transparent;
 }
 
 @keyframes animate_left_main {

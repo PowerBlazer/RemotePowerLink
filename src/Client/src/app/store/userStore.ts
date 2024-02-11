@@ -1,4 +1,6 @@
 import { makeAutoObservable } from 'mobx';
+import { configure } from "mobx"
+
 
 export interface UserData {
     id: number
@@ -13,6 +15,10 @@ class UserStore {
 
     constructor () {
         makeAutoObservable(this);
+
+        configure({
+            enforceActions: "never",
+        })
     }
 
     setUserData (userData: UserData) {

@@ -1,4 +1,4 @@
-export interface UserDataResult {
+export interface UserData {
     userId: number,
     userName: string
 }

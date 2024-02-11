@@ -3,19 +3,49 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
+  height: 35px;
 }
 
+.general_block{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .icon_server{
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color:#004878 ;
   border-radius: 5px;
+  flex-shrink: 0;
 }
 
 .icon_server path{
   fill: var(--setting-button-color);
 }
+
+.port_input svg{
+  fill: var(--input-color);
+}
+
+.port_input path{
+  stroke: var(--input-color);
+}
+
+.title_input path{
+  fill: var(--input-color);
+}
+
+
+.startup_command_input path{
+    stroke: var(--input-color);
+}
+
+
+
+

@@ -1,11 +1,11 @@
-import { UserDataResult } from 'services/UserService/config/userConfig';
+import { UserData } from 'services/UserService/config/userConfig';
 import { ApiResult, HostService, ServiceResult } from 'services/hostService';
 
 export class UserService {
-    static getUserData = async (): Promise<ServiceResult<UserDataResult>> => {
+    static getUserData = async (): Promise<ServiceResult<UserData>> => {
         try {
             const response =
-                await HostService.api.get<ApiResult<UserDataResult>>('/v1/user');
+                await HostService.api.get<ApiResult<UserData>>('/v1/user');
 
             return {
                 isSuccess: true,

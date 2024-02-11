@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { ReactNode } from 'react';
+import {ProxyData} from "services/ProxyService/config/proxyConfig";
+import {IdentityData} from "services/IdentityService/config/identityConfig";
 
 export interface SidebarOptions {
     isVisible: boolean;
@@ -16,7 +18,8 @@ export abstract class SidebarData implements SidebarOptions {
 }
 
 export class SidebarNewHostData extends SidebarData {
-
+    proxies?: ProxyData[] | null = null;
+    identities?: IdentityData[] | null = null;
 }
 
 export class SidebarNewProxyData extends SidebarData {
@@ -24,8 +27,8 @@ export class SidebarNewProxyData extends SidebarData {
 }
 
 class SidebarStore {
-    newHostData: SidebarNewHostData | null = null;
-    newProxyData: SidebarNewProxyData | null = null;
+    newHostData: SidebarNewHostData  = { isVisible: false };
+    newProxyData: SidebarNewProxyData = { isVisible: false };
 
     mainSideBar: SidebarState | null = null;
     isVisible: boolean = false;
@@ -36,10 +39,12 @@ class SidebarStore {
 
     setData (data: SidebarData) {
         if (data instanceof SidebarNewHostData) {
+            console.log(data)
             this.newHostData = data;
         }
 
         if (data instanceof SidebarNewProxyData) {
+            console.log(data)
             this.newProxyData = data;
         }
     }

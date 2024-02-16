@@ -9,7 +9,7 @@ import sidebarStore from 'app/store/sidebarStore';
 import {Loader} from "shared/ui/Loader/Loader";
 
 export interface SidebarOptions {
-    isMain?: boolean
+    isMain?: boolean,
 }
 
 interface SidebarProps extends SidebarOptions {
@@ -33,20 +33,18 @@ function Sidebar ({
     const { t } = useTranslation('translation');
 
     const closeSidebarHandler = async () => {
-        if (close) {
+        if (close && !isMain) {
             await close();
             return;
         }
-
-        await sidebarStore.setVisible(false);
-
+        
         if (isMain) {
+            await sidebarStore.setVisible(false);
             await sidebarStore.setSidebar(null);
         }
     }
     return (
         <div className={classNames(style.sidebar, {
-            [style.active]: (sidebarStore.newProxyData?.isVisible || sidebarStore.newHostData?.isVisible),
             [style.main]: isMain,
             [style.main_active]: sidebarStore.isVisible && isMain,
         }, [className])}>

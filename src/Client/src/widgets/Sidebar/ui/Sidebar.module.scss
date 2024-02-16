@@ -1,5 +1,5 @@
 ﻿.sidebar{
-  width: 0;
+  width: 350px;
   flex: 0 0 auto;
   height: 100vh;
   border-left: 2px solid var(--main-page-color-line);
@@ -15,6 +15,7 @@
   overflow-y: auto;
   
   &.main{
+    width: 0;
     position: relative;
     transform: none;
     transition: width .3s;

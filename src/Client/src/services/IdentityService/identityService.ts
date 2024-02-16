@@ -1,6 +1,5 @@
 ﻿import {ApiResult, HostService, ServiceResult} from "../hostService";
 import {IdentityData} from "./config/identityConfig";
-import {ProxyData} from "../ProxyService/config/proxyConfig";
 
 export class IdentityService {
     static getIdentities = async (): Promise<ServiceResult<IdentityData[]>> => {

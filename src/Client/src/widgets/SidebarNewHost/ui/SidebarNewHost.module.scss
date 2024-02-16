@@ -7,6 +7,10 @@
   height: 35px;
 }
 
+.active{
+  transform: translateX(0px);
+}
+
 .general_block{
   width: 100%;
   display: flex;

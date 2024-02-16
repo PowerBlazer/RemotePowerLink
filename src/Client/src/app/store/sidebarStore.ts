@@ -26,9 +26,14 @@ export class SidebarNewProxyData extends SidebarData {
 
 }
 
+export class SidebarNewIdentityData extends SidebarData {
+    
+}
+
 class SidebarStore {
     newHostData: SidebarNewHostData  = { isVisible: false };
     newProxyData: SidebarNewProxyData = { isVisible: false };
+    newIdentityData: SidebarNewIdentityData = { isVisible: false };
 
     mainSideBar: SidebarState | null = null;
     isVisible: boolean = false;
@@ -37,16 +42,16 @@ class SidebarStore {
         makeAutoObservable(this);
     }
 
-    setData (data: SidebarData) {
-        if (data instanceof SidebarNewHostData) {
-            console.log(data)
-            this.newHostData = data;
-        }
+    resetVisibleSidebars(){
+        const sidebarsData: SidebarData[] = [
+            this.newHostData,
+            this.newProxyData,
+            this.newIdentityData
+        ];
 
-        if (data instanceof SidebarNewProxyData) {
-            console.log(data)
-            this.newProxyData = data;
-        }
+        sidebarsData.forEach(sidebarData=>{
+            sidebarData.isVisible = false;
+        })
     }
 
     async setVisible (value: boolean) {
@@ -74,12 +79,14 @@ class SidebarStore {
         if((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name === sideBar.name){
             await this.setVisible(false);
             this.mainSideBar = null;
+            this.resetVisibleSidebars();
             return;
         }
         
         if(sideBar === null){
             this.isVisible = false
             this.mainSideBar = null;
+            this.resetVisibleSidebars();
             return;
         }
     }

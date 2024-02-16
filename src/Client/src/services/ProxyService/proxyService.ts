@@ -6,7 +6,7 @@ export class ProxyService{
         try {
             const response = 
                 await HostService.api.get<ApiResult<ProxyData[]>>('/v1/proxy');
-           
+            
             return {
                 isSuccess: true,
                 result: response.data.result

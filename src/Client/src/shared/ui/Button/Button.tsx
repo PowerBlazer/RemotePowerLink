@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from 'react';
+import {ButtonHTMLAttributes, LegacyRef} from 'react';
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './Button.module.scss';
 

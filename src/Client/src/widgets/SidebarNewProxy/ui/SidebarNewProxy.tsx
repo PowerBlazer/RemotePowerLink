@@ -2,7 +2,6 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SidebarNewProxy.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
-import SidebarNewIdentity from "widgets/SidebarNewIdentity/ui/SidebarNewIdentity";
 import sidebarStore from "app/store/sidebarStore";
 import {Button} from "shared/ui/Button/Button";
 
@@ -11,13 +10,11 @@ interface SidebarNewProxyProps extends SidebarOptions {
 }
 
 function SidebarNewProxy ({ className, isMain = true }: SidebarNewProxyProps) {
-
     const closeHandler = async () => {
         if(!isMain){
             sidebarStore.newProxyData.isVisible = false;
         }
     }
-    
     
     return (
         <Sidebar
@@ -29,10 +26,6 @@ function SidebarNewProxy ({ className, isMain = true }: SidebarNewProxyProps) {
             close={closeHandler}
         >
             dfdsf
-
-            <Button onClick={()=>{
-                sidebarStore.newIdentityData.isVisible = true;
-            }}>Создать прокси</Button>
         </Sidebar>
     );
 }

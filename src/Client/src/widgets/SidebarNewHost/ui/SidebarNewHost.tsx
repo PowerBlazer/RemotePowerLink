@@ -7,15 +7,15 @@ import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
 import TitleIcon from 'shared/assets/icons/title.svg';
 import PortIcon from 'shared/assets/icons/code-working.svg';
 import ScriptIcon from 'shared/assets/icons/curly-braces.svg'
+import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
 import {Input} from "shared/ui/Input";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import sidebarStore from "app/store/sidebarStore";
 import {IdentityService} from "services/IdentityService/identityService";
 import {ProxyService} from "services/ProxyService/proxyService";
-import {SidebarNewProxy} from "widgets/SidebarNewProxy";
-import {Button} from "shared/ui/Button/Button";
-import SidebarNewIdentity from "widgets/SidebarNewIdentity/ui/SidebarNewIdentity";
+import {Select, SelectItem} from "shared/ui/Select";
+
 
 interface SidebarNewHostProps {
     className?: string;
@@ -91,9 +91,11 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
                 </div>
             </FormBlock>
             <FormBlock headerName={'Прокси'}>
-                <Button onClick={()=>{
-                    sidebarStore.newProxyData.isVisible = true;
-                }}>Создать прокси</Button>
+                <Select placeholder={'Select proxy'} icon={<DoubleArrow width={19} height={19}/>}>
+                    {sidebarStore.newHostData.proxies?.map((proxy)=>
+                        <SelectItem key={proxy.id} selectedItem={{ id: proxy.id.toString(), title: proxy.title }}/>
+                    )}
+                </Select>
             </FormBlock>
             <FormBlock headerName={'Учетные данные'}>
                 

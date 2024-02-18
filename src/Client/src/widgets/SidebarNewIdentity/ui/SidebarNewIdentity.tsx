@@ -9,13 +9,11 @@ interface SidebarNewIdentityProps extends SidebarOptions {
 }
 
 function SidebarNewIdentity ({ className, isMain = true }: SidebarNewIdentityProps) {
-    
     const closeHandler = async () => {
         if(!isMain){
             sidebarStore.newIdentityData.isVisible = false;
         }
     }
-    
     
     return (
         <Sidebar

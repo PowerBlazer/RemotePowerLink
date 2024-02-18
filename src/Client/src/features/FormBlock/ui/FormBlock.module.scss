@@ -12,6 +12,8 @@
   font-weight: 600;
   color: var(--text-color);
   font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .content{

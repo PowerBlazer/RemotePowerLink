@@ -1,9 +1,8 @@
 ﻿import { classNames } from 'shared/lib/classNames/classNames';
 import style from './Select.module.scss';
-import {ReactElement, ReactNode, useRef, useState} from "react";
+import {Children, ReactElement, ReactNode, useEffect, useRef, useState} from "react";
 import { SelectItemProps } from "shared/ui/Select/ui/SelectItem";
 import ArrowCircleIcon from 'shared/assets/icons/arrow-circle-up.svg';
-import {Button} from "shared/ui/Button/Button";
 import {SelectContext} from "shared/lib/Select/SelectContext";
 import {useOutsideClick} from "app/hooks/useOutsideClick";
 
@@ -28,10 +27,21 @@ export interface SelectedItem{
     title: string
 }
     
-export function Select ({ className, children, selectedItem, placeholder, theme, icon }: SelectProps) {
+export function Select ({ 
+    className, 
+    children, 
+    selectedItem, 
+    placeholder, 
+    theme, 
+    onChange,
+    icon 
+}: SelectProps) {
+    
     const [visible, setVisible] = useState<boolean>(false);
     const [selectedElement, setSelected] = useState<SelectedItem>(selectedItem);
 
+    const isChildren = children && Children.count(children) > 0;
+    
     const refOptions = useRef<HTMLDivElement>(null);
     const refSelect = useOutsideClick<HTMLButtonElement>(() => {
         setVisible(false);
@@ -47,6 +57,12 @@ export function Select ({ className, children, selectedItem, placeholder, theme,
     const selectButtonHandler = () => {
         setVisible(value=> !value);
     }
+
+    useEffect(() => {
+        if (onChange && selectedElement) {
+            onChange(selectedElement);
+        }
+    }, [selectedElement]);
     
     return (
         <SelectContext.Provider value={defaultValueContext}>
@@ -68,8 +84,8 @@ export function Select ({ className, children, selectedItem, placeholder, theme,
                         </div>
                     </div>
                 </button>
-                <div className={classNames(style.select_options)} ref={refOptions}>
-                    {children}
+                <div className={classNames(style.select_options,{[style.empty_options]: !isChildren})} ref={refOptions}>
+                    {isChildren ? children : <p className={classNames(style.select_null)}>Отсутсвует данные</p>}
                 </div>
             </div>
         </SelectContext.Provider>

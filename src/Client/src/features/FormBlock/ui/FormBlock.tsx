@@ -21,13 +21,13 @@ function FormBlock (props: FormBlockProps) {
     
     return (
         <div 
-            className={classNames(style.formBlock, {}, [className])}
+            className={classNames(style.formBlock, {}, [])}
             {...otherProps}
         >
             {headerName && <div className={style.header}>
                 {t(headerName)}
             </div> }
-            <div className={classNames(style.content)}>
+            <div className={classNames(style.content,{},[className])}>
                 {children}
             </div>
 		</div>

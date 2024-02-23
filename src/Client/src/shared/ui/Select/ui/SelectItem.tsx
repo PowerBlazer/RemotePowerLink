@@ -4,6 +4,7 @@ import {ReactNode, useContext} from "react";
 import {Button} from "shared/ui/Button/Button";
 import {SelectContext, SelectContextProps} from "shared/lib/Select/SelectContext";
 import {SelectedItem} from "shared/ui/Select";
+import ServerIcon from 'shared/assets/icons/navbar/server.svg'
 
 export interface SelectItemProps {
     className?: string;
@@ -13,17 +14,20 @@ export interface SelectItemProps {
 
 export function SelectItem ({ className,selectedItem }: SelectItemProps) {
     const {
-        setVisible
+        setVisible,
+        setSelected
     } = useContext<SelectContextProps>(SelectContext);
     
     
     const selectItemHandler = () => {
         setVisible(false);
+        setSelected(selectedItem);
     }
     
     return (
-        <Button className={classNames(style.SelectItem, {}, [className])} onClick={selectItemHandler}>
-            {selectedItem.title}
+        <Button className={classNames(style.selectItem, {}, [className])} onClick={selectItemHandler}>
+            <ServerIcon className={classNames(style.server_icon)} width={15} height={15}/>
+            <p className={classNames(style.item_title)}>{selectedItem.title}</p>
 		</Button>
     );
 }

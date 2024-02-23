@@ -3,7 +3,8 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import style from './Button.module.scss';
 
 export enum ThemeButton {
-    CLEAR = 'clear'
+    CLEAR = 'clear',
+    PRIMARY = 'primary'
 }
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,7 +16,7 @@ export function Button (props: ButtonProps) {
     const {
         className,
         children,
-        theme,
+        theme = ThemeButton.CLEAR,
         ...otherProps
     } = props;
 

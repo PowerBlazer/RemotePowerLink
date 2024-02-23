@@ -1,7 +1,7 @@
-import { classNames } from 'shared/lib/classNames/classNames';
+import {classNames} from 'shared/lib/classNames/classNames';
 import style from './SidebarNewHost.module.scss';
-import { observer } from 'mobx-react-lite';
-import { Sidebar } from 'widgets/Sidebar';
+import {observer} from 'mobx-react-lite';
+import {Sidebar} from 'widgets/Sidebar';
 import {FormBlock} from "features/FormBlock";
 import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
 import TitleIcon from 'shared/assets/icons/title.svg';
@@ -14,7 +14,10 @@ import {useEffect, useState} from "react";
 import sidebarStore from "app/store/sidebarStore";
 import {IdentityService} from "services/IdentityService/identityService";
 import {ProxyService} from "services/ProxyService/proxyService";
-import {Select, SelectItem} from "shared/ui/Select";
+import {Select, SelectedItem, SelectItem} from "shared/ui/Select";
+import {Button, ThemeButton} from "shared/ui/Button/Button";
+import {SidebarNewProxy} from "widgets/SidebarNewProxy";
+import SidebarNewIdentity from "widgets/SidebarNewIdentity/ui/SidebarNewIdentity";
 
 
 interface SidebarNewHostProps {
@@ -30,6 +33,22 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
         if(!isMain){
             sidebarStore.newHostData.isVisible = false;
         }
+    }
+    
+    const createProxyHandler = () => {
+        sidebarStore.newProxyData.isVisible = true;
+    }
+    
+    const createIdentityHandler = () => {
+        sidebarStore.newIdentityData.isVisible = true;
+    }
+    
+    const selectProxyHandler = (selectedItem:SelectedItem) => {
+        
+    }
+
+    const selectIdentityHandler = (selectedItem:SelectedItem) => {
+
     }
     
     useEffect( () => {
@@ -55,10 +74,15 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
     return (
         <Sidebar
             className={classNames(style.sidebarNewHost, {}, [className])}
+            classNameContent={classNames(style.content)}
             isMain={isMain}
             headerName={'Новый сервер'}
             isLoad={load}
             close={closeHandler}
+            sidebars={<> 
+                <SidebarNewProxy isMain={false}/>
+                <SidebarNewIdentity isMain={false}/>
+            </>}
         >
             <FormBlock headerName={'Адресс'}>
                 <div className={classNames(style.address_block)}>
@@ -90,16 +114,51 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
                     />
                 </div>
             </FormBlock>
-            <FormBlock headerName={'Прокси'}>
-                <Select placeholder={'Select proxy'} icon={<DoubleArrow width={19} height={19}/>}>
+            <FormBlock headerName={'Прокси'} className={classNames(style.proxy_block)}>
+                <Select 
+                    placeholder={'Выбрать прокси'} 
+                    icon={<DoubleArrow width={19} height={19}/>} 
+                    onChange={selectProxyHandler}
+                >
                     {sidebarStore.newHostData.proxies?.map((proxy)=>
                         <SelectItem key={proxy.id} selectedItem={{ id: proxy.id.toString(), title: proxy.title }}/>
                     )}
                 </Select>
+                <Button 
+                    className={classNames(style.create_proxy)} 
+                    theme={ThemeButton.PRIMARY}
+                    onClick={createProxyHandler}
+                >
+                    {t("Создать прокси сервер")}
+                </Button>
             </FormBlock>
-            <FormBlock headerName={'Учетные данные'}>
-                
+            <FormBlock headerName={'Учетные данные'} className={classNames(style.identity_block)}>
+                <Select
+                    placeholder={'Выбрать учетку'}
+                    icon={<DoubleArrow width={19} height={19}/>}
+                    onChange={selectIdentityHandler}
+                >
+                    {sidebarStore.newHostData.identities?.map((proxy)=>
+                        <SelectItem key={proxy.id} selectedItem={{ id: proxy.id.toString(), title: proxy.title }}/>
+                    )}
+                </Select>
+                <Button
+                    className={classNames(style.create_identity)}
+                    theme={ThemeButton.PRIMARY}
+                    onClick={createIdentityHandler}
+                >
+                    {t("Создать учетку")}
+                </Button>
             </FormBlock>
+            <div className={classNames(style.save_block)}>
+                <Button
+                    className={classNames(style.create_newhost)}
+                    theme={ThemeButton.PRIMARY}
+                    onClick={createIdentityHandler}
+                >
+                    {t("Создать сервер")}
+                </Button>
+            </div>
         </Sidebar>
     );
 }

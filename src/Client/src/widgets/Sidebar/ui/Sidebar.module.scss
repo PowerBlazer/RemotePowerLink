@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  z-index: 90;
   
   &.main{
     width: 0;
@@ -29,6 +30,10 @@
     transform: translateX(0px);
   }
   
+}
+
+.sidebars .sidebar{
+  z-index: 91;
 }
 
 .header{
@@ -85,6 +90,8 @@
   border-width: 2px;
   border-color: white transparent;
 }
+
+
 
 @keyframes animate_left_main {
   0% {

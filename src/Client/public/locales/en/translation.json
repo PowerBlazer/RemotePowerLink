@@ -20,5 +20,12 @@
     "IP или домен": "IP or Hostname",
     "Название": "Title",
     "Порт": "Port",
-    "Стартовая команда": "Startup Command"
+    "Стартовая команда": "Startup Command",
+    "Создать учетку": "Create identity",
+    "Создать прокси сервер": "Create proxy",
+    "Учетные данные": "Identity",
+    "Выбрать учетку": "Select identity",
+    "Выбрать прокси": "Select proxy",
+    "Прокси": "Proxy",
+    "Создать сервер": "Create server"
 }

@@ -11,3 +11,18 @@
     background: none;
     outline: none;
 }
+
+.primary{
+    width: 100%;
+    background-color: #23bb6e;
+    border-radius: 5px;
+    padding: 7px 1px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color .3s;
+}
+
+.primary:hover{
+    background-color: #58C78D;
+}

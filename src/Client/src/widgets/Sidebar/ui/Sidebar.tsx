@@ -14,7 +14,9 @@ export interface SidebarOptions {
 
 interface SidebarProps extends SidebarOptions {
     className?: string;
+    classNameContent?:string;
     children?: ReactNode;
+    sidebars?: ReactNode
     close?: () => Promise<void>;
     headerName?: string;
     headerChildren?: ReactNode;
@@ -22,14 +24,15 @@ interface SidebarProps extends SidebarOptions {
 }
 
 function Sidebar ({
-    className,
-    close,
-    children,
-    headerName,
-    headerChildren,
-    isMain,
-    isLoad
-}: SidebarProps) {
+        className,
+        close,
+        children,
+        headerName,
+        headerChildren,
+        isMain,
+        isLoad,
+        sidebars
+    }: SidebarProps) {
     const { t } = useTranslation('translation');
 
     const closeSidebarHandler = async () => {
@@ -60,7 +63,10 @@ function Sidebar ({
                     </div>
                 </div>
             )}
-            <div className={classNames(style.content)}>
+            <div className={classNames(style.sidebars)}>
+                {sidebars}
+            </div>
+            <div className={classNames(style.content,{},[])}>
                 {children}
             </div>
         </div>

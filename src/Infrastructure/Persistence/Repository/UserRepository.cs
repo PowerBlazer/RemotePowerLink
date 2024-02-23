@@ -27,4 +27,12 @@ public class UserRepository: IUserRepository
 
         return user;
     }
+
+    public async Task<User?> GetUserDefaultAsync(long userId)
+    {
+        var user = await _persistenceContext.Users
+            .FirstOrDefaultAsync(p => p.UserId == userId);
+
+        return user;
+    }
 }

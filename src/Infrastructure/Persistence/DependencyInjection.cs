@@ -1,10 +1,12 @@
 ﻿using Application.Layers.Persistence.Contexts;
 using Application.Layers.Persistence.Repositories;
+using Application.Layers.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
 using Persistence.Repository;
+using Persistence.Services;
 
 namespace Persistence;
 
@@ -26,10 +28,20 @@ public static class DependencyInjection
             
             options.UseSnakeCaseNamingConvention();
         });
-        
+
+        #region Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IIdentityRepository, IdentityRepository>();
         services.AddScoped<IProxyRepository, ProxyRepository>();
+        services.AddScoped<IServerRepository, ServerRepositrory>();
+        services.AddScoped<ISystemTypeRepository, SystemTypeRepository>();
+        #endregion
+
+        #region Services
+        services.AddScoped<IHostService, HostService>();
+        #endregion
+        
+       
         
         return services;
     }

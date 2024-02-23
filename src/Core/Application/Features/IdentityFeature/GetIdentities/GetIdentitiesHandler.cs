@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Features.IdentityFeature.GetIdentities;
 
-public class GetIdentitiesHandler: IRequestHandler<GetIdentitiesCommand, IEnumerable<IdentityResponse>>
+public class GetIdentitiesHandler: IRequestHandler<GetIdentitiesCommand, IEnumerable<GetIdentityResponse>>
 {
     private readonly IIdentityRepository _identityRepository;
 
@@ -13,13 +13,13 @@ public class GetIdentitiesHandler: IRequestHandler<GetIdentitiesCommand, IEnumer
         _identityRepository = identityRepository;
     }
 
-    public async Task<IEnumerable<IdentityResponse>> Handle(GetIdentitiesCommand request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GetIdentityResponse>> Handle(GetIdentitiesCommand request, CancellationToken cancellationToken)
     {
         var identities = await _identityRepository
             .GetIdentitiesInUser(request.UserId);
 
         var identitiesResponse = identities
-            .Select(p => new IdentityResponse
+            .Select(p => new GetIdentityResponse
             {
                 Id = p.Id,
                 Title = p.Title

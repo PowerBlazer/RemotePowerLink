@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Layers\Persistence\Services\" />
+      <Folder Include="Layers\Persistence\Services\Results\" />
     </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Features.UserFeature.GetUserData;
 
-public class GetUserDataHandler: IRequestHandler<GetUserDataCommand, UserDataResponse>
+public class GetUserDataHandler: IRequestHandler<GetUserDataCommand, GetUserDataResponse>
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,11 +13,11 @@ public class GetUserDataHandler: IRequestHandler<GetUserDataCommand, UserDataRes
         _userRepository = userRepository;
     }
 
-    public async Task<UserDataResponse> Handle(GetUserDataCommand request, CancellationToken cancellationToken)
+    public async Task<GetUserDataResponse> Handle(GetUserDataCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserAsync(request.UserId);
 
-        return new UserDataResponse
+        return new GetUserDataResponse
         {
             UserId = user.UserId,
             UserName = user.Username

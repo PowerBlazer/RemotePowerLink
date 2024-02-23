@@ -22,4 +22,12 @@ public class ProxyRepository: IProxyRepository
 
         return proxies;
     }
+
+    public async Task<Proxy?> GetProxyDefaultAsync(long proxyId)
+    {
+        var proxy = await _persistenceContext.Proxies
+            .FirstOrDefaultAsync(p => p.Id == proxyId);
+
+        return proxy;
+    }
 }

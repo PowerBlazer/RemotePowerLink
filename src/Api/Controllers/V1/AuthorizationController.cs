@@ -14,31 +14,29 @@ namespace Api.Controllers.V1;
 [ApiController]
 [Route("api/v{version:apiVersion}/authorization")]
 [ApiVersion("1.0")]
-public class AuthorizationController: BaseController
+public class AuthorizationController : BaseController
 {
-   
-    public AuthorizationController(IMediator mediator): base(mediator)
+    public AuthorizationController(IMediator mediator) : base(mediator)
     {
-       
     }
-    
+
     /// <summary>
-    /// Отправка сообщения на почту с подтверждением
+    /// Отправляет сообщение на почту с запросом подтверждения.
     /// </summary>
-    /// <param name="verificationCommand">Почта для отправки сообщения</param>
+    /// <param name="verificationCommand">Данные для отправки сообщения.</param>
     /// <remarks></remarks>
-    /// <returns>Возвращает id сессии</returns>
-    /// <response code="200">Возвращает id сессии(string)</response>
-    /// <response code="400">Неправильный формат почты или почта уже зарегестрирована</response>
-    /// <response code="500">Ошибка на сервере</response>
+    /// <returns>ID созданной сессии.</returns>
+    /// <response code="200">Успешно отправлено сообщение на почту (ID сессии).</response>
+    /// <response code="400">Неправильный формат почты или почта уже зарегистрирована.</response>
+    /// <response code="500">Ошибка на сервере.</response>
     [HttpPost("SendEmailVerification")]
-    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>), StatusCodes.Status400BadRequest)]
     public async Task<ApiActionResult<SendEmailVerificationResponse>> SendEmailVerification(
-        [FromBody]SendEmailVerificationCommand verificationCommand)
+        [FromBody] SendEmailVerificationCommand verificationCommand)
     {
         var result = await Mediator.Send(verificationCommand);
-        
+
         return new ApiActionResult<SendEmailVerificationResponse>
         {
             Result = new SendEmailVerificationResponse
@@ -47,15 +45,14 @@ public class AuthorizationController: BaseController
             }
         };
     }
-    
+
     /// <summary>
-    /// Подтверждение почты с помощью кода верификации 
+    /// Подтверждает адрес электронной почты пользователя с использованием кода подтверждения.
     /// </summary>
-    /// <param name="verifyEmailCodeCommand">Код верификации и Id Сессии</param>
-    /// <returns>Возвращает результат подтверждения сессии(bool)</returns>
-    /// <response code="200">Возвращает результат подтверждения сессии(bool)</response>
-    /// <response code="400">Неправильный формат данных</response>
-    /// <response code="500">Ошибка на сервере</response>
+    /// <param name="verifyEmailCodeCommand">Данные для подтверждения адреса электронной почты.</param>
+    /// <response code="200">Успешно подтвержден адрес электронной почты.</response>
+    /// <response code="400">Неправильный формат данных.</response>
+    /// <response code="500">Ошибка на сервере.</response>
     [HttpPut("ConfirmEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,23 +61,23 @@ public class AuthorizationController: BaseController
     {
         await Mediator.Send(verifyEmailCodeCommand);
     }
-    
+
     /// <summary>
-    /// Повторная отправка сообщения на почту с подтверждением
+    /// Повторно отправляет сообщение на почту с запросом подтверждения.
     /// </summary>
-    /// <param name="resendConfirmationCodeCommand">Почта и сессия для отправки сообщения</param>
-    /// <returns>Возвращает id сессии</returns>
-    /// <response code="200">Сообщение отправлено</response>
-    /// <response code="400">Неправильный формат почты</response>
-    /// <response code="500">Ошибка на сервере</response>
+    /// <param name="resendConfirmationCodeCommand">Данные для повторной отправки сообщения.</param>
+    /// <returns>ID пересозданной сессии.</returns>
+    /// <response code="200">Сообщение успешно отправлено на почту (ID сессии).</response>
+    /// <response code="400">Неправильный формат почты.</response>
+    /// <response code="500">Ошибка на сервере.</response>
     [HttpPut("ResendEmailVerification")]
-    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>), StatusCodes.Status400BadRequest)]
     public async Task<ApiActionResult<ResendEmailVerificationResponse>> ResendEmailVerification(
         [FromBody] ResendConfirmationCodeCommand resendConfirmationCodeCommand)
     {
         var result = await Mediator.Send(resendConfirmationCodeCommand);
-        
+
         return new ApiActionResult<ResendEmailVerificationResponse>
         {
             Result = new ResendEmailVerificationResponse
@@ -89,18 +86,18 @@ public class AuthorizationController: BaseController
             }
         };
     }
-    
+
     /// <summary>
-    /// Регистрация пользователя
+    /// Регистрирует нового пользователя.
     /// </summary>
-    /// <param name="registerUserCommand">Пароль и имя пользователя</param>
-    /// <returns>Возвращает AccessToken и RefreshToken</returns>
-    /// <response code="200">Возвращает AccessToken и RefreshToken</response>
-    /// <response code="400">Ошибка валидации данных</response>
-    /// <response code="500">Ошибка на сервере</response>
+    /// <param name="registerUserCommand">Данные для регистрации пользователя.</param>
+    /// <returns>AccessToken и RefreshToken.</returns>
+    /// <response code="200">Успешно зарегистрирован новый пользователь (AccessToken и RefreshToken).</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="500">Ошибка на сервере.</response>
     [HttpPost("Registration")]
-    [ProducesResponseType(typeof(ApiActionResult<RegistrationResponse>),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<RegistrationResponse>),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiActionResult<RegistrationResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<RegistrationResponse>), StatusCodes.Status400BadRequest)]
     public async Task<ApiActionResult<RegistrationResponse>> RegisterUser(
         [FromBody] RegisterUserCommand registerUserCommand)
     {
@@ -114,18 +111,18 @@ public class AuthorizationController: BaseController
     }
 
     /// <summary>
-    /// Авторизация пользователя
+    /// Аутентифицирует пользователя.
     /// </summary>
-    /// <param name="loginUserCommand">Имя пользователя и пароль</param>
-    /// <returns>Возвращает AccessToken и RefreshToken</returns>
-    /// <response code="200">Возвращает AccessToken и RefreshToken</response>
-    /// <response code="400">Ошибка валидации данных</response>
-    /// <response code="401">Неправильный пароль</response>
-    /// <response code="500">Ошибка на сервере</response>
+    /// <param name="loginUserCommand">Данные для аутентификации пользователя.</param>
+    /// <returns>AccessToken и RefreshToken.</returns>
+    /// <response code="200">Успешно аутентифицирован пользователь (AccessToken и RefreshToken).</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Неправильный пароль.</response>
+    /// <response code="500">Ошибка на сервере.</response>
     [HttpPost("Login")]
-    [ProducesResponseType(typeof(ApiActionResult<LoginResponse>),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<LoginResponse>),StatusCodes.Status400BadRequest)]
-    public async Task<ApiActionResult<LoginResponse>> LoginUser([FromBody] 
+    [ProducesResponseType(typeof(ApiActionResult<LoginResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<LoginResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<ApiActionResult<LoginResponse>> LoginUser([FromBody]
         LoginUserCommand loginUserCommand)
     {
         loginUserCommand.IpAddress = IpAddress;
@@ -138,14 +135,14 @@ public class AuthorizationController: BaseController
     }
 
     /// <summary>
-    /// Получить токен доступа и обновить токен обновления
+    /// Обновляет токены доступа.
     /// </summary>
-    /// <param name="refreshTokenCommand">Токен доступа и токен обновления</param>
-    /// <returns>Возвращает AccessToken и RefreshToken</returns>
-    /// <response code="200">Возвращает AccessToken и RefreshToken</response>
-    /// <response code="400">Ошибка валидации данных</response>
-    /// <response code="401">Не валидный токен</response>
-    /// <response code="500">Ошибка на сервере</response>
+    /// <param name="refreshTokenCommand">Данные для обновления токенов.</param>
+    /// <returns>AccessToken и RefreshToken.</returns>
+    /// <response code="200">Успешно обновлены токены (AccessToken и RefreshToken).</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Невалидный токен.</response>
+    /// <response code="500">Ошибка на сервере.</response>
     [HttpPost("Refresh")]
     public async Task<ApiActionResult<RefreshTokenResponse>> RefreshToken([FromBody]
         RefreshTokenCommand refreshTokenCommand)
@@ -158,8 +155,5 @@ public class AuthorizationController: BaseController
             Result = result
         };
     }
-
-
-
-
 }
+

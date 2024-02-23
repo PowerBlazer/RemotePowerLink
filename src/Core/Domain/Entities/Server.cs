@@ -24,7 +24,7 @@ public class Server: BaseEntity<long>
     
     //ServerType
     public long? ServerTypeId { get; set; }
-    public ServerType? ServerType { get; set; }
+    public SystemType? ServerType { get; set; }
 
     #endregion
 }

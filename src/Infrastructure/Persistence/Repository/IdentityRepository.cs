@@ -1,6 +1,7 @@
 ﻿using Application.Layers.Persistence.Contexts;
 using Application.Layers.Persistence.Repositories;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repository;
@@ -21,5 +22,26 @@ public class IdentityRepository: IIdentityRepository
             .ToListAsync();
 
         return identities;
+    }
+
+    public async Task<Identity?> GetIdentityDefaultAsync(long identityId)
+    {
+        var identity = await _persistenceContext.Identities
+            .FirstOrDefaultAsync(p => p.Id == identityId);
+
+        return identity;
+    }
+
+    public async Task<Identity> GetIdentityAsync(long identityId)
+    {
+        var identity = await _persistenceContext.Identities
+            .FirstOrDefaultAsync(p => p.Id == identityId);
+        
+        if (identity is null)
+        {
+            throw new NotFoundException("Учетка не найдена");
+        }
+
+        return identity;
     }
 }

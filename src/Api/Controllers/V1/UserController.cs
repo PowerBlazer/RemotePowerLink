@@ -11,32 +11,33 @@ namespace Api.Controllers.V1;
 [ApiController]
 [Route("api/v{version:apiVersion}/user")]
 [ApiVersion("1.0")]
-public class UserController: BaseController
+public class UserController : BaseController
 {
-    public UserController(IMediator mediator): base(mediator)
+    public UserController(IMediator mediator) : base(mediator)
     {
-       
     }
-    
+        
     /// <summary>
-    /// Получить информацию о пользователя
+    /// Получает информацию о пользователе.
     /// </summary>
-    /// <returns>Возвращает инфомрацию о пользователя</returns>
-    /// <response code="200">Возвращает инфомрацию о пользователя</response>
-    /// <response code="400">Ошибка валидации данных</response>
-    /// <response code="401">Пользователь не авторизован</response>
-    /// <response code="404">Пользователь не найден</response>
-    /// <response code="500">Ошибка на сервере</response>
+    /// <returns>Информация о пользователе.</returns>
+    /// <response code="200">Успешно возвращена информация о пользователе.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="404">Пользователь не найден.</response>
+    /// <response code="500">Ошибка на сервере.</response>
     [HttpGet]
-    public async Task<ApiActionResult<UserDataResponse>> GetUserData()
+    [ProducesResponseType(typeof(ApiActionResult<GetUserDataResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<GetUserDataResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ApiActionResult<GetUserDataResponse>> GetUserData()
     {
         var result = await Mediator.Send(new GetUserDataCommand(UserId));
 
-        return new ApiActionResult<UserDataResponse>()
+        return new ApiActionResult<GetUserDataResponse>
         {
             Result = result
         };
     }
-   
-    
 }

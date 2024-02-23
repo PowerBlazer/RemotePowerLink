@@ -12,7 +12,7 @@ public interface IPersistenceContext
     DbSet<Domain.Entities.Identity> Identities { get; }
     DbSet<Proxy> Proxies { get; }
     DbSet<Server> Servers { get; }
-    DbSet<ServerType> ServerTypes { get; }
+    DbSet<SystemType> SystemTypes { get; }
     
     Task<int> SaveChangesAsync();
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

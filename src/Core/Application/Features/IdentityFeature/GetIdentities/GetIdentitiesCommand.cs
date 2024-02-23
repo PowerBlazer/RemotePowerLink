@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Application.Features.IdentityFeature.GetIdentities;
 
-public record GetIdentitiesCommand(long UserId) : IRequest<IEnumerable<IdentityResponse>>;
+public record GetIdentitiesCommand(long UserId) : IRequest<IEnumerable<GetIdentityResponse>>;

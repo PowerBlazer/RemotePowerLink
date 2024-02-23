@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class ServerType: BaseEntity<long>
+public class SystemType: BaseEntity<long>
 {
     public required string Name { get; set; }
     public string? Photo { get; set; }

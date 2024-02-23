@@ -12,7 +12,7 @@ public class PersistenceContext: DbContext, IPersistenceContext
     public DbSet<Identity> Identities => Set<Identity>();
     public DbSet<Proxy> Proxies => Set<Proxy>();
     public DbSet<Server> Servers => Set<Server>();
-    public DbSet<ServerType> ServerTypes => Set<ServerType>();
+    public DbSet<SystemType> SystemTypes => Set<SystemType>();
     
     public PersistenceContext(DbContextOptions<PersistenceContext> options): base(options)
     {
@@ -40,6 +40,6 @@ public class PersistenceContext: DbContext, IPersistenceContext
         modelBuilder.ApplyConfiguration(new IdentityConfiguration());
         modelBuilder.ApplyConfiguration(new ServerConfiguration());
         modelBuilder.ApplyConfiguration(new ProxyConfiguration());
-        modelBuilder.ApplyConfiguration(new ServerTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new SystemTypeConfiguration());
     }
 }

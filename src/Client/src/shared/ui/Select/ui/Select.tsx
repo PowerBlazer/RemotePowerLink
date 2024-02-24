@@ -5,6 +5,8 @@ import { SelectItemProps } from "shared/ui/Select/ui/SelectItem";
 import ArrowCircleIcon from 'shared/assets/icons/arrow-circle-up.svg';
 import {SelectContext} from "shared/lib/Select/SelectContext";
 import {useOutsideClick} from "app/hooks/useOutsideClick";
+import {Button} from "shared/ui/Button/Button";
+import CloseIcon from 'shared/assets/icons/close.svg';
 
 
 export enum ThemeSelect {
@@ -57,6 +59,11 @@ export function Select ({
     const selectButtonHandler = () => {
         setVisible(value=> !value);
     }
+    
+    const canselSelectedItemHandler = () => {
+        setSelected(null);
+        setVisible(false);
+    }
 
     useEffect(() => {
         if (onChange && selectedElement) {
@@ -66,7 +73,7 @@ export function Select ({
     
     return (
         <SelectContext.Provider value={defaultValueContext}>
-            <div className={classNames(style.select_block, {[style.active]: visible},[])}>
+            <div className={classNames(style.select_block, {[style.active]: visible, [style.selected]: Boolean(selectedElement) },[])}>
                 <button
                     className={classNames(style.select, {}, [className])}
                     onClick={selectButtonHandler}
@@ -79,14 +86,25 @@ export function Select ({
                             </div>
                             {selectedElement ? selectedElement.title : placeholder}
                         </div>
-                        <div className={classNames(style.select_icon)}>
-                            <ArrowCircleIcon width={20} height={20}/>
+                        <div className={classNames(style.common)}>
+                            <div className={classNames(style.select_icon)}>
+                                <ArrowCircleIcon width={20} height={20}/>
+                            </div>
                         </div>
                     </div>
                 </button>
-                <div className={classNames(style.select_options,{[style.empty_options]: !isChildren})} ref={refOptions}>
+                <div className={classNames(style.select_options, {[style.empty_options]: !isChildren})} ref={refOptions}>
                     {isChildren ? children : <p className={classNames(style.select_null)}>Отсутсвует данные</p>}
                 </div>
+                {
+                    selectedElement && 
+                    <Button 
+                        className={classNames(style.cancel)} 
+                        onClick={canselSelectedItemHandler}
+                    >
+                        <CloseIcon width={20} height={20}/>
+                    </Button>
+                }
             </div>
         </SelectContext.Provider>
     );

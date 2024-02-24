@@ -3,8 +3,9 @@ import style from './SidebarNewIdentity.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
 import sidebarStore from "app/store/sidebarStore";
+import {CreateIdentityResult} from "services/IdentityService/config/identityConfig";
 
-interface SidebarNewIdentityProps extends SidebarOptions {
+interface SidebarNewIdentityProps extends SidebarOptions<CreateIdentityResult> {
     className?: string;
 }
 

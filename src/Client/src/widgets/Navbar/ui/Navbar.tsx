@@ -12,6 +12,8 @@ import FolderIcon from 'shared/assets/icons/navbar/folder.svg';
 import PersonalIcon from 'shared/assets/icons/navbar/personal.svg';
 import userStore from 'app/store/userStore';
 import style from './Navbar.module.scss';
+import {useEffectLoad} from "app/hooks/useLoad";
+import {Loader} from "shared/ui/Loader/Loader";
 
 interface NavbarProps {
     className?: string
@@ -19,24 +21,30 @@ interface NavbarProps {
 
 function Navbar ({ className }: NavbarProps) {
     const { t } = useTranslation('translation');
-
-    useEffect(() => {
-        UserService.getUserData().then((userDataResult) => {
-            if (userDataResult.isSuccess) {
-                userStore.setUserData({
-                    id: userDataResult.result.userId,
-                    username: userDataResult.result.userName
-                });
-            }
-        });
-    }, [])
-
+    
+    const { isLoad } = useEffectLoad(async () => {
+       const userDataResult = await UserService.getUserData();
+      
+       if(userDataResult.isSuccess){
+           userStore.setUserData({
+               id: userDataResult.result.userId,
+               username: userDataResult.result.userName
+           });
+       }
+    });
+    
     return (
         <div className={classNames(style.navbar, {}, [className])}>
             <NavbarSetting/>
             <div className={style.common_block}>
-                <PersonalIcon width={22} height={22}/>
-                <h2 className={style.personal}>{userStore.userData?.username}</h2>
+                { isLoad 
+                    ? <Loader className={classNames(style.loader)}/> 
+                    : <>
+                        <PersonalIcon width={22} height={22}/>
+                        <h2 className={style.personal}>{userStore.userData?.username}</h2>
+                      </>
+                }
+                
             </div>
             <div className={classNames(style.nav_items)}>
                 <NavbarItem

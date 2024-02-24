@@ -8,19 +8,20 @@ import ArrowRight from 'shared/assets/icons/arrow-right.svg';
 import sidebarStore from 'app/store/sidebarStore';
 import {Loader} from "shared/ui/Loader/Loader";
 
-export interface SidebarOptions {
+export interface SidebarOptions<T> {
     isMain?: boolean,
+    onSave?: (data: T) => Promise<void>
 }
 
-interface SidebarProps extends SidebarOptions {
+interface SidebarProps{
     className?: string;
-    classNameContent?:string;
     children?: ReactNode;
     sidebars?: ReactNode
     close?: () => Promise<void>;
     headerName?: string;
     headerChildren?: ReactNode;
-    isLoad? : boolean
+    isLoad? : boolean,
+    isMain?: boolean,
 }
 
 function Sidebar ({

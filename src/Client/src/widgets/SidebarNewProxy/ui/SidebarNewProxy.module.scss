@@ -1,3 +1,94 @@
 .active{
   transform: translateX(0px);
 }
+
+.content{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content_inner{
+  height: calc(100vh - 75px - 100px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+  padding-bottom: 100px;
+  position: relative;
+}
+
+.content_inner:hover::-webkit-scrollbar{
+  display: block;
+}
+
+.content_inner::-webkit-scrollbar{
+  width: 5px;
+  display: none;
+}
+
+.content_inner::-webkit-scrollbar-track{
+  background-color: transparent;
+}
+
+.content_inner::-webkit-scrollbar-thumb{
+  background-color: rgba(90, 94, 115, 0.57);
+  border-radius: 5px;
+}
+
+.identity_block{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.address_block{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  height: 35px;
+}
+
+.general_block{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.save_block{
+  background-color: var(--bg-color);
+  height: 70px;
+  border-top: 1px solid var(--line);
+}
+
+.port_input svg{
+  fill: var(--input-color);
+}
+
+.port_input path{
+  stroke: var(--input-color);
+}
+
+.title_input path{
+  fill: var(--input-color);
+}
+
+.icon_server{
+  width: 35px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#004878 ;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.icon_server path{
+  fill: var(--setting-button-color);
+}

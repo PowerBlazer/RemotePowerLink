@@ -6,7 +6,7 @@ export class ServerService {
         try {
             const response = 
                 await HostService.api.post<ApiResult<CreateServerData>>(
-                    "/v1/host/create",
+                    "/v1/server/create",
                     createServerData
                 );
             

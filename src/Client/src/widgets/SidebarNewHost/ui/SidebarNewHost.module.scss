@@ -1,5 +1,43 @@
 ﻿.content{
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content_inner{
+  height: calc(100vh - 75px - 100px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 11px;
+  padding-bottom: 100px;
+}
+.content_inner:hover{
+  padding-right: 6px;
+}
+
+.content_inner:hover::-webkit-scrollbar{
+  width: 5px;
+}
+
+.content_inner::-webkit-scrollbar{
+  width: 0;
+}
+
+.content_inner::-webkit-scrollbar-track{
+  background-color: transparent;
+}
+
+.content_inner::-webkit-scrollbar-thumb{
+  background-color: rgba(90, 94, 115, 0.57);
+  border-radius: 5px;
+}
+
+.save_block{
+  background-color: var(--bg-color);
+  height: 70px;
+  border-top: 1px solid var(--line);
 }
 
 .address_block{
@@ -68,14 +106,6 @@
     stroke: var(--input-color);
 }
 
-.save_block{
-  background-color: var(--bg-color);
-  position: absolute;
-  bottom: 20px;
-  width: calc(100% - 30px);
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
-}
 
 
 

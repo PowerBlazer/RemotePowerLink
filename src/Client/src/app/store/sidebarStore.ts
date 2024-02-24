@@ -23,7 +23,7 @@ export class SidebarNewHostData extends SidebarData {
 }
 
 export class SidebarNewProxyData extends SidebarData {
-
+    identities?: IdentityData[] | null = null;
 }
 
 export class SidebarNewIdentityData extends SidebarData {

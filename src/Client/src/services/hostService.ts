@@ -16,6 +16,7 @@ export interface ApiResult<T> {
 
 export interface ServiceResult<T> {
     isSuccess: boolean,
+    errors?: Record<string, string[]>
     result?: T
 }
 

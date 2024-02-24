@@ -1,12 +1,14 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import { Button } from 'shared/ui/Button/Button';
+import {Button, ThemeButton} from 'shared/ui/Button/Button';
 import { ButtonHTMLAttributes, useCallback, useState } from 'react';
 import { Loader } from 'shared/ui/Loader/Loader';
 import style from './ButtonLoader.module.scss';
 
+
 interface ButtonLoaderProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
     actionAsync?: () => Promise<void>;
+    theme?: ThemeButton
 }
 
 export function ButtonLoader (props: ButtonLoaderProps) {
@@ -14,6 +16,7 @@ export function ButtonLoader (props: ButtonLoaderProps) {
         className,
         children,
         actionAsync,
+        theme,
         ...otherProps
     } = props;
 
@@ -29,8 +32,9 @@ export function ButtonLoader (props: ButtonLoaderProps) {
 
     return (
         <Button
-            className={classNames(style.buttonLoader, {}, [className])}
+            className={classNames(style.buttonLoader, {}, [className, style[theme]])}
             onClick={clickEventHandler}
+            theme={theme}
             {...otherProps}
         >
             {loading && <Loader className={style.loader}/>}

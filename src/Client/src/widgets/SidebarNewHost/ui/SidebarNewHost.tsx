@@ -10,7 +10,7 @@ import ScriptIcon from 'shared/assets/icons/curly-braces.svg'
 import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
 import {Input} from "shared/ui/Input";
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 import sidebarStore from "app/store/sidebarStore";
 import {IdentityService} from "services/IdentityService/identityService";
 import {ProxyService} from "services/ProxyService/proxyService";
@@ -18,6 +18,9 @@ import {Select, SelectedItem, SelectItem} from "shared/ui/Select";
 import {Button, ThemeButton} from "shared/ui/Button/Button";
 import {SidebarNewProxy} from "widgets/SidebarNewProxy";
 import SidebarNewIdentity from "widgets/SidebarNewIdentity/ui/SidebarNewIdentity";
+import {CreateServerData} from "services/ServerService/config/serverConfig";
+import {ButtonLoader} from "shared/ui/ButtonLoader";
+import {ServerService} from "services/ServerService/serverService";
 
 
 interface SidebarNewHostProps {
@@ -25,9 +28,16 @@ interface SidebarNewHostProps {
     isMain?: boolean;
 }
 
+const defaultServerValue = {
+    hostname:"",
+    title:"",
+    identityId:0
+}
+
 function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
     const { t } = useTranslation('translation');
     const [load,setLoad] = useState<boolean>(true);
+    const [serverData, setServerData] = useState<CreateServerData>(defaultServerValue) 
 
     const closeHandler = async () => {
         if(!isMain){
@@ -44,11 +54,51 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
     }
     
     const selectProxyHandler = (selectedItem:SelectedItem) => {
-        
+        setServerData(prevData=> ({
+            ...prevData,
+            proxyId: Number(selectedItem.id)
+        }));
     }
 
     const selectIdentityHandler = (selectedItem:SelectedItem) => {
+        setServerData(prevData=> ({
+            ...prevData,
+            identityId: Number(selectedItem.id)
+        }));
+    }
+    
+    const hostnameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setServerData(prevData => ({
+            ...prevData,
+            hostname: e.target.value
+        }));
+    }
+    
+    const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setServerData(prevData => ({
+            ...prevData,
+            title: e.target.value
+        }));
+    }
 
+    const portChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setServerData(prevData => ({
+            ...prevData,
+            port: Number(e.target.value)
+        }));
+    }
+    
+    const startupCommandChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setServerData(prevData => ({
+            ...prevData,
+            startupCommand: e.target.value
+        }));
+    }
+    
+    const createServerClickHandler = async () => {
+        const result = await ServerService.createServer(serverData);
+        
+        console.log(result);
     }
     
     useEffect( () => {
@@ -89,7 +139,12 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
                     <div className={classNames(style.icon_server)}>
                         <ServerIcon width={24} height={24}/>
                     </div>
-                    <Input type={"text"} className={style.address_input} placeholder={t('IP или домен')}/>
+                    <Input 
+                        type={"text"} 
+                        className={style.address_input} 
+                        placeholder={t('IP или домен')}
+                        onChange={hostnameChangeHandler}
+                    />
                 </div>
             </FormBlock>
             <FormBlock headerName={'Главная'}>
@@ -99,18 +154,21 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
                         className={classNames(style.title_input)} 
                         placeholder={t('Название')} 
                         icon={<TitleIcon width={20} height={20}/>}
+                        onChange={nameChangeHandler}
                     />
                     <Input 
                         type={"text"}
                         className={classNames(style.port_input)}
                         placeholder={t('Порт')}
                         icon={<PortIcon width={20} height={20}/>}
+                        onChange={portChangeHandler}
                     />
                     <Input
                         type={"text"}
                         className={classNames(style.startup_command_input)}
                         placeholder={t('Стартовая команда')}
                         icon={<ScriptIcon width={20} height={20}/>}
+                        onChange={startupCommandChangeHandler}
                     />
                 </div>
             </FormBlock>
@@ -151,13 +209,13 @@ function SidebarNewHost ({ className, isMain = false }: SidebarNewHostProps) {
                 </Button>
             </FormBlock>
             <div className={classNames(style.save_block)}>
-                <Button
+                <ButtonLoader
                     className={classNames(style.create_newhost)}
                     theme={ThemeButton.PRIMARY}
-                    onClick={createIdentityHandler}
+                    actionAsync={createServerClickHandler}
                 >
                     {t("Создать сервер")}
-                </Button>
+                </ButtonLoader>
             </div>
         </Sidebar>
     );

@@ -34,7 +34,8 @@ public class ServerRepositrory: IServerRepository
     public async Task<Server> AddServerAsync(Server server)
     {
         await _persistenceContext.Servers.AddAsync(server);
-
+        await _persistenceContext.SaveChangesAsync();
+        
         return server;
     }
 }

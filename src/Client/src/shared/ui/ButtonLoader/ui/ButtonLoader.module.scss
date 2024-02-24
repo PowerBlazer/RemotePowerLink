@@ -9,15 +9,35 @@
     cursor: pointer;
     margin: 10px 0 0;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    &:hover{
+        background-color: #1eb0f4;
+    }
+
+    &.primary{
+        width: 100%;
+        background-color: #23bb6e;
+        border-radius: 5px;
+        padding: 7px 1px;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color .3s;
+      
+    }
+    
+    &.primary:hover{
+        background-color: #58C78D;
+    }
 }
 
-.buttonLoader:hover {
-    background-color: #1eb0f4;
-}
 
 .loader{
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-width: 2px;
     border-color: white transparent;
 }

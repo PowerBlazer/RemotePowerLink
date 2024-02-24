@@ -3,10 +3,15 @@ using Application.Features.ServerFeature.CreateServer;
 using Domain.Common;
 using Domain.DTOs.Server;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.V1;
 
+[Authorize]
+[ApiController]
+[Route("api/v{version:apiVersion}/host")]
+[ApiVersion("1.0")]
 public class HostController: BaseController
 {
     public HostController(IMediator mediator): base(mediator)
@@ -27,7 +32,7 @@ public class HostController: BaseController
     [ProducesResponseType(typeof(ApiActionResult<CreateServerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiActionResult<CreateServerResponse>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ApiActionResult<CreateServerResponse>> GetIdentitiesInUser([FromBody] CreateServerCommand createServerCommand)
+    public async Task<ApiActionResult<CreateServerResponse>> CreateServer([FromBody]CreateServerCommand createServerCommand)
     {
         createServerCommand.UserId = UserId;
         var result = await Mediator.Send(createServerCommand);

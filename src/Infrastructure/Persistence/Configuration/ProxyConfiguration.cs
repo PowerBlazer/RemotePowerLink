@@ -11,7 +11,7 @@ public class ProxyConfiguration: IEntityTypeConfiguration<Proxy>
         builder.HasIndex(p => new { p.UserId, p.Title });
         builder.HasIndex(p => p.UserId);
         
-        builder.Property(p => p.Ip).HasMaxLength(50).IsRequired();
+        builder.Property(p => p.IpAddress).HasMaxLength(50).IsRequired();
         builder.Property(p => p.Port).IsRequired();
         builder.Property(p => p.Title).HasMaxLength(255).IsRequired();
 
@@ -26,7 +26,7 @@ public class ProxyConfiguration: IEntityTypeConfiguration<Proxy>
             UserId = 2,
             IdentityId = 1,
             Title = "Test1",
-            Ip = "123",
+            IpAddress = "123",
             Port = 0
         });
     }

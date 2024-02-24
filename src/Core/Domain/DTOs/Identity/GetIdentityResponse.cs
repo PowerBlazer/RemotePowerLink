@@ -1,17 +1,17 @@
 ﻿namespace Domain.DTOs.Identity;
 
 /// <summary>
-/// Ответ на запрос получения информации об учетных данных (Identity).
+/// Ответ на запрос получения информации об идентификаторов (Identity).
 /// </summary>
 public class GetIdentityResponse
 {
     /// <summary>
-    /// Идентификатор учетных данных.
+    /// Id идентификатора.
     /// </summary>
     public long Id { get; set; }
 
     /// <summary>
-    /// Название или описание учетных данных.
+    /// Название или описание идентификатора.
     /// </summary>
     public required string Title { get; set; }
 }

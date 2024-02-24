@@ -25,7 +25,7 @@ public class ServerRepositrory: IServerRepository
 
         if (server is null)
         {
-            throw new NotFoundException("Сервер не найден");
+            throw new NotFoundException("Сервер не найден", "ServerId");
         }
 
         return server;

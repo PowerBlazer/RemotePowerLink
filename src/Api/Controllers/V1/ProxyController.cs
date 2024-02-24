@@ -1,4 +1,6 @@
-﻿using Application.Features.ProxyFeature.GetProxies;
+﻿using Application.Features.ProxyFeature.CreateProxy;
+using Application.Features.ProxyFeature.GetProxies;
+using Application.Features.ServerFeature.CreateServer;
 using Domain.Common;
 using Domain.DTOs.Proxy;
 using MediatR;
@@ -34,6 +36,30 @@ public class ProxyController : BaseController
         var result = await Mediator.Send(new GetProxiesCommand(UserId));
 
         return new ApiActionResult<IEnumerable<GetProxyResponse>>
+        {
+            Result = result
+        };
+    }
+    
+    /// <summary>
+    /// Создает новый прокси на основе предоставленных данных и настройки подключения SSH к удаленной машине.
+    /// </summary>
+    /// <param name="createProxyResponse">Данные для создания нового прокси и настройки подключения SSH.</param>
+    /// <returns>Результат создания прокси.</returns>
+    /// <response code="200">Прокси успешно создан.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPost("create")]
+    [ProducesResponseType(typeof(ApiActionResult<CreateProxyResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<CreateProxyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<CreateProxyResponse>> CreateProxy([FromBody]CreateProxyCommand createProxyResponse)
+    {
+        createProxyResponse.UserId = UserId;
+        var result = await Mediator.Send(createProxyResponse);
+
+        return new ApiActionResult<CreateProxyResponse>
         {
             Result = result
         };

@@ -22,7 +22,7 @@ public class UserRepository: IUserRepository
 
         if (user is null)
         {
-            throw new NotFoundException("Пользователь не найден");
+            throw new NotFoundException("Пользователь не найден", "User");
         }
 
         return user;

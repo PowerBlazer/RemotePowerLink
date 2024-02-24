@@ -39,8 +39,16 @@ public class IdentityRepository: IIdentityRepository
         
         if (identity is null)
         {
-            throw new NotFoundException("Учетка не найдена");
+            throw new NotFoundException("Учетка не найдена", "IdentityId");
         }
+
+        return identity;
+    }
+
+    public async Task<Identity> AddIdentityAsync(Identity identity)
+    {
+        await _persistenceContext.Identities.AddAsync(identity);
+        await _persistenceContext.SaveChangesAsync();
 
         return identity;
     }

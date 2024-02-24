@@ -28,6 +28,10 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Errors);
         }
+        catch (ConnectionServerException ex)
+        {
+            await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Errors);
+        }
         catch (NotFoundException ex)
         {
             await HandleExceptionAsync(httpContext,HttpStatusCode.NotFound,ex.Errors);
@@ -38,11 +42,11 @@ public class ExceptionHandlingMiddleware
         }
         catch (SessionCodeNotFoundException ex)
         {
-            await HandleExceptionAsync(httpContext,HttpStatusCode.NotFound,ex.Error);
+            await HandleExceptionAsync(httpContext,HttpStatusCode.NotFound,ex.Errors);
         }
         catch (SessionCodeNotValidException ex)
         {
-            await HandleExceptionAsync(httpContext,HttpStatusCode.BadRequest,ex.Error);
+            await HandleExceptionAsync(httpContext,HttpStatusCode.BadRequest,ex.Errors);
         }
         catch (Exception ex)
         {

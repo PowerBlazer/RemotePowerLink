@@ -3,24 +3,31 @@
 public interface IIdentityRepository
 {
     /// <summary>
-    /// Получает учетные данные пользователя на основе предоставленного идентификатора пользователя.
+    /// Получает идентификаторы пользователя на основе предоставленного идентификатора пользователя.
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
-    /// <returns>Коллекция учетных данных пользователя.</returns>
+    /// <returns>Коллекция идентификаторов пользователя.</returns>
     Task<IEnumerable<Domain.Entities.Identity>> GetIdentitiesInUser(long userId);
 
     /// <summary>
-    /// Получает учетную информацию по идентификатору Identity.
+    /// Получает идентификатор по Identity Id.
     /// </summary>
     /// <param name="identityId">Идентификатор Identity.</param>
-    /// <returns>Учетная информация по указанному идентификатору или null, если идентификатор не найден.</returns>
+    /// <returns>Информация идентификаторы или null, если идентификатор не найден.</returns>
     Task<Domain.Entities.Identity?> GetIdentityDefaultAsync(long identityId);
 
     /// <summary>
-    /// Получает учетную информацию по идентификатору Identity.
+    /// Получает идентификатор по Identity Id.
     /// </summary>
     /// <param name="identityId">Идентификатор Identity.</param>
-    /// <returns>Учетная информация по указанному идентификатору</returns>
+    /// <returns>Идентификатор по указанному Id</returns>
     Task<Domain.Entities.Identity> GetIdentityAsync(long identityId);
+
+    /// <summary>
+    /// Добавляет новую запись идентификатора в базу данных.
+    /// </summary>
+    /// <param name="identity">Идентификатор для добавления.</param>
+    /// <returns>Добавленный идентификатор</returns>
+    Task<Domain.Entities.Identity> AddIdentityAsync(Domain.Entities.Identity identity);
 
 }

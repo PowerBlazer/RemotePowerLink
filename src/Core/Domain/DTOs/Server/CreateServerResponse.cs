@@ -26,7 +26,7 @@ public class CreateServerResponse
     public string? StartupCommand { get; set; }
 
     /// <summary>
-    /// Идентификатор учетных данных (Identity) сервера.
+    /// Id идентификатора (Identity) сервера.
     /// </summary>
     public required long IdentityId { get; set; }
 
@@ -34,4 +34,18 @@ public class CreateServerResponse
     /// Идентификатор прокси сервера.
     /// </summary>
     public long? ProxyId { get; set; }
+
+
+    public static CreateServerResponse MapToServer(Entities.Server server)
+    {
+        return new CreateServerResponse
+        {
+            Hostname = server.IpAddress,
+            IdentityId = server.IdentityId,
+            Port = server.Port,
+            Title = server.Title,
+            ProxyId = server.ProxyId,
+            StartupCommand = server.StartupCommand
+        };
+    }
 }

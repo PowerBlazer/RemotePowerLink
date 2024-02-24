@@ -10,11 +10,11 @@ namespace Api.Controllers.V1;
 
 [Authorize]
 [ApiController]
-[Route("api/v{version:apiVersion}/host")]
+[Route("api/v{version:apiVersion}/server")]
 [ApiVersion("1.0")]
-public class HostController: BaseController
+public class ServerController: BaseController
 {
-    public HostController(IMediator mediator): base(mediator)
+    public ServerController(IMediator mediator): base(mediator)
     {
         
     }

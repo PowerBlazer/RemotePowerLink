@@ -30,4 +30,12 @@ public class ProxyRepository: IProxyRepository
 
         return proxy;
     }
+
+    public async Task<Proxy> AddProxyAsync(Proxy proxy)
+    {
+        await _persistenceContext.Proxies.AddAsync(proxy);
+        await _persistenceContext.SaveChangesAsync();
+
+        return proxy;
+    }
 }

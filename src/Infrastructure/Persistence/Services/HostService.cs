@@ -24,28 +24,32 @@ public class HostService: IHostService
             serverParameter.Proxy);
         
         using var client = new SshClient(connectionInfo);
-        
+
         try
         {
             await client.ConnectAsync(cancellationToken);
-            
+
             var response = client.RunCommand("cat /etc/os-release").Result;
-            
+
             foreach (SystemTypeEnum systemType in Enum.GetValues(typeof(SystemTypeEnum)))
             {
                 var enumMember = typeof(SystemTypeEnum)
                     .GetMember(systemType.ToString())
                     .FirstOrDefault();
-                
-                if (enumMember == null) 
+
+                if (enumMember == null)
                     continue;
-                
+
                 var descriptionAttribute = enumMember.GetCustomAttribute<DescriptionAttribute>();
-                
+
                 if (descriptionAttribute != null && response.Contains(descriptionAttribute.Description))
                     return systemType;
             }
 
+            return null;
+        }
+        catch
+        {
             return null;
         }
         finally

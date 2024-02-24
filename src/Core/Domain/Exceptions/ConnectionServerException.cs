@@ -1,10 +1,10 @@
 ﻿namespace Domain.Exceptions;
 
-public class NotFoundException: Exception
+public class ConnectionServerException : Exception
 {
-    public Dictionary<string,List<string>> Errors { get; }
+    public Dictionary<string, List<string>> Errors { get; }
 
-    public NotFoundException(string error, string key)
+    public ConnectionServerException(string error, string key)
     {
         Errors = new Dictionary<string, List<string>>
         {
@@ -18,7 +18,7 @@ public class NotFoundException: Exception
         };
     }
 
-    public NotFoundException(Dictionary<string, List<string>> errors)
+    public ConnectionServerException(Dictionary<string, List<string>> errors)
     {
         Errors = errors;
     }

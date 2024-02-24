@@ -1,4 +1,5 @@
-﻿using Application.Features.IdentityFeature.GetIdentities;
+﻿using Application.Features.IdentityFeature.CreateIdentity;
+using Application.Features.IdentityFeature.GetIdentities;
 using Domain.Common;
 using Domain.DTOs.Identity;
 using MediatR;
@@ -19,10 +20,10 @@ public class IdentityController : BaseController
     }
 
     /// <summary>
-    /// Получает список учетных данных пользователя.
+    /// Получает список идентификаторов пользователя.
     /// </summary>
-    /// <returns>Список учетных данных пользователя.</returns>
-    /// <response code="200">Успешно возвращен список учетных данных пользователя.</response>
+    /// <returns>Список идентификаторов пользователя.</returns>
+    /// <response code="200">Успешно возвращен идентификаторов данных пользователя.</response>
     /// <response code="400">Ошибка валидации данных.</response>
     /// <response code="401">Пользователь не авторизован.</response>
     /// <response code="500">Ошибка на сервере.</response>
@@ -39,4 +40,29 @@ public class IdentityController : BaseController
             Result = result
         };
     }
+    
+    /// <summary>
+    /// Создает новую идентификацию для авторизации по протоколу SSH.
+    /// </summary>
+    /// <param name="createIdentityCommand">Данные для создания новой идентификации.</param>
+    /// <returns>Результат создания новой идентификации.</returns>
+    /// <response code="200">Иденитфикатор успешно созданы.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPost("create")]
+    [ProducesResponseType(typeof(ApiActionResult<CreateIdentityResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<CreateIdentityResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<CreateIdentityResponse>> CreateIdentity([FromBody]CreateIdentityCommand createIdentityCommand)
+    {
+        createIdentityCommand.UserId = UserId;
+        var result = await Mediator.Send(createIdentityCommand);
+
+        return new ApiActionResult<CreateIdentityResponse>
+        {
+            Result = result
+        };
+    }
+
 }

@@ -3,11 +3,11 @@
 
 public class SessionCodeNotFoundException: Exception
 {
-    public Dictionary<string,List<string>> Error { get; }
+    public Dictionary<string,List<string>> Errors { get; }
 
     public SessionCodeNotFoundException(string error)
     {
-        Error = new Dictionary<string, List<string>>
+        Errors = new Dictionary<string, List<string>>
         {
             {
                 "Session",

@@ -2,11 +2,11 @@
 
 public class SessionCodeNotValidException: Exception
 {
-    public Dictionary<string,List<string>> Error { get; }
+    public Dictionary<string,List<string>> Errors { get; }
 
     public SessionCodeNotValidException(string error)
     {
-        Error = new Dictionary<string, List<string>>
+        Errors = new Dictionary<string, List<string>>
         {
             {
                 "Session",

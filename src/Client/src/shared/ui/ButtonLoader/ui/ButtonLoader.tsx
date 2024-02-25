@@ -17,13 +17,14 @@ export function ButtonLoader (props: ButtonLoaderProps) {
         children,
         actionAsync,
         theme,
+        disabled,
         ...otherProps
     } = props;
 
     const [loading, setLoading] = useState<boolean>(false);
 
     const clickEventHandler = useCallback(async () => {
-        if (actionAsync) {
+        if (actionAsync && !disabled) {
             setLoading(true);
             await actionAsync();
             setLoading(false);
@@ -32,9 +33,12 @@ export function ButtonLoader (props: ButtonLoaderProps) {
 
     return (
         <Button
-            className={classNames(style.buttonLoader, {}, [className, style[theme]])}
+            className={classNames(style.buttonLoader, {
+                [style.disabled]: disabled
+            }, [className, style[theme]])}
             onClick={clickEventHandler}
             theme={theme}
+            disabled={disabled}
             {...otherProps}
         >
             {loading && <Loader className={style.loader}/>}

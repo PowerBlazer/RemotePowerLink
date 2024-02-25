@@ -17,12 +17,15 @@ export function Button (props: ButtonProps) {
         className,
         children,
         theme = ThemeButton.CLEAR,
+        disabled,
         ...otherProps
     } = props;
 
     return (
         <button
-            className={classNames(style.button, {}, [className, style[theme]])}
+            className={classNames(style.button, {
+                [style.disabled]: disabled
+            }, [className, style[theme]])}
             {...otherProps}
         >
             {children}

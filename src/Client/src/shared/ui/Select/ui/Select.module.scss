@@ -1,4 +1,12 @@
-﻿.select_block{
+﻿.select_inner{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.select_block{
   position: relative;
   width: 100%;
   display: flex;
@@ -28,9 +36,7 @@
   &.selected .header_icon path{
     fill: var(--text-color);
   }
-
-
-
+  
   &.active .select_icon{
     transform: rotate(0deg);
   }
@@ -45,6 +51,9 @@
   }
 }
 
+.error_label h4{
+  font-size: 12px;
+}
 
 .select{
   width: 100%;
@@ -69,6 +78,10 @@
 
   &:hover .header_icon path{
     fill: var(--text-color);
+  }
+  
+  &.error{
+    border: 1px solid crimson;
   }
 }
 
@@ -118,6 +131,8 @@
 .select_options{
   width: 100%;
   min-height: 35px;
+  max-height: 140px;
+  overflow-y: auto;
   background-color: #212234;
   position: absolute;
   top: 40px;
@@ -136,6 +151,25 @@
     align-items: center;
     height: 50px;
   }
+
+  &:hover::-webkit-scrollbar{
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar{
+    width: 0;
+  }
+
+  &::-webkit-scrollbar-track{
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb{
+    background-color: rgba(90, 94, 115, 0.57);
+    border-radius: 5px;
+  }
+  
+  
 }
 
 .select_null{
@@ -151,6 +185,10 @@
   padding: 9px 12px;
   width: 100%;
   transition: background-color .3s;
+  
+  &.selected{
+    background-color: var(--line);
+  }
 }
 
 .selectItem:nth-child(n+1){
@@ -164,6 +202,8 @@
 .selectItem:hover{
   background-color: var(--line);
 }
+
+
 
 .server_icon path{
   fill: var(--setting-button-color);
@@ -188,5 +228,5 @@
 }
 
 .cancel path{
-  stroke: red;
+  stroke: crimson;
 }

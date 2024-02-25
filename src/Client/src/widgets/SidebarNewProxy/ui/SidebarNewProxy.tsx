@@ -22,6 +22,7 @@ import {ButtonLoader} from "shared/ui/ButtonLoader";
 
 interface SidebarNewProxyProps extends SidebarOptions<CreateProxyResult> {
     className?: string;
+    selectedIdentity?: SelectedItem
 }
 
 const defaultProxyData: CreateProxyData = {
@@ -30,9 +31,11 @@ const defaultProxyData: CreateProxyData = {
     hostname:""
 }
 
-function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyProps) {
+function SidebarNewProxy ({ className, isMain = true, onSave, selectedIdentity }: SidebarNewProxyProps) {
     const { t } = useTranslation('translation');
     const [proxyData, setProxyData] = useState<CreateProxyData>(defaultProxyData);
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+    
     const closeHandler = async () => {
         if(!isMain){
             sidebarStore.newProxyData.isVisible = false;
@@ -43,11 +46,32 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
         sidebarStore.newIdentityData.isVisible = true;
     }
 
-    const selectIdentityHandler = (selectedItem:SelectedItem) => {
+    const selectIdentityHandler = (selectedItem?:SelectedItem) => {
+        if(!selectedItem){
+            setProxyData(prevData => ({
+                ...prevData,
+                identityId: 0
+            }));
+
+            setErrors(prevValue => {
+                const updatedErrors = { ...prevValue };
+                delete updatedErrors["IdentityId"];
+                return updatedErrors;
+            });
+
+            return;
+        }
+
         setProxyData(prevData=> ({
             ...prevData,
             identityId: Number(selectedItem.id)
         }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors["IdentityId"];
+            return updatedErrors;
+        });
     }
 
     const hostnameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +79,12 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
             ...prevData,
             hostname: e.target.value
         }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors["Hostname"];
+            return updatedErrors;
+        });
     }
 
     const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,13 +92,34 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
             ...prevData,
             title: e.target.value
         }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors["Title"];
+            return updatedErrors;
+        });
     }
 
     const portChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setProxyData(prevData => ({
-            ...prevData,
-            port: Number(e.target.value)
-        }));
+        const port = parseInt(e.target.value, 10);
+
+        if (!isNaN(port) || e.target.value.length === 0) {
+            setProxyData(prevData => ({
+                ...prevData,
+                port: port
+            }));
+
+            setErrors(prevValue => {
+                const updatedErrors = { ...prevValue };
+                delete updatedErrors["Port"];
+                return updatedErrors;
+            });
+        } else {
+            setErrors(prevValue => ({
+                ...prevValue,
+                "Port":["Некорректно веден порт"]
+            }));
+        }
     }
 
     const createProxyClickHandler = async () => {
@@ -76,6 +127,10 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
 
         if(onSave && createProxyResult.isSuccess){
             await onSave(createProxyResult.result);
+        }
+
+        if(!createProxyResult.isSuccess){
+            setErrors(createProxyResult?.errors);
         }
     }
 
@@ -114,6 +169,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
                                 className={style.address_input}
                                 placeholder={t('IP или домен')}
                                 onChange={hostnameChangeHandler}
+                                errors={errors?.Hostname ?? null}
                             />
                         </div>
                     </FormBlock>
@@ -125,6 +181,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
                                 placeholder={t('Название')}
                                 icon={<TitleIcon width={20} height={20}/>}
                                 onChange={nameChangeHandler}
+                                errors={errors?.Title ?? null}
                             />
                             <Input
                                 type={"text"}
@@ -132,6 +189,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
                                 placeholder={t('Ssh порт')}
                                 icon={<PortIcon width={20} height={20}/>}
                                 onChange={portChangeHandler}
+                                errors={errors?.Port ?? null}
                             />
                         </div>
                     </FormBlock>
@@ -140,11 +198,14 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
                             placeholder={'Выбрать учетку'}
                             icon={<DoubleArrow width={19} height={19}/>}
                             onChange={selectIdentityHandler}
+                            errors={errors?.IdentityId ?? null}
+                            selectedItem={selectedIdentity}
                         >
-                            {sidebarStore.newProxyData.identities?.map((proxy) =>
+                            {sidebarStore.newProxyData.identities?.map((identity) =>
                                 <SelectItem
-                                    key={proxy.id}
-                                    selectedItem={{id: proxy.id.toString(), title: proxy.title}}
+                                    key={identity.id}
+                                    selectedItem={{id: identity.id.toString(), title: identity.title}}
+                                    isSelected={selectedIdentity?.id === identity.id.toString() }
                                 />
                             )}
                         </Select>
@@ -161,7 +222,8 @@ function SidebarNewProxy ({ className, isMain = true, onSave }: SidebarNewProxyP
                     <ButtonLoader
                         className={classNames(style.create_newhost)}
                         theme={ThemeButton.PRIMARY}
-                        onClick={createProxyClickHandler}
+                        actionAsync={createProxyClickHandler}
+                        disabled={Object.keys(errors).length > 0}
                     >
                         {t("Создать прокси сервер")}
                     </ButtonLoader>

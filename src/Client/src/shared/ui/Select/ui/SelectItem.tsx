@@ -9,10 +9,11 @@ import ServerIcon from 'shared/assets/icons/navbar/server.svg'
 export interface SelectItemProps {
     className?: string;
     icon?:ReactNode,
-    selectedItem: SelectedItem
+    selectedItem: SelectedItem,
+    isSelected?: boolean
 }
 
-export function SelectItem ({ className,selectedItem }: SelectItemProps) {
+export function SelectItem ({ className,selectedItem, isSelected }: SelectItemProps) {
     const {
         setVisible,
         setSelected
@@ -25,7 +26,7 @@ export function SelectItem ({ className,selectedItem }: SelectItemProps) {
     }
     
     return (
-        <Button className={classNames(style.selectItem, {}, [className])} onClick={selectItemHandler}>
+        <Button className={classNames(style.selectItem, { [style.selected]: isSelected }, [className])} onClick={selectItemHandler}>
             <ServerIcon className={classNames(style.server_icon)} width={15} height={15}/>
             <p className={classNames(style.item_title)}>{selectedItem.title}</p>
 		</Button>

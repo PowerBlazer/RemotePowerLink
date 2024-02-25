@@ -7,6 +7,7 @@ import {SelectContext} from "shared/lib/Select/SelectContext";
 import {useOutsideClick} from "app/hooks/useOutsideClick";
 import {Button} from "shared/ui/Button/Button";
 import CloseIcon from 'shared/assets/icons/close.svg';
+import {ErrorLabel} from "shared/ui/ErrorLabel";
 
 
 export enum ThemeSelect {
@@ -20,8 +21,9 @@ interface SelectProps {
     theme?: ThemeSelect
     selectedItem?: SelectedItem,
     placeholder: string,
-    icon?: ReactNode
-    onChange?: (selectedItem: SelectedItem) => void
+    icon?: ReactNode,
+    errors?: string[],
+    onChange?: (selectedItem?: SelectedItem) => void
 }
 
 export interface SelectedItem{
@@ -34,7 +36,8 @@ export function Select ({
     children, 
     selectedItem, 
     placeholder, 
-    theme, 
+    theme,
+    errors,
     onChange,
     icon 
 }: SelectProps) {
@@ -63,8 +66,12 @@ export function Select ({
     const canselSelectedItemHandler = () => {
         setSelected(null);
         setVisible(false);
+        
+        if(onChange){
+            onChange(null)
+        }
     }
-
+    
     useEffect(() => {
         if (onChange && selectedElement) {
             onChange(selectedElement);
@@ -73,38 +80,49 @@ export function Select ({
     
     return (
         <SelectContext.Provider value={defaultValueContext}>
-            <div className={classNames(style.select_block, {[style.active]: visible, [style.selected]: Boolean(selectedElement) },[])}>
-                <button
-                    className={classNames(style.select, {}, [className])}
-                    onClick={selectButtonHandler}
-                    ref={refSelect}
-                >
-                    <div className={classNames(style.select_header)}>
-                        <div className={classNames(style.header_content)}>
-                            <div className={classNames(style.header_icon)}>
-                                {icon}
-                            </div>
-                            {selectedElement ? selectedElement.title : placeholder}
-                        </div>
-                        <div className={classNames(style.common)}>
-                            <div className={classNames(style.select_icon)}>
-                                <ArrowCircleIcon width={20} height={20}/>
-                            </div>
-                        </div>
-                    </div>
-                </button>
-                <div className={classNames(style.select_options, {[style.empty_options]: !isChildren})} ref={refOptions}>
-                    {isChildren ? children : <p className={classNames(style.select_null)}>Отсутсвует данные</p>}
-                </div>
-                {
-                    selectedElement && 
-                    <Button 
-                        className={classNames(style.cancel)} 
-                        onClick={canselSelectedItemHandler}
+            <div className={classNames(style.select_inner)}>
+                <div className={classNames(style.select_block, {
+                        [style.active]: visible, 
+                        [style.selected]: Boolean(selectedItem || selectedElement) 
+                    }, [])}>
+                    <button
+                        className={classNames(style.select, {
+                            [style.error]: Boolean(errors)
+                        }, [className])}
+                        onClick={selectButtonHandler}
+                        ref={refSelect}
                     >
-                        <CloseIcon width={20} height={20}/>
-                    </Button>
-                }
+                        <div className={classNames(style.select_header)}>
+                            <div className={classNames(style.header_content)}>
+                                <div className={classNames(style.header_icon)}>
+                                    {icon}
+                                </div>
+                                { selectedItem ? 
+                                    (selectedElement ? selectedElement.title : selectedItem.title) : 
+                                    (selectedElement ? selectedElement.title : placeholder) 
+                                }
+                            </div>
+                            <div className={classNames(style.common)}>
+                                <div className={classNames(style.select_icon)}>
+                                    <ArrowCircleIcon width={20} height={20}/>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div className={classNames(style.select_options, {[style.empty_options]: !isChildren})} ref={refOptions}>
+                        {isChildren ? children : <p className={classNames(style.select_null)}>Отсутсвует данные</p>}
+                    </div>
+                    {
+                        (selectedItem || selectedElement)  && 
+                        <Button 
+                            className={classNames(style.cancel)} 
+                            onClick={canselSelectedItemHandler}
+                        >
+                            <CloseIcon width={20} height={20}/>
+                        </Button>
+                    }
+                </div>
+                {errors && <ErrorLabel errors={errors} className={classNames(style.error_label)}/>}
             </div>
         </SelectContext.Provider>
     );

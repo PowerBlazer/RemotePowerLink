@@ -48,9 +48,8 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  height: 35px;
 }
 
 .general_block{
@@ -80,7 +79,7 @@
 
 .icon_server{
   width: 35px;
-  height: 100%;
+  height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;

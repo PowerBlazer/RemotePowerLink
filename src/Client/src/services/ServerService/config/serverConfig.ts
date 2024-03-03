@@ -1,8 +1,20 @@
-﻿export interface CreateServerData {
-    hostname:string,
-    title:string,
-    port?:number,
-    startupCommand?:string
-    identityId:number,
-    proxyId?:number
+export interface CreateServerData {
+    hostname: string,
+    title: string,
+    sshPort?: number,
+    startupCommand?: string
+    identityId: number,
+    proxyId?: number
+}
+
+export interface ServerData{
+    serverId: number,
+    hostname: string,
+    title: string,
+    sshPort?: number,
+    startupCommand?: string
+    identityId: number,
+    proxyId?: number,
+    systemTypeName?: string,
+    systemTypeIcon?: string
 }

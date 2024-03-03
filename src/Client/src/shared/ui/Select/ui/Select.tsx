@@ -1,14 +1,14 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
+import { Children, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { SelectItemProps } from 'shared/ui/Select/ui/SelectItem';
+import { SelectContext } from 'shared/lib/Select/SelectContext';
+import { useOutsideClick } from 'app/hooks/useOutsideClick';
+import { Button } from 'shared/ui/Button/Button';
+import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from './Select.module.scss';
-import {Children, ReactElement, ReactNode, useEffect, useRef, useState} from "react";
-import { SelectItemProps } from "shared/ui/Select/ui/SelectItem";
 import ArrowCircleIcon from 'shared/assets/icons/arrow-circle-up.svg';
-import {SelectContext} from "shared/lib/Select/SelectContext";
-import {useOutsideClick} from "app/hooks/useOutsideClick";
-import {Button} from "shared/ui/Button/Button";
 import CloseIcon from 'shared/assets/icons/close.svg';
-import {ErrorLabel} from "shared/ui/ErrorLabel";
-
+import { useTranslation } from 'react-i18next';
 
 export enum ThemeSelect {
     CLEAR = 'clear',
@@ -17,7 +17,7 @@ export enum ThemeSelect {
 
 interface SelectProps {
     className?: string;
-    children?:  ReactElement<SelectItemProps> | ReactElement<SelectItemProps>[];
+    children?: ReactElement<SelectItemProps> | Array<ReactElement<SelectItemProps>>;
     theme?: ThemeSelect
     selectedItem?: SelectedItem,
     placeholder: string,
@@ -26,65 +26,64 @@ interface SelectProps {
     onChange?: (selectedItem?: SelectedItem) => void
 }
 
-export interface SelectedItem{
-    id:string,
+export interface SelectedItem {
+    id: string,
     title: string
 }
-    
-export function Select ({ 
-    className, 
-    children, 
-    selectedItem, 
-    placeholder, 
-    theme,
-    errors,
-    onChange,
-    icon 
-}: SelectProps) {
+
+export function Select (props: SelectProps) {
+    const {
+        className,
+        children,
+        selectedItem,
+        placeholder,
+        errors,
+        onChange,
+        icon
+    } = props;
     
     const [visible, setVisible] = useState<boolean>(false);
     const [selectedElement, setSelected] = useState<SelectedItem>(selectedItem);
-
-    const isChildren = children && Children.count(children) > 0;
-    
+    const { t } = useTranslation('translation');
     const refOptions = useRef<HTMLDivElement>(null);
+    
     const refSelect = useOutsideClick<HTMLButtonElement>(() => {
         setVisible(false);
-    },[refOptions?.current]);
-    
+    }, [refOptions?.current]);
+
+    const isChildren = children && Children.count(children) > 0;
+
     const defaultValueContext = {
-        visible,
-        setVisible,
-        selectedItem,
-        setSelected
+        visible, setVisible,
+        selectedItem, setSelected
     }
-    
+
     const selectButtonHandler = () => {
-        setVisible(value=> !value);
+        setVisible(value => !value);
     }
-    
+
     const canselSelectedItemHandler = () => {
         setSelected(null);
         setVisible(false);
-        
-        if(onChange){
+
+        if (onChange) {
             onChange(null)
         }
     }
-    
+
     useEffect(() => {
         if (onChange && selectedElement) {
             onChange(selectedElement);
         }
     }, [selectedElement]);
-    
+
     return (
         <SelectContext.Provider value={defaultValueContext}>
             <div className={classNames(style.select_inner)}>
                 <div className={classNames(style.select_block, {
-                        [style.active]: visible, 
-                        [style.selected]: Boolean(selectedItem || selectedElement) 
-                    }, [])}>
+                    [style.active]: visible,
+                    [style.selected]: Boolean(selectedItem || selectedElement)
+                }, [])}>
                     <button
                         className={classNames(style.select, {
                             [style.error]: Boolean(errors)
@@ -97,9 +96,9 @@ export function Select ({
                                 <div className={classNames(style.header_icon)}>
                                     {icon}
                                 </div>
-                                { selectedItem ? 
-                                    (selectedElement ? selectedElement.title : selectedItem.title) : 
-                                    (selectedElement ? selectedElement.title : placeholder) 
+                                { selectedItem
+                                    ? (selectedElement ? selectedElement.title : selectedItem.title)
+                                    : (selectedElement ? selectedElement.title : placeholder)
                                 }
                             </div>
                             <div className={classNames(style.common)}>
@@ -109,13 +108,13 @@ export function Select ({
                             </div>
                         </div>
                     </button>
-                    <div className={classNames(style.select_options, {[style.empty_options]: !isChildren})} ref={refOptions}>
-                        {isChildren ? children : <p className={classNames(style.select_null)}>Отсутсвует данные</p>}
+                    <div className={classNames(style.select_options, { [style.empty_options]: !isChildren })} ref={refOptions}>
+                        {isChildren ? children : <p className={classNames(style.select_null)}>{t('Отсутсвует данные')}</p>}
                     </div>
                     {
-                        (selectedItem || selectedElement)  && 
-                        <Button 
-                            className={classNames(style.cancel)} 
+                        (selectedItem || selectedElement) &&
+                        <Button
+                            className={classNames(style.cancel)}
                             onClick={canselSelectedItemHandler}
                         >
                             <CloseIcon width={20} height={20}/>

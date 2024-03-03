@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export const useOutsideClick = <T extends HTMLElement>(
     callback: () => void,
@@ -11,7 +11,7 @@ export const useOutsideClick = <T extends HTMLElement>(
             if (
                 ref.current &&
                 !ref.current.contains(event.target as Node) &&
-                !exceptions.some(exception => exception.contains(event.target as Node))
+                !exceptions.some(exception => exception?.contains(event.target as Node))
             ) {
                 callback();
             }

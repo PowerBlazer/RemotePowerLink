@@ -1,2 +1,2 @@
-﻿export { Select, SelectedItem, ThemeSelect } from './ui/Select';
+export { Select, type SelectedItem, ThemeSelect } from './ui/Select';
 export { SelectItem } from './ui/SelectItem';

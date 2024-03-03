@@ -80,7 +80,7 @@ export function RegistrationStep () {
                 {errors?.SessionId && <ErrorLabel errors={ errors.SessionId }/>}
                 <div className={classNames(style.info_block)}>
                     <InfoIcon/>
-                    <p>{t('Пароль используется для шифрования ваших данных перед тем, как покинуть устройства. Если вы забудете его, вы можете потерять свои данные.')}</p>
+                    <p>{t('PasswordInfo')}</p>
                 </div>
 
                 <ButtonLoader

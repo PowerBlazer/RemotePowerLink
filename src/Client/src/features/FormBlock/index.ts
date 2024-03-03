@@ -1,1 +1,1 @@
-﻿export {default as FormBlock} from './ui/FormBlock';
+export { default as FormBlock } from './ui/FormBlock';

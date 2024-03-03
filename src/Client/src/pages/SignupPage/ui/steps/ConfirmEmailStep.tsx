@@ -100,7 +100,7 @@ export function ConfirmEmailStep () {
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onClick={resendEmailVerification}
             >
-                {isResend ? 'Повтороно отправить на почту' : `Повтороно отправить на почту через ${timerText}`}
+                {isResend ? t('Повтороно отправить на почту') : `${t('Повтороно отправить на почту через')} ${timerText}`}
             </Button>
         </>
     );

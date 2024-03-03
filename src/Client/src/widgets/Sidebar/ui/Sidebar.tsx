@@ -6,42 +6,49 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui/Button/Button';
 import ArrowRight from 'shared/assets/icons/arrow-right.svg';
 import sidebarStore from 'app/store/sidebarStore';
-import {Loader} from "shared/ui/Loader/Loader";
+import { Loader } from 'shared/ui/Loader/Loader';
 
 export interface SidebarOptions<T> {
     isMain?: boolean,
-    onSave?: (data: T) => Promise<void>
+    onSave?: (data: T) => Promise<void>,
+    onClose?: () => void,
+    isVisible?: boolean
 }
 
-interface SidebarProps{
+interface SidebarProps {
     className?: string;
     children?: ReactNode;
-    sidebars?: ReactNode
+    sidebars?: ReactNode;
+    footer?:ReactNode;
     close?: () => Promise<void>;
     headerName?: string;
     headerChildren?: ReactNode;
-    isLoad? : boolean,
+    isLoad?: boolean,
     isMain?: boolean,
 }
 
-function Sidebar ({
+function Sidebar (props: SidebarProps) {
+    
+    const {
         className,
         close,
         children,
         headerName,
         headerChildren,
+        footer,
         isMain,
         isLoad,
         sidebars
-    }: SidebarProps) {
+    } = props;
+    
     const { t } = useTranslation('translation');
-
+    
     const closeSidebarHandler = async () => {
         if (close && !isMain) {
             await close();
             return;
         }
-        
+
         if (isMain) {
             await sidebarStore.setVisible(false);
             await sidebarStore.setSidebar(null);
@@ -50,7 +57,7 @@ function Sidebar ({
     return (
         <div className={classNames(style.sidebar, {
             [style.main]: isMain,
-            [style.main_active]: sidebarStore.isVisible && isMain,
+            [style.main_active]: sidebarStore.isVisible && isMain
         }, [className])}>
             {headerName && (
                 <div className={classNames(style.header)}>
@@ -67,8 +74,14 @@ function Sidebar ({
             <div className={classNames(style.sidebars)}>
                 {sidebars}
             </div>
-            <div className={classNames(style.content,{},[])}>
-                {children}
+            <div className={classNames(style.content_block, {}, [])}>
+                <div className={classNames(style.content)}>
+                    <div className={classNames(style.content_inner)}>
+                        {children}
+                    </div>
+                    {footer}
+                </div>
+                
             </div>
         </div>
     );

@@ -1,9 +1,8 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import {Button, ThemeButton} from 'shared/ui/Button/Button';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import { ButtonHTMLAttributes, useCallback, useState } from 'react';
 import { Loader } from 'shared/ui/Loader/Loader';
 import style from './ButtonLoader.module.scss';
-
 
 interface ButtonLoaderProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;

@@ -1,6 +1,6 @@
-﻿import {createContext} from "react";
-import {Theme} from "../Theme/ThemeContext";
-import {SelectedItem} from "shared/ui/Select";
+import { createContext } from 'react';
+import { Theme } from '../Theme/ThemeContext';
+import { SelectedItem } from 'shared/ui/Select';
 
 export interface SelectContextProps {
     visible?: boolean,

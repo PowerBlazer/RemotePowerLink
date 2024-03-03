@@ -12,5 +12,15 @@
   "У вас уже есть учетная запись?" : "Do you already have an account? ",
   "Неправильный формат почты": "Incorrect mail format",
   "Войти": "Login",
-  "Пользователь с такой почтой уже зарегестрирован": "A user with such an email has already been registered"
+  "Пользователь с такой почтой уже зарегестрирован": "A user with such an email has already been registered",
+  "Код верификации": "Code verification",
+  "Подвердите код верификации": "Confirm the verification code",
+  "Назад": "Back",
+  "Повтороно отправить на почту": "Resend to mail",
+  "Повтороно отправить на почту через": "Resend to the mail via",
+  "Придумайте себе имя пользователя и пароль": "Come up with a username and password for yourself",
+  "Имя пользователя": "Username",
+  "Повторный пароль": "Repeat password",
+  "Зарегестрироваться": "Register",
+  "PasswordInfo": "The password is used to encrypt your data before leaving your devices. If you forget it, you may lose your data."
 }

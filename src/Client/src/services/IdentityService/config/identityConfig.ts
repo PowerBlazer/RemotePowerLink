@@ -1,15 +1,15 @@
-﻿export interface IdentityData{
-    id: number,
+﻿export interface IdentityData {
+    identityId: number,
     title: string
 }
 
-export interface CreateIdentityData{
+export interface CreateIdentityData {
     title: string,
     username: string,
     password: string
 }
 
-export interface CreateIdentityResult{
+export interface CreateIdentityResult {
     identityId: number,
     title: string,
     username: string,

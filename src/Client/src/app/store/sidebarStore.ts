@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { ReactNode } from 'react';
-import {ProxyData} from "services/ProxyService/config/proxyConfig";
-import {IdentityData} from "services/IdentityService/config/identityConfig";
+import { ProxyData } from 'services/ProxyService/config/proxyConfig';
+import { IdentityData } from 'services/IdentityService/config/identityConfig';
 
 export interface SidebarOptions {
     isVisible: boolean;
@@ -18,12 +18,9 @@ export abstract class SidebarData implements SidebarOptions {
 }
 
 export class SidebarNewHostData extends SidebarData {
-    proxies?: ProxyData[] | null = null;
-    identities?: IdentityData[] | null = null;
 }
 
 export class SidebarNewProxyData extends SidebarData {
-    identities?: IdentityData[] | null = null;
 }
 
 export class SidebarNewIdentityData extends SidebarData {
@@ -31,7 +28,7 @@ export class SidebarNewIdentityData extends SidebarData {
 }
 
 class SidebarStore {
-    newHostData: SidebarNewHostData  = { isVisible: false };
+    newHostData: SidebarNewHostData = { isVisible: false };
     newProxyData: SidebarNewProxyData = { isVisible: false };
     newIdentityData: SidebarNewIdentityData = { isVisible: false };
 
@@ -42,14 +39,14 @@ class SidebarStore {
         makeAutoObservable(this);
     }
 
-    resetVisibleSidebars(){
+    resetVisibleSidebars () {
         const sidebarsData: SidebarData[] = [
             this.newHostData,
             this.newProxyData,
             this.newIdentityData
         ];
 
-        sidebarsData.forEach(sidebarData=>{
+        sidebarsData.forEach(sidebarData => {
             sidebarData.isVisible = false;
         })
     }
@@ -60,34 +57,33 @@ class SidebarStore {
     }
 
     async setSidebar (sideBar?: SidebarState) {
-        if(this.mainSideBar == null && sideBar !== null){
+        if (this.mainSideBar == null && sideBar !== null) {
             this.isVisible = false;
             this.mainSideBar = sideBar;
-            
-            setTimeout(()=>{
+
+            setTimeout(() => {
                 this.isVisible = true;
-            },0);
-            
+            }, 0);
+
             return;
         }
-        
-        if((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name !== sideBar.name){
+
+        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name !== sideBar.name) {
             this.mainSideBar = sideBar;
             return;
         }
-        
-        if((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name === sideBar.name){
+
+        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name === sideBar.name) {
             await this.setVisible(false);
             this.mainSideBar = null;
             this.resetVisibleSidebars();
             return;
         }
-        
-        if(sideBar === null){
+
+        if (sideBar === null) {
             this.isVisible = false
             this.mainSideBar = null;
             this.resetVisibleSidebars();
-            return;
         }
     }
 }

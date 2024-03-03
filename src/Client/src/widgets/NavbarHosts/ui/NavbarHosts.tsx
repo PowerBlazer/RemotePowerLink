@@ -9,7 +9,7 @@ import sidebarStore from 'app/store/sidebarStore';
 import { SidebarNewHost } from 'widgets/SidebarNewHost';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
-import {observer} from "mobx-react-lite";
+import { observer } from 'mobx-react-lite';
 
 interface NavbarHostsProps {
     className?: string;

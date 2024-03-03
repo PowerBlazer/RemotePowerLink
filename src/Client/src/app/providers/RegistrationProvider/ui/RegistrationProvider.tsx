@@ -8,7 +8,7 @@ interface RegistrationProviderProps {
 
 export default function RegistrationProvider ({ children }: RegistrationProviderProps) {
     const defaultStepRegistration: RegistrationStepModel = {
-        step: RegistrationSteps.ConfirmEmail
+        step: RegistrationSteps.SendEmailVerification
     };
 
     const [stepModel, setStepRegistration] = useState<RegistrationStepModel>(defaultStepRegistration);

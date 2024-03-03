@@ -12,8 +12,8 @@ public class VerificationEmailSendProducer: IVerificationEmailSendProducer
         _busControl = busControl;
     }
 
-    public async Task PublishEmailSend(VerificationEmailSendEvent verificationEmailSendEvent)
+    public Task PublishEmailSend(VerificationEmailSendEvent verificationEmailSendEvent)
     {
-       await _busControl.Publish(verificationEmailSendEvent);
+        return _busControl.Publish(verificationEmailSendEvent);
     }
 }

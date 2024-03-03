@@ -17,6 +17,13 @@ public interface IServerRepository
     /// <param name="server">Сервер для добавления.</param>
     /// <returns>Добавленный сервер.</returns>
     Task<Server> AddServerAsync(Server server);
+    
+    /// <summary>
+    /// Получает список серверов для подключения по SSH, принадлежащих указанному пользователю.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <returns>Список серверов для подключения по SSH пользователя.</returns>
+    Task<IEnumerable<Server>> GetServersInUser(long userId);
 
 
 }

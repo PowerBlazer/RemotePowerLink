@@ -1,15 +1,15 @@
 ﻿using Application.Layers.Persistence.Repositories;
 using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
-using Application.Layers.Persistence.Services.Parameters.CheckConnectionServer;
-using Application.Layers.Persistence.Services.Parameters.GetSystemType;
 using Domain.DTOs.Server;
 using Domain.Entities;
 using Domain.Exceptions;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace Application.Features.ServerFeature.CreateServer;
 
+[UsedImplicitly]
 public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateServerResponse>
 {
     private readonly IServerRepository _serverRepository;
@@ -37,22 +37,14 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
             throw new NotFoundException("Идентификатор с указанным 'IdentityId' не найдена.","IdentityId");
         }
         
-        var getSystemServerTypeParameter = new GetSystemServerTypeParameter
+        var connectionServerParameter = new ConnectionServerParameter
         {
             Hostname = request.Hostname,
-            SshPort = request.Port,
+            SshPort = request.SshPort,
             Username = identity.Username,
-            Password = identity.Password,
+            Password = identity.Password
         };
         
-        var checkConnectionServerParameter = new CheckConnectionServerParameter
-        {
-            Hostname = request.Hostname,
-            SshPort = request.Port,
-            Username = identity.Username,
-            Password = identity.Password,
-        };
-
         if (request.ProxyId is not null)
         {
             var proxy = await _proxyRepository.GetProxyDefaultAsync(request.ProxyId.Value);
@@ -63,46 +55,43 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
             }
             
             var proxyIdentity = await _identityRepository.GetIdentityAsync(proxy.IdentityId);
-                    
-            getSystemServerTypeParameter.Proxy = new ProxyParameter
-            {
-                Hostname = proxy.IpAddress,
-                SshPort = proxy.Port,
-                Username = proxyIdentity.Username,
-                Password = proxyIdentity.Password
-            };
             
-            checkConnectionServerParameter.Proxy = new ProxyParameter
+            connectionServerParameter.Proxy = new ProxyParameter
             {
                 Hostname = proxy.IpAddress,
-                SshPort = proxy.Port,
+                SshPort = proxy.SshPort,
                 Username = proxyIdentity.Username,
                 Password = proxyIdentity.Password
             };
         }
         
-        var isConnection = await _hostService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);
+        var isConnection = await _hostService.CheckConnectionServer(connectionServerParameter, cancellationToken);
 
         if (!isConnection)
         {
             throw new ConnectionServerException("Не удалось установить соединение с сервером.","Hostname");
         }
         
-        var systemType = await _hostService.GetSystemType(getSystemServerTypeParameter, cancellationToken);
+        var systemType = await _hostService.GetSystemType(connectionServerParameter, cancellationToken);
         
         var serverResult = await _serverRepository.AddServerAsync(new Server
         {
             Title = request.Title,
             IpAddress = request.Hostname,
-            Port = request.Port,
+            SshPort = request.SshPort,
             StartupCommand = request.StartupCommand,
             IdentityId = request.IdentityId,
             UserId = request.UserId,
             ProxyId = request.ProxyId,
             DateCreated = DateTime.Now,
-            ServerTypeId = systemType is not null ? (long)systemType : null
+            SystemTypeId = systemType.SystemTypeId
         });
 
-        return CreateServerResponse.MapToServer(serverResult);
+        var createServerResponse = CreateServerResponse.MapToServer(serverResult);
+
+        createServerResponse.SystemTypeName = systemType.Name;
+        createServerResponse.SystemTypeIcon = systemType.IconPath;
+
+        return createServerResponse;
     }
 }

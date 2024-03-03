@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Application.Layers.Persistence.Repositories;
 using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
-using Application.Layers.Persistence.Services.Parameters.CheckConnectionServer;
-using Application.Layers.Persistence.Services.Parameters.GetSystemType;
+using Application.Layers.Persistence.Services.Results;
 using Domain.Enums;
 using Renci.SshNet;
 
@@ -12,7 +12,12 @@ namespace Persistence.Services;
 
 public class HostService: IHostService
 {
-    public async Task<SystemTypeEnum?> GetSystemType(GetSystemServerTypeParameter serverParameter, 
+    private readonly ISystemTypeRepository _systemTypeRepository;
+    public HostService(ISystemTypeRepository systemTypeRepository)
+    {
+        _systemTypeRepository = systemTypeRepository;
+    }
+    public async Task<SystemTypeResult> GetSystemType(ConnectionServerParameter serverParameter, 
         CancellationToken cancellationToken)
     {
         var connectionInfo = GetConnectionInfo(
@@ -24,17 +29,23 @@ public class HostService: IHostService
             serverParameter.Proxy);
         
         using var client = new SshClient(connectionInfo);
+        
+        var systemTypeResult = new SystemTypeResult
+        {
+            SystemTypeId = 1,
+            Name = "Default"
+        };
 
         try
         {
             await client.ConnectAsync(cancellationToken);
 
             var response = client.RunCommand("cat /etc/os-release").Result;
-
-            foreach (SystemTypeEnum systemType in Enum.GetValues(typeof(SystemTypeEnum)))
+            
+            foreach (SystemTypeEnum systemTypeEnumItem in Enum.GetValues(typeof(SystemTypeEnum)))
             {
                 var enumMember = typeof(SystemTypeEnum)
-                    .GetMember(systemType.ToString())
+                    .GetMember(systemTypeEnumItem.ToString())
                     .FirstOrDefault();
 
                 if (enumMember == null)
@@ -43,23 +54,28 @@ public class HostService: IHostService
                 var descriptionAttribute = enumMember.GetCustomAttribute<DescriptionAttribute>();
 
                 if (descriptionAttribute != null && response.Contains(descriptionAttribute.Description))
-                    return systemType;
+                {
+                    systemTypeResult = new SystemTypeResult
+                    {
+                        SystemTypeId = (long)systemTypeEnumItem,
+                        Name = systemTypeEnumItem.ToString()
+                    };
+                }
             }
 
-            return null;
-        }
-        catch
-        {
-            return null;
+            systemTypeResult.IconPath = (await _systemTypeRepository.GetSystemTypeAsync(systemTypeResult.SystemTypeId))
+                .IconPath;
         }
         finally
         {
             if (client.IsConnected)
                 client.Disconnect();
         }
+
+        return systemTypeResult;
     }
 
-    public async Task<bool> CheckConnectionServer(CheckConnectionServerParameter serverParameter, 
+    public async Task<bool> CheckConnectionServer(ConnectionServerParameter serverParameter, 
         CancellationToken cancellationToken)
     {
         var connectionInfo = GetConnectionInfo(
@@ -92,9 +108,9 @@ public class HostService: IHostService
     public bool ValidateServerAddress(string serverAddress)
     {
         // Регулярное выражение для проверки доменного имени или IP-адреса с портом
-        var pattern = @"^(((([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+[a-zA-Z]{2,63})|((25[0-5]" +
+        const string pattern = @"^(((([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+[a-zA-Z]{2,63})|((25[0-5]" +
                       @"|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3})|(([a-fA-F0-9]" +
-                      @"{1,4}:){7}[a-fA-F0-9]{1,4})|(([0-9a-fA-F]{1,4}:){1,7}:)|(([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]" + 
+                      "{1,4}:){7}[a-fA-F0-9]{1,4})|(([0-9a-fA-F]{1,4}:){1,7}:)|(([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]" + 
                       @"{1,4})|(:([0-9a-fA-F]{1,4}:){1,6})|((([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+[a-zA-Z]{2,63}):([0-9]{1,5}))$";
 
         // Проверка строки с использованием регулярного выражения

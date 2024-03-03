@@ -3,4 +3,18 @@ using MediatR;
 
 namespace Application.Features.IdentityFeature.GetIdentities;
 
-public record GetIdentitiesCommand(long UserId) : IRequest<IEnumerable<GetIdentityResponse>>;
+/// <summary>
+/// Команда для получения списка идентификаторов.
+/// </summary>
+public class GetIdentitiesCommand: IRequest<IEnumerable<GetIdentityResponse>>
+{
+    public GetIdentitiesCommand(long userId)
+    {
+        UserId = userId;
+    }
+    
+    /// <summary>
+    /// Id пользователя 
+    /// </summary>
+    public long UserId { get; }
+}

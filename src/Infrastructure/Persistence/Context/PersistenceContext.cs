@@ -19,9 +19,9 @@ public class PersistenceContext: DbContext, IPersistenceContext
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
     
-    public async Task<int> SaveChangesAsync()
+    public Task<int> SaveChangesAsync()
     {
-        return await base.SaveChangesAsync();
+        return base.SaveChangesAsync();
     }
 
     public new DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity<long>

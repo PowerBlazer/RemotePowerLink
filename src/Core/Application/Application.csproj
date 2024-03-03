@@ -21,8 +21,4 @@
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.0-preview3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Layers\Persistence\Services\Results\" />
-    </ItemGroup>
-
 </Project>

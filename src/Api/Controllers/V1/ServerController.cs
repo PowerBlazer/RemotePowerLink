@@ -1,5 +1,6 @@
 ﻿
 using Application.Features.ServerFeature.CreateServer;
+using Application.Features.ServerFeature.GetServers;
 using Domain.Common;
 using Domain.DTOs.Server;
 using MediatR;
@@ -38,6 +39,28 @@ public class ServerController: BaseController
         var result = await Mediator.Send(createServerCommand);
 
         return new ApiActionResult<CreateServerResponse>
+        {
+            Result = result
+        };
+    }
+    
+    /// <summary>
+    /// Получает список серверов пользователя.
+    /// </summary>
+    /// <returns>Список серверов пользователя.</returns>
+    /// <response code="200">Успешно возвращен список серверов пользователя.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(ApiActionResult<IEnumerable<GetServerResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<IEnumerable<GetServerResponse>>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<IEnumerable<GetServerResponse>>> GetServersInUser()
+    {
+        var result = await Mediator.Send(new GetServersCommand(UserId));
+
+        return new ApiActionResult<IEnumerable<GetServerResponse>>
         {
             Result = result
         };

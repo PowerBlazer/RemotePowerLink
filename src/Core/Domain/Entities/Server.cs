@@ -20,7 +20,7 @@ public class Server : BaseEntity<long>
     /// <summary>
     /// Порт для подключения по SSH.
     /// </summary>
-    public int? Port { get; set; }
+    public int? SshPort { get; set; }
 
     /// <summary>
     /// Команда запуска для сервера.
@@ -65,17 +65,16 @@ public class Server : BaseEntity<long>
     /// Прокси сервера.
     /// </summary>
     public Proxy? Proxy { get; set; }
-
-    //ServerType
+    
     /// <summary>
     /// Идентификатор типа сервера.
     /// </summary>
-    public long? ServerTypeId { get; set; }
+    public required long SystemTypeId { get; set; }
 
     /// <summary>
     /// Тип сервера.
     /// </summary>
-    public SystemType? ServerType { get; set; }
+    public SystemType? SystemType { get; set; }
 
     #endregion
 }

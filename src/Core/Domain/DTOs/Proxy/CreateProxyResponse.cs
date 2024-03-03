@@ -14,7 +14,7 @@ public class CreateProxyResponse
     /// <summary>
     /// Порт прокси сервера.
     /// </summary>
-    public int? Port { get; set; }
+    public int? SshPort { get; set; }
 
     /// <summary>
     /// Наименование прокси сервера.
@@ -32,7 +32,7 @@ public class CreateProxyResponse
         {
             ProxyId = proxy.Id,
             Hostname = proxy.IpAddress,
-            Port = proxy.Port,
+            SshPort = proxy.SshPort,
             Title = proxy.Title,
             IdentityId = proxy.IdentityId
         };

@@ -1,8 +1,10 @@
 ﻿using Application.Layers.Persistence.Services;
 using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.ProxyFeature.CreateProxy;
 
+[UsedImplicitly]
 public class CreateProxyValidator: AbstractValidator<CreateProxyCommand>
 {
     public CreateProxyValidator(IHostService hostService)
@@ -15,8 +17,8 @@ public class CreateProxyValidator: AbstractValidator<CreateProxyCommand>
             .NotEmpty().WithMessage("Поле не может быть пустым")
             .MaximumLength(255).WithMessage("Поле не может превышать 255 символов");
         
-        RuleFor(p => p.Port)
-            .Must(port => port == null || (port > 0 && port <= 65535))
+        RuleFor(p => p.SshPort)
+            .Must(port => port is null or > 0 and <= 65535)
             .WithMessage("Недопустимое значение порта.");
 
         RuleFor(p => p.IdentityId)

@@ -16,7 +16,7 @@ public class CreateProxyCommand: IRequest<CreateProxyResponse>
     /// <summary>
     /// Порт прокси сервера.
     /// </summary>
-    public int? Port { get; set; }
+    public int? SshPort { get; set; }
 
     /// <summary>
     /// Наименование прокси сервера.

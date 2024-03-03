@@ -1,10 +1,14 @@
 ﻿namespace Domain.DTOs.Server;
 
 /// <summary>
-/// Ответ на запрос создания нового сервера.
+/// Ответ на запрос получения информации о сервере.
 /// </summary>
-public class CreateServerResponse
+public class GetServerResponse
 {
+    /// <summary>
+    /// Идентификатор сервера
+    /// </summary>
+    public required long ServerId { get;set; }
     /// <summary>
     /// Хостное имя (адрес) нового сервера.
     /// </summary>
@@ -43,17 +47,20 @@ public class CreateServerResponse
     /// </summary>
     public string? SystemTypeIcon { get; set; }
 
-
-    public static CreateServerResponse MapToServer(Entities.Server server)
+    public static GetServerResponse MapServerTo(Entities.Server server)
     {
-        return new CreateServerResponse
+        return new GetServerResponse
         {
+            ServerId = server.Id,
             Hostname = server.IpAddress,
-            IdentityId = server.IdentityId,
-            SshPort = server.SshPort,
             Title = server.Title,
+            SshPort = server.SshPort,
+            StartupCommand = server.StartupCommand,
+            IdentityId = server.IdentityId,
             ProxyId = server.ProxyId,
-            StartupCommand = server.StartupCommand
+            SystemTypeName = server.SystemType?.Name,
+            SystemTypeIcon = server.SystemType?.IconPath
         };
     }
+
 }

@@ -11,59 +11,64 @@ public class SystemTypeConfiguration: IEntityTypeConfiguration<SystemType>
         builder.Property(p => p.Name).HasMaxLength(100).IsRequired();
 
         builder.HasMany(p => p.Servers)
-            .WithOne(p => p.ServerType)
+            .WithOne(p => p.SystemType)
             .OnDelete(DeleteBehavior.Cascade)
-            .HasForeignKey(p => p.ServerTypeId);
+            .HasForeignKey(p => p.SystemTypeId);
 
         #region HasData
         builder.HasData(
             new SystemType
             {
-                Id = 1,
-                Name = "Windows",
-                Photo = "/ServerTypes/windows.svg"
+                Id  = 1,
+                Name = "Default"
             },
             new SystemType
             {
                 Id = 2,
-                Name = "ArchLinux",
-                Photo = "/ServerTypes/arch-linux.svg"
+                Name = "Windows",
+                IconPath = "/SystemTypes/windows.svg"
             },
             new SystemType
             {
                 Id = 3,
-                Name = "OpenSuse",
-                Photo = "/ServerTypes/opensuse.svg"
+                Name = "ArchLinux",
+                IconPath = "/SystemTypes/arch-linux.svg"
             },
             new SystemType
             {
                 Id = 4,
-                Name = "Fedora",
-                Photo = "/ServerTypes/fedora.svg"
+                Name = "OpenSuse",
+                IconPath = "/SystemTypes/opensuse.svg"
             },
             new SystemType
             {
                 Id = 5,
-                Name = "CentOS",
-                Photo = "/ServerTypes/centos.svg"
+                Name = "Fedora",
+                IconPath = "/SystemTypes/fedora.svg"
             },
             new SystemType
             {
                 Id = 6,
-                Name = "Debian",
-                Photo = "/ServerTypes/debian.svg"
+                Name = "CentOS",
+                IconPath = "/SystemTypes/centos.svg"
             },
             new SystemType
             {
                 Id = 7,
-                Name = "MacOS",
-                Photo = "/ServerTypes/macos.svg"
+                Name = "Debian",
+                IconPath = "/SystemTypes/debian.svg"
             },
             new SystemType
             {
                 Id = 8,
+                Name = "MacOS",
+                IconPath = "/SystemTypes/macos.svg"
+            },
+            new SystemType
+            {
+                Id = 9,
                 Name = "Ubuntu",
-                Photo = "/ServerTypes/ubuntu.svg"
+                IconPath = "/SystemTypes/ubuntu.svg"
             }
         );
         

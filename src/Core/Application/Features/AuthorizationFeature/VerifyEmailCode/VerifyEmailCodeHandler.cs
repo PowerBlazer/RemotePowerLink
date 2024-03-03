@@ -14,8 +14,8 @@ public class VerifyEmailCodeHandler: IRequestHandler<VerifyEmailCodeCommand>
         _authorizationService = authorizationService;
     }
 
-    public async Task Handle(VerifyEmailCodeCommand request, CancellationToken cancellationToken)
+    public Task Handle(VerifyEmailCodeCommand request, CancellationToken cancellationToken)
     {
-       await _authorizationService.VerifyEmailCodeAsync(request.SessionId, request.VerificationCode);
+        return _authorizationService.VerifyEmailCodeAsync(request.SessionId, request.VerificationCode);
     }
 }

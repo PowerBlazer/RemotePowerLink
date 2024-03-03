@@ -23,13 +23,13 @@ public class IdentityUserRepository: IIdentityUserRepository
         return userEntity.Entity;
     }
 
-    public async Task<IdentityUser?> GetUserByEmailAsync(string email)
+    public Task<IdentityUser?> GetUserByEmailAsync(string email)
     {
-        return await _identityContext.IdentityUsers.FirstOrDefaultAsync(p => p.Email == email);
+        return _identityContext.IdentityUsers.FirstOrDefaultAsync(p => p.Email == email);
     }
 
-    public async Task<IdentityUser?> GetUserByIdAsync(long userId)
+    public Task<IdentityUser?> GetUserByIdAsync(long userId)
     {
-        return await _identityContext.IdentityUsers.FirstOrDefaultAsync(p => p.Id == userId);
+        return _identityContext.IdentityUsers.FirstOrDefaultAsync(p => p.Id == userId);
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Application.Features.UserFeature.GetUserData;
 using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.IdentityFeature.GetIdentities;
 
+[UsedImplicitly]
 public class GetIdentitiesValidator: AbstractValidator<GetUserDataCommand>
 {
     public GetIdentitiesValidator()

@@ -1,8 +1,9 @@
-﻿using Domain.Entities;
-using FluentValidation;
+﻿using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.IdentityFeature.CreateIdentity;
 
+[UsedImplicitly]
 public class CreateIdentityValidator: AbstractValidator<CreateIdentityCommand>
 {
     public CreateIdentityValidator()

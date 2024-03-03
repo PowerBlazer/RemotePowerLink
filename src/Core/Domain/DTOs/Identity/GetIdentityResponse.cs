@@ -8,10 +8,19 @@ public class GetIdentityResponse
     /// <summary>
     /// Id идентификатора.
     /// </summary>
-    public long Id { get; set; }
+    public long IdentityId { get; set; }
 
     /// <summary>
     /// Название или описание идентификатора.
     /// </summary>
     public required string Title { get; set; }
+
+    public static GetIdentityResponse MapIdentityTo(Entities.Identity identity)
+    {
+        return new GetIdentityResponse
+        {
+            IdentityId = identity.Id,
+            Title = identity.Title
+        };
+    }
 }

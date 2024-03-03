@@ -19,10 +19,10 @@ public class RegisterUserHandler: IRequestHandler<RegisterUserCommand,Registrati
         _mapper = mapper;
     }
 
-    public async Task<RegistrationResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public Task<RegistrationResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var registerInput = _mapper.Map<RegisterUserCommand, RegistrationRequest>(request);
 
-        return await _authorizationService.RegisterUserAsync(registerInput);
+        return _authorizationService.RegisterUserAsync(registerInput);
     }
 }

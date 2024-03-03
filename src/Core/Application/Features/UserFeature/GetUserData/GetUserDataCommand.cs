@@ -3,4 +3,17 @@ using MediatR;
 
 namespace Application.Features.UserFeature.GetUserData;
 
-public record GetUserDataCommand(long UserId) : IRequest<GetUserDataResponse>;
+/// <summary>
+/// Команда для получения данных пользователя.
+/// </summary>
+public class GetUserDataCommand : IRequest<GetUserDataResponse>
+{
+    public GetUserDataCommand(long userId)
+    {
+        UserId = userId;
+    }
+    /// <summary>
+    /// Идентификатор пользователя.
+    /// </summary>
+    public long UserId { get; }
+}

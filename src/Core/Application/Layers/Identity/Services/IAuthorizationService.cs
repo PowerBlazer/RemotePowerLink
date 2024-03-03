@@ -1,51 +1,50 @@
 ﻿using Domain.DTOs.Authorization;
-using System.Threading.Tasks;
 
-namespace Application.Layers.Identity.Services
+
+namespace Application.Layers.Identity.Services;
+
+public interface IAuthorizationService
 {
-    public interface IAuthorizationService
-    {
-        /// <summary>
-        /// Отправляет код подтверждения на указанный адрес электронной почты пользователя.
-        /// </summary>
-        /// <param name="email">Адрес электронной почты пользователя.</param>
-        /// <returns>ID созданной сессии.</returns>
-        Task<string> SendEmailVerificationCodeAsync(string email);
+    /// <summary>
+    /// Отправляет код подтверждения на указанный адрес электронной почты пользователя.
+    /// </summary>
+    /// <param name="email">Адрес электронной почты пользователя.</param>
+    /// <returns>ID созданной сессии.</returns>
+    Task<string> SendEmailVerificationCodeAsync(string email);
 
-        /// <summary>
-        /// Повторно отправляет код подтверждения на указанный адрес электронной почты пользователя.
-        /// </summary>
-        /// <param name="sessionId">ID сессии.</param>
-        /// <param name="email">Адрес электронной почты пользователя.</param>
-        /// <returns>ID пересозданной сессии.</returns>
-        Task<string> ResendVerificationCodeAsync(string sessionId, string email);
+    /// <summary>
+    /// Повторно отправляет код подтверждения на указанный адрес электронной почты пользователя.
+    /// </summary>
+    /// <param name="sessionId">ID сессии.</param>
+    /// <param name="email">Адрес электронной почты пользователя.</param>
+    /// <returns>ID пересозданной сессии.</returns>
+    Task<string> ResendVerificationCodeAsync(string sessionId, string email);
 
-        /// <summary>
-        /// Подтверждает адрес электронной почты пользователя с использованием кода подтверждения.
-        /// </summary>
-        /// <param name="sessionId">ID сессии.</param>
-        /// <param name="verifyCode">Код подтверждения.</param>
-        Task VerifyEmailCodeAsync(string sessionId, string verifyCode);
+    /// <summary>
+    /// Подтверждает адрес электронной почты пользователя с использованием кода подтверждения.
+    /// </summary>
+    /// <param name="sessionId">ID сессии.</param>
+    /// <param name="verifyCode">Код подтверждения.</param>
+    Task VerifyEmailCodeAsync(string sessionId, string verifyCode);
 
-        /// <summary>
-        /// Регистрирует нового пользователя на основе предоставленных данных регистрации.
-        /// </summary>
-        /// <param name="registrationRequest">Данные регистрации пользователя.</param>
-        /// <returns>Результат регистрации.</returns>
-        Task<RegistrationResponse> RegisterUserAsync(RegistrationRequest registrationRequest);
+    /// <summary>
+    /// Регистрирует нового пользователя на основе предоставленных данных регистрации.
+    /// </summary>
+    /// <param name="registrationRequest">Данные регистрации пользователя.</param>
+    /// <returns>Результат регистрации.</returns>
+    Task<RegistrationResponse> RegisterUserAsync(RegistrationRequest registrationRequest);
 
-        /// <summary>
-        /// Аутентифицирует пользователя на основе предоставленных учетных данных.
-        /// </summary>
-        /// <param name="loginRequest">Данные для входа пользователя.</param>
-        /// <returns>Результат аутентификации.</returns>
-        Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest);
+    /// <summary>
+    /// Аутентифицирует пользователя на основе предоставленных учетных данных.
+    /// </summary>
+    /// <param name="loginRequest">Данные для входа пользователя.</param>
+    /// <returns>Результат аутентификации.</returns>
+    Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest);
 
-        /// <summary>
-        /// Обновляет токены доступа и обновления на основе предоставленного запроса обновления токенов.
-        /// </summary>
-        /// <param name="refreshTokenRequest">Данные запроса обновления токенов.</param>
-        /// <returns>Обновленные токены.</returns>
-        Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest);
-    }
+    /// <summary>
+    /// Обновляет токены доступа и обновления на основе предоставленного запроса обновления токенов.
+    /// </summary>
+    /// <param name="refreshTokenRequest">Данные запроса обновления токенов.</param>
+    /// <returns>Обновленные токены.</returns>
+    Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest);
 }

@@ -1,6 +1,5 @@
 ﻿using Application.Features.ProxyFeature.CreateProxy;
 using Application.Features.ProxyFeature.GetProxies;
-using Application.Features.ServerFeature.CreateServer;
 using Domain.Common;
 using Domain.DTOs.Proxy;
 using MediatR;

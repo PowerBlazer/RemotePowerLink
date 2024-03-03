@@ -56,7 +56,7 @@ public class ExceptionHandlingMiddleware
         }
     }
         
-    private static async Task HandleExceptionAsync(HttpContext httpContext,
+    private static Task HandleExceptionAsync(HttpContext httpContext,
         HttpStatusCode httpStatusCode, Dictionary<string, List<string>>? errors)
     {
         var response = httpContext.Response;
@@ -71,10 +71,10 @@ public class ExceptionHandlingMiddleware
 
         var result = JsonSerializer.Serialize(errorResult);
 
-        await response.WriteAsync(result);
+        return response.WriteAsync(result);
     }
     
-    private static async Task HandleExceptionAsync(HttpContext httpContext,
+    private static Task HandleExceptionAsync(HttpContext httpContext,
         HttpStatusCode httpStatusCode, string error)
     {
         var response = httpContext.Response;
@@ -89,7 +89,7 @@ public class ExceptionHandlingMiddleware
         
         var result = JsonSerializer.Serialize(errorResult);
 
-        await response.WriteAsync(result);
+        return response.WriteAsync(result);
     }
     
     

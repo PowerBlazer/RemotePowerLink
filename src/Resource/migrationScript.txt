@@ -1,1 +1,3 @@
+dotnet ef migrations remove --project ./Infrastructure/Persistence --startup-project ./Api --context PersistenceContext
+
 dotnet ef migrations add PersistenceMigration --project ./Infrastructure/Persistence --startup-project ./Api --context PersistenceContext

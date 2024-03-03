@@ -1,10 +1,12 @@
 ﻿using Application.Layers.Persistence.Repositories;
 using Domain.DTOs.Identity;
 using Domain.Entities;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace Application.Features.IdentityFeature.CreateIdentity;
 
+[UsedImplicitly]
 public class CreateIdentityHandler: IRequestHandler<CreateIdentityCommand, CreateIdentityResponse>
 {
     private readonly IIdentityRepository _identityRepository;

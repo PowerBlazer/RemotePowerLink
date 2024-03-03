@@ -18,9 +18,9 @@ public class ServerRepositrory: IServerRepository
     public async Task<Server> GetServerAsync(long serverId)
     {
         var server = await _persistenceContext.Servers
-            .Include(p=>p.Identity)
-            .Include(p=>p.Proxy)
-            .Include(p=>p.ServerType)
+            .Include(p=> p.Identity)
+            .Include(p=> p.Proxy)
+            .Include(p=> p.SystemType)
             .FirstOrDefaultAsync(p => p.Id == serverId);
 
         if (server is null)
@@ -37,5 +37,17 @@ public class ServerRepositrory: IServerRepository
         await _persistenceContext.SaveChangesAsync();
         
         return server;
+    }
+
+    public async Task<IEnumerable<Server>> GetServersInUser(long userId)
+    {
+        var servers = await _persistenceContext.Servers
+            .Include(p => p.Identity)
+            .Include(p => p.Proxy)
+            .Include(p => p.SystemType)
+            .Where(p=> p.UserId == userId)
+            .ToListAsync();
+
+        return servers;
     }
 }

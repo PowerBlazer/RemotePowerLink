@@ -40,6 +40,12 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
                 Id = 1,
                 UserId = 1,
                 Username = "PowerBlaze"
+            },
+            new User
+            {
+                Id = 2,
+                UserId = 2,
+                Username = "PowerBlaze"
             }
         );
 

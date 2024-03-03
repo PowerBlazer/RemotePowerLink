@@ -12,7 +12,7 @@ public class ProxyConfiguration: IEntityTypeConfiguration<Proxy>
         builder.HasIndex(p => p.UserId);
         
         builder.Property(p => p.IpAddress).HasMaxLength(50).IsRequired();
-        builder.Property(p => p.Port).IsRequired();
+        builder.Property(p => p.SshPort).IsRequired();
         builder.Property(p => p.Title).HasMaxLength(255).IsRequired();
 
         builder.HasMany(p => p.Servers)
@@ -27,7 +27,7 @@ public class ProxyConfiguration: IEntityTypeConfiguration<Proxy>
             IdentityId = 1,
             Title = "Test1",
             IpAddress = "123",
-            Port = 0
+            SshPort = 0
         });
     }
 }

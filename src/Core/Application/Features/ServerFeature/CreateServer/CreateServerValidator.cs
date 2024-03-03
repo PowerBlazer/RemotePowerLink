@@ -1,8 +1,10 @@
 ﻿using Application.Layers.Persistence.Services;
 using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.ServerFeature.CreateServer;
 
+[UsedImplicitly]
 public class CreateServerValidator: AbstractValidator<CreateServerCommand>
 {
     public CreateServerValidator(IHostService hostService)
@@ -15,8 +17,8 @@ public class CreateServerValidator: AbstractValidator<CreateServerCommand>
             .NotEmpty().WithMessage("Поле не может быть пустым")
             .MaximumLength(255).WithMessage("Поле не может превышать 255 символов");
         
-        RuleFor(p => p.Port)
-            .Must(port => port == null || (port > 0 && port <= 65535))
+        RuleFor(p => p.SshPort)
+            .Must(port => port is null or > 0 and <= 65535)
             .WithMessage("Недопустимое значение порта.");
         
         RuleFor(p => p.StartupCommand)

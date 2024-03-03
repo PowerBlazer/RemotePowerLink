@@ -1,5 +1,4 @@
 ﻿using Application.Layers.Identity.Services;
-using Application.Layers.Persistence.Contexts;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -15,8 +14,8 @@ public class SendEmailVerificationHandler: IRequestHandler<SendEmailVerification
         _authorizationService = authorizationService;
     }
     
-    public async Task<string> Handle(SendEmailVerificationCommand request, CancellationToken cancellationToken)
+    public Task<string> Handle(SendEmailVerificationCommand request, CancellationToken cancellationToken)
     {
-        return await _authorizationService.SendEmailVerificationCodeAsync(request.Email!);
+        return _authorizationService.SendEmailVerificationCodeAsync(request.Email!);
     }
 }

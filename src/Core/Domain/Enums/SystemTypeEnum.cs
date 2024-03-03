@@ -4,20 +4,22 @@ namespace Domain.Enums;
 
 public enum SystemTypeEnum
 {
+    [Description("Default")]
+    Default = 1,
     [Description("Windows")]
-    Windows = 1,
+    Windows = 2,
     [Description("ArchLinux")]
-    ArchLinux = 2,
+    ArchLinux = 3,
     [Description("OpenSuse")]
-    OpenSuse = 3,
+    OpenSuse = 4,
     [Description("Fedora")]
-    Fedora = 4,
+    Fedora = 5,
     [Description("CentOS")]
-    CentOs = 5,
+    CentOs = 6,
     [Description("Debian")]
-    Debian = 6,
+    Debian = 7,
     [Description("MacOS")]
-    MacOs = 7,
+    MacOs = 8,
     [Description("Ubuntu")]
-    Ubuntu = 8
+    Ubuntu = 9
 }

@@ -19,10 +19,10 @@ public class LoginUserHandler: IRequestHandler<LoginUserCommand,LoginResponse>
         _mapper = mapper;
     }
 
-    public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var loginInput = _mapper.Map<LoginUserCommand,LoginRequest>(request);
 
-        return await _authorizationService.LoginUserAsync(loginInput);
+        return _authorizationService.LoginUserAsync(loginInput);
     }
 }

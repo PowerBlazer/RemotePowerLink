@@ -12,8 +12,8 @@ public class UserRegisteredProducer: IUserRegisteredProducer
         _busControl = busControl;
     }
 
-    public async Task PublishUserRegistered(UserRegisteredEvent userRegisteredEvent)
+    public Task PublishUserRegistered(UserRegisteredEvent userRegisteredEvent)
     {
-        await _busControl.Publish(userRegisteredEvent);
+        return _busControl.Publish(userRegisteredEvent);
     }
 }

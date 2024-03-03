@@ -56,10 +56,10 @@ public class AuthorizationController : BaseController
     [HttpPut("ConfirmEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task ConfirmEmailWithVerificationCode(
+    public Task ConfirmEmailWithVerificationCode(
         [FromBody] VerifyEmailCodeCommand verifyEmailCodeCommand)
     {
-        await Mediator.Send(verifyEmailCodeCommand);
+        return Mediator.Send(verifyEmailCodeCommand);
     }
 
     /// <summary>

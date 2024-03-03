@@ -1,6 +1,7 @@
 ﻿using Application.Layers.Persistence.Contexts;
 using Application.Layers.Persistence.Repositories;
 using Application.Layers.Persistence.Services;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ namespace Persistence;
 
 public static class DependencyInjection
 {
+    [UsedImplicitly]
     public static IServiceCollection AddPersistence(this IServiceCollection services
         , IConfiguration configuration)
     {

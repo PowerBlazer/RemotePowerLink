@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.UserFeature.GetUserData;
 
+[UsedImplicitly]
 public class GetUserDataValidator: AbstractValidator<GetUserDataCommand>
 {
     public GetUserDataValidator()

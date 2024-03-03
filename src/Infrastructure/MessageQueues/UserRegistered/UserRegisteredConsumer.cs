@@ -1,4 +1,6 @@
 ﻿using Application.Layers.MessageQueues.UserRegistered;
+using Application.Layers.Persistence.Repositories;
+using Domain.Entities;
 using MassTransit;
 
 namespace MessageQueues.UserRegistered;
@@ -6,13 +8,18 @@ namespace MessageQueues.UserRegistered;
 
 public class UserRegisteredConsumer: IConsumer<UserRegisteredEvent>
 {
-    public UserRegisteredConsumer()
+    private readonly IUserRepository _userRepository;
+    public UserRegisteredConsumer(IUserRepository userRepository)
     {
-       
+        _userRepository = userRepository;
     }
 
     public async Task Consume(ConsumeContext<UserRegisteredEvent> context)
     {
-       
+        await _userRepository.AddUserAsync(new User
+        {
+            UserId = context.Message.UserId,
+            Username = context.Message.UserName
+        });
     }
 }

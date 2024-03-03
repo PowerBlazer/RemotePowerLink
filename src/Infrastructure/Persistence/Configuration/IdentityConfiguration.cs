@@ -34,6 +34,16 @@ public class IdentityConfiguration: IEntityTypeConfiguration<Identity>
             Username = "root",
             Password = "123",
             Title = "Test1"
+        },
+        new Identity
+        {
+            Id = 2,
+            UserId = 1,
+            Username = "root",
+            Password = "123",
+            Title = "Test1"
         });
+        
+        
     }
 }

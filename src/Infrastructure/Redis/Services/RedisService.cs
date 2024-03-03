@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace Redis.Services;
 
-public class RedisService: IRedisService,IDisposable
+public sealed class RedisService: IRedisService,IDisposable
 {
     private readonly Lazy<ConnectionMultiplexer> _redisConnection;
     private readonly IDatabase _dataBaseRedis;
@@ -23,14 +23,14 @@ public class RedisService: IRedisService,IDisposable
         return await _dataBaseRedis.StringGetAsync(key);
     }
 
-    public async Task<bool> SetValueAsync(string key, string value, TimeSpan? expiry = null)
+    public Task<bool> SetValueAsync(string key, string value, TimeSpan? expiry = null)
     {
-        return await _dataBaseRedis.StringSetAsync(key, value,expiry);
+        return _dataBaseRedis.StringSetAsync(key, value,expiry);
     }
 
-    public async Task<bool> DeleteValueAsync(string key)
+    public Task<bool> DeleteValueAsync(string key)
     {
-        return await _dataBaseRedis.KeyDeleteAsync(key);
+        return _dataBaseRedis.KeyDeleteAsync(key);
     }
 
     public async Task<bool> UpdateValueAsync(string key, string value, TimeSpan? expiry = null)
@@ -43,7 +43,7 @@ public class RedisService: IRedisService,IDisposable
         return false;
     }
 
-    public virtual void Dispose()
+    public void Dispose()
     {
         if (_redisConnection.IsValueCreated)
         {

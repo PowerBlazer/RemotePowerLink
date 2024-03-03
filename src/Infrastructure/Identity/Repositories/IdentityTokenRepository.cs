@@ -23,9 +23,9 @@ public class IdentityTokenRepository: IIdentityTokenRepository
        return result.Entity;
     }
 
-    public async Task<IdentityToken?> GetTokenByRefreshAsync(string refreshToken)
+    public Task<IdentityToken?> GetTokenByRefreshAsync(string refreshToken)
     {
-        return await _identityContext.IdentityTokens.FirstOrDefaultAsync(p => p.Token == refreshToken);
+        return _identityContext.IdentityTokens.FirstOrDefaultAsync(p => p.Token == refreshToken);
     }
 
     public async Task<IdentityToken> UpdateTokenAsync(IdentityToken updatedToken)
@@ -39,9 +39,9 @@ public class IdentityTokenRepository: IIdentityTokenRepository
         return updatedToken;
     }
 
-    public async Task<IdentityToken?> GetTokenByUserAndIpAddress(long userId,string ipAddress)
+    public Task<IdentityToken?> GetTokenByUserAndIpAddress(long userId,string ipAddress)
     {
-        return await _identityContext.IdentityTokens
+        return _identityContext.IdentityTokens
             .FirstOrDefaultAsync(p => p.UserId == userId && p.IpAddress == ipAddress);
     }
 }

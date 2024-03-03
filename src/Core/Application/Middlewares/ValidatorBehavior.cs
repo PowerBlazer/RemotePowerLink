@@ -15,7 +15,7 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
         CancellationToken cancellationToken)
     {
         var errors = await Task.WhenAll(_validators
-            .Select(async p => await p.ValidateAsync(request, cancellationToken)));
+            .Select(p => p.ValidateAsync(request, cancellationToken)));
             
         var errorsDictionary = errors.SelectMany(x => x.Errors)
             .Where(x => x != null)

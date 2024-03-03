@@ -13,11 +13,11 @@ public class IdentityUnitOfWork: IIdentityUnitOfWork
         _identityContext = identityContext;
     }
 
-    public async Task ExecuteWithExecutionStrategyAsync(Func<Task> action)
+    public Task ExecuteWithExecutionStrategyAsync(Func<Task> action)
     {
         var executionStrategy = _identityContext.Database.CreateExecutionStrategy();
 
-        await executionStrategy.ExecuteAsync(async () =>
+        return executionStrategy.ExecuteAsync(async () =>
         {
             await using var transaction = await _identityContext.Database.BeginTransactionAsync(); 
 

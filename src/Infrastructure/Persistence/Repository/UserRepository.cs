@@ -35,4 +35,12 @@ public class UserRepository: IUserRepository
 
         return user;
     }
+
+    public async Task<User> AddUserAsync(User user)
+    {
+        await _persistenceContext.Users.AddAsync(user);
+        await _persistenceContext.SaveChangesAsync();
+
+        return user;
+    }
 }

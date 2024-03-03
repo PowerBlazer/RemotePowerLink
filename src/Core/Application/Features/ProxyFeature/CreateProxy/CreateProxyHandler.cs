@@ -1,13 +1,15 @@
 ﻿using Application.Layers.Persistence.Repositories;
 using Application.Layers.Persistence.Services;
-using Application.Layers.Persistence.Services.Parameters.CheckConnectionServer;
+using Application.Layers.Persistence.Services.Parameters;
 using Domain.DTOs.Proxy;
 using Domain.Entities;
 using Domain.Exceptions;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace Application.Features.ProxyFeature.CreateProxy;
 
+[UsedImplicitly]
 public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxyResponse>
 {
     private readonly IIdentityRepository _identityRepository;
@@ -32,12 +34,12 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
             throw new NotFoundException("Идентификатор с указанным 'IdentityId' не найдена.","IdentityId");
         }
         
-        var checkConnectionServerParameter = new CheckConnectionServerParameter
+        var checkConnectionServerParameter = new ConnectionServerParameter
         {
             Hostname = request.Hostname,
-            SshPort = request.Port,
+            SshPort = request.SshPort,
             Username = identity.Username,
-            Password = identity.Password,
+            Password = identity.Password
         };
                 
         var isConnection = await _hostService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);
@@ -52,7 +54,7 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
             IdentityId = request.IdentityId,
             IpAddress = request.Hostname,
             UserId = request.UserId,
-            Port = request.Port ?? 22,
+            SshPort = request.SshPort ?? 22,
             DateCreated = DateTime.Now,
             Title = request.Title
         });

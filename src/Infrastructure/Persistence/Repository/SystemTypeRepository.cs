@@ -21,4 +21,12 @@ public class SystemTypeRepository: ISystemTypeRepository
 
         return systemType;
     }
+
+    public async Task<SystemType> GetSystemTypeAsync(long systemTypeId)
+    {
+        var systemType = await _persistenceContext.SystemTypes
+            .FirstAsync(p => p.Id == systemTypeId);
+
+        return systemType;
+    }
 }

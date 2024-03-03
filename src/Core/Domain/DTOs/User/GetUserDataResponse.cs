@@ -13,5 +13,14 @@ public class GetUserDataResponse
     /// <summary>
     /// Имя пользователя.
     /// </summary>
-    public required string UserName { get; set; }
+    public required string Username { get; set; }
+
+    public static GetUserDataResponse MapUserTo(Entities.User user)
+    {
+        return new GetUserDataResponse
+        {
+            UserId = user.UserId,
+            Username = user.Username
+        };
+    }
 }

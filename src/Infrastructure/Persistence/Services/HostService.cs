@@ -40,29 +40,46 @@ public class HostService: IHostService
         {
             await client.ConnectAsync(cancellationToken);
 
-            var response = client.RunCommand("cat /etc/os-release").Result;
+            var responseCat = client.RunCommand("cat /etc/os-release").Result;
             
-            foreach (SystemTypeEnum systemTypeEnumItem in Enum.GetValues(typeof(SystemTypeEnum)))
+            if (responseCat.Contains("Linux"))
             {
-                var enumMember = typeof(SystemTypeEnum)
-                    .GetMember(systemTypeEnumItem.ToString())
-                    .FirstOrDefault();
+                foreach (SystemTypeEnum systemTypeEnumItem in Enum.GetValues(typeof(SystemTypeEnum)))
+                {
+                    var enumMember = typeof(SystemTypeEnum)
+                        .GetMember(systemTypeEnumItem.ToString())
+                        .FirstOrDefault();
 
-                if (enumMember == null)
-                    continue;
+                    if (enumMember == null)
+                        continue;
 
-                var descriptionAttribute = enumMember.GetCustomAttribute<DescriptionAttribute>();
+                    var descriptionAttribute = enumMember.GetCustomAttribute<DescriptionAttribute>();
 
-                if (descriptionAttribute != null && response.Contains(descriptionAttribute.Description))
+                    if (descriptionAttribute != null && responseCat.Contains(descriptionAttribute.Description))
+                    {
+                        systemTypeResult = new SystemTypeResult
+                        {
+                            SystemTypeId = (long)systemTypeEnumItem,
+                            Name = systemTypeEnumItem.ToString()
+                        };
+                    }
+                }
+            }
+            
+            if (string.IsNullOrEmpty(responseCat))
+            {
+                var responseSystemInfo = client.RunCommand("systeminfo").Result;
+
+                if (responseSystemInfo.Contains("Windows"))
                 {
                     systemTypeResult = new SystemTypeResult
                     {
-                        SystemTypeId = (long)systemTypeEnumItem,
-                        Name = systemTypeEnumItem.ToString()
+                        SystemTypeId = (long)SystemTypeEnum.Windows,
+                        Name = "Windows"
                     };
                 }
             }
-
+            
             systemTypeResult.IconPath = (await _systemTypeRepository.GetSystemTypeAsync(systemTypeResult.SystemTypeId))
                 .IconPath;
         }

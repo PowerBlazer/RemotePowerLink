@@ -6,6 +6,10 @@
 public class CreateServerResponse
 {
     /// <summary>
+    /// Идентификатор сервера
+    /// </summary>
+    public required long ServerId { get; set; }
+    /// <summary>
     /// Хостное имя (адрес) нового сервера.
     /// </summary>
     public required string Hostname { get; set; }
@@ -48,6 +52,7 @@ public class CreateServerResponse
     {
         return new CreateServerResponse
         {
+            ServerId = server.Id,
             Hostname = server.IpAddress,
             IdentityId = server.IdentityId,
             SshPort = server.SshPort,

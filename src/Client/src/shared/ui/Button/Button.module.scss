@@ -6,7 +6,7 @@
     
     &.primary{
         width: 100%;
-        background-color: #23bb6e;
+        background-color: var(--button-primary-color);
         border-radius: 5px;
         padding: 7px 1px;
         color: white;
@@ -15,7 +15,7 @@
         transition: background-color .3s;
 
         &:hover{
-            background-color: #58C78D;
+            background-color: var(--button-primary-hover-color);
         }
     }
 

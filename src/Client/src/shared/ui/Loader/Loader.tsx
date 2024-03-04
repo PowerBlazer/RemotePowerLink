@@ -8,9 +8,12 @@ interface LoaderProps extends ButtonHTMLAttributes<HTMLDivElement> {
 
 export function Loader ({ className, ...otherProps }: LoaderProps) {
     return (
-        <div
-            className={classNames('lds-dual-ring', {}, [className])}
-            {...otherProps}
-        ></div>
+        <div className={classNames('',{}, [className])}>
+            <div
+                className={classNames('lds-dual-ring', {}, [])}
+                {...otherProps}
+            ></div>
+        </div>
+
     );
 }

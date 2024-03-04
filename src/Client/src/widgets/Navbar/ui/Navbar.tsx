@@ -16,6 +16,9 @@ import { useEffectLoad } from 'app/hooks/useLoad';
 import { Loader } from 'shared/ui/Loader/Loader';
 import {IdentityService} from "services/IdentityService/identityService";
 import {ProxyService} from "services/ProxyService/proxyService";
+import {ServerService} from "services/ServerService/serverService";
+import {ThemeSwitcher} from "features/ThemeSwitcher";
+import {LangSwitcher} from "features/LangSwitcher";
 
 interface NavbarProps {
     className?: string
@@ -39,12 +42,18 @@ function Navbar ({ className }: NavbarProps) {
             const proxiesResult = await ProxyService.getProxies();
             userStore.setUserProxies(proxiesResult.result);
         }
+
+        if(!userStore.userServers){
+            const serversResult = await ServerService.getServers();
+            userStore.setUserServers(serversResult.result);
+        }
     });
 
     useEffect(() => {
         userStore.setLoad(isLoad);
     }, [isLoad]);
 
+    
     return (
         <div className={classNames(style.navbar, {}, [className])}>
             <NavbarSetting/>
@@ -59,14 +68,14 @@ function Navbar ({ className }: NavbarProps) {
             </div>
             <div className={classNames(style.nav_items)}>
                 <NavbarItem
-                    icon={<ServerIcon width={'22px'} height={'22px'}/>}
+                    icon={<ServerIcon width={'21px'} height={'21px'}/>}
                     label={t('Сервера')}
                     className={classNames(style.server)}
                     isSelected={getAppRouteFromPath(location.pathname) === AppRoutes.MAIN}
                     navigate={'/'}
                 />
                 <NavbarItem
-                    icon={<FolderIcon width={'22px'} height={'22px'}/>}
+                    icon={<FolderIcon width={'21px'} height={'21px'}/>}
                     label={t('SFTP')}
                     className={classNames(style.sftp)}
                 />
@@ -75,6 +84,8 @@ function Navbar ({ className }: NavbarProps) {
                     label={t('Процедуры')}
                     className={classNames(style.snippets)}
                 />
+                <ThemeSwitcher/>
+                <LangSwitcher/>
             </div>
         </div>
     )

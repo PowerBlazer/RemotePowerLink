@@ -24,7 +24,7 @@
   height: 35px;
 
   &:focus{
-    border: 1px solid springgreen;
+    border: 1px solid var(--select-focus-color);
   }
   
   &::placeholder{

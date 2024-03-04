@@ -10,6 +10,8 @@ import { SidebarNewHost } from 'widgets/SidebarNewHost';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
 import { observer } from 'mobx-react-lite';
+import { CreateServerResult } from "services/ServerService/config/serverConfig";
+import userStore from "app/store/userStore";
 
 interface NavbarHostsProps {
     className?: string;
@@ -17,11 +19,27 @@ interface NavbarHostsProps {
 
 function NavbarHosts ({ className }: NavbarHostsProps) {
     const { t } = useTranslation('translation');
+    
+    const createServerDataHandler = async (createServerData: CreateServerResult) => {
+        userStore.setUserServers([{
+            serverId: createServerData.serverId,
+            title: createServerData.title,
+            sshPort: createServerData.sshPort,
+            hostname: createServerData.hostname,
+            identityId: createServerData.identityId,
+            proxyId: createServerData.proxyId,
+            startupCommand: createServerData.startupCommand,
+            systemTypeIcon: createServerData.systemTypeIcon,
+            systemTypeName: createServerData.systemTypeName
+        }]);
+        
+        await sidebarStore.setSidebar(null);
+    }
 
     const createNewHostHandler = async () => {
         await sidebarStore.setSidebar({
             name: 'SidebarNewHost',
-            sidebar: <SidebarNewHost isMain={true}/>
+            sidebar: <SidebarNewHost isMain={true} onSave={createServerDataHandler}/>
         });
     }
 

@@ -9,7 +9,7 @@ import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
 import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import { SidebarNewIdentity } from 'widgets/SidebarNewIdentity';
-import { CreateServerData } from 'services/ServerService/config/serverConfig';
+import {CreateServerData, ServerData} from 'services/ServerService/config/serverConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { ServerService } from 'services/ServerService/serverService';
 import { CreateProxyResult } from 'services/ProxyService/config/proxyConfig';
@@ -23,7 +23,7 @@ import style from './SidebarNewHost.module.scss';
 import sidebarStore from 'app/store/sidebarStore';
 import userStore from "app/store/userStore";
 
-interface SidebarNewHostProps extends SidebarOptions<CreateServerData> {
+interface SidebarNewHostProps extends SidebarOptions<ServerData> {
     className?: string;
 }
 
@@ -322,7 +322,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
             </FormBlock>
             <FormBlock headerName={'Прокси'} className={classNames(style.proxy_block)}>
                 <Select
-                    placeholder={'Выбрать прокси'}
+                    placeholder={t('Выбрать прокси')}
                     icon={<DoubleArrow width={19} height={19}/>}
                     onChange={selectProxyHandler}
                     errors={errors?.ProxyId ?? null}
@@ -346,7 +346,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
             </FormBlock>
             <FormBlock headerName={'Учетные данные'} className={classNames(style.identity_block)}>
                 <Select
-                    placeholder={'Выбрать учетку'}
+                    placeholder={t('Выбрать идентификатор')}
                     icon={<DoubleArrow width={19} height={19}/>}
                     onChange={selectIdentityHandler}
                     errors={errors?.IdentityId ?? null}

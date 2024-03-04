@@ -2,11 +2,14 @@ import { makeAutoObservable, configure } from 'mobx';
 import {ProxyData} from "services/ProxyService/config/proxyConfig";
 import {IdentityData} from "services/IdentityService/config/identityConfig";
 import {UserData} from "services/UserService/config/userConfig";
+import {ServerData} from "services/ServerService/config/serverConfig";
 
 class UserStore {
-    public userProxies: ProxyData[] | null;
-    public userIdentities: IdentityData[] | null;
-    public userData: UserData | null;
+    public userProxies: ProxyData[] | null = null;
+    public userIdentities: IdentityData[] | null = null;
+    public userServers: ServerData[] | null = null;
+    
+    public userData: UserData | null = null;
     public isLoadData: boolean = false;
     
     constructor () {
@@ -71,6 +74,30 @@ class UserStore {
             ...this.userIdentities,
             identity
         ]
+    }
+    
+    setUserServers (servers: ServerData[]){
+        if(!this.userServers){
+            this.userServers = servers;
+            return;
+        }
+        
+        this.userServers = [
+            ...this.userServers,
+            ...servers
+        ];
+    }
+    
+    setUserServer (server: ServerData){
+        if(!this.userServers){
+            this.userServers = [server];
+            return
+        }
+        
+        this.userServers = [
+            ...this.userServers,
+            server
+        ];
     }
 }
 

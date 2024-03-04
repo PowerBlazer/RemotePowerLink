@@ -7,11 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="src\features\ServerManagerGroup\" />
-      <Folder Include="src\features\ServerManagerItem\" />
       <Folder Include="src\shared\assets\fonts\" />
       <Folder Include="src\shared\assets\icons\navbar\" />
-      <Folder Include="src\widgets\ServerManagerCatalog\ui\" />
     </ItemGroup>
 
 </Project>

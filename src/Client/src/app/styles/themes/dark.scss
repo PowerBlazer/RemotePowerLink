@@ -1,15 +1,47 @@
 .app.dark{
-    --inverted-bg-color:#e8e8ea;
-    --primary-color:#049604;
-    --secondary-color:#51db51;
-    --inverted-primary-color:#041c65;
-    --inverted-secondary-color:#0151ff;
     --bg-color-inverted: #282B3D;
-    --bg-color: #212234;
+    --bg-color: #1D2033;
+    
+    --main-page-bg-color: #1D2033;
+    
+    --navbar-bg-color: #282B3D;
+    --navbar-text-color: #FFF;
+    
+    --navbar-host-bg-color: #282B3D;
+    --navbar-host-inverted-bg-color:#282B3D;
+    --navbar-options-btn-color:#3E4257;
+
+    --search-input-bg-color:#3E4257;
+    --search-connect-bg-color: #32364A;
+    
     --text-color: #FFF;
+    --inverted-text-color: black;
     --logo-text-color: #FFF;
+    
     --line:rgb(255 255 255 / 17%);
+    
     --setting-button-color: white;
+    
     --main-page-color-line: #171825;
+    
     --input-color: #5A5E73;
+    
+    --select-focus-color:springgreen;
+    --select-hover-bg-color: #3E4257;
+    --select-hover-color: #FFF;
+    --select-bg-color: #212234;
+    --select-box-sahdow:rgba(234, 232, 232, 0.11);
+    --select-line-color: rgb(255 255 255 / 17%);
+    
+    --button-primary-color: #23bb6e;
+    --button-primary-hover-color: #58C78D;
+    
+    --sidebar-back-button-hover-color: rgba(255, 255, 255, 0.22);
+    --sidebar-bg-color: #1D2033;
+    --sidebar-header-bg-color: #282B3D;
+
+    --form-block-bg-color:#282B3D;
+
+    --server-manager-item-bg-color:rgba(141, 141, 141, 0.11);
+    --server-manager-item-hover-bg-color: rgba(164, 164, 164, 0.32);
 }

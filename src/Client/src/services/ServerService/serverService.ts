@@ -1,11 +1,11 @@
-import {CreateServerData, ServerData} from 'services/ServerService/config/serverConfig';
+import {CreateServerData, CreateServerResult, ServerData} from 'services/ServerService/config/serverConfig';
 import { ApiResult, HostService, ServiceResult } from 'services/hostService';
 
 export class ServerService {
-    static createServer = async (createServerData: CreateServerData): Promise<ServiceResult<CreateServerData>> => {
+    static createServer = async (createServerData: CreateServerData): Promise<ServiceResult<CreateServerResult>> => {
         try {
             const response =
-                await HostService.api.post<ApiResult<CreateServerData>>(
+                await HostService.api.post<ApiResult<CreateServerResult>>(
                     '/v1/server/create',
                     createServerData
                 );

@@ -11,14 +11,16 @@ interface NavbarItemProps {
     navigate?: string
 }
 
-export function NavbarItem ({
-    className,
-    icon,
-    label,
-    isSelected = false,
-    navigate
-}: NavbarItemProps) {
-    const location1 = useNavigate();
+export function NavbarItem (props: NavbarItemProps) {
+    const {
+        className,
+        icon,
+        label,
+        isSelected = false,
+        navigate
+    } = props;
+    
+    const location = useNavigate();
 
     return (
         <Button
@@ -27,7 +29,7 @@ export function NavbarItem ({
             }, [className])}
             onClick={() => {
                 if (navigate) {
-                    location1(navigate);
+                    location(navigate);
                 }
             }}
         >

@@ -14,27 +14,27 @@
   align-items: center;
   
   &.active .select_header{
-    color: var(--text-color);
+    color: var(--select-hover-color);
   }
 
   &.active .select_icon path{
-    fill: var(--text-color);
+    fill: var(--select-hover-color);
   }
 
   &.active .header_icon path{
-    fill: var(--text-color);
+    fill: var(--select-hover-color);
   }
   
   &.selected .select_header{
-    color: var(--text-color);
+    color: var(--select-hover-color);
   }
 
   &.selected .select_icon path{
-    fill: var(--text-color);
+    fill: var(--select-hover-color);
   }
 
   &.selected .header_icon path{
-    fill: var(--text-color);
+    fill: var(--select-hover-color);
   }
   
   &.active .select_icon{
@@ -47,7 +47,8 @@
   }
 
   &.active .select{
-    background-color: #3E4257;
+    background-color: var(--select-hover-bg-color);
+    border: 1px solid var(--select-hover-color);
   }
 }
 
@@ -61,23 +62,24 @@
   border-radius: 5px;
   padding: 7px 10px;
   display: flex;
-  transition: background-color .2s;
+  transition: all .2s;
   background-color: transparent;
 
   &:hover{
-    background-color: #3E4257;
+    background-color: var(--select-hover-bg-color);
+    border: 1px solid var(--select-hover-color);
   }
 
   &:hover .select_header{
-    color: var(--text-color);
+    color: var(--select-hover-color);
   }
 
   &:hover .select_icon path{
-    fill: var(--text-color);
+    fill: var(--select-hover-color);
   }
 
   &:hover .header_icon path{
-    fill: var(--text-color);
+    fill: var(--select-hover-color);
   }
   
   &.error{
@@ -133,7 +135,7 @@
   min-height: 35px;
   max-height: 140px;
   overflow-y: auto;
-  background-color: #212234;
+  background-color: var(--select-bg-color);
   position: absolute;
   top: 40px;
   left: 0;
@@ -144,8 +146,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: 0 0 1px 1px rgba(234, 232, 232, 0.11);
-  z-index: 100;
+  box-shadow: 0 0 0.5px 0.5px var(--select-box-sahdow);
+  z-index: 150;
   
   &.empty_options{
     align-items: center;
@@ -183,34 +185,45 @@
   gap: 7px;
   padding: 9px 12px;
   width: 100%;
-  transition: background-color .3s;
+  transition: all .3s;
   
   &.selected{
-    background-color: var(--line);
+    background-color: var(--select-line-color);
+  }
+  
+  &:hover{
+    background-color: var(--select-line-color);
+  }
+  
+  &:nth-child(n+1){
+    border-bottom: 1px solid var(--select-line-color);
+  }
+  
+  &:nth-last-child(1){
+    border-bottom: none;
+  }
+  
+  &:hover .item_title{
+    color: white;
+  }
+  
+  &:hover .server_icon path{
+    fill: white;
+    stroke: white;
   }
 }
 
-.selectItem:nth-child(n+1){
-  border-bottom: 1px solid var(--line);
-}
-
-.selectItem:nth-last-child(1){
-  border-bottom: none;
-}
-
-.selectItem:hover{
-  background-color: var(--line);
-}
-
 .server_icon path{
-  fill: var(--setting-button-color);
-  stroke: var(--setting-button-color);
+  fill: var(--text-color);
+  stroke: var(--text-color);
+  transition: all .3s;
 }
 
 .item_title{
-  color: white;
+  color: var(--text-color);
   font-size: 14px;
   font-weight: 500;
+  transition: all .3s;
 }
 
 .common{

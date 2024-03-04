@@ -2,13 +2,13 @@
     display: flex;
     width: 100%;
     justify-content: flex-start;
-    padding: 6px 10px;
-    color: var(--text-color);
-    font-weight: 500;
+    padding: 5px 8px;
+    color: var(--navbar-text-color);
+    font-weight: 600;
     font-size: 14px;
     gap: 12px;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 6px;
     transition: background-color .2s;
 }
 
@@ -16,18 +16,16 @@
     width: 25px;
     height: 25px;
     position: relative;
-}
-
-.icon_block svg {
-    position: absolute;
-    transform: translate(-50%, 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .navbarItem:not(.selected):hover{
-    background-color: rgb(164 164 164 / 14%);
+    background-color: #3E4257;
 }
 
 .selected{
-    background-color: rgb(164 164 164 / 32%);
+    background-color: #474b60;
 }
 

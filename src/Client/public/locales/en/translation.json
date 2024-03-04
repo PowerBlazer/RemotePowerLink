@@ -10,7 +10,7 @@
     "Обновить страницу":"Reload page",
     "Сервера": "Hosts",
     "SFTP": "SFTP",
-    "Процедуры": "Scripts",
+    "Процедуры": "Procedures",
     "Поиск серверов или ssh root@hostname...": "Find a host or ssh user@hostname...",
     "Подключиться": "Connect",
     "Новый сервер": "New Host",
@@ -24,12 +24,13 @@
     "Создать учетку": "Create identity",
     "Создать прокси сервер": "Create proxy",
     "Учетные данные": "Identity",
-    "Выбрать учетку": "Select identity",
+    "Выбрать идентификатор": "Select identity",
     "Выбрать прокси": "Select proxy",
     "Прокси": "Proxy",
     "Создать сервер": "Create server",
     "Создать идентификатор": "Create identity",
     "Новый прокси": "New proxy",
     "Пароль": "Password",
-    "Имя пользователя": "Username"
+    "Имя пользователя": "Username",
+    "Идентификаторы": "Identities"
 }

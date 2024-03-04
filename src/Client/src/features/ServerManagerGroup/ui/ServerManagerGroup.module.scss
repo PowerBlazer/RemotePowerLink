@@ -1,0 +1,16 @@
+﻿.serverManagerGroup{
+  display: flex;
+  flex-direction: column;
+}
+
+.header{
+  font-size: 16px;  
+}
+
+.data_list{
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 10px 0;
+}

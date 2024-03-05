@@ -24,6 +24,13 @@ public interface IServerRepository
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <returns>Список серверов для подключения по SSH пользователя.</returns>
     Task<IEnumerable<Server>> GetServersInUser(long userId);
+    
+    /// <summary>
+    /// Обновляет данные существующего сервера
+    /// </summary>
+    /// <param name="server">Сервер для обновления</param>
+    /// <returns>Обновленный сервер</returns>
+    Task<Server> UpdateServerAsync(Server server);
 
 
 }

@@ -1,5 +1,6 @@
 ﻿
 using Application.Features.ServerFeature.CreateServer;
+using Application.Features.ServerFeature.EditServer;
 using Application.Features.ServerFeature.GetServers;
 using Domain.Common;
 using Domain.DTOs.Server;
@@ -61,6 +62,31 @@ public class ServerController: BaseController
         var result = await Mediator.Send(new GetServersCommand(UserId));
 
         return new ApiActionResult<IEnumerable<GetServerResponse>>
+        {
+            Result = result
+        };
+    }
+    
+    
+    /// <summary>
+    /// Обновляет данные сервера на основе предоставленных данных и настройки подключения SSH к удаленной машине.
+    /// </summary>
+    /// <param name="editServerCommand">Данные для обновления сервера и настройки подключения SSH.</param>
+    /// <returns>Результат обновленного сервера.</returns>
+    /// <response code="200">Сервер успешно обновлен.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPost("create")]
+    [ProducesResponseType(typeof(ApiActionResult<EditServerResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<EditServerResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<EditServerResponse>> CreateServer([FromBody]EditServerCommand editServerCommand)
+    {
+        editServerCommand.UserId = UserId;
+        var result = await Mediator.Send(editServerCommand);
+
+        return new ApiActionResult<EditServerResponse>
         {
             Result = result
         };

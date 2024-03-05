@@ -50,4 +50,14 @@ public class ServerRepositrory: IServerRepository
 
         return servers;
     }
+
+    public async Task<Server> UpdateServerAsync(Server server)
+    {
+        _persistenceContext.Attach(server);
+        _persistenceContext.Servers.Update(server);
+
+        await _persistenceContext.SaveChangesAsync();
+
+        return server;
+    }
 }

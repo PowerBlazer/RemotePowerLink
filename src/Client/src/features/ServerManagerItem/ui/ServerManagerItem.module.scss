@@ -9,12 +9,27 @@
   align-items: center;
   justify-content: space-between;
   background-color: var(--server-manager-item-bg-color);
+  border: 1px solid transparent;
   padding: 10px 10px;
   border-radius: 10px;
-  transition: background-color .3s;
+  transition: all .3s;
+  cursor: default;
   
   &:hover{
-    background-color: rgba(164, 164, 164, 0.32);
+    background-color: var(--server-manager-item-hover-bg-color);
+    border: 1px solid var(--button-primary-hover-color);
+  }
+  
+  & .button_edit{
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s
+
+  }
+  
+  &:hover .button_edit{
+    opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -46,3 +61,11 @@
   overflow: hidden;
   border-radius: 10px;
 }
+
+.data_options{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+

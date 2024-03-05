@@ -36,7 +36,7 @@
     gap: 7px;
 }
 
-.common_buttons button{
+.common_buttons .notification{
     border-radius: 5px;
     padding: 5px;
     width: 30px;
@@ -45,12 +45,8 @@
     transition: background-color .2s;
 }
 
-.common_buttons button:hover{
+.common_buttons .notification:hover{
     background-color: rgb(164 164 164 / 14%);
-}
-
-.common_buttons .terminal_button g{
-    fill: var(--setting-button-color);
 }
 
 .common_buttons .notification path{

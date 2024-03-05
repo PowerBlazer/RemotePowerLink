@@ -1,7 +1,8 @@
 import { makeAutoObservable } from 'mobx';
 import { ReactNode } from 'react';
-import { ProxyData } from 'services/ProxyService/config/proxyConfig';
-import { IdentityData } from 'services/IdentityService/config/identityConfig';
+import {ServerData} from "app/services/ServerService/config/serverConfig";
+import {ProxyData} from "app/services/ProxyService/config/proxyConfig";
+import {IdentityData} from "app/services/IdentityService/config/identityConfig";
 
 export interface SidebarOptions {
     isVisible: boolean;
@@ -24,13 +25,28 @@ export class SidebarNewProxyData extends SidebarData {
 }
 
 export class SidebarNewIdentityData extends SidebarData {
-    
+}
+
+export class SidebarEditHostData extends SidebarData {
+    server?: ServerData = null;
+}
+
+export class SidebarEditProxyData extends SidebarData{
+    proxy?: ProxyData = null;
+}
+
+export class SidebarEditIdentityData extends SidebarData{
+    identity?: IdentityData = null;
 }
 
 class SidebarStore {
     newHostData: SidebarNewHostData = { isVisible: false };
     newProxyData: SidebarNewProxyData = { isVisible: false };
     newIdentityData: SidebarNewIdentityData = { isVisible: false };
+    
+    editHostData: SidebarEditHostData = { isVisible:false };
+    editProxyData: SidebarEditProxyData = { isVisible: false };
+    editIdentityData: SidebarEditIdentityData = { isVisible: false };
 
     mainSideBar: SidebarState | null = null;
     isVisible: boolean = false;
@@ -43,7 +59,10 @@ class SidebarStore {
         const sidebarsData: SidebarData[] = [
             this.newHostData,
             this.newProxyData,
-            this.newIdentityData
+            this.newIdentityData,
+            this.editHostData,
+            this.editProxyData,
+            this.editIdentityData
         ];
 
         sidebarsData.forEach(sidebarData => {

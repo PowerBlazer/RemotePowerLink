@@ -1,9 +1,10 @@
 ﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './ServerManagerItem.module.scss';
-import {observer} from "mobx-react-lite";
 import {ServerManagerData} from "features/ServerManagerGroup";
 import {Button} from "shared/ui/Button/Button";
 import {DataType} from "app/enums/DataType";
+import {ButtonConnect} from "features/ButtonConnect";
+import {ButtonEdit} from "features/ButtonEdit";
 
 interface ServerManagerItemProps {
     className?: string;
@@ -37,7 +38,10 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
                 </div>
             </div>
             <div className={classNames(style.data_options)}>
-                
+                <ButtonEdit className={style.button_edit} serverManagerData={serverManagerDataItem}/>
+                {serverManagerDataItem.dataType === DataType.SERVER 
+                    && <ButtonConnect serverData={serverManagerDataItem}/>
+                }
             </div>
         </Button>
     );

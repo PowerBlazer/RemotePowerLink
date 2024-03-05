@@ -1,0 +1,19 @@
+﻿.buttonConnect{
+  width: 33px;
+  height: 33px;
+  background-color: var(--button-primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  transition: background-color .3s;
+  
+  &:hover{
+   background-color: var(--button-primary-hover-color);
+  }
+  
+  & path{
+    fill: white;
+  }
+}
+

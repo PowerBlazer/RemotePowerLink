@@ -1,0 +1,19 @@
+﻿.buttonExit{
+  border-radius: 5px;
+  padding: 5px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  position: relative;
+  transition: background-color .2s;
+  
+  &:hover{
+    background-color: rgb(164 164 164 / 14%);
+  }
+  
+  & path{
+    stroke: #DC143C;
+  }
+}

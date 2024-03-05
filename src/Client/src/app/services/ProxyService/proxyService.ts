@@ -1,5 +1,5 @@
-import { ApiResult, HostService, ServiceResult } from 'services/hostService';
-import { CreateProxyData, CreateProxyResult, ProxyData } from 'services/ProxyService/config/proxyConfig';
+import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
+import { CreateProxyData, CreateProxyResult, ProxyData } from 'app/services/ProxyService/config/proxyConfig';
 
 export class ProxyService {
     static getProxies = async (): Promise<ServiceResult<ProxyData[]>> => {

@@ -1,13 +1,12 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, useContext, useState } from 'react';
-import { RegistrationContext } from 'app/providers/RegistrationProvider';
+import { ChangeEvent, useState } from 'react';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import InfoIcon from 'shared/assets/icons/info.svg';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
-import { RegistrationModel } from 'services/AuthorizationService/configs/signupConfig';
-import { AuthorizationService } from 'services/AuthorizationService/authorizationService';
+import { RegistrationModel } from 'app/services/AuthorizationService/configs/signupConfig';
+import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { useNavigate } from 'react-router-dom';
 
 const initialRegistrationModel = {

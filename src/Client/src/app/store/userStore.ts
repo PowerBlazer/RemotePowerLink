@@ -1,8 +1,8 @@
 import { makeAutoObservable, configure } from 'mobx';
-import {ProxyData} from "services/ProxyService/config/proxyConfig";
-import {IdentityData} from "services/IdentityService/config/identityConfig";
-import {UserData} from "services/UserService/config/userConfig";
-import {ServerData} from "services/ServerService/config/serverConfig";
+import {ProxyData} from "app/services/ProxyService/config/proxyConfig";
+import {IdentityData} from "app/services/IdentityService/config/identityConfig";
+import {UserData} from "app/services/UserService/config/userConfig";
+import {ServerData} from "app/services/ServerService/config/serverConfig";
 
 class UserStore {
     public userProxies: ProxyData[] | null = null;

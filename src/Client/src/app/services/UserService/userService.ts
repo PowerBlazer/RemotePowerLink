@@ -1,5 +1,5 @@
-import { UserData } from 'services/UserService/config/userConfig';
-import { ApiResult, HostService, ServiceResult } from 'services/hostService';
+import { UserData } from 'app/services/UserService/config/userConfig';
+import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class UserService {
     static getUserData = async (): Promise<ServiceResult<UserData>> => {

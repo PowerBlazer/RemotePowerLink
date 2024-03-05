@@ -1,4 +1,4 @@
-import { ApiResult, HostService } from 'services/hostService';
+import { ApiResult, HostService } from 'app/services/hostService';
 import { LocalStorageKeys } from 'app/enums/LocalStorageKeys';
 import { LoginModel, LoginResponse, RefreshTokenModel, RefreshTokenResponse } from './configs/loginConfig';
 import {
@@ -7,8 +7,7 @@ import {
     RegistrationResponse, ResendEmailVerificationModel, ResendEmailVerificationResponse,
     SendEmailVerificationModel,
     SendEmailVerificationResponse
-} from 'services/authorizationService/configs/signupConfig';
-import axios from 'axios';
+} from './configs/signupConfig';
 
 interface AuthorizationResult {
     isSuccess: boolean,
@@ -141,6 +140,11 @@ class AuthorizationService {
                 isSuccess: false
             }
         }
+    }
+    
+    static logout = () => {
+        this.setAccessToken("");
+        this.setRefreshToken("");
     }
 
     static getAccessToken = (): string => {

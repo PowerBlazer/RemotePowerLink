@@ -3,15 +3,15 @@ import style from './SidebarNewIdentity.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
 import sidebarStore from 'app/store/sidebarStore';
-import { CreateIdentityData, CreateIdentityResult } from 'services/IdentityService/config/identityConfig';
+import { CreateIdentityData, CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { ThemeButton } from 'shared/ui/Button/Button';
-import {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
+import {ChangeEvent, useCallback, useMemo, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import { Input } from 'shared/ui/Input';
 import { FormBlock } from 'features/FormBlock';
 import UserCard from 'shared/assets/icons/user-card.svg';
-import { IdentityService } from 'services/IdentityService/identityService';
+import { IdentityService } from 'app/services/IdentityService/identityService';
 
 interface SidebarNewIdentityProps extends SidebarOptions<CreateIdentityResult> {
     className?: string;

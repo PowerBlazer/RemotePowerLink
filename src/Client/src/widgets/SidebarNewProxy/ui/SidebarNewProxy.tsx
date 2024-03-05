@@ -5,8 +5,8 @@ import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
 import sidebarStore from 'app/store/sidebarStore';
 import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import { useEffectLoad } from 'app/hooks/useLoad';
-import { IdentityService } from 'services/IdentityService/identityService';
-import { ProxyService } from 'services/ProxyService/proxyService';
+import { IdentityService } from 'app/services/IdentityService/identityService';
+import { ProxyService } from 'app/services/ProxyService/proxyService';
 import { FormBlock } from 'features/FormBlock';
 import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
 import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
@@ -17,9 +17,9 @@ import TitleIcon from 'shared/assets/icons/title.svg';
 import PortIcon from 'shared/assets/icons/code-working.svg';
 import {ChangeEvent, useCallback, useMemo, useState} from 'react';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
-import { CreateProxyData, CreateProxyResult } from 'services/ProxyService/config/proxyConfig';
+import { CreateProxyData, CreateProxyResult } from 'app/services/ProxyService/config/proxyConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
-import { CreateIdentityResult } from 'services/IdentityService/config/identityConfig';
+import { CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
 import userStore from "app/store/userStore";
 
 interface SidebarNewProxyProps extends SidebarOptions<CreateProxyResult> {

@@ -10,7 +10,7 @@ import { SidebarNewHost } from 'widgets/SidebarNewHost';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
 import { observer } from 'mobx-react-lite';
-import { CreateServerResult } from "services/ServerService/config/serverConfig";
+import { CreateServerResult } from "app/services/ServerService/config/serverConfig";
 import userStore from "app/store/userStore";
 
 interface NavbarHostsProps {

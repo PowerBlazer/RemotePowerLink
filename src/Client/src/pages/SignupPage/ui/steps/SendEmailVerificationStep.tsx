@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { useContext, useState } from 'react';
 import { RegistrationContext, RegistrationSteps } from 'app/providers/RegistrationProvider';
-import { SendEmailVerificationModel } from 'services/AuthorizationService/configs/signupConfig';
-import { AuthorizationService } from 'services/AuthorizationService/authorizationService';
+import { SendEmailVerificationModel } from 'app/services/AuthorizationService/configs/signupConfig';
+import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
 

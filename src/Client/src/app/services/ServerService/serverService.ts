@@ -1,5 +1,5 @@
-import {CreateServerData, CreateServerResult, ServerData} from 'services/ServerService/config/serverConfig';
-import { ApiResult, HostService, ServiceResult } from 'services/hostService';
+import {CreateServerData, CreateServerResult, ServerData} from 'app/services/ServerService/config/serverConfig';
+import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class ServerService {
     static createServer = async (createServerData: CreateServerData): Promise<ServiceResult<CreateServerResult>> => {

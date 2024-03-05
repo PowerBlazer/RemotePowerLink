@@ -4,7 +4,7 @@ import {observer} from "mobx-react-lite";
 import {useMemo} from "react";
 import userStore from "app/store/userStore";
 import {ServerManagerData, ServerManagerGroup} from "features/ServerManagerGroup";
-import {HostService} from "services/hostService";
+import {HostService} from "app/services/hostService";
 import {Loader} from "shared/ui/Loader/Loader";
 import {useTranslation} from "react-i18next";
 import {DataType} from "app/enums/DataType";

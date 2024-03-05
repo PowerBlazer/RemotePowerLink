@@ -3,11 +3,10 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { Logotype } from 'features/Logotype';
 import { Link, useNavigate } from 'react-router-dom';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
-import { AuthorizationService } from 'services/AuthorizationService/authorizationService';
+import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { useState } from 'react';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from './Login.module.scss';
-import { NavbarBasic } from 'widgets/NavbarBasic';
 
 export default function LoginPage () {
     const { t } = useTranslation('authorization');

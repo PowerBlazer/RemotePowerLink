@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
-import { AuthorizationService } from 'services/AuthorizationService/authorizationService';
+import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import toast from 'react-hot-toast';
 
 const allowAnonymousEndpoints: string[] = [

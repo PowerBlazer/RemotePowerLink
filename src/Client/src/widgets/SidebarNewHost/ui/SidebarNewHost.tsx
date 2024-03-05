@@ -9,11 +9,11 @@ import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
 import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import { SidebarNewIdentity } from 'widgets/SidebarNewIdentity';
-import {CreateServerData, ServerData} from 'services/ServerService/config/serverConfig';
+import {CreateServerData, ServerData} from 'app/services/ServerService/config/serverConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
-import { ServerService } from 'services/ServerService/serverService';
-import { CreateProxyResult } from 'services/ProxyService/config/proxyConfig';
-import { CreateIdentityResult } from 'services/IdentityService/config/identityConfig';
+import { ServerService } from 'app/services/ServerService/serverService';
+import { CreateProxyResult } from 'app/services/ProxyService/config/proxyConfig';
+import { CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
 import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
 import TitleIcon from 'shared/assets/icons/title.svg';
 import PortIcon from 'shared/assets/icons/code-working.svg';
@@ -320,30 +320,6 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
                     />
                 </div>
             </FormBlock>
-            <FormBlock headerName={'Прокси'} className={classNames(style.proxy_block)}>
-                <Select
-                    placeholder={t('Выбрать прокси')}
-                    icon={<DoubleArrow width={19} height={19}/>}
-                    onChange={selectProxyHandler}
-                    errors={errors?.ProxyId ?? null}
-                    selectedItem={selectedProxy}
-                >
-                    {userStore.userProxies?.map((proxy) =>
-                        <SelectItem
-                            key={proxy.proxyId}
-                            selectedItem={{ id: proxy.proxyId.toString(), title: proxy.title }}
-                            isSelected={selectedProxy?.id === proxy.proxyId.toString()}
-                        />
-                    )}
-                </Select>
-                <Button
-                    className={classNames(style.create_proxy)}
-                    theme={ThemeButton.PRIMARY}
-                    onClick={()=> setVisibleProxy(true)}
-                >
-                    {t('Создать прокси сервер')}
-                </Button>
-            </FormBlock>
             <FormBlock headerName={'Учетные данные'} className={classNames(style.identity_block)}>
                 <Select
                     placeholder={t('Выбрать идентификатор')}
@@ -366,6 +342,30 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
                     onClick={()=> setVisibleIdentity(true)}
                 >
                     {t('Создать учетку')}
+                </Button>
+            </FormBlock>
+            <FormBlock headerName={'Прокси'} className={classNames(style.proxy_block)}>
+                <Select
+                    placeholder={t('Выбрать прокси')}
+                    icon={<DoubleArrow width={19} height={19}/>}
+                    onChange={selectProxyHandler}
+                    errors={errors?.ProxyId ?? null}
+                    selectedItem={selectedProxy}
+                >
+                    {userStore.userProxies?.map((proxy) =>
+                        <SelectItem
+                            key={proxy.proxyId}
+                            selectedItem={{ id: proxy.proxyId.toString(), title: proxy.title }}
+                            isSelected={selectedProxy?.id === proxy.proxyId.toString()}
+                        />
+                    )}
+                </Select>
+                <Button
+                    className={classNames(style.create_proxy)}
+                    theme={ThemeButton.PRIMARY}
+                    onClick={()=> setVisibleProxy(true)}
+                >
+                    {t('Создать прокси сервер')}
                 </Button>
             </FormBlock>
         </Sidebar>

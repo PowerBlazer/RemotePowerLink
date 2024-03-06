@@ -20,7 +20,7 @@ public class Proxy : BaseEntity<long>
     /// <summary>
     /// Порт прокси.
     /// </summary>
-    public int SshPort { get; set; }
+    public int? SshPort { get; set; }
     
     /// <summary>
     /// Дата и время создания прокси

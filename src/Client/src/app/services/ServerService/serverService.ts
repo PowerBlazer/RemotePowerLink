@@ -29,6 +29,11 @@ export class ServerService {
     
     static editServer = async (editServerData: EditServerData): Promise<ServiceResult<EditServerResult>> => {
         try {
+            
+            if(editServerData.sshPort === ""){
+                editServerData.sshPort = null;
+            }
+            
             const response =
                 await HostService.api.post<ApiResult<EditServerResult>>(
                     '/v1/server/edit',

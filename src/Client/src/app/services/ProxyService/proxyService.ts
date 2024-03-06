@@ -45,6 +45,11 @@ export class ProxyService {
 
     static editProxy = async (editProxyData: EditProxyData): Promise<ServiceResult<EditProxyResult>> => {
         try {
+
+            if(editProxyData.sshPort === ""){
+                editProxyData.sshPort = null;
+            }
+            
             const response =
                 await HostService.api.post<ApiResult<EditProxyResult>>(
                     '/v1/proxy/edit',

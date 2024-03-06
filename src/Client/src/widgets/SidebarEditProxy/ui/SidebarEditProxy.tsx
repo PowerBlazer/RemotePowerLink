@@ -1,44 +1,58 @@
-import { classNames } from 'shared/lib/classNames/classNames';
-import style from './SidebarNewProxy.module.scss';
-import { observer } from 'mobx-react-lite';
-import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
-import sidebarStore from 'app/store/sidebarStore';
-import { Button, ThemeButton } from 'shared/ui/Button/Button';
-import { useEffectLoad } from 'app/hooks/useLoad';
-import { IdentityService } from 'app/services/IdentityService/identityService';
-import { ProxyService } from 'app/services/ProxyService/proxyService';
-import { FormBlock } from 'features/FormBlock';
-import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
-import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
-import { useTranslation } from 'react-i18next';
-import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
-import { Input } from 'shared/ui/Input';
-import TitleIcon from 'shared/assets/icons/title.svg';
-import PortIcon from 'shared/assets/icons/code-working.svg';
-import {ChangeEvent, useCallback, useMemo, useState} from 'react';
-import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
-import { CreateProxyData, CreateProxyResult } from 'app/services/ProxyService/config/proxyConfig';
-import { ButtonLoader } from 'shared/ui/ButtonLoader';
-import { CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
+﻿import { classNames } from 'shared/lib/classNames/classNames';
+import style from './SidebarEditProxy.module.scss';
+import {observer} from "mobx-react-lite";
+import {Sidebar, SidebarOptions} from "widgets/Sidebar";
+import { EditProxyData, EditProxyResult} from "app/services/ProxyService/config/proxyConfig";
+import {ChangeEvent, useCallback, useMemo, useState} from "react";
+import {Select, SelectedItem, SelectItem} from "shared/ui/Select";
+import sidebarStore from "app/store/sidebarStore";
 import userStore from "app/store/userStore";
+import {ProxyService} from "app/services/ProxyService/proxyService";
+import {CreateIdentityResult} from "app/services/IdentityService/config/identityConfig";
+import SidebarNewIdentity from "widgets/SidebarNewIdentity/ui/SidebarNewIdentity";
+import {ButtonLoader} from "shared/ui/ButtonLoader";
+import {Button, ThemeButton} from "shared/ui/Button/Button";
+import {useTranslation} from "react-i18next";
+import {FormBlock} from "features/FormBlock";
+import ServerIcon from "shared/assets/icons/navbar/server2.svg";
+import {Input} from "shared/ui/Input";
+import TitleIcon from "shared/assets/icons/title.svg";
+import PortIcon from "shared/assets/icons/code-working.svg";
+import DoubleArrow from "shared/assets/icons/double-arrow.svg";
 
-interface SidebarNewProxyProps extends SidebarOptions<CreateProxyResult> {
+interface SidebarEditProxyProps extends SidebarOptions<EditProxyResult>{
     className?: string;
-    selectedIdentity?: SelectedItem
 }
 
-const defaultProxyData: CreateProxyData = {
-    title: '',
-    identityId: 0,
-    hostname: ''
-}
+function SidebarEditProxy (props: SidebarEditProxyProps) {
+    const {
+        className,
+        isMain = false,
+        onSave,
+        onClose,
+        isVisible
+    } = props;
+    
+    const proxy = sidebarStore.editProxyData.proxy;
+    const identity = userStore.userIdentities.find(p=>p.identityId === proxy.identityId);
 
-function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible }: SidebarNewProxyProps) {
     const { t } = useTranslation('translation');
-    const [proxyData, setProxyData] = useState<CreateProxyData>(defaultProxyData);
+    
+    const [proxyData, setProxyData] = useState<EditProxyData>({
+        proxyId: proxy.proxyId,
+        title: proxy.title,
+        hostname: proxy.hostname,
+        identityId:proxy.identityId,
+        sshPort: proxy.sshPort.toString()
+    });
+    
     const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-    const [selectedIdentity, setIdentity] = useState<SelectedItem>(null);
+    const [selectedIdentity, setIdentity] = useState<SelectedItem>({
+        id:identity.identityId.toString(),
+        title:identity.title
+    });
+    
     const [isVisibleIdentity, setVisibleIdentity] = useState<boolean>(false);
 
     const closeHandler = async () => {
@@ -49,14 +63,6 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
         if (!isMain) {
             sidebarStore.newProxyData.isVisible = false;
         }
-    }
-
-    const createIdentityHandler = () => {
-        setVisibleIdentity(true);
-    }
-
-    const closeIdentityHandler = () => {
-        setVisibleIdentity(false);
     }
 
     const selectIdentityHandler = (selectedItem?: SelectedItem) => {
@@ -76,6 +82,8 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
 
             return;
         }
+        
+        setIdentity({ id: selectedItem.id, title: selectedItem.title });
 
         setProxyData(prevData => ({
             ...prevData,
@@ -118,12 +126,12 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
     const portChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const port = parseInt(e.target.value, 10);
 
-        if (!isNaN(port) || e.target.value.length === 0) {
-            setProxyData(prevData => ({
-                ...prevData,
-                sshPort: port
-            }));
+        setProxyData(prevData => ({
+            ...prevData,
+            sshPort: e.target.value
+        }));
 
+        if (!isNaN(port) || e.target.value.length === 0) {
             setErrors(prevValue => {
                 const updatedErrors = { ...prevValue };
                 delete updatedErrors.Port;
@@ -137,15 +145,15 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
         }
     }
 
-    const createProxyClickHandler = useCallback(async () => {
-        const createProxyResult = await ProxyService.createProxy(proxyData);
+    const saveProxyClickHandler = useCallback(async () => {
+        const editProxyResult = await ProxyService.editProxy(proxyData);
 
-        if (onSave && createProxyResult.isSuccess) {
-            await onSave(createProxyResult.result);
+        if (onSave && editProxyResult.isSuccess) {
+            await onSave(editProxyResult.result);
         }
 
-        if (!createProxyResult.isSuccess) {
-            setErrors(createProxyResult?.errors);
+        if (!editProxyResult.isSuccess) {
+            setErrors(editProxyResult?.errors);
         }
     },[proxyData])
 
@@ -154,7 +162,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
             title:createIdentityResult.title,
             identityId: createIdentityResult.identityId
         })
-        
+
         setVisibleIdentity(false);
 
         setIdentity({ id: createIdentityResult.identityId.toString(), title: createIdentityResult.title });
@@ -170,40 +178,40 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
             return updatedErrors;
         });
     }
-    
+
     const sidebars = useMemo(() => [
         <SidebarNewIdentity
             key="identity"
             isMain={false}
             isVisible={isVisibleIdentity}
             onSave={createIdentityOnSaveHandler}
-            onClose={closeIdentityHandler}
+            onClose={() => setVisibleIdentity(false)}
         />
     ], [isVisibleIdentity]);
-    
+
     const footerPanel = useMemo(() => {
         return (
             <div className={classNames(style.save_block)}>
                 <ButtonLoader
-                    className={classNames(style.create_newhost)}
+                    className={classNames(style.edit_proxy)}
                     theme={ThemeButton.PRIMARY}
-                    actionAsync={createProxyClickHandler}
+                    actionAsync={saveProxyClickHandler}
                     disabled={Object.keys(errors).length > 0}
                 >
-                    {t('Создать прокси сервер')}
+                    {t('Сохранить прокси-сервер')}
                 </ButtonLoader>
             </div>
         )
-    }, [createProxyClickHandler])
-
+    }, [saveProxyClickHandler])
+    
     return (
         <Sidebar
             className={classNames(style.sidebarNewProxy, {
-                [style.active]: ((sidebarStore.newProxyData?.isVisible || isVisible) && !isMain)
+                [style.active]: ((sidebarStore.editProxyData?.isVisible || isVisible) && !isMain)
             }, [className])}
             sidebars={sidebars}
             footer={footerPanel}
-            headerName={'Новый прокси сервер'}
+            headerName={'Редактирование прокси-сервера'}
             close={closeHandler}
             isLoad={userStore.isLoadData}
             isMain={isMain}
@@ -219,6 +227,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                         className={style.address_input}
                         placeholder={t('IP или домен')}
                         onChange={hostnameChangeHandler}
+                        value={proxyData?.hostname ?? ""}
                         errors={errors?.Hostname ?? null}
                     />
                 </div>
@@ -232,6 +241,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                         icon={<TitleIcon width={20} height={20}/>}
                         onChange={nameChangeHandler}
                         errors={errors?.Title ?? null}
+                        value={proxyData?.title ?? ""}
                     />
                     <Input
                         type={'text'}
@@ -240,6 +250,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                         icon={<PortIcon width={20} height={20}/>}
                         onChange={portChangeHandler}
                         errors={errors?.Port ?? null}
+                        value={proxyData?.sshPort ?? ""}
                     />
                 </div>
             </FormBlock>
@@ -259,16 +270,16 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                         />
                     )}
                 </Select>
-                    <Button
-                        className={classNames(style.create_identity)}
-                        theme={ThemeButton.PRIMARY}
-                        onClick={createIdentityHandler}
-                    >
-                        {t('Создать учетку')}
-                    </Button>
-                    </FormBlock>
+                <Button
+                    className={classNames(style.create_identity)}
+                    theme={ThemeButton.PRIMARY}
+                    onClick={()=> setVisibleIdentity(true)}
+                >
+                    {t('Создать учетку')}
+                </Button>
+            </FormBlock>
         </Sidebar>
     );
 }
 
-export default observer(SidebarNewProxy);
+export default observer(SidebarEditProxy)

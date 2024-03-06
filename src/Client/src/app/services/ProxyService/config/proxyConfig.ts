@@ -20,3 +20,19 @@ export interface CreateProxyResult {
     title: string,
     identityId: number
 }
+
+export interface EditProxyData {
+    proxyId: number,
+    title: string,
+    hostname: string,
+    sshPort?: string,
+    identityId: number
+}
+
+export interface EditProxyResult{
+    proxyId: number,
+    title: string,
+    hostname: string,
+    sshPort?: number,
+    identityId: number
+}

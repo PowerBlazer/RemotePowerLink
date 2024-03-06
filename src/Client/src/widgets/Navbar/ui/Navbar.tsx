@@ -63,7 +63,7 @@ function Navbar ({ className }: NavbarProps) {
                     : <>
                         <PersonalIcon width={22} height={22}/>
                         <h2 className={style.personal}>{userStore.userData?.username}</h2>
-                    </>
+                      </>
                 }
             </div>
             <div className={classNames(style.nav_items)}>

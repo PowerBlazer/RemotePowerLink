@@ -33,7 +33,8 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
     const serversManagerData = useMemo<ServerManagerData[]>(() => 
         userStore.userServers?.map((server => ({
             id: server.serverId,
-            title: server.title, 
+            title: server.title,
+            common: server.systemTypeName,
             dataType: DataType.SERVER,
             iconUrl: Boolean(server.systemTypeIcon) && `${HostService._apiHost}/${server.systemTypeIcon}`,
             iconNode: !Boolean(server.systemTypeIcon) && defaultServerIcon

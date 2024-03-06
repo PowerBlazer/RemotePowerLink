@@ -1,7 +1,6 @@
 ﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './ServerManagerItem.module.scss';
 import {ServerManagerData} from "features/ServerManagerGroup";
-import {Button} from "shared/ui/Button/Button";
 import {DataType} from "app/enums/DataType";
 import {ButtonConnect} from "features/ButtonConnect";
 import {ButtonEdit} from "features/ButtonEdit";
@@ -22,7 +21,7 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
     
     
     return (
-        <Button className={classNames(style.data_panel, {}, [className])}>
+        <div className={classNames(style.data_panel, {}, [className])}>
             <div className={classNames(style.data_info)}>
                 <div className={classNames(style.data_icon)}>
                     {serverManagerDataItem.iconUrl 
@@ -32,9 +31,10 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
                 </div>
                 <div className={classNames(style.data_title)}>
                     {serverManagerDataItem.title}
-                    <p className={classNames(style.additionally)}>
-                        {serverManagerDataItem.dataType === DataType.SERVER && 'ssh'}
-                    </p>
+                    <div className={classNames(style.additionally)}>
+                        {serverManagerDataItem.dataType === DataType.SERVER && `ssh, ${serverManagerDataItem.common}`}
+                        {serverManagerDataItem.dataType === DataType.PROXY && 'HTTP'}
+                    </div>
                 </div>
             </div>
             <div className={classNames(style.data_options)}>
@@ -43,6 +43,6 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
                     && <ButtonConnect serverData={serverManagerDataItem}/>
                 }
             </div>
-        </Button>
+        </div>
     );
 }

@@ -8,6 +8,7 @@ import {ServerManagerItem} from "features/ServerManagerItem";
 export interface ServerManagerData {
     id:number,
     title:string,
+    common?: string,
     dataType: DataType
     iconUrl?:string,
     iconNode?: ReactNode

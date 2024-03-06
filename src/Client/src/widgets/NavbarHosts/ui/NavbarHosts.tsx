@@ -10,8 +10,10 @@ import { SidebarNewHost } from 'widgets/SidebarNewHost';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
 import { observer } from 'mobx-react-lite';
-import { CreateServerResult } from "app/services/ServerService/config/serverConfig";
+import {CreateServerResult, EditServerResult} from "app/services/ServerService/config/serverConfig";
 import userStore from "app/store/userStore";
+import {SidebarEditHost} from "widgets/SidebarEditHost";
+import toast from "react-hot-toast";
 
 interface NavbarHostsProps {
     className?: string;
@@ -19,9 +21,26 @@ interface NavbarHostsProps {
 
 function NavbarHosts ({ className }: NavbarHostsProps) {
     const { t } = useTranslation('translation');
+
+
+    const editSaveServerHandler = async (editServerData: EditServerResult) => {
+        userStore.setUserServer({
+            serverId: editServerData.serverId,
+            hostname: editServerData.hostname,
+            title: editServerData.title,
+            identityId: editServerData.identityId,
+            proxyId: editServerData.proxyId,
+            sshPort: editServerData.sshPort,
+            startupCommand: editServerData.startupCommand,
+            systemTypeIcon: editServerData.systemTypeIcon,
+            systemTypeName: editServerData.systemTypeName
+        });
+
+        toast.success(t("Успешно сохранено"));
+    }
     
     const createServerDataHandler = async (createServerData: CreateServerResult) => {
-        userStore.setUserServers([{
+        const server = {
             serverId: createServerData.serverId,
             title: createServerData.title,
             sshPort: createServerData.sshPort,
@@ -31,9 +50,18 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             startupCommand: createServerData.startupCommand,
             systemTypeIcon: createServerData.systemTypeIcon,
             systemTypeName: createServerData.systemTypeName
-        }]);
+        };
         
-        await sidebarStore.setSidebar(null);
+        userStore.setUserServer(server);
+        
+        sidebarStore.editHostData.server = server;
+        
+        await sidebarStore.setSidebar({
+            name: `SidebarEditHost ${createServerData.serverId}`,
+            sidebar: <SidebarEditHost isMain={true} onSave={editSaveServerHandler}/>
+        });
+        
+        toast.success(t('Успешно создано'));
     }
 
     const createNewHostHandler = async () => {

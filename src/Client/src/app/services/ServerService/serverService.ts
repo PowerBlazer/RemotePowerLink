@@ -1,4 +1,9 @@
-import {CreateServerData, CreateServerResult, ServerData} from 'app/services/ServerService/config/serverConfig';
+import {
+    CreateServerData,
+    CreateServerResult,
+    EditServerData, EditServerResult,
+    ServerData
+} from 'app/services/ServerService/config/serverConfig';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class ServerService {
@@ -15,6 +20,27 @@ export class ServerService {
                 result: response.data.result
             }
         } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
+    
+    static editServer = async (editServerData: EditServerData): Promise<ServiceResult<EditServerResult>> => {
+        try {
+            const response =
+                await HostService.api.post<ApiResult<EditServerResult>>(
+                    '/v1/server/edit',
+                    editServerData
+                );
+
+            return {
+                isSuccess: true,
+                result: response.data.result
+            }
+        }
+        catch (error) {
             return {
                 isSuccess: false,
                 errors: error.response?.data.Errors

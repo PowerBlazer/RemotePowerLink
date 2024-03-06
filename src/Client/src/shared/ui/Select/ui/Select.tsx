@@ -97,7 +97,7 @@ export function Select (props: SelectProps) {
                                     {icon}
                                 </div>
                                 { selectedItem
-                                    ? (selectedElement ? selectedElement.title : selectedItem.title)
+                                    ? selectedItem.title
                                     : (selectedElement ? selectedElement.title : placeholder)
                                 }
                             </div>

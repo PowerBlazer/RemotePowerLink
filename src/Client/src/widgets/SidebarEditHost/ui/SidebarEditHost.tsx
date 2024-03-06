@@ -3,14 +3,14 @@ import style from './SidebarEditHost.module.scss';
 import {observer} from "mobx-react-lite";
 import {Sidebar, SidebarOptions} from "widgets/Sidebar";
 import {useTranslation} from "react-i18next";
-import {useMemo, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useMemo, useState} from "react";
 import sidebarStore from "app/store/sidebarStore";
 import {SidebarNewProxy} from "widgets/SidebarNewProxy";
 import {SidebarNewIdentity} from "widgets/SidebarNewIdentity";
 import {CreateProxyResult} from "app/services/ProxyService/config/proxyConfig";
 import userStore from "app/store/userStore";
 import {CreateIdentityResult} from "app/services/IdentityService/config/identityConfig";
-import {CreateServerData} from "app/services/ServerService/config/serverConfig";
+import {CreateServerData, EditServerData, EditServerResult} from "app/services/ServerService/config/serverConfig";
 import {Select, SelectedItem, SelectItem} from "shared/ui/Select";
 import {FormBlock} from "features/FormBlock";
 import ServerIcon from "shared/assets/icons/navbar/server2.svg";
@@ -20,8 +20,10 @@ import PortIcon from "shared/assets/icons/code-working.svg";
 import ScriptIcon from "shared/assets/icons/curly-braces.svg";
 import DoubleArrow from "shared/assets/icons/double-arrow.svg";
 import {Button, ThemeButton} from "shared/ui/Button/Button";
+import {ButtonLoader} from "shared/ui/ButtonLoader";
+import {ServerService} from "app/services/ServerService/serverService";
 
-interface SidebarEditHostProps extends SidebarOptions<any>{
+interface SidebarEditHostProps extends SidebarOptions<EditServerResult>{
     className?: string;
 }
 
@@ -35,13 +37,21 @@ function SidebarEditHost (props: SidebarEditHostProps) {
     } = props;
     
     const server = sidebarStore.editHostData.server;
-    const identity = userStore.userIdentities.find(p=>p.identityId === server.identityId);
-    const proxy = userStore.userProxies.find(p=>p.proxyId === server.proxyId);
+    const identity = userStore.userIdentities.find(p=> p.identityId === server.identityId);
+    const proxy = userStore.userProxies.find(p=> p.proxyId === server.proxyId);
     
     const { t } = useTranslation('translation');
     const [errors, setErrors] = useState<Record<string, string[]>>({});
-
-    const [serverData, setServerData] = useState<CreateServerData>();
+    
+    const [serverData, setServerData] = useState<EditServerData>({
+        serverId: server.serverId,
+        title: server.title,
+        hostname: server.hostname,
+        identityId: server.identityId,
+        proxyId: server.proxyId,
+        sshPort: server.sshPort?.toString(),
+        startupCommand: server.startupCommand
+    });
     
     const [selectedProxy, setProxy] = useState<SelectedItem>(
         proxy && { id: proxy.proxyId.toString(), title: proxy.title }
@@ -110,8 +120,145 @@ function SidebarEditHost (props: SidebarEditHostProps) {
             return updatedErrors;
         });
     }
-    
 
+    const selectProxyHandler = (selectedItem?: SelectedItem) => {
+        if (!selectedItem) {
+            setServerData(prevData => ({
+                ...prevData,
+                proxyId: null
+            }));
+
+            setErrors(prevValue => {
+                const updatedErrors = { ...prevValue };
+                delete updatedErrors.ProxyId;
+                return updatedErrors;
+            });
+
+            setProxy(null);
+
+            return;
+        }
+
+        setProxy(selectedItem);
+
+        setServerData(prevData => ({
+            ...prevData,
+            proxyId: Number(selectedItem.id)
+        }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.ProxyId;
+            return updatedErrors;
+        });
+    }
+
+    const selectIdentityHandler = (selectedItem?: SelectedItem) => {
+        if (!selectedItem) {
+            setServerData(prevData => ({
+                ...prevData,
+                identityId: 0
+            }));
+
+            setErrors(prevValue => {
+                const updatedErrors = { ...prevValue };
+                delete updatedErrors.IdentityId;
+                return updatedErrors;
+            });
+
+            setIdentity(null)
+
+            return;
+        }
+
+        setIdentity(selectedItem)
+
+        setServerData(prevData => ({
+            ...prevData,
+            identityId: Number(selectedItem.id)
+        }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.IdentityId;
+            return updatedErrors;
+        });
+    }
+
+    const hostnameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setServerData(prevData => ({
+            ...prevData,
+            hostname: e.target.value
+        }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.Hostname;
+            return updatedErrors;
+        });
+    }
+
+    const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setServerData(prevData => ({
+            ...prevData,
+            title: e.target.value
+        }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.Title;
+            return updatedErrors;
+        });
+    }
+
+    const portChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const port = parseInt(e.target.value, 10);
+
+        setServerData(prevData => ({
+            ...prevData,
+            sshPort: e.target.value
+        }));
+
+        if (!isNaN(port) || e.target.value.length === 0) {
+            setErrors(prevValue => {
+                const updatedErrors = { ...prevValue };
+                delete updatedErrors.Port;
+                return updatedErrors;
+            });
+        } else {
+            setErrors(prevValue => ({
+                ...prevValue,
+                Port: ['Некорректно веден порт']
+            }));
+        }
+    }
+
+    const startupCommandChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setServerData(prevData => ({
+            ...prevData,
+            startupCommand: e.target.value
+        }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.StartupCommand;
+            return updatedErrors;
+        });
+    }
+
+    const saveServerClickHandler = useCallback(async () => {
+       
+        const editServerResult = await ServerService.editServer(serverData);
+
+        if (onSave && editServerResult.isSuccess) {
+            await onSave(editServerResult.result);
+        }
+
+        if (!editServerResult.isSuccess) {
+            setErrors(editServerResult?.errors);
+        }
+    },[serverData]);
+    
     const sidebars = useMemo(() => [
         <SidebarNewProxy
             key="proxy"
@@ -128,16 +275,30 @@ function SidebarEditHost (props: SidebarEditHostProps) {
             isVisible={isVisibleIdentity}
         />
     ], [isVisibleIdentity, isVisibleProxy]);
-    
-    
+
+    const footerPanel = useMemo(() => {
+        return (
+            <div className={classNames(style.save_block)}>
+                <ButtonLoader
+                    className={classNames(style.save_host)}
+                    theme={ThemeButton.PRIMARY}
+                    disabled={Object.keys(errors).length > 0}
+                    actionAsync={saveServerClickHandler}
+                >
+                    {t('Сохранить сервер')}
+                </ButtonLoader>
+            </div>
+        )
+    }, [saveServerClickHandler]);
     
     return (
         <Sidebar
             className={classNames(style.sidebarEditHost, {}, [className])}
-            sidebars={sidebars}
-            isMain={isMain}
-            close={closeHandler}
             headerName={'Редактирование сервера'}
+            close={closeHandler}
+            sidebars={sidebars}
+            footer={footerPanel}
+            isMain={isMain}
         >
             <FormBlock headerName={'Адресс'}>
                 <div className={classNames(style.address_block)}>
@@ -148,8 +309,9 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         type={'text'}
                         className={style.address_input}
                         placeholder={t('IP или домен')}
-                        errors={errors.Hostname ?? null}
-                        value={server.hostname}
+                        errors={errors?.Hostname ?? null}
+                        value={serverData.hostname}
+                        onChange={hostnameChangeHandler}
                     />
                 </div>
             </FormBlock>
@@ -161,7 +323,8 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         placeholder={t('Название')}
                         icon={<TitleIcon width={20} height={20}/>}
                         errors={errors?.Title ?? null}
-                        value={server.title}
+                        value={serverData.title}
+                        onChange={nameChangeHandler}
                     />
                     <Input
                         type={'text'}
@@ -169,7 +332,8 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         placeholder={t('Ssh порт')}
                         icon={<PortIcon width={20} height={20}/>}
                         errors={errors?.Port ?? null}
-                        value={server.sshPort}
+                        value={serverData.sshPort ?? ""}
+                        onChange={portChangeHandler}
                     />
                     <Input
                         type={'text'}
@@ -177,7 +341,8 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         placeholder={t('Стартовая команда')}
                         icon={<ScriptIcon width={20} height={20}/>}
                         errors={errors?.StartupCommand ?? null}
-                        value={server.startupCommand}
+                        value={serverData.startupCommand ?? ""}
+                        onChange={startupCommandChangeHandler}
                     />
                 </div>
             </FormBlock>
@@ -187,6 +352,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                     icon={<DoubleArrow width={19} height={19}/>}
                     errors={errors?.IdentityId ?? null}
                     selectedItem={selectedIdentity}
+                    onChange={selectIdentityHandler}
                 >
                     {userStore.userIdentities?.map((identity) =>
                         <SelectItem
@@ -210,6 +376,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                     icon={<DoubleArrow width={19} height={19}/>}
                     errors={errors?.ProxyId ?? null}
                     selectedItem={selectedProxy}
+                    onChange={selectProxyHandler}
                 >
                     {userStore.userProxies?.map((proxy) =>
                         <SelectItem

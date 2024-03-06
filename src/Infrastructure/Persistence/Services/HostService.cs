@@ -41,8 +41,8 @@ public class HostService: IHostService
             await client.ConnectAsync(cancellationToken);
 
             var responseCat = client.RunCommand("cat /etc/os-release").Result;
-            
-            if (responseCat.Contains("Linux"))
+
+            if (!string.IsNullOrEmpty(responseCat))
             {
                 foreach (SystemTypeEnum systemTypeEnumItem in Enum.GetValues(typeof(SystemTypeEnum)))
                 {
@@ -65,7 +65,7 @@ public class HostService: IHostService
                     }
                 }
             }
-            
+
             if (string.IsNullOrEmpty(responseCat))
             {
                 var responseSystemInfo = client.RunCommand("systeminfo").Result;
@@ -79,9 +79,10 @@ public class HostService: IHostService
                     };
                 }
             }
-            
-            systemTypeResult.IconPath = (await _systemTypeRepository.GetSystemTypeAsync(systemTypeResult.SystemTypeId))
-                .IconPath;
+
+            var systemType = await _systemTypeRepository.GetSystemTypeAsync(systemTypeResult.SystemTypeId);
+
+            systemTypeResult.IconPath = systemType.IconPath;
         }
         finally
         {

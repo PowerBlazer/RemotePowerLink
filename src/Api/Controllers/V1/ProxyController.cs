@@ -1,4 +1,5 @@
 ﻿using Application.Features.ProxyFeature.CreateProxy;
+using Application.Features.ProxyFeature.EditProxy;
 using Application.Features.ProxyFeature.GetProxies;
 using Domain.Common;
 using Domain.DTOs.Proxy;
@@ -59,6 +60,31 @@ public class ProxyController : BaseController
         var result = await Mediator.Send(createProxyResponse);
 
         return new ApiActionResult<CreateProxyResponse>
+        {
+            Result = result
+        };
+    }
+    
+    
+    /// <summary>
+    /// Обновляет данные прокси-сервера на основе предоставленных данных и настройки подключения SSH к удаленной машине.
+    /// </summary>
+    /// <param name="editServerCommand">Данные для обновления прокси-сервера и настройки подключения SSH.</param>
+    /// <returns>Результат обновленного прокси-сервера.</returns>
+    /// <response code="200">Прокси-сервер успешно обновлен.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPost("edit")]
+    [ProducesResponseType(typeof(ApiActionResult<EditProxyResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<EditProxyResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<EditProxyResponse>> EditProxy([FromBody]EditProxyCommand editServerCommand)
+    {
+        editServerCommand.UserId = UserId;
+        var result = await Mediator.Send(editServerCommand);
+
+        return new ApiActionResult<EditProxyResponse>
         {
             Result = result
         };

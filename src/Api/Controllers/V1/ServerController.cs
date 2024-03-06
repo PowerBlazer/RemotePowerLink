@@ -77,11 +77,11 @@ public class ServerController: BaseController
     /// <response code="400">Ошибка валидации данных.</response>
     /// <response code="401">Пользователь не авторизован.</response>
     /// <response code="500">Ошибка на сервере.</response>
-    [HttpPost("create")]
+    [HttpPost("edit")]
     [ProducesResponseType(typeof(ApiActionResult<EditServerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiActionResult<EditServerResponse>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ApiActionResult<EditServerResponse>> CreateServer([FromBody]EditServerCommand editServerCommand)
+    public async Task<ApiActionResult<EditServerResponse>> EditServer([FromBody]EditServerCommand editServerCommand)
     {
         editServerCommand.UserId = UserId;
         var result = await Mediator.Send(editServerCommand);

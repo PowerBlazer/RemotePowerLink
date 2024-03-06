@@ -1,6 +1,6 @@
 ﻿namespace Domain.DTOs.Proxy;
 
-public class CreateProxyResponse
+public class EditProxyResponse
 {
     /// <summary>
     /// Id прокси сервера.
@@ -26,9 +26,9 @@ public class CreateProxyResponse
     /// </summary>
     public required long IdentityId { get; set; }
     
-    public static CreateProxyResponse ProxyMapTo(Entities.Proxy proxy)
+    public static EditProxyResponse ProxyMapTo(Entities.Proxy proxy)
     {
-        return new CreateProxyResponse
+        return new EditProxyResponse
         {
             ProxyId = proxy.Id,
             Hostname = proxy.IpAddress,

@@ -24,4 +24,11 @@ public interface IProxyRepository
     /// <param name="proxy">Прокси данные для подключения по SSH для добавления.</param>
     /// <returns>Добавленный объект прокси данных для подключения по SSH.</returns>
     Task<Proxy> AddProxyAsync(Proxy proxy);
+    
+    /// <summary>
+    /// Обновляет данные существующего прокси-сервера
+    /// </summary>
+    /// <param name="proxy">Прокси-сервер для обновления</param>
+    /// <returns>Обновленный покси-сервер</returns>
+    Task<Proxy> UpdateProxyAsync(Proxy proxy);
 }

@@ -2,30 +2,27 @@
 using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
 using Domain.DTOs.Proxy;
-using Domain.Entities;
 using Domain.Exceptions;
-using JetBrains.Annotations;
 using MediatR;
 
-namespace Application.Features.ProxyFeature.CreateProxy;
+namespace Application.Features.ProxyFeature.EditProxy;
 
-[UsedImplicitly]
-public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxyResponse>
+public class EditProxyHandler: IRequestHandler<EditProxyCommand,EditProxyResponse>
 {
     private readonly IIdentityRepository _identityRepository;
-    private readonly IProxyRepository _proxyRepository;
     private readonly IHostService _hostService;
+    private readonly IProxyRepository _proxyRepository;
 
-    public CreateProxyHandler(IIdentityRepository identityRepository,
-        IProxyRepository proxyRepository, 
-        IHostService hostService)
+    public EditProxyHandler(IIdentityRepository identityRepository, 
+        IHostService hostService, 
+        IProxyRepository proxyRepository)
     {
         _identityRepository = identityRepository;
-        _proxyRepository = proxyRepository;
         _hostService = hostService;
+        _proxyRepository = proxyRepository;
     }
 
-    public async Task<CreateProxyResponse> Handle(CreateProxyCommand request, CancellationToken cancellationToken)
+    public async Task<EditProxyResponse> Handle(EditProxyCommand request, CancellationToken cancellationToken)
     {
         var identity = await _identityRepository.GetIdentityDefaultAsync(request.IdentityId);
 
@@ -49,16 +46,10 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
             throw new ConnectionServerException("Не удалось установить соединение с сервером.","Hostname");
         }
 
-        var addedProxyResult = await _proxyRepository.AddProxyAsync(new Proxy
-        {
-            IdentityId = request.IdentityId,
-            IpAddress = request.Hostname,
-            UserId = request.UserId,
-            SshPort = request.SshPort ?? 22,
-            DateCreated = DateTime.Now,
-            Title = request.Title
-        });
+        var proxy = EditProxyCommand.MapToProxy(request);
+        
+        var updatedProxy = await _proxyRepository.UpdateProxyAsync(proxy);
 
-        return CreateProxyResponse.ProxyMapTo(addedProxyResult);
+        return EditProxyResponse.ProxyMapTo(updatedProxy);
     }
 }

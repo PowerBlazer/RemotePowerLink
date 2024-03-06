@@ -44,7 +44,7 @@ public class EditServerCommand: IRequest<EditServerResponse>
     /// Идентификатор пользователя, которому принадлежит сервер.
     /// </summary>
     [JsonIgnore]
-    public required long UserId { get; set; }
+    public long UserId { get; set; }
     
     /// <summary>
     /// Идентификатор прокси сервера.

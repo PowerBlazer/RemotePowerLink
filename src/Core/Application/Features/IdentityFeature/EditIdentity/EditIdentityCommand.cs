@@ -2,13 +2,18 @@
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.IdentityFeature.CreateIdentity;
+namespace Application.Features.IdentityFeature.EditIdentity;
+
 
 /// <summary>
-/// Команда для создания новой идентификации для авторизации по протоколу SSH.
+/// Команда для обновления данных идентификации для авторизации по протоколу SSH.
 /// </summary>
-public class CreateIdentityCommand : IRequest<CreateIdentityResponse>
+public class EditIdentityCommand: IRequest<EditIdentityResponse>
 {
+    /// <summary>
+    /// Id идентификатора
+    /// </summary>
+    public required long IdentityId { get; set; }
     /// <summary>
     /// Название идентификации.
     /// </summary>
@@ -29,15 +34,16 @@ public class CreateIdentityCommand : IRequest<CreateIdentityResponse>
     /// </summary>
     public long UserId { get; set; }
 
-    public static Identity MapToIdentity(CreateIdentityCommand createIdentityCommand)
+    public static Identity MapToIdentity(EditIdentityCommand editIdentityCommand)
     {
         return new Identity
         {
-            Title = createIdentityCommand.Title,
-            Username = createIdentityCommand.Username,
-            Password = createIdentityCommand.Password,
+            Id = editIdentityCommand.IdentityId,
+            Title = editIdentityCommand.Title,
+            Username = editIdentityCommand.Username,
+            Password = editIdentityCommand.Password,
             DateCreated = DateTime.Now,
-            UserId = createIdentityCommand.UserId
+            UserId = editIdentityCommand.UserId
         };
     }
 }

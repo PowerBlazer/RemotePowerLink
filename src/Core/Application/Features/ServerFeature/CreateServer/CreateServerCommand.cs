@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Domain.DTOs.Server;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.ServerFeature.CreateServer;
@@ -44,4 +45,20 @@ public class CreateServerCommand : IRequest<CreateServerResponse>
     /// Идентификатор прокси, связанного с сервером.
     /// </summary>
     public long? ProxyId { get; set; }
+
+    public static Server MapToServer(CreateServerCommand createServerCommand, long systemTypeId)
+    {
+        return new Server
+        {
+            Title = createServerCommand.Title,
+            IpAddress = createServerCommand.Hostname,
+            SshPort = createServerCommand.SshPort,
+            StartupCommand = createServerCommand.StartupCommand,
+            IdentityId = createServerCommand.IdentityId,
+            UserId = createServerCommand.UserId,
+            ProxyId = createServerCommand.ProxyId,
+            DateCreated = DateTime.Now,
+            SystemTypeId = systemTypeId
+        };
+    }
 }

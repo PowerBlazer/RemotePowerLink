@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Domain.DTOs.Proxy;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.ProxyFeature.CreateProxy;
@@ -34,4 +35,18 @@ public class CreateProxyCommand: IRequest<CreateProxyResponse>
     /// Id Идентификатор пользователя, связанных с прокси.
     /// </summary>
     public required long IdentityId { get; set; }
+
+    public static Proxy MapToProxy(CreateProxyCommand createProxyCommand)
+    {
+        return new Proxy
+        {
+            IpAddress = createProxyCommand.Hostname,
+            DateCreated = DateTime.Now,
+            IdentityId = createProxyCommand.IdentityId,
+            SshPort = createProxyCommand.SshPort,
+            Title = createProxyCommand.Title,
+            UserId = createProxyCommand.UserId
+        };
+    }
+    
 }

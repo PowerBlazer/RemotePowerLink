@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Persistence.Contexts;
-using Application.Layers.Persistence.Repositories;
 using Application.Layers.Persistence.Services;
+using Domain.Repository;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

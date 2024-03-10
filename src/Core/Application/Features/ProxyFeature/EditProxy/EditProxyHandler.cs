@@ -1,8 +1,8 @@
-﻿using Application.Layers.Persistence.Repositories;
-using Application.Layers.Persistence.Services;
+﻿using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
 using Domain.DTOs.Proxy;
 using Domain.Exceptions;
+using Domain.Repository;
 using MediatR;
 
 namespace Application.Features.ProxyFeature.EditProxy;

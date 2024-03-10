@@ -14,13 +14,19 @@ public class GetIdentityResponse
     /// Название или описание идентификатора.
     /// </summary>
     public required string Title { get; set; }
+    
+    /// <summary>
+    /// Имя пользователя идентификатора
+    /// </summary>
+    public required string Username { get; set; }
 
     public static GetIdentityResponse MapIdentityTo(Entities.Identity identity)
     {
         return new GetIdentityResponse
         {
             IdentityId = identity.Id,
-            Title = identity.Title
+            Title = identity.Title,
+            Username = identity.Username
         };
     }
 }

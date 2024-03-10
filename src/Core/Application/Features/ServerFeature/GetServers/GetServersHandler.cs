@@ -1,5 +1,5 @@
-﻿using Application.Layers.Persistence.Repositories;
-using Domain.DTOs.Server;
+﻿using Domain.DTOs.Server;
+using Domain.Repository;
 using MediatR;
 
 namespace Application.Features.ServerFeature.GetServers;

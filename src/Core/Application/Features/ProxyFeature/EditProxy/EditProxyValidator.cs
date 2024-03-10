@@ -1,8 +1,10 @@
 ﻿using Application.Layers.Persistence.Services;
 using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.ProxyFeature.EditProxy;
 
+[UsedImplicitly]
 public class EditProxyValidator: AbstractValidator<EditProxyCommand>
 {
     public EditProxyValidator(IHostService hostService)

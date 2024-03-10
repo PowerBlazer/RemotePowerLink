@@ -1,4 +1,5 @@
 ﻿using Application.Features.IdentityFeature.CreateIdentity;
+using Application.Features.IdentityFeature.EditIdentity;
 using Application.Features.IdentityFeature.GetIdentities;
 using Domain.Common;
 using Domain.DTOs.Identity;
@@ -60,6 +61,30 @@ public class IdentityController : BaseController
         var result = await Mediator.Send(createIdentityCommand);
 
         return new ApiActionResult<CreateIdentityResponse>
+        {
+            Result = result
+        };
+    }
+    
+    /// <summary>
+    /// Обновляет данные идентификатора на основе предоставленных данных и настройки подключения SSH к удаленной машине.
+    /// </summary>
+    /// <param name="editIdentityCommand">Данные для обновления идентификатора и настройки подключения SSH.</param>
+    /// <returns>Результат обновленного идентификатора.</returns>
+    /// <response code="200">Идентификатор успешно обновлен.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPost("edit")]
+    [ProducesResponseType(typeof(ApiActionResult<EditIdentityResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<EditIdentityResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<EditIdentityResponse>> EditIdentity([FromBody]EditIdentityCommand editIdentityCommand)
+    {
+        editIdentityCommand.UserId = UserId;
+        var result = await Mediator.Send(editIdentityCommand);
+
+        return new ApiActionResult<EditIdentityResponse>
         {
             Result = result
         };

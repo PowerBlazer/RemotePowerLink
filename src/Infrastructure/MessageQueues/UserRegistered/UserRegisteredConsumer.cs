@@ -1,6 +1,6 @@
 ﻿using Application.Layers.MessageQueues.UserRegistered;
-using Application.Layers.Persistence.Repositories;
 using Domain.Entities;
+using Domain.Repository;
 using MassTransit;
 
 namespace MessageQueues.UserRegistered;

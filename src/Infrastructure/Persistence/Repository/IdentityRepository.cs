@@ -1,7 +1,7 @@
 ﻿using Application.Layers.Persistence.Contexts;
-using Application.Layers.Persistence.Repositories;
 using Domain.Entities;
 using Domain.Exceptions;
+using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repository;
@@ -48,6 +48,20 @@ public class IdentityRepository: IIdentityRepository
     public async Task<Identity> AddIdentityAsync(Identity identity)
     {
         await _persistenceContext.Identities.AddAsync(identity);
+        await _persistenceContext.SaveChangesAsync();
+
+        return identity;
+    }
+
+    public async Task<Identity> UpdateIdentityAsync(Identity identity)
+    {
+        _persistenceContext.Attach(identity);
+        _persistenceContext.Identities.Update(identity);
+        
+        _persistenceContext
+            .Entry(identity)
+            .Property(p => p.DateCreated).IsModified = false;
+
         await _persistenceContext.SaveChangesAsync();
 
         return identity;

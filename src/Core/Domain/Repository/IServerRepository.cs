@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.Layers.Persistence.Repositories;
+namespace Domain.Repository;
 
 public interface IServerRepository
 {
@@ -8,8 +8,15 @@ public interface IServerRepository
     /// Получает информацию о сервере на основе предоставленного идентификатора сервера.
     /// </summary>
     /// <param name="serverId">Идентификатор сервера.</param>
-    /// <returns>Объект сервера с указанным идентификатором.</returns>
+    /// <returns>Объект сервер для подключения по SSH.</returns>
     Task<Server> GetServerAsync(long serverId);
+    
+    /// <summary>
+    /// Получает информацию о сервере на основе предоставленного идентификатора сервера.
+    /// </summary>
+    /// <param name="serverId">Id сервера</param>
+    /// <returns>Объект сервер для подключения по SSH или NULL если не найден</returns>
+    Task<Server?> GetServerDefaultAsync(long serverId);
 
     /// <summary>
     /// Добавляет новый сервер в систему.

@@ -1,4 +1,4 @@
-﻿namespace Application.Layers.Persistence.Repositories;
+﻿namespace Domain.Repository;
 
 public interface IIdentityRepository
 {
@@ -29,5 +29,12 @@ public interface IIdentityRepository
     /// <param name="identity">Идентификатор для добавления.</param>
     /// <returns>Добавленный идентификатор</returns>
     Task<Domain.Entities.Identity> AddIdentityAsync(Domain.Entities.Identity identity);
+    
+    /// <summary>
+    /// Обновляет запись идентификатора
+    /// </summary>
+    /// <param name="identity">Идентификатор для обновления</param>
+    /// <returns>Обновленный идентификатор</returns>
+    Task<Domain.Entities.Identity> UpdateIdentityAsync(Domain.Entities.Identity identity);
 
 }

@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Persistence.Contexts;
-using Application.Layers.Persistence.Repositories;
 using Domain.Entities;
+using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repository;

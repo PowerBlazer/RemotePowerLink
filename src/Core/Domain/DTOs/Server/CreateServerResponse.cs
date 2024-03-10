@@ -58,7 +58,9 @@ public class CreateServerResponse
             SshPort = server.SshPort,
             Title = server.Title,
             ProxyId = server.ProxyId,
-            StartupCommand = server.StartupCommand
+            StartupCommand = server.StartupCommand,
+            SystemTypeName = server.SystemType?.Name,
+            SystemTypeIcon = server.SystemType?.IconPath
         };
     }
 }

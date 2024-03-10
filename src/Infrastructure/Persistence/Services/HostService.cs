@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Application.Layers.Persistence.Repositories;
 using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
 using Application.Layers.Persistence.Services.Results;
 using Domain.Enums;
+using Domain.Repository;
 using Renci.SshNet;
 
 namespace Persistence.Services;

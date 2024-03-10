@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Persistence.Contexts;
-using Application.Layers.Persistence.Repositories;
 using Domain.Entities;
+using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repository;
@@ -43,6 +43,10 @@ public class ProxyRepository: IProxyRepository
     {
         _persistenceContext.Attach(proxy);
         _persistenceContext.Proxies.Update(proxy);
+        
+        _persistenceContext
+            .Entry(proxy)
+            .Property(p => p.DateCreated).IsModified = false;
 
         await _persistenceContext.SaveChangesAsync();
 

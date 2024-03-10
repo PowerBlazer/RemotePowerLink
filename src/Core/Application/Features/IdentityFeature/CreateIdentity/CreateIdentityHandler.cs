@@ -1,6 +1,5 @@
-﻿using Application.Layers.Persistence.Repositories;
-using Domain.DTOs.Identity;
-using Domain.Entities;
+﻿using Domain.DTOs.Identity;
+using Domain.Repository;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -18,15 +17,10 @@ public class CreateIdentityHandler: IRequestHandler<CreateIdentityCommand, Creat
 
     public async Task<CreateIdentityResponse> Handle(CreateIdentityCommand request, CancellationToken cancellationToken)
     {
-        var addedIdentityResult = await _identityRepository.AddIdentityAsync(new Identity
-        {
-            Title = request.Title,
-            Username = request.Username,
-            Password = request.Password,
-            DateCreated = DateTime.Now,
-            UserId = request.UserId
-        });
+        var newIdentity = CreateIdentityCommand.MapToIdentity(request);
+        
+        var addedIdentityResult = await _identityRepository.AddIdentityAsync(newIdentity);
 
-        return CreateIdentityResponse.MapToIdentity(addedIdentityResult);
+        return CreateIdentityResponse.IdentityMapTo(addedIdentityResult);
     }
 }

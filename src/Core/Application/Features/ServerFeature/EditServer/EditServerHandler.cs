@@ -1,8 +1,8 @@
-﻿using Application.Layers.Persistence.Repositories;
-using Application.Layers.Persistence.Services;
+﻿using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
 using Domain.DTOs.Server;
 using Domain.Exceptions;
+using Domain.Repository;
 using MediatR;
 
 namespace Application.Features.ServerFeature.EditServer;
@@ -70,9 +70,9 @@ public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerRes
         }
         
         var systemType = await _hostService.GetSystemType(connectionServerParameter, cancellationToken);
-        var server = EditServerCommand.MapToServer(request, systemType.SystemTypeId);
 
-        var updatedServer = await _serverRepository.UpdateServerAsync(server);
+        var updatedServer = await _serverRepository
+            .UpdateServerAsync(EditServerCommand.MapToServer(request, systemType.SystemTypeId));
         
         var editServerResponse = EditServerResponse.MapServerTo(updatedServer);
 

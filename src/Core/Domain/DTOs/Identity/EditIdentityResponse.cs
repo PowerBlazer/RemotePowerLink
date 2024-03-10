@@ -1,6 +1,6 @@
 ﻿namespace Domain.DTOs.Identity;
 
-public class CreateIdentityResponse
+public class EditIdentityResponse
 {
     /// <summary>
     /// Id идентификатора
@@ -17,9 +17,9 @@ public class CreateIdentityResponse
     /// </summary>
     public required string Username { get; set; }
     
-    public static CreateIdentityResponse IdentityMapTo(Entities.Identity identity)
+    public static EditIdentityResponse IdentityMapTo(Entities.Identity identity)
     {
-        return new CreateIdentityResponse
+        return new EditIdentityResponse
         {
             IdentityId = identity.Id,
             Title = identity.Title,

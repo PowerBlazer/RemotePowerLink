@@ -1,9 +1,9 @@
-﻿using Application.Layers.Persistence.Repositories;
-using Application.Layers.Persistence.Services;
+﻿using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
 using Domain.DTOs.Proxy;
 using Domain.Entities;
 using Domain.Exceptions;
+using Domain.Repository;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -48,17 +48,10 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
         {
             throw new ConnectionServerException("Не удалось установить соединение с сервером.","Hostname");
         }
+        
+        var proxyResult = await _proxyRepository
+            .AddProxyAsync(CreateProxyCommand.MapToProxy(request));
 
-        var addedProxyResult = await _proxyRepository.AddProxyAsync(new Proxy
-        {
-            IdentityId = request.IdentityId,
-            IpAddress = request.Hostname,
-            UserId = request.UserId,
-            SshPort = request.SshPort ?? 22,
-            DateCreated = DateTime.Now,
-            Title = request.Title
-        });
-
-        return CreateProxyResponse.ProxyMapTo(addedProxyResult);
+        return CreateProxyResponse.ProxyMapTo(proxyResult);
     }
 }

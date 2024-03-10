@@ -56,8 +56,4 @@
       </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="wwwroot\ServerTypes\" />
-    </ItemGroup>
-
 </Project>

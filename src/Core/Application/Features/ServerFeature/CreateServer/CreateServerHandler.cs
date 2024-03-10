@@ -1,9 +1,8 @@
-﻿using Application.Layers.Persistence.Repositories;
-using Application.Layers.Persistence.Services;
+﻿using Application.Layers.Persistence.Services;
 using Application.Layers.Persistence.Services.Parameters;
 using Domain.DTOs.Server;
-using Domain.Entities;
 using Domain.Exceptions;
+using Domain.Repository;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -74,24 +73,11 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
         
         var systemType = await _hostService.GetSystemType(connectionServerParameter, cancellationToken);
         
-        var serverResult = await _serverRepository.AddServerAsync(new Server
-        {
-            Title = request.Title,
-            IpAddress = request.Hostname,
-            SshPort = request.SshPort,
-            StartupCommand = request.StartupCommand,
-            IdentityId = request.IdentityId,
-            UserId = request.UserId,
-            ProxyId = request.ProxyId,
-            DateCreated = DateTime.Now,
-            SystemTypeId = systemType.SystemTypeId
-        });
+        var serverResult = await _serverRepository
+            .AddServerAsync(CreateServerCommand.MapToServer(request, systemType.SystemTypeId));
 
         var createServerResponse = CreateServerResponse.MapToServer(serverResult);
-
-        createServerResponse.SystemTypeName = systemType.Name;
-        createServerResponse.SystemTypeIcon = systemType.IconPath;
-
+        
         return createServerResponse;
     }
 }

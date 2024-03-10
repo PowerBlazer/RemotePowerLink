@@ -1,49 +1,54 @@
-import { classNames } from 'shared/lib/classNames/classNames';
-import style from './SidebarNewIdentity.module.scss';
-import { observer } from 'mobx-react-lite';
-import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
-import sidebarStore from 'app/store/sidebarStore';
-import { CreateIdentityData, CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
-import { ButtonLoader } from 'shared/ui/ButtonLoader';
-import { ThemeButton } from 'shared/ui/Button/Button';
-import {ChangeEvent, useCallback, useMemo, useState} from 'react';
-import { useTranslation } from 'react-i18next';
-import { Input } from 'shared/ui/Input';
-import { FormBlock } from 'features/FormBlock';
-import UserCard from 'shared/assets/icons/user-card.svg';
-import { IdentityService } from 'app/services/IdentityService/identityService';
+﻿import { classNames } from 'shared/lib/classNames/classNames';
+import style from './SidebarEditIdentity.module.scss';
+import {observer} from "mobx-react-lite";
+import {Sidebar, SidebarOptions} from "widgets/Sidebar";
+import {
+    EditIdentityData,
+    EditIdentityResult
+} from "app/services/IdentityService/config/identityConfig";
+import {useTranslation} from "react-i18next";
+import {ChangeEvent, useCallback, useMemo, useState} from "react";
+import sidebarStore from "app/store/sidebarStore";
+import {IdentityService} from "app/services/IdentityService/identityService";
+import {ButtonLoader} from "shared/ui/ButtonLoader";
+import {ThemeButton} from "shared/ui/Button/Button";
+import UserCard from "shared/assets/icons/user-card.svg";
+import {Input} from "shared/ui/Input";
+import {FormBlock} from "features/FormBlock";
 
-interface SidebarNewIdentityProps extends SidebarOptions<CreateIdentityResult> {
+interface SidebarEditIdentityProps extends SidebarOptions<EditIdentityResult>{
     className?: string;
 }
 
-const defaultIdentityData: CreateIdentityData = {
-    title: '',
-    username: '',
-    password: ''
-}
-
-function SidebarNewIdentity (props: SidebarNewIdentityProps) {
-    const { 
-        className, 
-        isMain = true, 
-        onSave, 
-        onClose, 
-        isVisible 
+function SidebarEditIdentity (props: SidebarEditIdentityProps) {
+    const {
+        className,
+        isMain = true,
+        onSave,
+        onClose,
+        isVisible
     } = props;
-    
-    
+
     const { t } = useTranslation('translation');
-    const [identityData, setIdentityData] = useState<CreateIdentityData>(defaultIdentityData);
-    const [errors, setErrors] = useState<Record<string, string[]>>({});
     
+    const identity = sidebarStore.editIdentityData.identity;
+    
+    const [identityData, setIdentityData] = useState<EditIdentityData>({
+        identityId: identity.identityId,
+        title: identity.title,
+        username: identity.username,
+        password: ""
+    });
+    
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+
     const closeHandler = async () => {
         if (onClose) {
             onClose();
         }
 
         if (!isMain) {
-            sidebarStore.newIdentityData.isVisible = false;
+            sidebarStore.editIdentityData.isVisible = false;
         }
     }
 
@@ -86,41 +91,43 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
         });
     }
 
-    const createIdentityClickHandler = useCallback(async () => {
-        const createIdentityResult = await IdentityService.createIdentity(identityData);
 
-        if (onSave && createIdentityResult.isSuccess) {
-            await onSave(createIdentityResult.result);
+    const saveIdentityClickHandler = useCallback(async () => {
+        const editIdentityResult = await IdentityService.editIdentity(identityData);
+
+        if (onSave && editIdentityResult.isSuccess) {
+            await onSave(editIdentityResult.result);
         }
 
-        if (!createIdentityResult.isSuccess) {
-            setErrors(createIdentityResult?.errors);
+        if (!editIdentityResult.isSuccess) {
+            setErrors(editIdentityResult?.errors);
         }
-    },[identityData])
-    
+    },[identityData]);
+
     const footerPanel = useMemo(()=> {
         return (
             <div className={classNames(style.save_block)}>
                 <ButtonLoader
                     className={classNames(style.create_newhost)}
                     theme={ThemeButton.PRIMARY}
-                    actionAsync={createIdentityClickHandler}
+                    actionAsync={saveIdentityClickHandler}
                     disabled={Object.keys(errors).length > 0}
                 >
-                    {t('Создать идентификатор')}
+                    {t('Сохранить идентификатор')}
                 </ButtonLoader>
             </div>
         )
-    }, [createIdentityClickHandler])
-
+    }, [saveIdentityClickHandler])
+    
+    
     return (
         <Sidebar
-            className={classNames(style.sidebarNewProxy, {
+            className={classNames(style.sidebarEditIdentity, {
                 [style.active]: sidebarStore.newIdentityData?.isVisible || isVisible
             }, [className])}
             isMain={isMain}
             footer={footerPanel}
-            headerName={'Новый иденитификатор'}
+            headerName={'Редактировать иденитификатор'}
             close={closeHandler}
         >
             <FormBlock className={classNames(style.general_block)} headerName={'Главная'}>
@@ -135,6 +142,7 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
                             placeholder={t('Название')}
                             onChange={nameChangeHandler}
                             errors={errors.Title ?? null}
+                            value={identityData.title ?? ""}
                         />
                     </div>
                     <Input
@@ -143,6 +151,7 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
                         placeholder={t('Имя пользователя')}
                         onChange={usernameChangeHandler}
                         errors={errors?.Username ?? null}
+                        value={identityData.username ?? ""}
                     />
                     <Input
                         type={'password'}
@@ -150,6 +159,7 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
                         placeholder={t('Пароль')}
                         onChange={passwordChangeHandler}
                         errors={errors?.Password ?? null}
+                        value={identityData.password ?? ""}
                     />
                 </div>
             </FormBlock>
@@ -157,4 +167,4 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
     );
 }
 
-export default observer(SidebarNewIdentity)
+export default observer(SidebarEditIdentity)

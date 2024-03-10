@@ -14,6 +14,14 @@ import {CreateServerResult, EditServerResult} from "app/services/ServerService/c
 import userStore from "app/store/userStore";
 import {SidebarEditHost} from "widgets/SidebarEditHost";
 import toast from "react-hot-toast";
+import {CreateProxyResult, EditProxyResult, ProxyData} from "app/services/ProxyService/config/proxyConfig";
+import {SidebarEditProxy} from "widgets/SidebarEditProxy";
+import {
+    CreateIdentityResult,
+    EditIdentityResult,
+    IdentityData
+} from "app/services/IdentityService/config/identityConfig";
+import {SidebarEditIdentity} from "widgets/SidebarEditIdentity";
 
 interface NavbarHostsProps {
     className?: string;
@@ -23,33 +31,33 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
     const { t } = useTranslation('translation');
 
 
-    const editSaveServerHandler = async (editServerData: EditServerResult) => {
+    const onEditServerHandler = async (editServerResult: EditServerResult) => {
         userStore.setUserServer({
-            serverId: editServerData.serverId,
-            hostname: editServerData.hostname,
-            title: editServerData.title,
-            identityId: editServerData.identityId,
-            proxyId: editServerData.proxyId,
-            sshPort: editServerData.sshPort,
-            startupCommand: editServerData.startupCommand,
-            systemTypeIcon: editServerData.systemTypeIcon,
-            systemTypeName: editServerData.systemTypeName
+            serverId: editServerResult.serverId,
+            hostname: editServerResult.hostname,
+            title: editServerResult.title,
+            identityId: editServerResult.identityId,
+            proxyId: editServerResult.proxyId,
+            sshPort: editServerResult.sshPort,
+            startupCommand: editServerResult.startupCommand,
+            systemTypeIcon: editServerResult.systemTypeIcon,
+            systemTypeName: editServerResult.systemTypeName
         });
 
         toast.success(t("Успешно сохранено"));
     }
     
-    const createServerDataHandler = async (createServerData: CreateServerResult) => {
+    const onCreateServerHandler = async (createServerResult: CreateServerResult) => {
         const server = {
-            serverId: createServerData.serverId,
-            title: createServerData.title,
-            sshPort: createServerData.sshPort,
-            hostname: createServerData.hostname,
-            identityId: createServerData.identityId,
-            proxyId: createServerData.proxyId,
-            startupCommand: createServerData.startupCommand,
-            systemTypeIcon: createServerData.systemTypeIcon,
-            systemTypeName: createServerData.systemTypeName
+            serverId: createServerResult.serverId,
+            title: createServerResult.title,
+            sshPort: createServerResult.sshPort,
+            hostname: createServerResult.hostname,
+            identityId: createServerResult.identityId,
+            proxyId: createServerResult.proxyId,
+            startupCommand: createServerResult.startupCommand,
+            systemTypeIcon: createServerResult.systemTypeIcon,
+            systemTypeName: createServerResult.systemTypeName
         };
         
         userStore.setUserServer(server);
@@ -57,31 +65,100 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
         sidebarStore.editHostData.server = server;
         
         await sidebarStore.setSidebar({
-            name: `SidebarEditHost ${createServerData.serverId}`,
-            sidebar: <SidebarEditHost isMain={true} onSave={editSaveServerHandler}/>
+            name: `SidebarEditHost ${createServerResult.serverId}`,
+            sidebar: <SidebarEditHost isMain={true} onSave={onEditServerHandler}/>
         });
         
         toast.success(t('Успешно создано'));
     }
 
+    const onEditProxyHandler = async (editProxyResult: EditProxyResult) => {
+        const proxy: ProxyData = {
+            proxyId: editProxyResult.proxyId,
+            title: editProxyResult.title,
+            hostname: editProxyResult.hostname,
+            identityId: editProxyResult.identityId,
+            sshPort: editProxyResult.sshPort
+        };
+        
+        userStore.setUserProxy(proxy);
+
+        toast.success(t("Успешно сохранено"));
+    }
+    
+    const onCreateProxyHandler = async (createProxyResult: CreateProxyResult)=> {
+        const proxy: ProxyData = {
+            proxyId: createProxyResult.proxyId,
+            title: createProxyResult.title,
+            hostname: createProxyResult.hostname,
+            identityId: createProxyResult.identityId,
+            sshPort: createProxyResult.sshPort
+        };
+        
+        userStore.setUserProxy(proxy);
+        
+        sidebarStore.editProxyData.proxy = proxy;
+        
+        await sidebarStore.setSidebar({
+            name: `SidebarEditProxy ${createProxyResult.proxyId}`,
+            sidebar: <SidebarEditProxy isMain={true} onSave={onEditProxyHandler}/>
+        });
+
+        toast.success(t('Успешно создано'));
+    }
+
+
+    const onEditIdentityHandler = async (editIdentityResult: EditIdentityResult) => {
+        const identity: IdentityData = {
+            title: editIdentityResult.title,
+            identityId: editIdentityResult.identityId,
+            username: editIdentityResult.username
+        };
+
+        userStore.setUserIdentity(identity);
+
+        toast.success(t("Успешно сохранено"));
+    }
+
+    const onCreateIdentityHandler = async (createIdentityResult: CreateIdentityResult)=> {
+        const identity: IdentityData = {
+            title: createIdentityResult.title,
+            identityId: createIdentityResult.identityId,
+            username: createIdentityResult.username
+        };
+
+        userStore.setUserIdentity(identity);
+
+        sidebarStore.editIdentityData.identity = identity;
+
+        await sidebarStore.setSidebar({
+            name: `SidebarEditIdentity ${createIdentityResult.identityId}`,
+            sidebar: <SidebarEditIdentity isMain={true} onSave={onEditIdentityHandler}/>
+        });
+
+        toast.success(t('Успешно создано'));
+    }
+    
+    
+
     const createNewHostHandler = async () => {
         await sidebarStore.setSidebar({
             name: 'SidebarNewHost',
-            sidebar: <SidebarNewHost isMain={true} onSave={createServerDataHandler}/>
+            sidebar: <SidebarNewHost isMain={true} onSave={onCreateServerHandler}/>
         });
     }
 
     const createNewProxy = async () => {
         await sidebarStore.setSidebar({
             name: 'SidebarNewProxy',
-            sidebar: <SidebarNewProxy isMain={true}/>
+            sidebar: <SidebarNewProxy isMain={true} onSave={onCreateProxyHandler}/>
         })
     }
 
     const createNewIdentity = async () => {
         await sidebarStore.setSidebar({
             name: 'SidebarNewIdentity',
-            sidebar: <SidebarNewIdentity isMain={true}/>
+            sidebar: <SidebarNewIdentity isMain={true} onSave={onCreateIdentityHandler}/>
         })
     }
 

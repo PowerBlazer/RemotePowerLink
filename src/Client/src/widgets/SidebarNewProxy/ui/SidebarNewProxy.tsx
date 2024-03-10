@@ -152,7 +152,8 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
         userStore.setUserIdentity({
             title:createIdentityResult.title,
-            identityId: createIdentityResult.identityId
+            identityId: createIdentityResult.identityId,
+            username: createIdentityResult.username
         })
         
         setVisibleIdentity(false);

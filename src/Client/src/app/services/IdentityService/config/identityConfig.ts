@@ -1,6 +1,7 @@
 ﻿export interface IdentityData {
     identityId: number,
-    title: string
+    title: string,
+    username: string
 }
 
 export interface CreateIdentityData {
@@ -13,5 +14,17 @@ export interface CreateIdentityResult {
     identityId: number,
     title: string,
     username: string,
+}
+
+export interface EditIdentityData {
+    identityId: number,
+    title: string,
+    username: string,
     password: string
+}
+
+export interface EditIdentityResult {
+    identityId: number,
+    title: string,
+    username: string,
 }

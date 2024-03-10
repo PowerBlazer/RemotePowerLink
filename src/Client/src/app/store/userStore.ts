@@ -1,4 +1,4 @@
-import {makeAutoObservable, configure, observable, action} from 'mobx';
+import {makeAutoObservable, configure, observable} from 'mobx';
 import {ProxyData} from "app/services/ProxyService/config/proxyConfig";
 import {IdentityData} from "app/services/IdentityService/config/identityConfig";
 import {UserData} from "app/services/UserService/config/userConfig";
@@ -74,15 +74,24 @@ class UserStore {
     }
 
     setUserIdentity (identity: IdentityData){
-        if(!this.userIdentities){
-            this.userIdentities = [identity];
-            return;
+        const existingIdentityIndex = this.userIdentities.findIndex(
+            (s) => s.identityId === identity.identityId
+        );
+
+        if (existingIdentityIndex !== -1) {
+            // Если прокси уже существует, обновляем его
+            this.userIdentities[existingIdentityIndex] = identity;
+
+            this.userIdentities = [
+                ...this.userIdentities,
+            ]
+        } else {
+            // Иначе добавляем новый сервер в список
+            this.userIdentities = [
+                ...this.userIdentities,
+                identity
+            ]
         }
-        
-        this.userIdentities = [
-            ...this.userIdentities,
-            identity
-        ]
     }
     
     setUserServers (servers: ServerData[]){

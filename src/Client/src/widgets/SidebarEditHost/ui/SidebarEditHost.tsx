@@ -3,14 +3,14 @@ import style from './SidebarEditHost.module.scss';
 import {observer} from "mobx-react-lite";
 import {Sidebar, SidebarOptions} from "widgets/Sidebar";
 import {useTranslation} from "react-i18next";
-import {ChangeEvent, useCallback, useEffect, useMemo, useState} from "react";
+import {ChangeEvent, useCallback, useMemo, useState} from "react";
 import sidebarStore from "app/store/sidebarStore";
 import {SidebarNewProxy} from "widgets/SidebarNewProxy";
 import {SidebarNewIdentity} from "widgets/SidebarNewIdentity";
 import {CreateProxyResult} from "app/services/ProxyService/config/proxyConfig";
 import userStore from "app/store/userStore";
 import {CreateIdentityResult} from "app/services/IdentityService/config/identityConfig";
-import {CreateServerData, EditServerData, EditServerResult} from "app/services/ServerService/config/serverConfig";
+import {EditServerData, EditServerResult} from "app/services/ServerService/config/serverConfig";
 import {Select, SelectedItem, SelectItem} from "shared/ui/Select";
 import {FormBlock} from "features/FormBlock";
 import ServerIcon from "shared/assets/icons/navbar/server2.svg";
@@ -102,7 +102,8 @@ function SidebarEditHost (props: SidebarEditHostProps) {
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
         userStore.setUserIdentity({
             identityId: createIdentityResult.identityId,
-            title: createIdentityResult.title
+            title: createIdentityResult.title,
+            username: createIdentityResult.username
         });
 
         setVisibleIdentity(false);

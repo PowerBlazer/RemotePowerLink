@@ -43,7 +43,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
         title: proxy.title,
         hostname: proxy.hostname,
         identityId:proxy.identityId,
-        sshPort: proxy.sshPort.toString()
+        sshPort: proxy.sshPort?.toString()
     });
     
     const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -160,7 +160,8 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
         userStore.setUserIdentity({
             title:createIdentityResult.title,
-            identityId: createIdentityResult.identityId
+            identityId: createIdentityResult.identityId,
+            username: createIdentityResult.username
         })
 
         setVisibleIdentity(false);

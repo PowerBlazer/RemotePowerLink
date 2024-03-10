@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import {useTranslation} from "react-i18next";
 import {SidebarEditProxy} from "widgets/SidebarEditProxy";
 import {EditProxyResult} from "app/services/ProxyService/config/proxyConfig";
+import {SidebarEditIdentity} from "widgets/SidebarEditIdentity";
+import {EditIdentityResult} from "app/services/IdentityService/config/identityConfig";
 
 interface ButtonEditProps {
     className?: string;
@@ -47,11 +49,21 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
 
         toast.success(t("Успешно сохранено"));
     }
+
+    const onSaveIdentityHandler = async (editIdentityData: EditIdentityResult) => {
+        userStore.setUserIdentity({
+            identityId: editIdentityData.identityId,
+            title: editIdentityData.title,
+            username: editIdentityData.username
+        });
+
+        toast.success(t("Успешно сохранено"));
+    }
     
     const editDataClickHandler = async () => {
         if(serverManagerData.dataType === DataType.SERVER){
             const serverData = userStore.userServers
-                .find(p=>p.serverId == serverManagerData.id);
+                .find(p=> p.serverId == serverManagerData.id);
             
             if(serverData){
                 sidebarStore.editHostData.server = serverData;
@@ -71,6 +83,19 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
                 await sidebarStore.setSidebar({
                     name: `SidebarEditProxy ${serverManagerData.id}`,
                     sidebar: <SidebarEditProxy isMain={true} onSave={onSaveProxyHandler}/>
+                })
+            }
+        }
+        
+        if(serverManagerData.dataType === DataType.IDENTITY){
+            const identityData = userStore.userIdentities
+                .find(p=>p.identityId === serverManagerData.id);
+
+            if(identityData){
+                sidebarStore.editIdentityData.identity = identityData;
+                await sidebarStore.setSidebar({
+                    name: `SidebarEditIdentity ${serverManagerData.id}`,
+                    sidebar: <SidebarEditIdentity isMain={true} onSave={onSaveIdentityHandler}/>
                 })
             }
         }

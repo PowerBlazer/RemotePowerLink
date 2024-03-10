@@ -1,7 +1,7 @@
 ﻿import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ServerManagerGroup.module.scss';
 import {observer} from "mobx-react-lite";
-import {ReactNode} from "react";
+import {ReactNode, useMemo} from "react";
 import {DataType} from "app/enums/DataType";
 import {ServerManagerItem} from "features/ServerManagerItem";
 
@@ -33,16 +33,30 @@ export function ServerManagerGroup (props: ServerManagerGroupProps) {
         filterOptions
     } = props;
     
+    const isVisible = useMemo<boolean>(() => 
+        serverManagerDataList && serverManagerDataList.length > 0,
+        [serverManagerDataList]
+    );
+    
     return (
-        <div className={classNames(style.serverManagerGroup, {}, [className])}>
+        <div 
+            className={classNames(style.serverManagerGroup, {
+                [style.disable]: !isVisible
+            }, [className])}
+        >
             <h2 className={classNames(style.header)}>
-                { Boolean(serverManagerDataList && serverManagerDataList.length > 0) && headerName }
+                { isVisible && headerName }
             </h2>
-            <div className={classNames(style.data_list)}>
-                {serverManagerDataList?.map((data) =>
-                    <ServerManagerItem serverManagerDataItem={data} key={data.id}/>
-                )}
-            </div>
-		</div>
+            {
+                isVisible && (
+                    <div className={classNames(style.data_list)}>
+                        {serverManagerDataList?.map((data) =>
+                            <ServerManagerItem serverManagerDataItem={data} key={data.id}/>
+                        )}
+                    </div>
+                )
+            }
+
+        </div>
     );
 }

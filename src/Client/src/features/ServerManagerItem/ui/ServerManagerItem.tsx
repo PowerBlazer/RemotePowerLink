@@ -34,6 +34,7 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
                     <div className={classNames(style.additionally)}>
                         {serverManagerDataItem.dataType === DataType.SERVER && `ssh, ${serverManagerDataItem.common}`}
                         {serverManagerDataItem.dataType === DataType.PROXY && 'HTTP'}
+                        {serverManagerDataItem.dataType === DataType.IDENTITY && serverManagerDataItem.common}
                     </div>
                 </div>
             </div>

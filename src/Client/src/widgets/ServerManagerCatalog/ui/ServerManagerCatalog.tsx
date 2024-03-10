@@ -57,15 +57,16 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
                 dataType:DataType.IDENTITY,
                 iconNode:identityIcon,
                 title: identity.title,
+                common: identity.username
             }
         }
     )),[userStore.userIdentities]);
     
     const serverManagerGroups = useMemo(()=> {
         return [
-            <ServerManagerGroup serverManagerDataList={serversManagerData} headerName={t('Сервера')} key={1}/>,
-            <ServerManagerGroup serverManagerDataList={proxiesManagerData} headerName={t('Прокси')} key={2}/>,
-            <ServerManagerGroup serverManagerDataList={identityManagerData} headerName={t('Идентификаторы')} key={3}/>
+            <ServerManagerGroup serverManagerDataList={serversManagerData} headerName={t('Сервера')} key={'Servers'}/>,
+            <ServerManagerGroup serverManagerDataList={proxiesManagerData} headerName={t('Прокси')} key={'Proxies'}/>,
+            <ServerManagerGroup serverManagerDataList={identityManagerData} headerName={t('Идентификаторы')} key={'Identities'}/>
         ]
     },[serversManagerData, identityManagerData, proxiesManagerData]);
     
@@ -74,8 +75,8 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
             <div className={classNames(style.catalog_inner)}>
                 {
                     userStore.isLoadData 
-                    ? <Loader  className={classNames(style.loader)}/>
-                    : serverManagerGroups
+                        ? <Loader  className={classNames(style.loader)}/>
+                        : serverManagerGroups
                 }
             </div>
 		</div>

@@ -217,7 +217,8 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
         userStore.setUserIdentity({ 
             identityId: createIdentityResult.identityId, 
-            title: createIdentityResult.title 
+            title: createIdentityResult.title,
+            username: createIdentityResult.username
         });
         
         setVisibleIdentity(false);

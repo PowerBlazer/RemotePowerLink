@@ -19,6 +19,11 @@ public class GetIdentityResponse
     /// Имя пользователя идентификатора
     /// </summary>
     public required string Username { get; set; }
+    
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime DateCreated { get; set; }
 
     public static GetIdentityResponse MapIdentityTo(Entities.Identity identity)
     {
@@ -26,7 +31,8 @@ public class GetIdentityResponse
         {
             IdentityId = identity.Id,
             Title = identity.Title,
-            Username = identity.Username
+            Username = identity.Username,
+            DateCreated = identity.DateCreated
         };
     }
 }

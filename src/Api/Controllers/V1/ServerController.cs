@@ -1,5 +1,5 @@
-﻿
-using Application.Features.ServerFeature.CreateServer;
+﻿using Application.Features.ServerFeature.CreateServer;
+using Application.Features.ServerFeature.DeleteServer;
 using Application.Features.ServerFeature.EditServer;
 using Application.Features.ServerFeature.GetServers;
 using Domain.Common;
@@ -90,5 +90,24 @@ public class ServerController: BaseController
         {
             Result = result
         };
+    }
+    
+    /// <summary>
+    /// Удаляет сервер по его ServerId.
+    /// </summary>
+    /// <param name="serverId">Id сервера</param>
+    /// <response code="200">Cервер успешно удален.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpDelete("{serverId:long}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<bool>> DeleteServer([FromRoute] long serverId)
+    {
+        await Mediator.Send(new DeleteServerCommand(serverId));
+
+        return new ApiActionResult<bool>();
     }
 }

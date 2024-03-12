@@ -17,13 +17,19 @@ public class CreateIdentityResponse
     /// </summary>
     public required string Username { get; set; }
     
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime DateCreated { get; set; }
+    
     public static CreateIdentityResponse IdentityMapTo(Entities.Identity identity)
     {
         return new CreateIdentityResponse
         {
             IdentityId = identity.Id,
             Title = identity.Title,
-            Username = identity.Username
+            Username = identity.Username,
+            DateCreated = identity.DateCreated
         };
     }
 }

@@ -76,4 +76,20 @@ public class ServerRepositrory: IServerRepository
 
         return server;
     }
+
+    public async Task DeleteServerAsync(long serverId)
+    {
+        var server = await _persistenceContext
+            .Servers
+            .FirstOrDefaultAsync(p => p.Id == serverId);
+
+        if (server is null)
+        {
+            throw new NotFoundException("Сервер с указанным 'ServerId' не найден", "ServerId");
+        }
+
+        _persistenceContext.Servers.Remove(server);
+
+        await _persistenceContext.SaveChangesAsync();
+    }
 }

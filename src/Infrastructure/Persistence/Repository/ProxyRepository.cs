@@ -1,5 +1,6 @@
 ﻿using Application.Layers.Persistence.Contexts;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,5 +52,21 @@ public class ProxyRepository: IProxyRepository
         await _persistenceContext.SaveChangesAsync();
 
         return proxy;
+    }
+
+    public async Task DeleteProxyAsync(long proxyId)
+    {
+        var proxy = await _persistenceContext
+            .Proxies
+            .FirstOrDefaultAsync(p => p.Id == proxyId);
+
+        if (proxy is null)
+        {
+            throw new NotFoundException("Прокси-сервер с указанным 'ProxyId' не найден", "ProxyId");
+        }
+
+        _persistenceContext.Proxies.Remove(proxy);
+
+        await _persistenceContext.SaveChangesAsync();
     }
 }

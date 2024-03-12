@@ -38,6 +38,13 @@ public interface IServerRepository
     /// <param name="server">Сервер для обновления</param>
     /// <returns>Обновленный сервер</returns>
     Task<Server> UpdateServerAsync(Server server);
+    
+    /// <summary>
+    /// Удаляет данные сервера
+    /// </summary>
+    /// <param name="serverId">Id сервера</param>
+    /// <returns></returns>
+    Task DeleteServerAsync(long serverId);
 
 
 }

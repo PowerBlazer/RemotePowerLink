@@ -46,6 +46,11 @@ public class GetServerResponse
     /// Путь к иконке типа системы
     /// </summary>
     public string? SystemTypeIcon { get; set; }
+    
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime DateCreated { get; set; }
 
     public static GetServerResponse MapServerTo(Entities.Server server)
     {
@@ -59,7 +64,8 @@ public class GetServerResponse
             IdentityId = server.IdentityId,
             ProxyId = server.ProxyId,
             SystemTypeName = server.SystemType?.Name,
-            SystemTypeIcon = server.SystemType?.IconPath
+            SystemTypeIcon = server.SystemType?.IconPath,
+            DateCreated = server.DateCreated
         };
     }
 

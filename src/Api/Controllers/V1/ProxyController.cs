@@ -1,4 +1,5 @@
 ﻿using Application.Features.ProxyFeature.CreateProxy;
+using Application.Features.ProxyFeature.DeleteProxy;
 using Application.Features.ProxyFeature.EditProxy;
 using Application.Features.ProxyFeature.GetProxies;
 using Domain.Common;
@@ -88,5 +89,24 @@ public class ProxyController : BaseController
         {
             Result = result
         };
+    }
+    
+    /// <summary>
+    /// Удаляет прокси-сервер по его ProxyId.
+    /// </summary>
+    /// <param name="proxyId">Id прокси-сервера</param>
+    /// <response code="200">Прокси-сервер успешно удален.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpDelete("{proxyId:long}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<bool>> DeleteProxy([FromRoute]long proxyId)
+    {
+        await Mediator.Send(new DeleteProxyCommand(proxyId));
+
+        return new ApiActionResult<bool>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Features.IdentityFeature.CreateIdentity;
+using Application.Features.IdentityFeature.DeleteIdentity;
 using Application.Features.IdentityFeature.EditIdentity;
 using Application.Features.IdentityFeature.GetIdentities;
 using Domain.Common;
@@ -88,6 +89,25 @@ public class IdentityController : BaseController
         {
             Result = result
         };
+    }
+    
+    /// <summary>
+    /// Удаляет идентификатор по его IdentityId.
+    /// </summary>
+    /// <param name="identityId">Id идентификатора</param>
+    /// <response code="200">Идентификатор успешно удален.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpDelete("{identityId:long}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ApiActionResult<bool>> DeleteIdentity([FromRoute]long identityId)
+    {
+        await Mediator.Send(new DeleteIdentityCommand(identityId));
+
+        return new ApiActionResult<bool>();
     }
 
 }

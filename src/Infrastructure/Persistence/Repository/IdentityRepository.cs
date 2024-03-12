@@ -66,4 +66,20 @@ public class IdentityRepository: IIdentityRepository
 
         return identity;
     }
+
+    public async Task DeleteIdentityAsync(long identityId)
+    {
+        var identity = await _persistenceContext
+            .Identities
+            .FirstOrDefaultAsync(p => p.Id == identityId);
+
+        if (identity is null)
+        {
+            throw new NotFoundException("Идентификатор с указанным 'IdentityId' не найден", "IdentityId");
+        }
+
+        _persistenceContext.Identities.Remove(identity);
+
+        await _persistenceContext.SaveChangesAsync();
+    }
 }

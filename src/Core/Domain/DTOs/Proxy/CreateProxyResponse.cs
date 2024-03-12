@@ -26,6 +26,11 @@ public class CreateProxyResponse
     /// </summary>
     public required long IdentityId { get; set; }
     
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime DateCreated { get; set; }
+    
     public static CreateProxyResponse ProxyMapTo(Entities.Proxy proxy)
     {
         return new CreateProxyResponse
@@ -34,7 +39,8 @@ public class CreateProxyResponse
             Hostname = proxy.IpAddress,
             SshPort = proxy.SshPort,
             Title = proxy.Title,
-            IdentityId = proxy.IdentityId
+            IdentityId = proxy.IdentityId,
+            DateCreated = proxy.DateCreated
         };
     }
 }

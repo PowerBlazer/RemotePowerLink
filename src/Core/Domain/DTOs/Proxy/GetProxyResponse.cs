@@ -29,6 +29,11 @@ public class GetProxyResponse
     /// Название или описание прокси сервера.
     /// </summary>
     public required string Title { get; set; }
+    
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime DateCreated { get; set; }
 
     public static GetProxyResponse MapProxyTo(Entities.Proxy proxy)
     {
@@ -38,7 +43,8 @@ public class GetProxyResponse
             Hostname = proxy.IpAddress,
             IdentityId = proxy.IdentityId,
             SshPort = proxy.SshPort,
-            Title = proxy.Title
+            Title = proxy.Title,
+            DateCreated = proxy.DateCreated
         };
     }
 }

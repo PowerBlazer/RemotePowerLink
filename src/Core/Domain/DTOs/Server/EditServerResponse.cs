@@ -44,6 +44,11 @@ public class EditServerResponse
     /// </summary>
     public string? SystemTypeIcon { get; set; }
     
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime DateCreated { get; set; }
+    
     public static EditServerResponse MapServerTo(Entities.Server server)
     {
         return new EditServerResponse
@@ -56,7 +61,8 @@ public class EditServerResponse
             IdentityId = server.IdentityId,
             ProxyId = server.ProxyId,
             SystemTypeName = server.SystemType?.Name,
-            SystemTypeIcon = server.SystemType?.IconPath
+            SystemTypeIcon = server.SystemType?.IconPath,
+            DateCreated = server.DateCreated
         };
     }
 }

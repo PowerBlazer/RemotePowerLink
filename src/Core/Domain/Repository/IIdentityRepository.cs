@@ -36,5 +36,12 @@ public interface IIdentityRepository
     /// <param name="identity">Идентификатор для обновления</param>
     /// <returns>Обновленный идентификатор</returns>
     Task<Domain.Entities.Identity> UpdateIdentityAsync(Domain.Entities.Identity identity);
+    
+    /// <summary>
+    /// Удаляет идентификатор по его Id
+    /// </summary>
+    /// <param name="identityId">Id идентификатора</param>
+    /// <returns></returns>
+    Task DeleteIdentityAsync(long identityId);
 
 }

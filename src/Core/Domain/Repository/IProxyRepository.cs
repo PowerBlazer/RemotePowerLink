@@ -31,4 +31,11 @@ public interface IProxyRepository
     /// <param name="proxy">Прокси-сервер для обновления</param>
     /// <returns>Обновленный покси-сервер</returns>
     Task<Proxy> UpdateProxyAsync(Proxy proxy);
+    
+    /// <summary>
+    /// Удаляет прокси-сервер
+    /// </summary>
+    /// <param name="proxyId">Id прокси-сервера</param>
+    /// <returns></returns>
+    Task DeleteProxyAsync(long proxyId);
 }

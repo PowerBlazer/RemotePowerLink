@@ -22,7 +22,7 @@ interface SidebarProps {
     footer?:ReactNode;
     close?: () => Promise<void>;
     headerName?: string;
-    headerChildren?: ReactNode;
+    headerTools?: ReactNode;
     isLoad?: boolean,
     isMain?: boolean,
 }
@@ -34,7 +34,7 @@ function Sidebar (props: SidebarProps) {
         close,
         children,
         headerName,
-        headerChildren,
+        headerTools,
         footer,
         isMain,
         isLoad,
@@ -61,13 +61,15 @@ function Sidebar (props: SidebarProps) {
         }, [className])}>
             {headerName && (
                 <div className={classNames(style.header)}>
-                    <h1 className={classNames(style.header_name)}>{t(headerName)}</h1>
+                    <h1 className={classNames(style.header_name)}>
+                        {t(headerName)}
+                    </h1>
                     <div className={classNames(style.buttons_panel)}>
-                        {headerChildren}
-                        {isLoad && <Loader className={classNames(style.loader)}/>}
+                        {headerTools}
                         <Button onClick={closeSidebarHandler} className={classNames(style.close_sidebar)}>
                             <ArrowRight width={20} height={20}></ArrowRight>
                         </Button>
+                        {isLoad &&  <Loader className={classNames(style.loader)}/>}
                     </div>
                 </div>
             )}

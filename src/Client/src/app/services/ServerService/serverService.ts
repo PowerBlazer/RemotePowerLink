@@ -68,5 +68,20 @@ export class ServerService {
                 errors: error.response?.data.Errors
             }
         }
-    } 
+    }
+
+    static deleteServer = async (serverId: number): Promise<ServiceResult<number>> => {
+        try {
+            await HostService.api.delete(`/v1/server/${serverId}`);
+
+            return {
+                isSuccess: true,
+            }
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
 }

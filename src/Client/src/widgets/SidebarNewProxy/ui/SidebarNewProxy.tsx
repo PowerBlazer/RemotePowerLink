@@ -153,7 +153,8 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
         userStore.setUserIdentity({
             title:createIdentityResult.title,
             identityId: createIdentityResult.identityId,
-            username: createIdentityResult.username
+            username: createIdentityResult.username,
+            dateCreated: createIdentityResult.dateCreated
         })
         
         setVisibleIdentity(false);

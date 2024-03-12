@@ -41,7 +41,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             sshPort: editServerResult.sshPort,
             startupCommand: editServerResult.startupCommand,
             systemTypeIcon: editServerResult.systemTypeIcon,
-            systemTypeName: editServerResult.systemTypeName
+            systemTypeName: editServerResult.systemTypeName,
+            dateCreated: editServerResult.dateCreated
         });
 
         toast.success(t("Успешно сохранено"));
@@ -57,7 +58,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             proxyId: createServerResult.proxyId,
             startupCommand: createServerResult.startupCommand,
             systemTypeIcon: createServerResult.systemTypeIcon,
-            systemTypeName: createServerResult.systemTypeName
+            systemTypeName: createServerResult.systemTypeName,
+            dateCreated: createServerResult.dateCreated
         };
         
         userStore.setUserServer(server);
@@ -78,7 +80,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             title: editProxyResult.title,
             hostname: editProxyResult.hostname,
             identityId: editProxyResult.identityId,
-            sshPort: editProxyResult.sshPort
+            sshPort: editProxyResult.sshPort,
+            dateCreated: editProxyResult.dateCreated
         };
         
         userStore.setUserProxy(proxy);
@@ -92,7 +95,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             title: createProxyResult.title,
             hostname: createProxyResult.hostname,
             identityId: createProxyResult.identityId,
-            sshPort: createProxyResult.sshPort
+            sshPort: createProxyResult.sshPort,
+            dateCreated: createProxyResult.dateCreated
         };
         
         userStore.setUserProxy(proxy);
@@ -112,7 +116,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
         const identity: IdentityData = {
             title: editIdentityResult.title,
             identityId: editIdentityResult.identityId,
-            username: editIdentityResult.username
+            username: editIdentityResult.username,
+            dateCreated: editIdentityResult.dateCreated
         };
 
         userStore.setUserIdentity(identity);
@@ -124,7 +129,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
         const identity: IdentityData = {
             title: createIdentityResult.title,
             identityId: createIdentityResult.identityId,
-            username: createIdentityResult.username
+            username: createIdentityResult.username,
+            dateCreated: createIdentityResult.dateCreated
         };
 
         userStore.setUserIdentity(identity);

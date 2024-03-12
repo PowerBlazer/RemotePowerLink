@@ -1,4 +1,4 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './SidebarEditHost.module.scss';
 import {observer} from "mobx-react-lite";
 import {Sidebar, SidebarOptions} from "widgets/Sidebar";
@@ -22,6 +22,8 @@ import DoubleArrow from "shared/assets/icons/double-arrow.svg";
 import {Button, ThemeButton} from "shared/ui/Button/Button";
 import {ButtonLoader} from "shared/ui/ButtonLoader";
 import {ServerService} from "app/services/ServerService/serverService";
+import {ButtonDelete} from "features/ButtonDelete/ui/ButtonDelete";
+import {DataTypeEnum} from "app/enums/DataTypeEnum";
 
 interface SidebarEditHostProps extends SidebarOptions<EditServerResult>{
     className?: string;
@@ -80,7 +82,8 @@ function SidebarEditHost (props: SidebarEditHostProps) {
             title: createProxyResult.title,
             hostname: createProxyResult.hostname,
             identityId: createProxyResult.identityId,
-            sshPort: createProxyResult.sshPort
+            sshPort: createProxyResult.sshPort,
+            dateCreated: createProxyResult.dateCreated
         });
 
         setVisibleProxy(false);
@@ -103,7 +106,8 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         userStore.setUserIdentity({
             identityId: createIdentityResult.identityId,
             title: createIdentityResult.title,
-            username: createIdentityResult.username
+            username: createIdentityResult.username,
+            dateCreated: createIdentityResult.dateCreated
         });
 
         setVisibleIdentity(false);
@@ -292,10 +296,15 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         )
     }, [saveServerClickHandler]);
     
+    const headerTools = useMemo(()=> (
+        <ButtonDelete dataType={DataTypeEnum.SERVER} dataId={serverData.serverId} />
+    ),[]);
+    
     return (
         <Sidebar
             className={classNames(style.sidebarEditHost, {}, [className])}
             headerName={'Редактирование сервера'}
+            headerTools={headerTools}
             close={closeHandler}
             sidebars={sidebars}
             footer={footerPanel}

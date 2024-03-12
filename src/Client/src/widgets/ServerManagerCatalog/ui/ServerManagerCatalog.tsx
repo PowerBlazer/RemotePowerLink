@@ -7,7 +7,7 @@ import {ServerManagerData, ServerManagerGroup} from "features/ServerManagerGroup
 import {HostService} from "app/services/hostService";
 import {Loader} from "shared/ui/Loader/Loader";
 import {useTranslation} from "react-i18next";
-import {DataType} from "app/enums/DataType";
+import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import UserCard from 'shared/assets/icons/user-card.svg';
 import ServerIcon from "shared/assets/icons/navbar/server2.svg";
 
@@ -35,7 +35,7 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
             id: server.serverId,
             title: server.title,
             common: server.systemTypeName,
-            dataType: DataType.SERVER,
+            dataType: DataTypeEnum.SERVER,
             iconUrl: Boolean(server.systemTypeIcon) && `${HostService._apiHost}/${server.systemTypeIcon}`,
             iconNode: !Boolean(server.systemTypeIcon) && defaultServerIcon
         })
@@ -44,7 +44,7 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
     const proxiesManagerData = useMemo<ServerManagerData[]>(() =>
         userStore.userProxies?.map((proxy => ({
             id: proxy.proxyId,
-            dataType: DataType.PROXY,
+            dataType: DataTypeEnum.PROXY,
             title: proxy.title, 
             iconNode: defaultServerIcon
         })
@@ -54,7 +54,7 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
         userStore.userIdentities?.map((identity => {
             return {
                 id: identity.identityId,
-                dataType:DataType.IDENTITY,
+                dataType:DataTypeEnum.IDENTITY,
                 iconNode:identityIcon,
                 title: identity.title,
                 common: identity.username

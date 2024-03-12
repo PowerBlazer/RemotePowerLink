@@ -126,6 +126,38 @@ class UserStore {
             ]
         }
     }
+
+    removeUserProxy(proxyId: number) {
+        if (this.userProxies) {
+            this.userProxies = this.userProxies
+                .filter(proxy => proxy.proxyId !== proxyId);
+        }
+    }
+
+    removeUserIdentity(identityId: number) {
+        if (this.userIdentities) {
+            const serversInIdentity = this.userServers
+                .filter(p=> p.identityId === identityId)
+                .map(p=> p.serverId);
+            
+            const proxiesInIdentity = this.userProxies
+                .filter(p=> p.identityId === identityId)
+                .map(p=> p.proxyId);
+            
+            this.userIdentities = this.userIdentities
+                .filter(identity => identity.identityId !== identityId);
+            
+            this.userServers = this.userServers.filter(p=> !serversInIdentity.includes(p.serverId));
+            this.userProxies = this.userProxies.filter(p=> !proxiesInIdentity.includes(p.proxyId));
+        }
+    }
+
+    removeUserServer(serverId: number) {
+        if (this.userServers) {
+            this.userServers = this.userServers
+                .filter(server => server.serverId !== serverId);
+        }
+    }
 }
 
 export default new UserStore();

@@ -49,7 +49,10 @@
 
 .header_name{
   font-size: 15px;
-  white-space: nowrap;
+  max-width: 210px;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
 }
 
 .close_sidebar{
@@ -118,8 +121,14 @@
 .loader{
   width: 20px;
   height: 20px;
-  border-width: 2px;
-  border-color: white transparent;
+  
+  
+  & div{
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+    border-color: var(--loader-color) transparent;
+  }
 }
 
 

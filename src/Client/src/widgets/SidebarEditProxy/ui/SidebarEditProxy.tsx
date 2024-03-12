@@ -19,6 +19,8 @@ import {Input} from "shared/ui/Input";
 import TitleIcon from "shared/assets/icons/title.svg";
 import PortIcon from "shared/assets/icons/code-working.svg";
 import DoubleArrow from "shared/assets/icons/double-arrow.svg";
+import {ButtonDelete} from "features/ButtonDelete/ui/ButtonDelete";
+import {DataTypeEnum} from "app/enums/DataTypeEnum";
 
 interface SidebarEditProxyProps extends SidebarOptions<EditProxyResult>{
     className?: string;
@@ -161,7 +163,8 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
         userStore.setUserIdentity({
             title:createIdentityResult.title,
             identityId: createIdentityResult.identityId,
-            username: createIdentityResult.username
+            username: createIdentityResult.username,
+            dateCreated: createIdentityResult.dateCreated
         })
 
         setVisibleIdentity(false);
@@ -203,7 +206,11 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
                 </ButtonLoader>
             </div>
         )
-    }, [saveProxyClickHandler])
+    }, [saveProxyClickHandler]);
+
+    const headerTools = useMemo(()=> (
+        <ButtonDelete dataType={DataTypeEnum.PROXY} dataId={proxyData.proxyId} />
+    ),[]);
     
     return (
         <Sidebar
@@ -213,6 +220,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
             sidebars={sidebars}
             footer={footerPanel}
             headerName={'Редактирование прокси-сервера'}
+            headerTools={headerTools}
             close={closeHandler}
             isLoad={userStore.isLoadData}
             isMain={isMain}

@@ -3,7 +3,7 @@ import style from './ButtonEdit.module.scss';
 import {Button} from "shared/ui/Button/Button";
 import {ServerManagerData} from "features/ServerManagerGroup";
 import PencilIcon from 'shared/assets/icons/pencil.svg';
-import {DataType} from "app/enums/DataType";
+import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import userStore from "app/store/userStore";
 import sidebarStore from "app/store/sidebarStore";
 import {SidebarEditHost} from "widgets/SidebarEditHost";
@@ -32,7 +32,8 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
             sshPort: editServerData.sshPort,
             startupCommand: editServerData.startupCommand,
             systemTypeIcon: editServerData.systemTypeIcon,
-            systemTypeName: editServerData.systemTypeName
+            systemTypeName: editServerData.systemTypeName,
+            dateCreated: editServerData.dateCreated
         });
         
         toast.success(t("Успешно сохранено"));
@@ -44,7 +45,8 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
             hostname: editProxyData.hostname,
             title: editProxyData.title,
             identityId:editProxyData.identityId,
-            sshPort:editProxyData.sshPort
+            sshPort:editProxyData.sshPort,
+            dateCreated: editProxyData.dateCreated
         });
 
         toast.success(t("Успешно сохранено"));
@@ -54,14 +56,15 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
         userStore.setUserIdentity({
             identityId: editIdentityData.identityId,
             title: editIdentityData.title,
-            username: editIdentityData.username
+            username: editIdentityData.username,
+            dateCreated: editIdentityData.dateCreated
         });
 
         toast.success(t("Успешно сохранено"));
     }
     
     const editDataClickHandler = async () => {
-        if(serverManagerData.dataType === DataType.SERVER){
+        if(serverManagerData.dataType === DataTypeEnum.SERVER){
             const serverData = userStore.userServers
                 .find(p=> p.serverId == serverManagerData.id);
             
@@ -74,7 +77,7 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
             }
         }
         
-        if(serverManagerData.dataType === DataType.PROXY){
+        if(serverManagerData.dataType === DataTypeEnum.PROXY){
             const proxyData = userStore.userProxies
                 .find(p=>p.proxyId === serverManagerData.id);
             
@@ -87,7 +90,7 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
             }
         }
         
-        if(serverManagerData.dataType === DataType.IDENTITY){
+        if(serverManagerData.dataType === DataTypeEnum.IDENTITY){
             const identityData = userStore.userIdentities
                 .find(p=>p.identityId === serverManagerData.id);
 

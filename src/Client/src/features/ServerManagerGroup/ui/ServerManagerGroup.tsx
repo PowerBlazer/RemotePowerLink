@@ -2,14 +2,14 @@
 import style from './ServerManagerGroup.module.scss';
 import {observer} from "mobx-react-lite";
 import {ReactNode, useMemo} from "react";
-import {DataType} from "app/enums/DataType";
+import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import {ServerManagerItem} from "features/ServerManagerItem";
 
 export interface ServerManagerData {
     id:number,
     title:string,
     common?: string,
-    dataType: DataType
+    dataType: DataTypeEnum
     iconUrl?:string,
     iconNode?: ReactNode
 }

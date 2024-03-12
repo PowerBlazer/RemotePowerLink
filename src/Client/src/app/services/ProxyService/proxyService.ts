@@ -5,6 +5,7 @@ import {
     EditProxyData, EditProxyResult,
     ProxyData
 } from 'app/services/ProxyService/config/proxyConfig';
+import {EditIdentityResult} from "app/services/IdentityService/config/identityConfig";
 
 export class ProxyService {
     static getProxies = async (): Promise<ServiceResult<ProxyData[]>> => {
@@ -59,6 +60,21 @@ export class ProxyService {
             return {
                 isSuccess: true,
                 result: response.data.result
+            }
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
+
+    static deleteProxy = async (proxyId: number): Promise<ServiceResult<number>> => {
+        try {
+            await HostService.api.delete(`/v1/proxy/${proxyId}`);
+
+            return {
+                isSuccess: true,
             }
         } catch (error) {
             return {

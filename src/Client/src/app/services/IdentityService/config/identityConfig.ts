@@ -1,7 +1,8 @@
 ﻿export interface IdentityData {
     identityId: number,
     title: string,
-    username: string
+    username: string,
+    dateCreated: Date
 }
 
 export interface CreateIdentityData {
@@ -14,6 +15,7 @@ export interface CreateIdentityResult {
     identityId: number,
     title: string,
     username: string,
+    dateCreated: Date
 }
 
 export interface EditIdentityData {
@@ -27,4 +29,5 @@ export interface EditIdentityResult {
     identityId: number,
     title: string,
     username: string,
+    dateCreated: Date
 }

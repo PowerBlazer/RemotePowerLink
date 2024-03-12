@@ -64,4 +64,19 @@ export class IdentityService {
         }
         
     }
+    
+    static deleteIdentity = async (identityId: number): Promise<ServiceResult<number>> => {
+        try {
+            await HostService.api.delete(`/v1/identity/${identityId}`);
+
+            return {
+                isSuccess: true,
+            }
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
 }

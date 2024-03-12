@@ -1,7 +1,7 @@
 ﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './ServerManagerItem.module.scss';
 import {ServerManagerData} from "features/ServerManagerGroup";
-import {DataType} from "app/enums/DataType";
+import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import {ButtonConnect} from "features/ButtonConnect";
 import {ButtonEdit} from "features/ButtonEdit";
 
@@ -32,15 +32,15 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
                 <div className={classNames(style.data_title)}>
                     {serverManagerDataItem.title}
                     <div className={classNames(style.additionally)}>
-                        {serverManagerDataItem.dataType === DataType.SERVER && `ssh, ${serverManagerDataItem.common}`}
-                        {serverManagerDataItem.dataType === DataType.PROXY && 'HTTP'}
-                        {serverManagerDataItem.dataType === DataType.IDENTITY && serverManagerDataItem.common}
+                        {serverManagerDataItem.dataType === DataTypeEnum.SERVER && `ssh, ${serverManagerDataItem.common}`}
+                        {serverManagerDataItem.dataType === DataTypeEnum.PROXY && 'HTTP'}
+                        {serverManagerDataItem.dataType === DataTypeEnum.IDENTITY && serverManagerDataItem.common}
                     </div>
                 </div>
             </div>
             <div className={classNames(style.data_options)}>
                 <ButtonEdit className={style.button_edit} serverManagerData={serverManagerDataItem}/>
-                {serverManagerDataItem.dataType === DataType.SERVER 
+                {serverManagerDataItem.dataType === DataTypeEnum.SERVER 
                     && <ButtonConnect serverData={serverManagerDataItem}/>
                 }
             </div>

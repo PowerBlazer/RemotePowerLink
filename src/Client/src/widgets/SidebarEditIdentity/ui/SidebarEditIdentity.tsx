@@ -15,6 +15,8 @@ import {ThemeButton} from "shared/ui/Button/Button";
 import UserCard from "shared/assets/icons/user-card.svg";
 import {Input} from "shared/ui/Input";
 import {FormBlock} from "features/FormBlock";
+import {ButtonDelete} from "features/ButtonDelete/ui/ButtonDelete";
+import {DataTypeEnum} from "app/enums/DataTypeEnum";
 
 interface SidebarEditIdentityProps extends SidebarOptions<EditIdentityResult>{
     className?: string;
@@ -117,7 +119,11 @@ function SidebarEditIdentity (props: SidebarEditIdentityProps) {
                 </ButtonLoader>
             </div>
         )
-    }, [saveIdentityClickHandler])
+    }, [saveIdentityClickHandler]);
+
+    const headerTools = useMemo(()=> (
+        <ButtonDelete dataType={DataTypeEnum.IDENTITY} dataId={identityData.identityId} />
+    ),[]);
     
     
     return (
@@ -127,6 +133,7 @@ function SidebarEditIdentity (props: SidebarEditIdentityProps) {
             }, [className])}
             isMain={isMain}
             footer={footerPanel}
+            headerTools={headerTools}
             headerName={'Редактировать иденитификатор'}
             close={closeHandler}
         >

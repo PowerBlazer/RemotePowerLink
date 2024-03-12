@@ -3,7 +3,8 @@
     title: string,
     hostname: string,
     sshPort?: number,
-    identityId: number
+    identityId: number,
+    dateCreated: Date
 }
 
 export interface CreateProxyData {
@@ -18,7 +19,8 @@ export interface CreateProxyResult {
     hostname: string,
     sshPort?: number,
     title: string,
-    identityId: number
+    identityId: number,
+    dateCreated: Date
 }
 
 export interface EditProxyData {
@@ -34,5 +36,6 @@ export interface EditProxyResult{
     title: string,
     hostname: string,
     sshPort?: number,
-    identityId: number
+    identityId: number,
+    dateCreated: Date
 }

@@ -195,7 +195,8 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
             title: createProxyResult.title,
             hostname: createProxyResult.hostname,
             identityId: createProxyResult.identityId,
-            sshPort: createProxyResult.sshPort
+            sshPort: createProxyResult.sshPort,
+            dateCreated: createProxyResult.dateCreated
         });
         
         setVisibleProxy(false);
@@ -218,7 +219,8 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
         userStore.setUserIdentity({ 
             identityId: createIdentityResult.identityId, 
             title: createIdentityResult.title,
-            username: createIdentityResult.username
+            username: createIdentityResult.username,
+            dateCreated: createIdentityResult.dateCreated
         });
         
         setVisibleIdentity(false);

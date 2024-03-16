@@ -1,5 +1,5 @@
 ﻿
-namespace Domain.Layers.Persistence.Services.Parameters;
+namespace Domain.Services.Parameters;
 
 public class ConnectionServerParameter
 {
@@ -8,7 +8,4 @@ public class ConnectionServerParameter
     public required string Username { get; set; }
     public required string Password { get; set; }
     public ProxyParameter? Proxy { get; set; }
-    
-    
-    
 }

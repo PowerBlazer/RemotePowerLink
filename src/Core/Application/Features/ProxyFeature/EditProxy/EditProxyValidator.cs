@@ -1,4 +1,4 @@
-﻿using Domain.Layers.Persistence.Services;
+﻿using Domain.Services;
 using FluentValidation;
 using JetBrains.Annotations;
 

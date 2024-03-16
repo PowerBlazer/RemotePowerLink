@@ -2,10 +2,10 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Domain.Enums;
-using Domain.Layers.Persistence.Services;
-using Domain.Layers.Persistence.Services.Parameters;
-using Domain.Layers.Persistence.Services.Results;
 using Domain.Repository;
+using Domain.Services;
+using Domain.Services.Parameters;
+using Domain.Services.Results;
 using Renci.SshNet;
 
 namespace Application.Services;

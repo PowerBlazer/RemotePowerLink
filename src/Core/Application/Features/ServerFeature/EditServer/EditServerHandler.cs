@@ -1,8 +1,8 @@
 ﻿using Domain.DTOs.Server;
 using Domain.Exceptions;
-using Domain.Layers.Persistence.Services;
-using Domain.Layers.Persistence.Services.Parameters;
 using Domain.Repository;
+using Domain.Services;
+using Domain.Services.Parameters;
 using MediatR;
 
 namespace Application.Features.ServerFeature.EditServer;

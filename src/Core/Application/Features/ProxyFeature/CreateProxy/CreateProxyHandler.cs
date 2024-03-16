@@ -1,9 +1,9 @@
 ﻿using Domain.DTOs.Proxy;
 using Domain.Entities;
 using Domain.Exceptions;
-using Domain.Layers.Persistence.Services;
-using Domain.Layers.Persistence.Services.Parameters;
 using Domain.Repository;
+using Domain.Services;
+using Domain.Services.Parameters;
 using JetBrains.Annotations;
 using MediatR;
 

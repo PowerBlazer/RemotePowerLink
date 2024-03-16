@@ -1,7 +1,7 @@
-﻿using Domain.Layers.Persistence.Services.Parameters;
-using Domain.Layers.Persistence.Services.Results;
+﻿using Domain.Services.Parameters;
+using Domain.Services.Results;
 
-namespace Domain.Layers.Persistence.Services;
+namespace Domain.Services;
 
 public interface IHostService
 {

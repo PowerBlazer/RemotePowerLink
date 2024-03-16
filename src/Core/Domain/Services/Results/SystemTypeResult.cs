@@ -1,4 +1,4 @@
-﻿namespace Domain.Layers.Persistence.Services.Results;
+﻿namespace Domain.Services.Results;
 
 public class SystemTypeResult
 {

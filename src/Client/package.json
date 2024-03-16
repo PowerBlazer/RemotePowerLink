@@ -59,6 +59,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@devbookhq/splitter": "^1.4.2",
     "@types/react-select": "^5.0.1",
     "axios": "^1.6.5",
     "clsx": "^2.0.0",

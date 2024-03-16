@@ -1,9 +1,9 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './ServerManagerGroup.module.scss';
-import {observer} from "mobx-react-lite";
 import {ReactNode, useMemo} from "react";
 import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import {ServerManagerItem} from "features/ServerManagerItem";
+import {ServerManagerCatalogMode} from "widgets/ServerManagerCatalog/ui/ServerManagerCatalog";
 
 export interface ServerManagerData {
     id:number,
@@ -14,15 +14,12 @@ export interface ServerManagerData {
     iconNode?: ReactNode
 }
 
-export interface FilterOptions {
-    
-}
-
 interface ServerManagerGroupProps {
     className?: string;
     serverManagerDataList?: ServerManagerData[],
     headerName: string
-    filterOptions?: FilterOptions
+    mode?: ServerManagerCatalogMode,
+    onConnect?: () => Promise<void>
 }
 
 export function ServerManagerGroup (props: ServerManagerGroupProps) {
@@ -30,7 +27,8 @@ export function ServerManagerGroup (props: ServerManagerGroupProps) {
         className,
         serverManagerDataList,
         headerName,
-        filterOptions
+        mode = ServerManagerCatalogMode.Catalog,
+        onConnect
     } = props;
     
     const isVisible = useMemo<boolean>(() => 
@@ -51,7 +49,12 @@ export function ServerManagerGroup (props: ServerManagerGroupProps) {
                 isVisible && (
                     <div className={classNames(style.data_list)}>
                         {serverManagerDataList?.map((data) =>
-                            <ServerManagerItem serverManagerDataItem={data} key={data.id}/>
+                            <ServerManagerItem 
+                                serverManagerDataItem={data} 
+                                mode={mode} 
+                                key={data.id}
+                                onConnect={onConnect}
+                            />
                         )}
                     </div>
                 )

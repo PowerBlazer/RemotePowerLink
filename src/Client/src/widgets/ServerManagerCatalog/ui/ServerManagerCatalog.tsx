@@ -1,7 +1,7 @@
 ﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './ServerManagerCatalog.module.scss';
 import {observer} from "mobx-react-lite";
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import userStore from "app/store/userStore";
 import {ServerManagerData, ServerManagerGroup} from "features/ServerManagerGroup";
 import {HostService} from "app/services/hostService";
@@ -10,12 +10,21 @@ import {useTranslation} from "react-i18next";
 import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import UserCard from 'shared/assets/icons/user-card.svg';
 import ServerIcon from "shared/assets/icons/navbar/server2.svg";
+import searchStore from "app/store/searchStore";
+
+
+export enum ServerManagerCatalogMode{
+    Catalog = 'CATALOG',
+    Sftp = 'SFTP'
+}
 
 interface ServerManagerCatalogProps {
     className?: string;
+    mode?: ServerManagerCatalogMode,
+    onConnect?: () => Promise<void>
 }
 
-function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
+function ServerManagerCatalog ({ className, mode = ServerManagerCatalogMode.Catalog, onConnect }: ServerManagerCatalogProps) {
     const { t } = useTranslation('translation');
     
     const defaultServerIcon = useMemo(()=>(
@@ -31,7 +40,7 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
     ),[]);
     
     const serversManagerData = useMemo<ServerManagerData[]>(() => 
-        userStore.userServers?.map((server => ({
+        searchStore.searchData.servers?.map((server => ({
             id: server.serverId,
             title: server.title,
             common: server.systemTypeName,
@@ -39,19 +48,19 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
             iconUrl: Boolean(server.systemTypeIcon) && `${HostService._apiHost}/${server.systemTypeIcon}`,
             iconNode: !Boolean(server.systemTypeIcon) && defaultServerIcon
         })
-    )),[userStore.userServers]);
+    )),[searchStore.searchData]);
     
     const proxiesManagerData = useMemo<ServerManagerData[]>(() =>
-        userStore.userProxies?.map((proxy => ({
+        searchStore.searchData.proxies?.map((proxy => ({
             id: proxy.proxyId,
             dataType: DataTypeEnum.PROXY,
             title: proxy.title, 
             iconNode: defaultServerIcon
         })
-    )),[userStore.userProxies]);
+    )),[searchStore.searchData]);
 
     const identityManagerData = useMemo<ServerManagerData[]>(() =>
-        userStore.userIdentities?.map((identity => {
+        searchStore.searchData.identities?.map((identity => {
             return {
                 id: identity.identityId,
                 dataType:DataTypeEnum.IDENTITY,
@@ -60,7 +69,7 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
                 common: identity.username
             }
         }
-    )),[userStore.userIdentities]);
+    )),[searchStore.searchData]);
     
     const serverManagerGroups = useMemo(()=> {
         return [
@@ -70,13 +79,29 @@ function ServerManagerCatalog ({ className }: ServerManagerCatalogProps) {
         ]
     },[serversManagerData, identityManagerData, proxiesManagerData]);
     
+    const serversGroup = useMemo(()=> {
+        return [
+            <ServerManagerGroup 
+                serverManagerDataList={serversManagerData} 
+                mode={mode} 
+                headerName={t('Сервера')} 
+                key={'Servers'}
+                onConnect={onConnect}
+            />,
+        ]
+    },[serversManagerData]);
+
+    useEffect(() => {
+        searchStore.setFilterOption(null)
+    }, []);
+    
     return (
         <div className={classNames(style.serverManagerCatalog, {}, [className])}>
             <div className={classNames(style.catalog_inner)}>
                 {
                     userStore.isLoadData 
                         ? <Loader  className={classNames(style.loader)}/>
-                        : serverManagerGroups
+                        : mode === ServerManagerCatalogMode.Catalog ? serverManagerGroups : serversGroup
                 }
             </div>
 		</div>

@@ -22,6 +22,8 @@ import {
     IdentityData
 } from "app/services/IdentityService/config/identityConfig";
 import {SidebarEditIdentity} from "widgets/SidebarEditIdentity";
+import {ChangeEvent, useEffect} from "react";
+import searchStore from "app/store/searchStore";
 
 interface NavbarHostsProps {
     className?: string;
@@ -29,8 +31,7 @@ interface NavbarHostsProps {
 
 function NavbarHosts ({ className }: NavbarHostsProps) {
     const { t } = useTranslation('translation');
-
-
+    
     const onEditServerHandler = async (editServerResult: EditServerResult) => {
         userStore.setUserServer({
             serverId: editServerResult.serverId,
@@ -110,8 +111,7 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
 
         toast.success(t('Успешно создано'));
     }
-
-
+    
     const onEditIdentityHandler = async (editIdentityResult: EditIdentityResult) => {
         const identity: IdentityData = {
             title: editIdentityResult.title,
@@ -145,8 +145,6 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
         toast.success(t('Успешно создано'));
     }
     
-    
-
     const createNewHostHandler = async () => {
         await sidebarStore.setSidebar({
             name: 'SidebarNewHost',
@@ -167,11 +165,22 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             sidebar: <SidebarNewIdentity isMain={true} onSave={onCreateIdentityHandler}/>
         })
     }
-
+    
+    const onChangeSearchInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        searchStore.setFilterOption({
+            title: e.target.value
+        });
+    }
+    
     return (
         <div className={classNames(style.navbarHosts, {}, [className])}>
             <div className={classNames(style.search_block)}>
-                <input type={'text'} className={classNames(style.search)} placeholder={t('Поиск серверов или ssh root@hostname...')}/>
+                <input 
+                    type={'text'} 
+                    className={classNames(style.search)} 
+                    placeholder={t('Поиск серверов или ssh root@hostname...')}
+                    onChange={onChangeSearchInputHandler}
+                />
                 <Button className={classNames(style.connect_button, {}, [])}>{t('Подключиться')}</Button>
             </div>
 

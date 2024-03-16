@@ -32,5 +32,18 @@
     "Новый прокси": "New proxy",
     "Пароль": "Password",
     "Имя пользователя": "Username",
-    "Идентификаторы": "Identities"
+    "Идентификаторы": "Identities",
+    "Успешно создано": "Successfully created",
+    "Сохранить идентификатор": "Save the identity",
+    "Редактировать иденитификатор": "Edit the identity",
+    "Успешно сохранено": "Successfully saved",
+    "Сохранить прокси-сервер": "Save the proxy server",
+    "Редактирование прокси-сервера": "Editing the proxy server",
+    "Сохранить сервер": "Save the server",
+    "Редактирование сервера": "Editing the server",
+    "История": "History",
+    "Подключиться к серверу": "Connect to Host",
+    "Выберите из вашего сохраненного сервера": "Select from your saved Hosts",
+    "Выбрать сервер": "Select Host"
+    
 }

@@ -7,16 +7,20 @@ import {ServerManagerData} from "features/ServerManagerGroup";
 interface ButtonConnectProps {
     className?: string;
     serverData: ServerManagerData
+    onConnect?: () => Promise<void>
 }
 
-export function ButtonConnect ({ className,serverData }: ButtonConnectProps) {
+export function ButtonConnect ({ className,serverData,onConnect }: ButtonConnectProps) {
     const connectServerClickHandler = async () => {
-        
+        if(onConnect){
+            await onConnect();
+        }
     }
     
     return (
         <Button 
             className={classNames(style.buttonConnect, {}, [className])}
+            onClick={connectServerClickHandler}
         >
             <PlugIcon width={20} height={22}/>
 		</Button>

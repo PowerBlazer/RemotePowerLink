@@ -131,6 +131,13 @@ class UserStore {
         if (this.userProxies) {
             this.userProxies = this.userProxies
                 .filter(proxy => proxy.proxyId !== proxyId);
+            
+            const serversInProxy = this.userServers
+                .filter(p=>p.proxyId === proxyId);
+            
+            serversInProxy.forEach(server =>{
+                server.proxyId = null;
+            })
         }
     }
 

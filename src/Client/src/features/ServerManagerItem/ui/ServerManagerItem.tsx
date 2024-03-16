@@ -4,19 +4,21 @@ import {ServerManagerData} from "features/ServerManagerGroup";
 import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import {ButtonConnect} from "features/ButtonConnect";
 import {ButtonEdit} from "features/ButtonEdit";
+import {ServerManagerCatalogMode} from "widgets/ServerManagerCatalog/ui/ServerManagerCatalog";
 
 interface ServerManagerItemProps {
     className?: string;
     serverManagerDataItem: ServerManagerData;
-    onEdit?: () => Promise<void>;
-    
+    onConnect?: () => Promise<void>
+    mode?: ServerManagerCatalogMode
 }
 
 export function ServerManagerItem (props: ServerManagerItemProps) {
     const { 
         className,
-        serverManagerDataItem, 
-        onEdit 
+        serverManagerDataItem,
+        mode = ServerManagerCatalogMode.Catalog,
+        onConnect
     } = props
     
     
@@ -39,9 +41,9 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
                 </div>
             </div>
             <div className={classNames(style.data_options)}>
-                <ButtonEdit className={style.button_edit} serverManagerData={serverManagerDataItem}/>
+                {mode === ServerManagerCatalogMode.Catalog && <ButtonEdit className={style.button_edit} serverManagerData={serverManagerDataItem}/>}
                 {serverManagerDataItem.dataType === DataTypeEnum.SERVER 
-                    && <ButtonConnect serverData={serverManagerDataItem}/>
+                    && <ButtonConnect serverData={serverManagerDataItem} onConnect={onConnect}/>
                 }
             </div>
         </div>

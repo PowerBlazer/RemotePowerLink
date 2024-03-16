@@ -8,7 +8,8 @@ interface NavbarItemProps {
     icon: any,
     label: string,
     isSelected?: boolean
-    navigate?: string
+    navigate?: string,
+    onNavigate?: () => void
 }
 
 export function NavbarItem (props: NavbarItemProps) {
@@ -17,21 +18,26 @@ export function NavbarItem (props: NavbarItemProps) {
         icon,
         label,
         isSelected = false,
-        navigate
+        navigate,
+        onNavigate
     } = props;
     
     const location = useNavigate();
+    
+    const onClickNavigateHandler = () => {
+        if (navigate) {
+            location(navigate);
+        }
+        
+        if(navigate){
+            onNavigate();
+        }
+    }
 
     return (
         <Button
-            className={classNames(style.navbarItem, {
-                [style.selected]: isSelected
-            }, [className])}
-            onClick={() => {
-                if (navigate) {
-                    location(navigate);
-                }
-            }}
+            className={classNames(style.navbarItem, { [style.selected]: isSelected }, [className])}
+            onClick={onClickNavigateHandler}
         >
             <div className={classNames(style.icon_block)}>{icon}</div>
             {label}

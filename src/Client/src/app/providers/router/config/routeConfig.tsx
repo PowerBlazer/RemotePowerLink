@@ -5,19 +5,22 @@ import { RouteProps } from 'react-router-dom'
 import { SignupPage } from 'pages/SignupPage';
 import RegistrationProvider from 'app/providers/RegistrationProvider/ui/RegistrationProvider';
 import { Navbar } from 'widgets/Navbar';
+import {SftpPage} from "pages/SftpPage";
 
 export enum AppRoutes {
     MAIN = 'main',
     NOT_FOUND = 'not_found',
     LOGIN = 'login',
-    SIGNUP = 'signup'
+    SIGNUP = 'signup',
+    SFTP = 'sftp'
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: '/',
     [AppRoutes.NOT_FOUND]: '*',
     [AppRoutes.LOGIN]: '/login',
-    [AppRoutes.SIGNUP]: '/signup'
+    [AppRoutes.SIGNUP]: '/signup',
+    [AppRoutes.SFTP]: '/sftp'
 }
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -36,6 +39,10 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.SIGNUP]: {
         path: RoutePath.signup,
         element: <RegistrationProvider><SignupPage/></RegistrationProvider>
+    },
+    [AppRoutes.SFTP]: {
+        path: RoutePath.sftp,
+        element: <SftpPage/>
     }
 }
 

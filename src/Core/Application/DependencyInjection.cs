@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Application.Features.AuthorizationFeature;
 using Application.Middlewares;
+using Application.Services;
+using Domain.Services;
 using FluentValidation;
 using JetBrains.Annotations;
 using MediatR;
@@ -20,12 +22,14 @@ public static class DependencyInjection
 
         AssemblyScanner.FindValidatorsInAssembly(Assembly.GetExecutingAssembly())
             .ForEach(item => services.AddScoped(item.InterfaceType, item.ValidatorType));
-        
         ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.StopOnFirstFailure;
         
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
-        
         services.AddAutoMapper(typeof(AuthorizationProfile));
+
+        #region Services
+        services.AddSingleton<ISftpClientService, SftpClientService>();
+        #endregion
         
         return services;
     }

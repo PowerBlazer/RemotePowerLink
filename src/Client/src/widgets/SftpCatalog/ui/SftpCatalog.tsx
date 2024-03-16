@@ -22,6 +22,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     const { t } = useTranslation('translation');
     const [isViewServersCatalog, setIsView] = useState<boolean>(false);
 
+    
     const getIsSelectedServer = () => {
         if(mode === SftpCatalogMode.First && sftpStore.firstSelectedHost != null){
             return true;
@@ -29,6 +30,8 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
         return mode === SftpCatalogMode.Second && sftpStore.secondSelectedHost != null;
     }
+    
+    
     
     const selectHostInformationBlock = useMemo(() => (
         <div className={classNames(style.host_information_block)}>

@@ -22,10 +22,15 @@ public class SftpFileData
     /// <summary>
     /// Тип файла каталога
     /// </summary>
-    public FileTypeEnum FileType { get; set; }
+    public required FileTypeEnum FileType { get; set; }
     
     /// <summary>
     /// Название типа файла каталога
     /// </summary>
     public string? FileTypeName { get; set; }
+    
+    /// <summary>
+    /// Путь к файлу
+    /// </summary>
+    public required string Path { get; set; }
 }

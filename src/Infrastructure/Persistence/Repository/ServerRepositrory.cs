@@ -19,7 +19,7 @@ public class ServerRepositrory: IServerRepository
     {
         var server = await _persistenceContext.Servers
             .Include(p=> p.Identity)
-            .Include(p=> p.Proxy)
+            .Include(p=> p.Proxy).ThenInclude(x=> x!.Identity)
             .Include(p=> p.SystemType)
             .FirstOrDefaultAsync(p => p.Id == serverId);
 
@@ -35,7 +35,7 @@ public class ServerRepositrory: IServerRepository
     {
         var server = await _persistenceContext.Servers
             .Include(p=> p.Identity)
-            .Include(p=> p.Proxy)
+            .Include(p=> p.Proxy).ThenInclude(x=> x!.Identity)
             .Include(p=> p.SystemType)
             .FirstOrDefaultAsync(p => p.Id == serverId);
         

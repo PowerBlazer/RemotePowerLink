@@ -6,6 +6,7 @@ public enum FileTypeEnum
 {
     [Description("Folder")]
     Folder = 1,
+    
     [Description("File")]
     File = 2
 }

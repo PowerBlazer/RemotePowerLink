@@ -5,6 +5,9 @@ import ReactSplit, {SplitDirection} from "@devbookhq/splitter";
 import {SftpCatalog} from "widgets/SftpCatalog";
 import {useEffect, useRef, useState} from "react";
 import {SftpCatalogMode} from "widgets/SftpCatalog/ui/SftpCatalog";
+import * as signalR from "@microsoft/signalr";
+import {HostService} from "app/services/hostService";
+import SftpHub from "app/hubs/SftpHub";
 
 interface SftpPageProps {
     className?: string;
@@ -13,7 +16,8 @@ interface SftpPageProps {
 function SftpPage ({ className }: SftpPageProps) {
     const [minSplitWidth, setMinWidth] = useState(300);
     const sftpPageRef = useRef<HTMLDivElement>(null);
-
+    const [sftpHub, setSftpHub] = useState<SftpHub>(null); 
+    
     useEffect(() => {
         if (sftpPageRef.current) {
             const width = sftpPageRef.current.offsetWidth;
@@ -24,6 +28,20 @@ function SftpPage ({ className }: SftpPageProps) {
             }
         }
     }, [sftpPageRef.current]);
+
+    useEffect(() => {
+        const sftpHub = new SftpHub()
+        
+        setSftpHub(sftpHub);
+        
+        
+        setTimeout(()=> sftpHub.test('/root/'), 5000);
+        
+    }, []);
+
+    useEffect(() => {
+        sftpHub?.events((file) => console.log(file));
+    },[sftpHub?.events]);
     
     return (
         <div className={classNames(style.sftpPage, {}, [className])} ref={sftpPageRef}>

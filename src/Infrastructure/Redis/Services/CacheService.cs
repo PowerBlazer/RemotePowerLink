@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Application.Layers.Redis.Services;
+using Domain.Layers.Redis.Services;
 
 namespace Redis.Services;
 

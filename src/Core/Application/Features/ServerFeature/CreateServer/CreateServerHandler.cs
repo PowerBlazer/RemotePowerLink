@@ -1,7 +1,7 @@
-﻿using Application.Layers.Persistence.Services;
-using Application.Layers.Persistence.Services.Parameters;
-using Domain.DTOs.Server;
+﻿using Domain.DTOs.Server;
 using Domain.Exceptions;
+using Domain.Layers.Persistence.Services;
+using Domain.Layers.Persistence.Services.Parameters;
 using Domain.Repository;
 using JetBrains.Annotations;
 using MediatR;

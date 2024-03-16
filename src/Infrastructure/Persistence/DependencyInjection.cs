@@ -1,5 +1,6 @@
-﻿using Application.Layers.Persistence.Contexts;
-using Application.Layers.Persistence.Services;
+﻿using Application.Services;
+using Domain.Layers.Persistence.Contexts;
+using Domain.Layers.Persistence.Services;
 using Domain.Repository;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
 using Persistence.Repository;
-using Persistence.Services;
 
 namespace Persistence;
 

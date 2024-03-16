@@ -1,12 +1,12 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
-using Application.Layers.Identity.Services;
-using Application.Layers.MessageQueues.UserRegistered;
-using Application.Layers.MessageQueues.VerificationEmailSend;
-using Application.Layers.Redis.Services;
 using Domain.Common;
 using Domain.DTOs.Authorization;
 using Domain.Exceptions;
+using Domain.Layers.Identity.Services;
+using Domain.Layers.MessageQueues.UserRegistered;
+using Domain.Layers.MessageQueues.VerificationEmailSend;
+using Domain.Layers.Redis.Services;
 using Identity.Common;
 using Identity.Entities;
 using Identity.Helpers;

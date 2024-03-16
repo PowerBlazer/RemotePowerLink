@@ -1,4 +1,4 @@
-﻿using Application.Layers.Email.Services;
+﻿using Domain.Layers.Email.Services;
 using MimeKit;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 

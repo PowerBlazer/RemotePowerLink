@@ -1,7 +1,7 @@
-﻿using Application.Layers.Persistence.Services;
-using Application.Layers.Persistence.Services.Parameters;
-using Domain.DTOs.Proxy;
+﻿using Domain.DTOs.Proxy;
 using Domain.Exceptions;
+using Domain.Layers.Persistence.Services;
+using Domain.Layers.Persistence.Services.Parameters;
 using Domain.Repository;
 using MediatR;
 

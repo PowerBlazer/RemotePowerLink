@@ -1,6 +1,6 @@
-﻿using Application.Layers.Persistence.Contexts;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Entities.Abstractions;
+using Domain.Layers.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Configuration;
 

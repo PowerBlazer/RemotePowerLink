@@ -1,5 +1,4 @@
-﻿
-using Application.Layers.Redis.Services;
+﻿using Domain.Layers.Redis.Services;
 using StackExchange.Redis;
 
 namespace Redis.Services;

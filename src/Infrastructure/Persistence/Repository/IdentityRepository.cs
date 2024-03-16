@@ -1,6 +1,6 @@
-﻿using Application.Layers.Persistence.Contexts;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Exceptions;
+using Domain.Layers.Persistence.Contexts;
 using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 

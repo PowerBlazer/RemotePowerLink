@@ -4,7 +4,7 @@ using Api;
 using Api.Common;
 using Api.Middleware;
 using Application;
-using Application.Layers.Identity;
+using Domain.Layers.Identity;
 using Email;
 using Identity;
 using MessageQueues;
@@ -94,8 +94,7 @@ builder.Services.AddAuthentication(options =>
             {
                 var accessToken = context.Request.Query["access_token"];
                 var path = context.HttpContext.Request.Path;
-                if (!string.IsNullOrEmpty(accessToken) &&
-                    path.StartsWithSegments("/host"))
+                if (!string.IsNullOrEmpty(accessToken))
                 {
                     context.Token = accessToken;
                 }

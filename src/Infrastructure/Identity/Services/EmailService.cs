@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
-using Application.Layers.Identity.Services;
+using Domain.Layers.Identity.Services;
 using Identity.Interfaces;
 
 namespace Identity.Services;

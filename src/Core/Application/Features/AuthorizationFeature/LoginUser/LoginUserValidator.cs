@@ -1,4 +1,4 @@
-﻿using Application.Layers.Identity.Services;
+﻿using Domain.Layers.Identity.Services;
 using FluentValidation;
 using JetBrains.Annotations;
 

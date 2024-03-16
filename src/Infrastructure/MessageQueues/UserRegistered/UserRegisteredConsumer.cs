@@ -1,5 +1,5 @@
-﻿using Application.Layers.MessageQueues.UserRegistered;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Layers.MessageQueues.UserRegistered;
 using Domain.Repository;
 using MassTransit;
 

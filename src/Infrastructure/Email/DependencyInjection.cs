@@ -1,4 +1,4 @@
-﻿using Application.Layers.Email.Services;
+﻿using Domain.Layers.Email.Services;
 using Email.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

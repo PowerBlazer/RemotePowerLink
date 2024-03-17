@@ -5,11 +5,12 @@ import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import {ButtonConnect} from "features/ButtonConnect";
 import {ButtonEdit} from "features/ButtonEdit";
 import {ServerManagerCatalogMode} from "widgets/ServerManagerCatalog/ui/ServerManagerCatalog";
+import {ServerData} from "app/services/ServerService/config/serverConfig";
 
 interface ServerManagerItemProps {
     className?: string;
     serverManagerDataItem: ServerManagerData;
-    onConnect?: () => Promise<void>
+    onConnect?: (serverData: ServerData) => Promise<void>
     mode?: ServerManagerCatalogMode
 }
 

@@ -2,7 +2,7 @@
 
 namespace Domain.DTOs.Sftp;
 
-public class SftpFileData
+public class SftpFileItem
 {
     /// <summary>
     /// Название файла каталога
@@ -12,7 +12,7 @@ public class SftpFileData
     /// <summary>
     /// Дата изменения файла
     /// </summary>
-    public DateTime DateModified { get; set; }
+    public DateTime? DateModified { get; set; }
     
     /// <summary>
     /// Размер файла

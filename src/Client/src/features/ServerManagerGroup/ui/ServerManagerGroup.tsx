@@ -4,6 +4,7 @@ import {ReactNode, useMemo} from "react";
 import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import {ServerManagerItem} from "features/ServerManagerItem";
 import {ServerManagerCatalogMode} from "widgets/ServerManagerCatalog/ui/ServerManagerCatalog";
+import {ServerData} from "app/services/ServerService/config/serverConfig";
 
 export interface ServerManagerData {
     id:number,
@@ -19,7 +20,7 @@ interface ServerManagerGroupProps {
     serverManagerDataList?: ServerManagerData[],
     headerName: string
     mode?: ServerManagerCatalogMode,
-    onConnect?: () => Promise<void>
+    onConnect?: (serverData: ServerData) => Promise<void>
 }
 
 export function ServerManagerGroup (props: ServerManagerGroupProps) {

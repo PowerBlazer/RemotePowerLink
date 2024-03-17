@@ -2,6 +2,12 @@
 
 public class SftpFileList
 {
+    /// <summary>
+    /// Текцщий путть директории
+    /// </summary>
     public required string CurrentPath { get; set; }
-    public required IEnumerable<SftpFileData> FileList { get; set; }
+    /// <summary>
+    /// Список файлов директории
+    /// </summary>
+    public required IEnumerable<SftpFileItem> FileList { get; set; }
 }

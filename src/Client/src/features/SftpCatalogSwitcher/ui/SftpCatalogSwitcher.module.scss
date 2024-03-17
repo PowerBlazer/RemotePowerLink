@@ -1,0 +1,27 @@
+﻿.sftpCatalogSwitcher{
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  
+  & button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+    width: 22px;
+    border-radius: 5px;
+
+    &:hover{
+      background-color: var(--sidebar-back-button-hover-color);
+    }
+  }
+  
+  & .arrow_icon{
+    width: 20px;
+    height: 20px;
+  }
+  
+  & .next_button{
+    transform: rotate(180deg);
+  }
+}

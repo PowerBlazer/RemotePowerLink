@@ -44,6 +44,8 @@
     "История": "History",
     "Подключиться к серверу": "Connect to Host",
     "Выберите из вашего сохраненного сервера": "Select from your saved Hosts",
-    "Выбрать сервер": "Select Host"
+    "Выбрать сервер": "Select Host",
+    "Фильтр": "Filter",
+    "Действия": "Actions"
     
 }

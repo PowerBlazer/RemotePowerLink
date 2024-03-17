@@ -1,31 +1,27 @@
 ﻿import {classNames} from 'shared/lib/classNames/classNames';
-import style from './SftpSelectHostCatalog.module.scss';
-import {ServerManagerCatalog} from "widgets/ServerManagerCatalog";
-import {ServerManagerCatalogMode} from "widgets/ServerManagerCatalog/ui/ServerManagerCatalog";
-import sftpStore from "app/store/sftpStore";
-import userStore from "app/store/userStore";
+import {ServerManagerCatalog, ServerManagerCatalogMode} from "widgets/ServerManagerCatalog";
 import {Button} from "shared/ui/Button/Button";
-import ArrowRight from "shared/assets/icons/arrow-right.svg";
-import SearchIcon from 'shared/assets/icons/search.svg';
 import {useTranslation} from "react-i18next";
-import {ChangeEvent, useEffect} from "react";
+import {useEffect} from "react";
+import {ServerData} from "app/services/ServerService/config/serverConfig";
+import {SftpCatalogMode} from "widgets/SftpCatalog/ui/SftpCatalog";
+import {SearchInput} from "features/SearchInput";
+import ArrowRight from "shared/assets/icons/arrow-right.svg";
 import searchStore from "app/store/searchStore";
+import style from './SftpSelectHostCatalog.module.scss';
+import sftpStore from "app/store/sftpStore";
 
 interface SftpSelectHostCatalogProps {
-    className?: string;
-    onClose?: () => void
+    className?: string,
+    onClose?: () => void,
+    mode: SftpCatalogMode
 }
 
-export function SftpSelectHostCatalog ({ className, onClose }: SftpSelectHostCatalogProps) {
+export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectHostCatalogProps) {
     const { t } = useTranslation('translation');
-
-    useEffect(() => {
-        searchStore.setFilterOption(null)
-    }, []);
-    
-    const onChangeSearchInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeSearchInputHandler = (value:string) => {
         searchStore.setFilterOption({
-            title: e.target.value
+            title: value
         })
     }
     
@@ -34,6 +30,38 @@ export function SftpSelectHostCatalog ({ className, onClose }: SftpSelectHostCat
             onClose();
         }
     }
+    
+    const onClickConnectHandler = async (serverData: ServerData) => {
+        if(mode === SftpCatalogMode.First){
+            if(sftpStore.firstSelectedHost?.sftpHub){
+                sftpStore.firstSelectedHost.sftpHub.closeConnection();
+            }
+            
+            sftpStore.firstSelectedHost = {
+                server: serverData,
+                isLoad: false
+            }
+        }
+        
+        if(mode === SftpCatalogMode.Second){
+            if(sftpStore.secondSelectedHost?.sftpHub){
+                sftpStore.secondSelectedHost.sftpHub.closeConnection();
+            }
+            
+            sftpStore.secondSelectedHost = {
+                server: serverData,
+                isLoad: false
+            }
+        }
+
+        if(onClose){
+            onClose();
+        }
+    }
+
+    useEffect(() => {
+        searchStore.setFilterOption(null)
+    }, []);
     
     return (
         <div className={classNames(style.sftpSelectHostCatalog, {}, [className])}>
@@ -45,22 +73,11 @@ export function SftpSelectHostCatalog ({ className, onClose }: SftpSelectHostCat
                     <h3 className={classNames(style.header_text)}>{t('Выбрать сервер')}</h3>
                 </div>
                 <div className={classNames(style.search_catalog_panel)}>
-                    <div className={classNames(style.search_content)}>
-                        <div className={classNames(style.search_icon)}>
-                            <SearchIcon width={17} height={17}/>
-                        </div>
-                        <input 
-                            type="text" 
-                            className={classNames(style.search_input)} 
-                            placeholder={t("Поиск")}
-                            onChange={onChangeSearchInputHandler}
-                        />
-                    </div>
+                    <SearchInput onChange={onChangeSearchInputHandler}/>
                     <div className={style.tools}></div>
                 </div>
             </div>
-            
-            <ServerManagerCatalog mode={ServerManagerCatalogMode.Sftp}/>
+            <ServerManagerCatalog mode={ServerManagerCatalogMode.Sftp} onConnect={onClickConnectHandler}/>
 		</div>
     );
 }

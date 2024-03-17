@@ -1,8 +1,8 @@
 .sftpSelectHostCatalog{
   display: flex;
   flex-direction: column;
+  height: 100%
 }
-
 
 .select_navbar{
   background-color: var(--navbar-host-bg-color);
@@ -47,9 +47,6 @@
     }
   }
 }
-
-
-
 
 .close{
   width: 30px;

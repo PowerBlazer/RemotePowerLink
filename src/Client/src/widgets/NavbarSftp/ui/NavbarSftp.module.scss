@@ -1,0 +1,85 @@
+.navbarSftp{
+  width: 100%;
+  padding: 35px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: var(--navbar-host-bg-color);
+  overflow: hidden;
+  
+  & .search_input{
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+  
+  & .navbar_header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 16px 0 10px;
+  }
+  
+  & .tools{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    
+    & .actions{
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      
+      & .arrow_icon{
+        width: 18px;
+        height: 18px;
+        margin-top: 3px;
+        transform: rotate(-90deg);
+      }
+    }
+    
+  }
+}
+
+.catalog_tools{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 0 10px;
+  position: relative;
+}
+
+.loader{
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+}
+
+.loader > div{
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+  border-color: var(--loader-color) transparent;
+}
+
+.change_host{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 5px 6px;
+  border-radius: 7px;
+  
+  &:hover{
+    background-color: var(--sidebar-back-button-hover-color);
+  }
+  
+  & .server_title{
+    font-size: 14px;
+    font-weight: 550;
+    max-width: 80px;
+    white-space: nowrap; /* Текст не переносится */
+    overflow: hidden; /* Обрезаем всё за пределами блока */
+    text-overflow: ellipsis;
+  }
+}

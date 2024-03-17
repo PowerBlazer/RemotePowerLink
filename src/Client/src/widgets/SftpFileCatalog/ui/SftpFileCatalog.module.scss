@@ -1,0 +1,23 @@
+﻿.sftpFileCatalog{
+  width: 100%;
+  max-height: calc(100vh - 155px);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+
+.loader{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.loader > div{
+  width: 60px;
+  height: 60px;
+  border-width: 2px;
+  border-color: var(--loader-color) transparent;
+}

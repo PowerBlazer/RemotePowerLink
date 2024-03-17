@@ -15,6 +15,11 @@ public interface ISftpClientService
     /// <summary>
     /// Удаление существущего подключение SSH
     /// </summary>
-    /// <param name="connectionServerParameter">Данные для отключения по SSH</param>
-    void DisconnectClient(ConnectionServerParameter connectionServerParameter);
+    /// <param name="connectionKey">Ключ для отключения клиента SSH</param>
+    void DisconnectClient(string connectionKey);
+    
+    /// <summary>
+    /// Отключает неактивных SSH клиентов
+    /// </summary>
+    void DisconnectIdleClients();
 }

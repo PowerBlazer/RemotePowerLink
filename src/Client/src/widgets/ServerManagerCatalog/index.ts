@@ -1,1 +1,1 @@
-﻿export { default as ServerManagerCatalog } from './ui/ServerManagerCatalog'
+﻿export { default as ServerManagerCatalog, ServerManagerCatalogMode } from './ui/ServerManagerCatalog'

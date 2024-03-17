@@ -1,1 +1,1 @@
-﻿export {default as SftpCatalog} from './ui/SftpCatalog'
+﻿export {default as SftpCatalog, SftpCatalogMode} from './ui/SftpCatalog'

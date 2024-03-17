@@ -4,6 +4,7 @@ using Domain.Enums;
 using Domain.Repository;
 using Domain.Services;
 using Domain.Services.Parameters;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -12,59 +13,66 @@ namespace Api.Hubs;
 [Authorize]
 public class SftpHub: Hub
 {
-    private long UserId => long.Parse(Context.User?.Claims
-        .FirstOrDefault(p=> p.Type == ClaimTypes.NameIdentifier)?.Value!);
-    
+    private long UserId
+    {
+        get
+        {
+            var user = Context.User;
+            
+            if (user is not null)
+            {
+                return long.Parse(user.Claims.First(p => p.Type == ClaimTypes.NameIdentifier).Value);
+            }
+
+            return long.MinValue;
+        }
+    }
+
     private readonly ISftpClientService _sftpClientService;
     private readonly IServerRepository _serverRepository;
+    private readonly ISftpService _sftpService;
     public SftpHub(ISftpClientService sftpClientService, 
-        IServerRepository serverRepository)
+        IServerRepository serverRepository, 
+        ISftpService sftpService)
     {
         _sftpClientService = sftpClientService;
         _serverRepository = serverRepository;
+        _sftpService = sftpService;
     }
 
+    [UsedImplicitly]
     public async Task GetFilesServer(long serverId, string path)
     {
         var server = await _serverRepository.GetServerAsync(serverId);
         var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
 
         var sftpClient = _sftpClientService.GetClient(connectionParameter);
-        var files = sftpClient.ListDirectory(path).ToList();
 
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            path = sftpClient.WorkingDirectory;
+        }
+        
+        var files = sftpClient
+            .ListDirectory(path)
+            .ToList();
+        
         var serverFileList = new SftpFileList
         {
             CurrentPath = path,
-            FileList = files.Select(p => new SftpFileData
+            FileList = files.Select(p => new SftpFileItem
             {
                 Name = p.Name,
                 Path = p.FullName,
                 DateModified = p.LastWriteTime,
                 FileType = p.IsDirectory ? FileTypeEnum.Folder : FileTypeEnum.File,
-                Size = p.Length.ToString(),
-                FileTypeName = GetFileExtension(p.Name)
+                Size = _sftpService.FormatFileSize(p.Length),
+                FileTypeName = _sftpService.GetFileExtension(p.Name)
             })
         };
 
         await Clients
-            .User(UserId.ToString())
+            .Client(Context.ConnectionId)
             .SendAsync("ReceivedFiles", serverFileList);
-    }
-    
-
-    public override async Task OnConnectedAsync()
-    {
-        await base.OnConnectedAsync();
-    }
-
-    public override async Task OnDisconnectedAsync(Exception? exception)
-    {
-        await base.OnDisconnectedAsync(exception);
-    }
-    
-    private static string GetFileExtension(string fileName)
-    {
-        var extension = Path.GetExtension(fileName);
-        return extension.TrimStart('.').ToLowerInvariant();
     }
 }

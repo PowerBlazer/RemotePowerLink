@@ -3,17 +3,21 @@ import style from './ButtonConnect.module.scss';
 import {Button} from "shared/ui/Button/Button";
 import PlugIcon from 'shared/assets/icons/plug.svg';
 import {ServerManagerData} from "features/ServerManagerGroup";
+import {ServerData} from "app/services/ServerService/config/serverConfig";
+import userStore from "app/store/userStore";
 
 interface ButtonConnectProps {
     className?: string;
     serverData: ServerManagerData
-    onConnect?: () => Promise<void>
+    onConnect?: (serverData: ServerData) => Promise<void>
 }
 
-export function ButtonConnect ({ className,serverData,onConnect }: ButtonConnectProps) {
+export function ButtonConnect ({ className, serverData, onConnect }: ButtonConnectProps) {
     const connectServerClickHandler = async () => {
         if(onConnect){
-            await onConnect();
+            const server = userStore.userServers.find(p=> p.serverId === serverData.id);
+            
+            await onConnect(server);
         }
     }
     

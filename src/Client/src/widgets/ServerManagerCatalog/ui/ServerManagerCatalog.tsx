@@ -11,6 +11,7 @@ import {DataTypeEnum} from "app/enums/DataTypeEnum";
 import UserCard from 'shared/assets/icons/user-card.svg';
 import ServerIcon from "shared/assets/icons/navbar/server2.svg";
 import searchStore from "app/store/searchStore";
+import {ServerData} from "app/services/ServerService/config/serverConfig";
 
 
 export enum ServerManagerCatalogMode{
@@ -21,7 +22,7 @@ export enum ServerManagerCatalogMode{
 interface ServerManagerCatalogProps {
     className?: string;
     mode?: ServerManagerCatalogMode,
-    onConnect?: () => Promise<void>
+    onConnect?: (serverData: ServerData) => Promise<void>
 }
 
 function ServerManagerCatalog ({ className, mode = ServerManagerCatalogMode.Catalog, onConnect }: ServerManagerCatalogProps) {

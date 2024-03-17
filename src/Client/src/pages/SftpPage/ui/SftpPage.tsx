@@ -16,7 +16,6 @@ interface SftpPageProps {
 function SftpPage ({ className }: SftpPageProps) {
     const [minSplitWidth, setMinWidth] = useState(300);
     const sftpPageRef = useRef<HTMLDivElement>(null);
-    const [sftpHub, setSftpHub] = useState<SftpHub>(null); 
     
     useEffect(() => {
         if (sftpPageRef.current) {
@@ -28,20 +27,6 @@ function SftpPage ({ className }: SftpPageProps) {
             }
         }
     }, [sftpPageRef.current]);
-
-    useEffect(() => {
-        const sftpHub = new SftpHub()
-        
-        setSftpHub(sftpHub);
-        
-        
-        setTimeout(()=> sftpHub.test('/root/'), 5000);
-        
-    }, []);
-
-    useEffect(() => {
-        sftpHub?.events((file) => console.log(file));
-    },[sftpHub?.events]);
     
     return (
         <div className={classNames(style.sftpPage, {}, [className])} ref={sftpPageRef}>

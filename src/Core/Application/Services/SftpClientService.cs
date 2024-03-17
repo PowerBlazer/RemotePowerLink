@@ -8,32 +8,49 @@ namespace Application.Services;
 
 public class SftpClientService: ISftpClientService
 {
-    private readonly ConcurrentDictionary<string, SftpClient> _sftpClients = new();
+    private readonly ConcurrentDictionary<string, SftpClientInstance> _sftpClients = new();
     private readonly object _lock = new();
-
+    private const int IdleTimeoutMinutes = 10;
     
     public SftpClient GetClient(ConnectionServerParameter connectionServerParameter)
-    {
-        var connectionKey = $"{connectionServerParameter.Hostname} ${connectionServerParameter.Hostname}";
-        
-        return _sftpClients.GetOrAdd(connectionKey, _ => CreateNewClient(connectionServerParameter));
-    }
-
-    public void DisconnectClient(ConnectionServerParameter connectionServerParameter)
     {
         var connectionKey = $"{connectionServerParameter.Hostname} " +
                             $"${connectionServerParameter.Hostname}" +
                             $"${connectionServerParameter.Password}";
         
-        if (_sftpClients.TryGetValue(connectionKey, out var sftpClient))
+        return _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
         {
-            lock (_lock)
+            SftpClient = CreateNewClient(connectionServerParameter),
+            LastUsed = DateTime.Now
+        }).SftpClient;
+    }
+
+    public void DisconnectClient(string connectionKey)
+    {
+        if (!_sftpClients.TryGetValue(connectionKey, out var sftpClientInstance)) 
+            return;
+        
+        lock (_lock)
+        {
+            if (sftpClientInstance.SftpClient.IsConnected)
             {
-                if (sftpClient.IsConnected)
-                    sftpClient.Disconnect();
+                sftpClientInstance.SftpClient.Disconnect();
             }
+        }
             
-            _sftpClients.TryRemove(connectionKey, out _);
+        _sftpClients.TryRemove(connectionKey, out _);
+    }
+    
+    public void DisconnectIdleClients()
+    {
+        var currentTime = DateTime.UtcNow;
+        foreach (var sftpClient in _sftpClients)
+        {
+            var clientInfo = sftpClient.Value;
+            if ((currentTime - clientInfo.LastUsed).TotalMinutes >= IdleTimeoutMinutes)
+            {
+                DisconnectClient(sftpClient.Key);
+            }
         }
     }
     
@@ -49,9 +66,11 @@ public class SftpClientService: ISftpClientService
         
         var sftpClient = new SftpClient(connectionInfo);
         
-        sftpClient.Connect();
-
-        if (!sftpClient.IsConnected)
+        try
+        {
+            sftpClient.Connect();
+        }
+        catch (Exception)
         {
             throw new ConnectionServerException(
                 "Ошибка подключение к серверу, проверьте правильность введенных данных",
@@ -89,6 +108,13 @@ public class SftpClientService: ISftpClientService
         }
 
         return connectionInfo;
+    }
+    
+    public class SftpClientInstance
+    {
+        public required SftpClient SftpClient { get; set; }
+        public DateTime LastUsed { get; set; }
+        
     }
 
 }

@@ -34,26 +34,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
         return mode === SftpCatalogMode.Second && sftpStore.secondSelectedHost != null;
     }
-
-    const selectHostInformationBlock = useMemo(() => (
-        <div className={classNames(style.host_information_block)}>
-            <LogoIcon width={180} height={156}/>
-            <div className={classNames(style.information_content)}>
-                <div className={classNames(style.header_information)}>
-                    <h1>{t('Подключиться к серверу')}</h1>
-                    <h3>{t('Выберите из вашего сохраненного сервера')}</h3>
-                </div>
-                <Button
-                    className={classNames(style.select_server)}
-                    theme={ThemeButton.PRIMARY}
-                    onClick={() => { setIsView(true); }}
-                >
-                    {t('Выбрать сервер')}
-                </Button>
-            </div>
-        </div>
-    ), []);
-
+    
     useEffect(() => {
         const isFirstSelectedHost = mode === SftpCatalogMode.First &&
             sftpStore.firstSelectedHost !== null &&
@@ -111,7 +92,26 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
         }
     }, [sftpStore.secondSelectedHost]);
 
-    if (getIsSelectedServer() && (!isViewServersCatalog || !isViewErrorPanel)) {
+    const selectHostInformationBlock = useMemo(() => (
+        <div className={classNames(style.host_information_block)}>
+            <LogoIcon width={180} height={156}/>
+            <div className={classNames(style.information_content)}>
+                <div className={classNames(style.header_information)}>
+                    <h1>{t('Подключиться к серверу')}</h1>
+                    <h3>{t('Выберите из вашего сохраненного сервера')}</h3>
+                </div>
+                <Button
+                    className={classNames(style.select_server)}
+                    theme={ThemeButton.PRIMARY}
+                    onClick={() => { setIsView(true); }}
+                >
+                    {t('Выбрать сервер')}
+                </Button>
+            </div>
+        </div>
+    ), []);
+
+    if (getIsSelectedServer() && !isViewServersCatalog && !isViewErrorPanel) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
                 <NavbarSftp mode={mode} onOpenCatalog={() => { setIsView(true); }}/>
@@ -122,7 +122,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
     return (
         <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-            {!getIsSelectedServer() && (!isViewServersCatalog || !isViewErrorPanel) && selectHostInformationBlock }
+            {!getIsSelectedServer() && !isViewServersCatalog  && selectHostInformationBlock }
             {isViewServersCatalog && <SftpSelectHostCatalog mode={mode} onClose={() => { setIsView(false); }}/> }
         </div>
     );

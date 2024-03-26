@@ -10,37 +10,13 @@ namespace Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.UpdateData(
-                table: "identities",
-                keyColumn: "id",
-                keyValue: 1L,
-                column: "user_id",
-                value: 2L);
-
-            migrationBuilder.UpdateData(
-                table: "proxies",
-                keyColumn: "id",
-                keyValue: 1L,
-                column: "user_id",
-                value: 2L);
+            
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.UpdateData(
-                table: "identities",
-                keyColumn: "id",
-                keyValue: 1L,
-                column: "user_id",
-                value: 1L);
-
-            migrationBuilder.UpdateData(
-                table: "proxies",
-                keyColumn: "id",
-                keyValue: 1L,
-                column: "user_id",
-                value: 1L);
+           
         }
     }
 }

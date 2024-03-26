@@ -5,19 +5,23 @@ namespace Application.Services;
 public class SftpIdleDisconnectService
 {
     private readonly ISftpClientService _sftpClientService;
-    private readonly Timer _timer;
+    private Timer? _timer;
 
     public SftpIdleDisconnectService(ISftpClientService sftpClientService)
     {
         _sftpClientService = sftpClientService;
-        _timer = new Timer(DisconnectIdleClients, null, TimeSpan.Zero, TimeSpan.FromMinutes(5)); // Проверяем каждую минуту
+        
     }
 
-    private void DisconnectIdleClients(object? state)
+    public void StartTimer()
     {
-        _sftpClientService.DisconnectIdleClients();
+        _timer = new Timer(
+            _ => _sftpClientService.DisconnectIdleClients(), 
+            null, 
+            TimeSpan.Zero, 
+            TimeSpan.FromMinutes(5)); // Проверяем каждую минуту
     }
-
+    
     public void Dispose()
     {
         _timer.Dispose();

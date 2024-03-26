@@ -136,7 +136,7 @@ public class HostService: IHostService
     }
 
 
-    private static ConnectionInfo GetConnectionInfo(string hostName,
+    public static ConnectionInfo GetConnectionInfo(string hostName,
         int port,
         string userName,
         string password,

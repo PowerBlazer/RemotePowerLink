@@ -30,6 +30,7 @@ public static class DependencyInjection
         #region Services
         services.AddSingleton<ISftpClientService, SftpClientService>();
         services.AddScoped<ISftpService, SftpService>();
+        services.AddSingleton<SftpIdleDisconnectService>();
         #endregion
         
         return services;

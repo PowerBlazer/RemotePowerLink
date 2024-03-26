@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+﻿using Application.Services;
 using Domain.DTOs.Sftp;
 using Domain.Enums;
 using Domain.Repository;
@@ -11,68 +11,63 @@ using Microsoft.AspNetCore.SignalR;
 namespace Api.Hubs;
 
 [Authorize]
-public class SftpHub: Hub
+public class SftpHub: BaseHub
 {
-    private long UserId
-    {
-        get
-        {
-            var user = Context.User;
-            
-            if (user is not null)
-            {
-                return long.Parse(user.Claims.First(p => p.Type == ClaimTypes.NameIdentifier).Value);
-            }
-
-            return long.MinValue;
-        }
-    }
-
     private readonly ISftpClientService _sftpClientService;
     private readonly IServerRepository _serverRepository;
     private readonly ISftpService _sftpService;
     public SftpHub(ISftpClientService sftpClientService, 
         IServerRepository serverRepository, 
-        ISftpService sftpService)
+        ISftpService sftpService, SftpIdleDisconnectService sftpIdleDisconnectService)
     {
         _sftpClientService = sftpClientService;
         _serverRepository = serverRepository;
         _sftpService = sftpService;
+        
+        sftpIdleDisconnectService.StartTimer();
     }
 
     [UsedImplicitly]
     public async Task GetFilesServer(long serverId, string path)
     {
-        var server = await _serverRepository.GetServerAsync(serverId);
-        var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
-
-        var sftpClient = _sftpClientService.GetClient(connectionParameter);
-
-        if (string.IsNullOrWhiteSpace(path))
+        await HandlerOperationAsync(async () =>
         {
-            path = sftpClient.WorkingDirectory;
-        }
-        
-        var files = sftpClient
-            .ListDirectory(path)
-            .ToList();
-        
-        var serverFileList = new SftpFileList
-        {
-            CurrentPath = path,
-            FileList = files.Select(p => new SftpFileItem
+            var server = await _serverRepository.GetServerAsync(serverId);
+            var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
+
+            var sftpClient = _sftpClientService.GetClient(connectionParameter);
+
+            sftpClient.Disconnect();
+
+            if (string.IsNullOrWhiteSpace(path))
             {
-                Name = p.Name,
-                Path = p.FullName,
-                DateModified = p.LastWriteTime,
-                FileType = p.IsDirectory ? FileTypeEnum.Folder : FileTypeEnum.File,
-                Size = _sftpService.FormatFileSize(p.Length),
-                FileTypeName = _sftpService.GetFileExtension(p.Name)
-            })
-        };
+                path = sftpClient.WorkingDirectory;
+            }
 
-        await Clients
-            .Client(Context.ConnectionId)
-            .SendAsync("ReceivedFiles", serverFileList);
+            var filesList = sftpClient
+                .ListDirectory(path)
+                .Where(p => p.Name is not ("." or ".."))
+                .OrderByDescending(p => p.IsDirectory)
+                .ThenBy(p => p.Name)
+                .ToList();
+
+            var serverFileList = new SftpFileList
+            {
+                CurrentPath = path,
+                FileList = filesList.Select(p => new SftpFileItem
+                {
+                    Name = p.Name,
+                    Path = p.FullName,
+                    DateModified = p.LastWriteTime,
+                    FileType = p.IsDirectory ? FileTypeEnum.Folder : FileTypeEnum.File,
+                    Size = _sftpService.FormatFileSize(p.Length),
+                    FileTypeName = _sftpService.GetFileExtension(p.Name)
+                })
+            };
+
+            await Clients
+                .Client(Context.ConnectionId)
+                .SendAsync("ReceivedFiles", serverFileList);
+        });
     }
 }

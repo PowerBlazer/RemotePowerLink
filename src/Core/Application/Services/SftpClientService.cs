@@ -10,7 +10,7 @@ public class SftpClientService: ISftpClientService
 {
     private readonly ConcurrentDictionary<string, SftpClientInstance> _sftpClients = new();
     private readonly object _lock = new();
-    private const int IdleTimeoutMinutes = 10;
+    private const int IdleTimeoutMinutes = 3;
     
     public SftpClient GetClient(ConnectionServerParameter connectionServerParameter)
     {
@@ -18,11 +18,24 @@ public class SftpClientService: ISftpClientService
                             $"${connectionServerParameter.Hostname}" +
                             $"${connectionServerParameter.Password}";
         
-        return _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
+        var sftpClient = _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
         {
             SftpClient = CreateNewClient(connectionServerParameter),
             LastUsed = DateTime.Now
         }).SftpClient;
+
+        if (sftpClient.IsConnected) 
+            return sftpClient;
+        
+        DisconnectClient(connectionKey);
+            
+        var newSftpClient = _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
+        {
+            SftpClient = CreateNewClient(connectionServerParameter),
+            LastUsed = DateTime.Now
+        }).SftpClient;
+
+        return newSftpClient;
     }
 
     public void DisconnectClient(string connectionKey)
@@ -43,7 +56,7 @@ public class SftpClientService: ISftpClientService
     
     public void DisconnectIdleClients()
     {
-        var currentTime = DateTime.UtcNow;
+        var currentTime = DateTime.Now;
         foreach (var sftpClient in _sftpClients)
         {
             var clientInfo = sftpClient.Value;
@@ -56,7 +69,7 @@ public class SftpClientService: ISftpClientService
     
     private static SftpClient CreateNewClient(ConnectionServerParameter connectionServerParameter)
     {
-        var connectionInfo = GetConnectionInfo(
+        var connectionInfo = HostService.GetConnectionInfo(
             connectionServerParameter.Hostname,
             connectionServerParameter.SshPort ?? 22,
             connectionServerParameter.Username,
@@ -78,36 +91,6 @@ public class SftpClientService: ISftpClientService
         }
         
         return sftpClient;
-    }
-    
-    private static ConnectionInfo GetConnectionInfo(string hostName,
-        int port,
-        string userName,
-        string password,
-        ProxyTypes proxyType,
-        ProxyParameter? proxyParameter)
-    {
-        var connectionInfo = new ConnectionInfo(
-            hostName,
-            port,
-            userName,
-            new PasswordAuthenticationMethod(userName, password));
-
-        if (proxyParameter is not null)
-        {
-            connectionInfo = new ConnectionInfo(
-                hostName,
-                port,
-                userName,
-                proxyType,
-                proxyParameter.Hostname,
-                proxyParameter.SshPort ?? 22,
-                proxyParameter.Username,
-                proxyParameter.Password,
-                new PasswordAuthenticationMethod(userName, password));
-        }
-
-        return connectionInfo;
     }
     
     public class SftpClientInstance

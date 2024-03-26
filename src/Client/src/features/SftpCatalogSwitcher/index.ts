@@ -1,1 +1,1 @@
-﻿export {SftpCatalogSwitcher} from './ui/SftpCatalogSwitcher';
+export { SftpCatalogSwitcher } from './ui/SftpCatalogSwitcher';

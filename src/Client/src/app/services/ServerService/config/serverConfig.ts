@@ -43,7 +43,7 @@ export interface CreateServerResult {
     dateCreated: Date
 }
 
-export interface ServerData{
+export interface ServerData {
     serverId: number,
     hostname: string,
     title: string,

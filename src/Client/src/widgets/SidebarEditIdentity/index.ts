@@ -1,1 +1,1 @@
-﻿export { default as SidebarEditIdentity } from './ui/SidebarEditIdentity';
+export { default as SidebarEditIdentity } from './ui/SidebarEditIdentity';

@@ -26,14 +26,13 @@ export class ServerService {
             }
         }
     }
-    
+
     static editServer = async (editServerData: EditServerData): Promise<ServiceResult<EditServerResult>> => {
         try {
-            
-            if(editServerData.sshPort === ""){
+            if (editServerData.sshPort === '') {
                 editServerData.sshPort = null;
             }
-            
+
             const response =
                 await HostService.api.post<ApiResult<EditServerResult>>(
                     '/v1/server/edit',
@@ -44,19 +43,18 @@ export class ServerService {
                 isSuccess: true,
                 result: response.data.result
             }
-        }
-        catch (error) {
+        } catch (error) {
             return {
                 isSuccess: false,
                 errors: error.response?.data.Errors
             }
         }
     }
-    
+
     static getServers = async (): Promise<ServiceResult<ServerData[]>> => {
         try {
             const response =
-                await HostService.api.get<ApiResult<ServerData[]>>('/v1/server',);
+                await HostService.api.get<ApiResult<ServerData[]>>('/v1/server');
 
             return {
                 isSuccess: true,
@@ -75,7 +73,7 @@ export class ServerService {
             await HostService.api.delete(`/v1/server/${serverId}`);
 
             return {
-                isSuccess: true,
+                isSuccess: true
             }
         } catch (error) {
             return {

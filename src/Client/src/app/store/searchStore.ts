@@ -1,8 +1,8 @@
-﻿import {makeAutoObservable, observable} from "mobx";
-import {ServerData} from "../services/ServerService/config/serverConfig";
-import {IdentityData} from "../services/IdentityService/config/identityConfig";
-import {ProxyData} from "../services/ProxyService/config/proxyConfig";
-import userStore from "app/store/userStore";
+import { makeAutoObservable, observable } from 'mobx';
+import { ServerData } from '../services/ServerService/config/serverConfig';
+import { IdentityData } from '../services/IdentityService/config/identityConfig';
+import { ProxyData } from '../services/ProxyService/config/proxyConfig';
+import userStore from 'app/store/userStore';
 
 export interface SearchData {
     servers: ServerData[],
@@ -16,44 +16,44 @@ export interface FilterOptions {
 
 class SearchStore {
     @observable public searchData: SearchData = {
-        servers:[],
-        identities:[],
-        proxies:[]
+        servers: [],
+        identities: [],
+        proxies: []
     };
-    
+
     @observable public filterOptions: FilterOptions = {};
-    
-    constructor() {
+
+    constructor () {
         makeAutoObservable(this)
     }
-    
-    setSearchData(searchData: SearchData){
+
+    setSearchData (searchData: SearchData) {
         let searchDataFiltered: SearchData = {
-            servers:searchData.servers,
-            identities:searchData.identities,
-            proxies:searchData.proxies
+            servers: searchData.servers,
+            identities: searchData.identities,
+            proxies: searchData.proxies
         };
-        
-        if(this.filterOptions?.title){
+
+        if (this.filterOptions?.title) {
             searchDataFiltered = {
-                servers: searchData.servers.filter(p=> 
+                servers: searchData.servers.filter(p =>
                     p.title.toLowerCase().includes(this.filterOptions.title.toLowerCase())
                 ),
-                proxies: searchData.proxies.filter(p=>
+                proxies: searchData.proxies.filter(p =>
                     p.title.toLowerCase().includes(this.filterOptions.title.toLowerCase())
                 ),
-                identities: searchData.identities.filter(p=>
+                identities: searchData.identities.filter(p =>
                     p.title.toLowerCase().includes(this.filterOptions.title.toLowerCase())
                 )
             }
         }
-        
+
         this.searchData = searchDataFiltered;
     }
-    
-    setFilterOption(filterOptions: FilterOptions | null){
+
+    setFilterOption (filterOptions: FilterOptions | null) {
         this.filterOptions = filterOptions;
-        
+
         this.setSearchData({
             servers: userStore.userServers,
             proxies: userStore.userProxies,
@@ -61,6 +61,5 @@ class SearchStore {
         })
     }
 }
-
 
 export default new SearchStore();

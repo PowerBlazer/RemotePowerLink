@@ -1,1 +1,1 @@
-﻿export { default as SidebarEditProxy} from './ui/SidebarEditProxy'
+export { default as SidebarEditProxy } from './ui/SidebarEditProxy'

@@ -5,7 +5,7 @@ import { RouteProps } from 'react-router-dom'
 import { SignupPage } from 'pages/SignupPage';
 import RegistrationProvider from 'app/providers/RegistrationProvider/ui/RegistrationProvider';
 import { Navbar } from 'widgets/Navbar';
-import {SftpPage} from "pages/SftpPage";
+import { SftpPage } from 'pages/SftpPage';
 
 export enum AppRoutes {
     MAIN = 'main',

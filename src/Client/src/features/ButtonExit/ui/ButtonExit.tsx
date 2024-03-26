@@ -1,10 +1,10 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ButtonExit.module.scss';
-import {Button} from "shared/ui/Button/Button";
+import { Button } from 'shared/ui/Button/Button';
 import ExitIcon from 'shared/assets/icons/navbar/exit.svg';
-import {AuthorizationService} from "app/services/AuthorizationService/authorizationService";
-import {useNavigate} from "react-router-dom";
-import {RoutePath} from "app/providers/router/config/routeConfig";
+import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from 'app/providers/router/config/routeConfig';
 
 interface ButtonExitProps {
     className?: string;
@@ -12,20 +12,19 @@ interface ButtonExitProps {
 
 export function ButtonExit ({ className }: ButtonExitProps) {
     const navigate = useNavigate()
-    
+
     const exitClickHandler = () => {
         AuthorizationService.logout();
-        
+
         navigate(RoutePath.login.toString())
     }
-    
-    
+
     return (
-        <Button 
+        <Button
             className={classNames(style.buttonExit, {}, [className])}
             onClick={exitClickHandler}
         >
             <ExitIcon width={22} height={22}/>
-		</Button>
+        </Button>
     );
 }

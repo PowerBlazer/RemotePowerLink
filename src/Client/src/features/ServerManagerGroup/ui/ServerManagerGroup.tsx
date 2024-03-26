@@ -1,17 +1,17 @@
-﻿import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ServerManagerGroup.module.scss';
-import {ReactNode, useMemo} from "react";
-import {DataTypeEnum} from "app/enums/DataTypeEnum";
-import {ServerManagerItem} from "features/ServerManagerItem";
-import {ServerManagerCatalogMode} from "widgets/ServerManagerCatalog/ui/ServerManagerCatalog";
-import {ServerData} from "app/services/ServerService/config/serverConfig";
+import { ReactNode, useMemo } from 'react';
+import { DataTypeEnum } from 'app/enums/DataTypeEnum';
+import { ServerManagerItem } from 'features/ServerManagerItem';
+import { ServerManagerCatalogMode } from 'widgets/ServerManagerCatalog/ui/ServerManagerCatalog';
+import { ServerData } from 'app/services/ServerService/config/serverConfig';
 
 export interface ServerManagerData {
-    id:number,
-    title:string,
+    id: number,
+    title: string,
     common?: string,
     dataType: DataTypeEnum
-    iconUrl?:string,
+    iconUrl?: string,
     iconNode?: ReactNode
 }
 
@@ -31,14 +31,14 @@ export function ServerManagerGroup (props: ServerManagerGroupProps) {
         mode = ServerManagerCatalogMode.Catalog,
         onConnect
     } = props;
-    
-    const isVisible = useMemo<boolean>(() => 
+
+    const isVisible = useMemo<boolean>(() =>
         serverManagerDataList && serverManagerDataList.length > 0,
-        [serverManagerDataList]
+    [serverManagerDataList]
     );
-    
+
     return (
-        <div 
+        <div
             className={classNames(style.serverManagerGroup, {
                 [style.disable]: !isVisible
             }, [className])}
@@ -50,9 +50,9 @@ export function ServerManagerGroup (props: ServerManagerGroupProps) {
                 isVisible && (
                     <div className={classNames(style.data_list)}>
                         {serverManagerDataList?.map((data) =>
-                            <ServerManagerItem 
-                                serverManagerDataItem={data} 
-                                mode={mode} 
+                            <ServerManagerItem
+                                serverManagerDataItem={data}
+                                mode={mode}
                                 key={data.id}
                                 onConnect={onConnect}
                             />

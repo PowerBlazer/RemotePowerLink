@@ -1,18 +1,16 @@
-﻿import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpCatalog.module.scss';
-import {observer} from "mobx-react-lite";
-import sftpStore from "app/store/sftpStore";
-import {createRef, useEffect, useMemo, useState} from "react";
+import { observer } from 'mobx-react-lite';
+import sftpStore from 'app/store/sftpStore';
+import { createRef, useEffect, useMemo, useState } from 'react';
 import LogoIcon from 'shared/assets/icons/logo.svg';
-import {Button, ThemeButton} from "shared/ui/Button/Button";
-import {useTranslation} from "react-i18next";
-import {SftpSelectHostCatalog} from "widgets/SftpSelectHostCatalog";
-import SftpHub from "app/hubs/SftpHub";
-import {NavbarSftp} from "widgets/NavbarSftp";
-import {SftpFileCatalog} from "widgets/SftpFileCatalog";
-import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
-
-
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import { useTranslation } from 'react-i18next';
+import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
+import SftpHub from 'app/hubs/SftpHub';
+import { NavbarSftp } from 'widgets/NavbarSftp';
+import { SftpFileCatalog } from 'widgets/SftpFileCatalog';
+import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
 
 interface SftpCatalogProps {
     className?: string;
@@ -28,15 +26,15 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     const selectedHost = mode === SftpCatalogMode.First
         ? sftpStore.firstSelectedHost
         : sftpStore.secondSelectedHost;
-    
+
     const getIsSelectedServer = () => {
-        if(mode === SftpCatalogMode.First && sftpStore.firstSelectedHost != null){
+        if (mode === SftpCatalogMode.First && sftpStore.firstSelectedHost != null) {
             return true;
         }
 
         return mode === SftpCatalogMode.Second && sftpStore.secondSelectedHost != null;
     }
-    
+
     const selectHostInformationBlock = useMemo(() => (
         <div className={classNames(style.host_information_block)}>
             <LogoIcon width={180} height={156}/>
@@ -45,10 +43,10 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     <h1>{t('Подключиться к серверу')}</h1>
                     <h3>{t('Выберите из вашего сохраненного сервера')}</h3>
                 </div>
-                <Button 
-                    className={classNames(style.select_server)} 
+                <Button
+                    className={classNames(style.select_server)}
                     theme={ThemeButton.PRIMARY}
-                    onClick={() => setIsView(true)}
+                    onClick={() => { setIsView(true); }}
                 >
                     {t('Выбрать сервер')}
                 </Button>
@@ -57,79 +55,76 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     ), []);
 
     useEffect(() => {
-        const isFirstSelectedHost = mode === SftpCatalogMode.First
-            && sftpStore.firstSelectedHost !== null
-            && !sftpStore.firstSelectedHost.sftpHub;
+        const isFirstSelectedHost = mode === SftpCatalogMode.First &&
+            sftpStore.firstSelectedHost !== null &&
+            !sftpStore.firstSelectedHost.sftpHub;
 
-            if(isFirstSelectedHost){
-                const sftpHub = new SftpHub();
-    
-                sftpStore.firstSelectedHost.isLoad = true;
-    
-                sftpHub.onConnect = async () => {
-                    sftpStore.firstSelectedHost.sftpHub = sftpHub;
-    
-                    sftpHub.events((files) => {
-                        sftpStore.firstSelectedHost.sftpFileList = files
-                        sftpStore.firstSelectedHost.isLoad = false;
-                        sftpStore.setFileItems(mode)
-                    });
-    
-                    await sftpHub.getFilesServer(sftpStore.firstSelectedHost.server.serverId);
-                }
-                
-                sftpHub.onError = (message)  => {
-                    
-                }
+        if (isFirstSelectedHost) {
+            const sftpHub = new SftpHub();
+
+            sftpStore.firstSelectedHost.isLoad = true;
+
+            sftpHub.onConnect = async () => {
+                sftpStore.firstSelectedHost.sftpHub = sftpHub;
+
+                sftpHub.events((files) => {
+                    sftpStore.firstSelectedHost.sftpFileList = files
+                    sftpStore.firstSelectedHost.isLoad = false;
+                    sftpStore.setFileItems(mode)
+                });
+
+                await sftpHub.getFilesServer(sftpStore.firstSelectedHost.server.serverId);
             }
-        
+
+            sftpHub.onError = (message) => {
+
+            }
+        }
     }, [sftpStore.firstSelectedHost]);
 
-
     useEffect(() => {
-        const isSecondSelectedHost = mode === SftpCatalogMode.Second 
-            && sftpStore.secondSelectedHost !== null
-            && !sftpStore.secondSelectedHost.sftpHub;
-        
-        if(isSecondSelectedHost){
+        const isSecondSelectedHost = mode === SftpCatalogMode.Second &&
+            sftpStore.secondSelectedHost !== null &&
+            !sftpStore.secondSelectedHost.sftpHub;
+
+        if (isSecondSelectedHost) {
             const sftpHub = new SftpHub();
 
             sftpStore.secondSelectedHost.isLoad = true;
-            
+
             sftpHub.onConnect = async () => {
                 sftpStore.secondSelectedHost.sftpHub = sftpHub;
-                
+
                 sftpHub.events((files) => {
                     sftpStore.secondSelectedHost.sftpFileList = files
                     sftpStore.secondSelectedHost.isLoad = false;
 
                     sftpStore.setFileItems(mode)
                 });
-                
+
                 await sftpHub.getFilesServer(sftpStore.secondSelectedHost.server.serverId);
             }
 
-            sftpHub.onError = (message)  => {
+            sftpHub.onError = (message) => {
 
             }
         }
-        
     }, [sftpStore.secondSelectedHost]);
-    
-    if(getIsSelectedServer() === true && (!isViewServersCatalog || !isViewErrorPanel)){
+
+    if (getIsSelectedServer() && (!isViewServersCatalog || !isViewErrorPanel)) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-                <NavbarSftp mode={mode} onOpenCatalog={() => setIsView(true)}/>
+                <NavbarSftp mode={mode} onOpenCatalog={() => { setIsView(true); }}/>
                 <SftpFileCatalog mode={mode}/>
             </div>
         )
     }
-    
+
     return (
         <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-            {getIsSelectedServer() === false && (!isViewServersCatalog || !isViewErrorPanel) && selectHostInformationBlock }
-            {isViewServersCatalog && <SftpSelectHostCatalog mode={mode} onClose={() => setIsView(false)}/> }
-		</div>
+            {!getIsSelectedServer() && (!isViewServersCatalog || !isViewErrorPanel) && selectHostInformationBlock }
+            {isViewServersCatalog && <SftpSelectHostCatalog mode={mode} onClose={() => { setIsView(false); }}/> }
+        </div>
     );
 }
 

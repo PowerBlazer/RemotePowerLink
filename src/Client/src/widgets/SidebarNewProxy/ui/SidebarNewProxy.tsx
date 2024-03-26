@@ -15,12 +15,12 @@ import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
 import { Input } from 'shared/ui/Input';
 import TitleIcon from 'shared/assets/icons/title.svg';
 import PortIcon from 'shared/assets/icons/code-working.svg';
-import {ChangeEvent, useCallback, useMemo, useState} from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
 import { CreateProxyData, CreateProxyResult } from 'app/services/ProxyService/config/proxyConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
-import userStore from "app/store/userStore";
+import userStore from 'app/store/userStore';
 
 interface SidebarNewProxyProps extends SidebarOptions<CreateProxyResult> {
     className?: string;
@@ -147,16 +147,16 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
         if (!createProxyResult.isSuccess) {
             setErrors(createProxyResult?.errors);
         }
-    },[proxyData])
+    }, [proxyData])
 
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
         userStore.setUserIdentity({
-            title:createIdentityResult.title,
+            title: createIdentityResult.title,
             identityId: createIdentityResult.identityId,
             username: createIdentityResult.username,
             dateCreated: createIdentityResult.dateCreated
         })
-        
+
         setVisibleIdentity(false);
 
         setIdentity({ id: createIdentityResult.identityId.toString(), title: createIdentityResult.title });
@@ -172,7 +172,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
             return updatedErrors;
         });
     }
-    
+
     const sidebars = useMemo(() => [
         <SidebarNewIdentity
             key="identity"
@@ -182,7 +182,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
             onClose={closeIdentityHandler}
         />
     ], [isVisibleIdentity]);
-    
+
     const footerPanel = useMemo(() => {
         return (
             <div className={classNames(style.save_block)}>
@@ -261,14 +261,14 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                         />
                     )}
                 </Select>
-                    <Button
-                        className={classNames(style.create_identity)}
-                        theme={ThemeButton.PRIMARY}
-                        onClick={createIdentityHandler}
-                    >
-                        {t('Создать учетку')}
-                    </Button>
-                    </FormBlock>
+                <Button
+                    className={classNames(style.create_identity)}
+                    theme={ThemeButton.PRIMARY}
+                    onClick={createIdentityHandler}
+                >
+                    {t('Создать учетку')}
+                </Button>
+            </FormBlock>
         </Sidebar>
     );
 }

@@ -1,1 +1,1 @@
-﻿export {default as SftpFileCatalog} from './ui/SftpFileCatalog';
+export { default as SftpFileCatalog } from './ui/SftpFileCatalog';

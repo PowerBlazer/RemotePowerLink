@@ -1,4 +1,4 @@
-﻿export enum FileType {
+export enum FileType {
     Folder = 1,
     File = 2
 }
@@ -20,6 +20,6 @@ export interface SftpFile {
 
 export interface SftpFileList {
     currentPath: string,
-    prevPath?:string
+    prevPath?: string
     fileList: SftpFile[]
 }

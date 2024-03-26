@@ -19,7 +19,7 @@ interface SidebarProps {
     className?: string;
     children?: ReactNode;
     sidebars?: ReactNode;
-    footer?:ReactNode;
+    footer?: ReactNode;
     close?: () => Promise<void>;
     headerName?: string;
     headerTools?: ReactNode;
@@ -28,7 +28,6 @@ interface SidebarProps {
 }
 
 function Sidebar (props: SidebarProps) {
-    
     const {
         className,
         close,
@@ -40,9 +39,9 @@ function Sidebar (props: SidebarProps) {
         isLoad,
         sidebars
     } = props;
-    
+
     const { t } = useTranslation('translation');
-    
+
     const closeSidebarHandler = async () => {
         if (close && !isMain) {
             await close();
@@ -69,7 +68,7 @@ function Sidebar (props: SidebarProps) {
                         <Button onClick={closeSidebarHandler} className={classNames(style.close_sidebar)}>
                             <ArrowRight width={20} height={20}></ArrowRight>
                         </Button>
-                        {isLoad &&  <Loader className={classNames(style.loader)}/>}
+                        {isLoad && <Loader className={classNames(style.loader)}/>}
                     </div>
                 </div>
             )}
@@ -83,7 +82,7 @@ function Sidebar (props: SidebarProps) {
                     </div>
                     {footer}
                 </div>
-                
+
             </div>
         </div>
     );

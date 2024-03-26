@@ -1,15 +1,15 @@
-﻿import {classNames} from 'shared/lib/classNames/classNames';
-import {ServerManagerCatalog, ServerManagerCatalogMode} from "widgets/ServerManagerCatalog";
-import {Button} from "shared/ui/Button/Button";
-import {useTranslation} from "react-i18next";
-import {useEffect} from "react";
-import {ServerData} from "app/services/ServerService/config/serverConfig";
-import {SearchInput} from "features/SearchInput";
-import ArrowRight from "shared/assets/icons/arrow-right.svg";
-import searchStore from "app/store/searchStore";
+import { classNames } from 'shared/lib/classNames/classNames';
+import { ServerManagerCatalog, ServerManagerCatalogMode } from 'widgets/ServerManagerCatalog';
+import { Button } from 'shared/ui/Button/Button';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { ServerData } from 'app/services/ServerService/config/serverConfig';
+import { SearchInput } from 'features/SearchInput';
+import ArrowRight from 'shared/assets/icons/arrow-right.svg';
+import searchStore from 'app/store/searchStore';
 import style from './SftpSelectHostCatalog.module.scss';
-import sftpStore from "app/store/sftpStore";
-import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
+import sftpStore from 'app/store/sftpStore';
+import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
 
 interface SftpSelectHostCatalogProps {
     className?: string,
@@ -19,24 +19,24 @@ interface SftpSelectHostCatalogProps {
 
 export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectHostCatalogProps) {
     const { t } = useTranslation('translation');
-    const onChangeSearchInputHandler = (value:string) => {
+    const onChangeSearchInputHandler = (value: string) => {
         searchStore.setFilterOption({
             title: value
         })
     }
-    
+
     const onClickCloseSelectHostCatalog = () => {
-        if(onClose){
+        if (onClose) {
             onClose();
         }
     }
-    
+
     const onClickConnectHandler = async (serverData: ServerData) => {
-        if(mode === SftpCatalogMode.First){
-            if(sftpStore.firstSelectedHost?.sftpHub){
+        if (mode === SftpCatalogMode.First) {
+            if (sftpStore.firstSelectedHost?.sftpHub) {
                 sftpStore.firstSelectedHost.sftpHub.closeConnection();
             }
-            
+
             sftpStore.firstSelectedHost = {
                 server: serverData,
                 isLoad: false,
@@ -45,12 +45,12 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 }
             }
         }
-        
-        if(mode === SftpCatalogMode.Second){
-            if(sftpStore.secondSelectedHost?.sftpHub){
+
+        if (mode === SftpCatalogMode.Second) {
+            if (sftpStore.secondSelectedHost?.sftpHub) {
                 sftpStore.secondSelectedHost.sftpHub.closeConnection();
             }
-            
+
             sftpStore.secondSelectedHost = {
                 server: serverData,
                 isLoad: false,
@@ -60,7 +60,7 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             }
         }
 
-        if(onClose){
+        if (onClose) {
             onClose();
         }
     }
@@ -68,7 +68,7 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
     useEffect(() => {
         searchStore.setFilterOption(null)
     }, []);
-    
+
     return (
         <div className={classNames(style.sftpSelectHostCatalog, {}, [className])}>
             <div className={classNames(style.select_navbar)}>
@@ -84,6 +84,6 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 </div>
             </div>
             <ServerManagerCatalog mode={ServerManagerCatalogMode.Sftp} onConnect={onClickConnectHandler}/>
-		</div>
+        </div>
     );
 }

@@ -1,1 +1,1 @@
-﻿export {default as SidebarEditHost} from './ui/SidebarEditHost'
+export { default as SidebarEditHost } from './ui/SidebarEditHost'

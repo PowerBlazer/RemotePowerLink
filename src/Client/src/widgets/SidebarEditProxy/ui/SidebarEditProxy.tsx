@@ -1,28 +1,28 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SidebarEditProxy.module.scss';
-import {observer} from "mobx-react-lite";
-import {Sidebar, SidebarOptions} from "widgets/Sidebar";
-import { EditProxyData, EditProxyResult} from "app/services/ProxyService/config/proxyConfig";
-import {ChangeEvent, useCallback, useMemo, useState} from "react";
-import {Select, SelectedItem, SelectItem} from "shared/ui/Select";
-import sidebarStore from "app/store/sidebarStore";
-import userStore from "app/store/userStore";
-import {ProxyService} from "app/services/ProxyService/proxyService";
-import {CreateIdentityResult} from "app/services/IdentityService/config/identityConfig";
-import SidebarNewIdentity from "widgets/SidebarNewIdentity/ui/SidebarNewIdentity";
-import {ButtonLoader} from "shared/ui/ButtonLoader";
-import {Button, ThemeButton} from "shared/ui/Button/Button";
-import {useTranslation} from "react-i18next";
-import {FormBlock} from "features/FormBlock";
-import ServerIcon from "shared/assets/icons/navbar/server2.svg";
-import {Input} from "shared/ui/Input";
-import TitleIcon from "shared/assets/icons/title.svg";
-import PortIcon from "shared/assets/icons/code-working.svg";
-import DoubleArrow from "shared/assets/icons/double-arrow.svg";
-import {ButtonDelete} from "features/ButtonDelete/ui/ButtonDelete";
-import {DataTypeEnum} from "app/enums/DataTypeEnum";
+import { observer } from 'mobx-react-lite';
+import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
+import { EditProxyData, EditProxyResult } from 'app/services/ProxyService/config/proxyConfig';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
+import sidebarStore from 'app/store/sidebarStore';
+import userStore from 'app/store/userStore';
+import { ProxyService } from 'app/services/ProxyService/proxyService';
+import { CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
+import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
+import { ButtonLoader } from 'shared/ui/ButtonLoader';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import { useTranslation } from 'react-i18next';
+import { FormBlock } from 'features/FormBlock';
+import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
+import { Input } from 'shared/ui/Input';
+import TitleIcon from 'shared/assets/icons/title.svg';
+import PortIcon from 'shared/assets/icons/code-working.svg';
+import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
+import { ButtonDelete } from 'features/ButtonDelete/ui/ButtonDelete';
+import { DataTypeEnum } from 'app/enums/DataTypeEnum';
 
-interface SidebarEditProxyProps extends SidebarOptions<EditProxyResult>{
+interface SidebarEditProxyProps extends SidebarOptions<EditProxyResult> {
     className?: string;
 }
 
@@ -34,27 +34,27 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
         onClose,
         isVisible
     } = props;
-    
+
     const proxy = sidebarStore.editProxyData.proxy;
-    const identity = userStore.userIdentities.find(p=>p.identityId === proxy.identityId);
+    const identity = userStore.userIdentities.find(p => p.identityId === proxy.identityId);
 
     const { t } = useTranslation('translation');
-    
+
     const [proxyData, setProxyData] = useState<EditProxyData>({
         proxyId: proxy.proxyId,
         title: proxy.title,
         hostname: proxy.hostname,
-        identityId:proxy.identityId,
+        identityId: proxy.identityId,
         sshPort: proxy.sshPort?.toString()
     });
-    
+
     const [errors, setErrors] = useState<Record<string, string[]>>({});
 
     const [selectedIdentity, setIdentity] = useState<SelectedItem>({
-        id:identity.identityId.toString(),
-        title:identity.title
+        id: identity.identityId.toString(),
+        title: identity.title
     });
-    
+
     const [isVisibleIdentity, setVisibleIdentity] = useState<boolean>(false);
 
     const closeHandler = async () => {
@@ -84,7 +84,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
 
             return;
         }
-        
+
         setIdentity({ id: selectedItem.id, title: selectedItem.title });
 
         setProxyData(prevData => ({
@@ -157,11 +157,11 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
         if (!editProxyResult.isSuccess) {
             setErrors(editProxyResult?.errors);
         }
-    },[proxyData])
+    }, [proxyData])
 
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
         userStore.setUserIdentity({
-            title:createIdentityResult.title,
+            title: createIdentityResult.title,
             identityId: createIdentityResult.identityId,
             username: createIdentityResult.username,
             dateCreated: createIdentityResult.dateCreated
@@ -189,7 +189,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
             isMain={false}
             isVisible={isVisibleIdentity}
             onSave={createIdentityOnSaveHandler}
-            onClose={() => setVisibleIdentity(false)}
+            onClose={() => { setVisibleIdentity(false); }}
         />
     ], [isVisibleIdentity]);
 
@@ -208,10 +208,10 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
         )
     }, [saveProxyClickHandler]);
 
-    const headerTools = useMemo(()=> (
+    const headerTools = useMemo(() => (
         <ButtonDelete dataType={DataTypeEnum.PROXY} dataId={proxyData.proxyId} />
-    ),[]);
-    
+    ), []);
+
     return (
         <Sidebar
             className={classNames(style.sidebarNewProxy, {
@@ -236,7 +236,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
                         className={style.address_input}
                         placeholder={t('IP или домен')}
                         onChange={hostnameChangeHandler}
-                        value={proxyData?.hostname ?? ""}
+                        value={proxyData?.hostname ?? ''}
                         errors={errors?.Hostname ?? null}
                     />
                 </div>
@@ -250,7 +250,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
                         icon={<TitleIcon width={20} height={20}/>}
                         onChange={nameChangeHandler}
                         errors={errors?.Title ?? null}
-                        value={proxyData?.title ?? ""}
+                        value={proxyData?.title ?? ''}
                     />
                     <Input
                         type={'text'}
@@ -259,7 +259,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
                         icon={<PortIcon width={20} height={20}/>}
                         onChange={portChangeHandler}
                         errors={errors?.Port ?? null}
-                        value={proxyData?.sshPort ?? ""}
+                        value={proxyData?.sshPort ?? ''}
                     />
                 </div>
             </FormBlock>
@@ -282,7 +282,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
                 <Button
                     className={classNames(style.create_identity)}
                     theme={ThemeButton.PRIMARY}
-                    onClick={()=> setVisibleIdentity(true)}
+                    onClick={() => { setVisibleIdentity(true); }}
                 >
                     {t('Создать учетку')}
                 </Button>

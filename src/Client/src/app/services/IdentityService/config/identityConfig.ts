@@ -1,4 +1,4 @@
-﻿export interface IdentityData {
+export interface IdentityData {
     identityId: number,
     title: string,
     username: string,

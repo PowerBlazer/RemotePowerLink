@@ -5,7 +5,7 @@ import {
     EditProxyData, EditProxyResult,
     ProxyData
 } from 'app/services/ProxyService/config/proxyConfig';
-import {EditIdentityResult} from "app/services/IdentityService/config/identityConfig";
+import { EditIdentityResult } from 'app/services/IdentityService/config/identityConfig';
 
 export class ProxyService {
     static getProxies = async (): Promise<ServiceResult<ProxyData[]>> => {
@@ -46,11 +46,10 @@ export class ProxyService {
 
     static editProxy = async (editProxyData: EditProxyData): Promise<ServiceResult<EditProxyResult>> => {
         try {
-
-            if(editProxyData.sshPort === ""){
+            if (editProxyData.sshPort === '') {
                 editProxyData.sshPort = null;
             }
-            
+
             const response =
                 await HostService.api.post<ApiResult<EditProxyResult>>(
                     '/v1/proxy/edit',
@@ -74,7 +73,7 @@ export class ProxyService {
             await HostService.api.delete(`/v1/proxy/${proxyId}`);
 
             return {
-                isSuccess: true,
+                isSuccess: true
             }
         } catch (error) {
             return {

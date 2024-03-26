@@ -1,17 +1,17 @@
-import {makeAutoObservable, configure, observable} from 'mobx';
-import {ProxyData} from "app/services/ProxyService/config/proxyConfig";
-import {IdentityData} from "app/services/IdentityService/config/identityConfig";
-import {UserData} from "app/services/UserService/config/userConfig";
-import {ServerData} from "app/services/ServerService/config/serverConfig";
+import { makeAutoObservable, configure, observable } from 'mobx';
+import { ProxyData } from 'app/services/ProxyService/config/proxyConfig';
+import { IdentityData } from 'app/services/IdentityService/config/identityConfig';
+import { UserData } from 'app/services/UserService/config/userConfig';
+import { ServerData } from 'app/services/ServerService/config/serverConfig';
 
 class UserStore {
     @observable public userProxies: ProxyData[] | null = null;
     @observable public userIdentities: IdentityData[] | null = null;
     @observable public userServers: ServerData[] | null = null;
-    
+
     public userData: UserData | null = null;
     public isLoadData: boolean = false;
-    
+
     constructor () {
         makeAutoObservable(this);
 
@@ -19,40 +19,40 @@ class UserStore {
             enforceActions: 'never'
         })
     }
-    
-    setLoad(isLoad: boolean){
+
+    setLoad (isLoad: boolean) {
         this.isLoadData = isLoad;
     }
 
     setUserData (userData: UserData) {
         this.userData = userData;
     }
-    
-    setUserProxies (proxies: ProxyData[]){
-        if(!this.userProxies){
+
+    setUserProxies (proxies: ProxyData[]) {
+        if (!this.userProxies) {
             this.userProxies = proxies;
             return;
         }
-        
+
         this.userProxies = [
             ...this.userProxies,
             ...proxies
         ]
     }
-    
-    setUserIdentities (identities: IdentityData[]){
-        if(!this.userIdentities){
+
+    setUserIdentities (identities: IdentityData[]) {
+        if (!this.userIdentities) {
             this.userIdentities = identities;
             return;
         }
-        
+
         this.userIdentities = [
             ...this.userIdentities,
             ...identities
         ]
     }
 
-    setUserProxy (proxy: ProxyData){
+    setUserProxy (proxy: ProxyData) {
         const existingProxyIndex = this.userProxies.findIndex(
             (s) => s.proxyId === proxy.proxyId
         );
@@ -62,7 +62,7 @@ class UserStore {
             this.userProxies[existingProxyIndex] = proxy;
 
             this.userProxies = [
-                ...this.userProxies,
+                ...this.userProxies
             ]
         } else {
             // Иначе добавляем новый сервер в список
@@ -73,7 +73,7 @@ class UserStore {
         }
     }
 
-    setUserIdentity (identity: IdentityData){
+    setUserIdentity (identity: IdentityData) {
         const existingIdentityIndex = this.userIdentities.findIndex(
             (s) => s.identityId === identity.identityId
         );
@@ -83,7 +83,7 @@ class UserStore {
             this.userIdentities[existingIdentityIndex] = identity;
 
             this.userIdentities = [
-                ...this.userIdentities,
+                ...this.userIdentities
             ]
         } else {
             // Иначе добавляем новый сервер в список
@@ -93,20 +93,20 @@ class UserStore {
             ]
         }
     }
-    
-    setUserServers (servers: ServerData[]){
-        if(!this.userServers){
+
+    setUserServers (servers: ServerData[]) {
+        if (!this.userServers) {
             this.userServers = servers;
             return;
         }
-        
+
         this.userServers = [
             ...this.userServers,
             ...servers
         ];
     }
-    
-    setUserServer (server: ServerData){
+
+    setUserServer (server: ServerData) {
         const existingServerIndex = this.userServers.findIndex(
             (s) => s.serverId === server.serverId
         );
@@ -114,9 +114,9 @@ class UserStore {
         if (existingServerIndex !== -1) {
             // Если сервер уже существует, обновляем его
             this.userServers[existingServerIndex] = server;
-            
+
             this.userServers = [
-                ...this.userServers,
+                ...this.userServers
             ]
         } else {
             // Иначе добавляем новый сервер в список
@@ -127,39 +127,39 @@ class UserStore {
         }
     }
 
-    removeUserProxy(proxyId: number) {
+    removeUserProxy (proxyId: number) {
         if (this.userProxies) {
             this.userProxies = this.userProxies
                 .filter(proxy => proxy.proxyId !== proxyId);
-            
+
             const serversInProxy = this.userServers
-                .filter(p=>p.proxyId === proxyId);
-            
-            serversInProxy.forEach(server =>{
+                .filter(p => p.proxyId === proxyId);
+
+            serversInProxy.forEach(server => {
                 server.proxyId = null;
             })
         }
     }
 
-    removeUserIdentity(identityId: number) {
+    removeUserIdentity (identityId: number) {
         if (this.userIdentities) {
             const serversInIdentity = this.userServers
-                .filter(p=> p.identityId === identityId)
-                .map(p=> p.serverId);
-            
+                .filter(p => p.identityId === identityId)
+                .map(p => p.serverId);
+
             const proxiesInIdentity = this.userProxies
-                .filter(p=> p.identityId === identityId)
-                .map(p=> p.proxyId);
-            
+                .filter(p => p.identityId === identityId)
+                .map(p => p.proxyId);
+
             this.userIdentities = this.userIdentities
                 .filter(identity => identity.identityId !== identityId);
-            
-            this.userServers = this.userServers.filter(p=> !serversInIdentity.includes(p.serverId));
-            this.userProxies = this.userProxies.filter(p=> !proxiesInIdentity.includes(p.proxyId));
+
+            this.userServers = this.userServers.filter(p => !serversInIdentity.includes(p.serverId));
+            this.userProxies = this.userProxies.filter(p => !proxiesInIdentity.includes(p.proxyId));
         }
     }
 
-    removeUserServer(serverId: number) {
+    removeUserServer (serverId: number) {
         if (this.userServers) {
             this.userServers = this.userServers
                 .filter(server => server.serverId !== serverId);

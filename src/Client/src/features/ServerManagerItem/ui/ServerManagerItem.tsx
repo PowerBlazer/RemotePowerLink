@@ -1,11 +1,11 @@
-﻿import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ServerManagerItem.module.scss';
-import {ServerManagerData} from "features/ServerManagerGroup";
-import {DataTypeEnum} from "app/enums/DataTypeEnum";
-import {ButtonConnect} from "features/ButtonConnect";
-import {ButtonEdit} from "features/ButtonEdit";
-import {ServerManagerCatalogMode} from "widgets/ServerManagerCatalog/ui/ServerManagerCatalog";
-import {ServerData} from "app/services/ServerService/config/serverConfig";
+import { ServerManagerData } from 'features/ServerManagerGroup';
+import { DataTypeEnum } from 'app/enums/DataTypeEnum';
+import { ButtonConnect } from 'features/ButtonConnect';
+import { ButtonEdit } from 'features/ButtonEdit';
+import { ServerManagerCatalogMode } from 'widgets/ServerManagerCatalog/ui/ServerManagerCatalog';
+import { ServerData } from 'app/services/ServerService/config/serverConfig';
 
 interface ServerManagerItemProps {
     className?: string;
@@ -15,19 +15,18 @@ interface ServerManagerItemProps {
 }
 
 export function ServerManagerItem (props: ServerManagerItemProps) {
-    const { 
+    const {
         className,
         serverManagerDataItem,
         mode = ServerManagerCatalogMode.Catalog,
         onConnect
     } = props
-    
-    
+
     return (
         <div className={classNames(style.data_panel, {}, [className])}>
             <div className={classNames(style.data_info)}>
                 <div className={classNames(style.data_icon)}>
-                    {serverManagerDataItem.iconUrl 
+                    {serverManagerDataItem.iconUrl
                         ? <img width={33} height={33} alt={'icon_object'} src={serverManagerDataItem.iconUrl}/>
                         : serverManagerDataItem.iconNode
                     }
@@ -43,8 +42,8 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
             </div>
             <div className={classNames(style.data_options)}>
                 {mode === ServerManagerCatalogMode.Catalog && <ButtonEdit className={style.button_edit} serverManagerData={serverManagerDataItem}/>}
-                {serverManagerDataItem.dataType === DataTypeEnum.SERVER 
-                    && <ButtonConnect serverData={serverManagerDataItem} onConnect={onConnect}/>
+                {serverManagerDataItem.dataType === DataTypeEnum.SERVER &&
+                    <ButtonConnect serverData={serverManagerDataItem} onConnect={onConnect}/>
                 }
             </div>
         </div>

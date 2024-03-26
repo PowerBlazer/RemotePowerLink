@@ -1,50 +1,49 @@
-﻿import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SidebarEditHost.module.scss';
-import {observer} from "mobx-react-lite";
-import {Sidebar, SidebarOptions} from "widgets/Sidebar";
-import {useTranslation} from "react-i18next";
-import {ChangeEvent, useCallback, useMemo, useState} from "react";
-import sidebarStore from "app/store/sidebarStore";
-import {SidebarNewProxy} from "widgets/SidebarNewProxy";
-import {SidebarNewIdentity} from "widgets/SidebarNewIdentity";
-import {CreateProxyResult} from "app/services/ProxyService/config/proxyConfig";
-import userStore from "app/store/userStore";
-import {CreateIdentityResult} from "app/services/IdentityService/config/identityConfig";
-import {EditServerData, EditServerResult} from "app/services/ServerService/config/serverConfig";
-import {Select, SelectedItem, SelectItem} from "shared/ui/Select";
-import {FormBlock} from "features/FormBlock";
-import ServerIcon from "shared/assets/icons/navbar/server2.svg";
-import {Input} from "shared/ui/Input";
-import TitleIcon from "shared/assets/icons/title.svg";
-import PortIcon from "shared/assets/icons/code-working.svg";
-import ScriptIcon from "shared/assets/icons/curly-braces.svg";
-import DoubleArrow from "shared/assets/icons/double-arrow.svg";
-import {Button, ThemeButton} from "shared/ui/Button/Button";
-import {ButtonLoader} from "shared/ui/ButtonLoader";
-import {ServerService} from "app/services/ServerService/serverService";
-import {ButtonDelete} from "features/ButtonDelete/ui/ButtonDelete";
-import {DataTypeEnum} from "app/enums/DataTypeEnum";
+import { observer } from 'mobx-react-lite';
+import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
+import { useTranslation } from 'react-i18next';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import sidebarStore from 'app/store/sidebarStore';
+import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
+import { SidebarNewIdentity } from 'widgets/SidebarNewIdentity';
+import { CreateProxyResult } from 'app/services/ProxyService/config/proxyConfig';
+import userStore from 'app/store/userStore';
+import { CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
+import { EditServerData, EditServerResult } from 'app/services/ServerService/config/serverConfig';
+import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
+import { FormBlock } from 'features/FormBlock';
+import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
+import { Input } from 'shared/ui/Input';
+import TitleIcon from 'shared/assets/icons/title.svg';
+import PortIcon from 'shared/assets/icons/code-working.svg';
+import ScriptIcon from 'shared/assets/icons/curly-braces.svg';
+import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import { ButtonLoader } from 'shared/ui/ButtonLoader';
+import { ServerService } from 'app/services/ServerService/serverService';
+import { ButtonDelete } from 'features/ButtonDelete/ui/ButtonDelete';
+import { DataTypeEnum } from 'app/enums/DataTypeEnum';
 
-interface SidebarEditHostProps extends SidebarOptions<EditServerResult>{
+interface SidebarEditHostProps extends SidebarOptions<EditServerResult> {
     className?: string;
 }
 
 function SidebarEditHost (props: SidebarEditHostProps) {
-    
     const {
         className,
         onClose,
         onSave,
         isMain = false
     } = props;
-    
+
     const server = sidebarStore.editHostData.server;
-    const identity = userStore.userIdentities.find(p=> p.identityId === server.identityId);
-    const proxy = userStore.userProxies.find(p=> p.proxyId === server.proxyId);
-    
+    const identity = userStore.userIdentities.find(p => p.identityId === server.identityId);
+    const proxy = userStore.userProxies.find(p => p.proxyId === server.proxyId);
+
     const { t } = useTranslation('translation');
     const [errors, setErrors] = useState<Record<string, string[]>>({});
-    
+
     const [serverData, setServerData] = useState<EditServerData>({
         serverId: server.serverId,
         title: server.title,
@@ -54,14 +53,14 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         sshPort: server.sshPort?.toString(),
         startupCommand: server.startupCommand
     });
-    
+
     const [selectedProxy, setProxy] = useState<SelectedItem>(
         proxy && { id: proxy.proxyId.toString(), title: proxy.title }
     );
-    
+
     const [selectedIdentity, setIdentity] = useState<SelectedItem>({
-        id:identity.identityId.toString(),
-        title:identity.title
+        id: identity.identityId.toString(),
+        title: identity.title
     });
 
     const [isVisibleIdentity, setVisibleIdentity] = useState<boolean>(false);
@@ -252,7 +251,6 @@ function SidebarEditHost (props: SidebarEditHostProps) {
     }
 
     const saveServerClickHandler = useCallback(async () => {
-       
         const editServerResult = await ServerService.editServer(serverData);
 
         if (onSave && editServerResult.isSuccess) {
@@ -262,21 +260,21 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         if (!editServerResult.isSuccess) {
             setErrors(editServerResult?.errors);
         }
-    },[serverData]);
-    
+    }, [serverData]);
+
     const sidebars = useMemo(() => [
         <SidebarNewProxy
             key="proxy"
             isMain={false}
             onSave={createProxyOnSaveHandler}
-            onClose={()=> setVisibleProxy(false)}
+            onClose={() => { setVisibleProxy(false); }}
             isVisible={isVisibleProxy}
         />,
         <SidebarNewIdentity
             key="identity"
             isMain={false}
             onSave={createIdentityOnSaveHandler}
-            onClose={() => setVisibleIdentity(false)}
+            onClose={() => { setVisibleIdentity(false); }}
             isVisible={isVisibleIdentity}
         />
     ], [isVisibleIdentity, isVisibleProxy]);
@@ -295,11 +293,11 @@ function SidebarEditHost (props: SidebarEditHostProps) {
             </div>
         )
     }, [saveServerClickHandler]);
-    
-    const headerTools = useMemo(()=> (
+
+    const headerTools = useMemo(() => (
         <ButtonDelete dataType={DataTypeEnum.SERVER} dataId={serverData.serverId} />
-    ),[]);
-    
+    ), []);
+
     return (
         <Sidebar
             className={classNames(style.sidebarEditHost, {}, [className])}
@@ -342,7 +340,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         placeholder={t('Ssh порт')}
                         icon={<PortIcon width={20} height={20}/>}
                         errors={errors?.Port ?? null}
-                        value={serverData.sshPort ?? ""}
+                        value={serverData.sshPort ?? ''}
                         onChange={portChangeHandler}
                     />
                     <Input
@@ -351,7 +349,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         placeholder={t('Стартовая команда')}
                         icon={<ScriptIcon width={20} height={20}/>}
                         errors={errors?.StartupCommand ?? null}
-                        value={serverData.startupCommand ?? ""}
+                        value={serverData.startupCommand ?? ''}
                         onChange={startupCommandChangeHandler}
                     />
                 </div>
@@ -375,7 +373,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                 <Button
                     className={classNames(style.create_identity)}
                     theme={ThemeButton.PRIMARY}
-                    onClick={()=> setVisibleIdentity(true)}
+                    onClick={() => { setVisibleIdentity(true); }}
                 >
                     {t('Создать учетку')}
                 </Button>
@@ -399,7 +397,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                 <Button
                     className={classNames(style.create_proxy)}
                     theme={ThemeButton.PRIMARY}
-                    onClick={()=> setVisibleProxy(true)}
+                    onClick={() => { setVisibleProxy(true); }}
                 >
                     {t('Создать прокси сервер')}
                 </Button>

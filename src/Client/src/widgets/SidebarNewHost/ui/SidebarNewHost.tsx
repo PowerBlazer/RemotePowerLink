@@ -4,12 +4,12 @@ import { Sidebar, SidebarOptions } from 'widgets/Sidebar';
 import { FormBlock } from 'features/FormBlock';
 import { Input } from 'shared/ui/Input';
 import { useTranslation } from 'react-i18next';
-import {ChangeEvent, useCallback, useMemo, useState} from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
 import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import { SidebarNewIdentity } from 'widgets/SidebarNewIdentity';
-import {CreateServerData, ServerData} from 'app/services/ServerService/config/serverConfig';
+import { CreateServerData, ServerData } from 'app/services/ServerService/config/serverConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { ServerService } from 'app/services/ServerService/serverService';
 import { CreateProxyResult } from 'app/services/ProxyService/config/proxyConfig';
@@ -21,7 +21,7 @@ import ScriptIcon from 'shared/assets/icons/curly-braces.svg'
 import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
 import style from './SidebarNewHost.module.scss';
 import sidebarStore from 'app/store/sidebarStore';
-import userStore from "app/store/userStore";
+import userStore from 'app/store/userStore';
 
 interface SidebarNewHostProps extends SidebarOptions<ServerData> {
     className?: string;
@@ -51,7 +51,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
             sidebarStore.newHostData.isVisible = false;
         }
     }
-    
+
     const selectProxyHandler = (selectedItem?: SelectedItem) => {
         if (!selectedItem) {
             setServerData(prevData => ({
@@ -187,7 +187,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
         if (!createServerResult.isSuccess) {
             setErrors(createServerResult?.errors);
         }
-    },[serverData]);
+    }, [serverData]);
 
     const createProxyOnSaveHandler = async (createProxyResult: CreateProxyResult) => {
         userStore.setUserProxy({
@@ -198,9 +198,9 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
             sshPort: createProxyResult.sshPort,
             dateCreated: createProxyResult.dateCreated
         });
-        
+
         setVisibleProxy(false);
-        
+
         setProxy({ id: createProxyResult.proxyId.toString(), title: createProxyResult.title });
 
         setServerData(prevData => ({
@@ -216,15 +216,15 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
     }
 
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
-        userStore.setUserIdentity({ 
-            identityId: createIdentityResult.identityId, 
+        userStore.setUserIdentity({
+            identityId: createIdentityResult.identityId,
             title: createIdentityResult.title,
             username: createIdentityResult.username,
             dateCreated: createIdentityResult.dateCreated
         });
-        
+
         setVisibleIdentity(false);
-        
+
         setIdentity({ id: createIdentityResult.identityId.toString(), title: createIdentityResult.title });
 
         setServerData(prevData => ({
@@ -238,24 +238,24 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
             return updatedErrors;
         });
     }
-    
+
     const sidebars = useMemo(() => [
         <SidebarNewProxy
             key="proxy"
             isMain={false}
             onSave={createProxyOnSaveHandler}
-            onClose={()=> setVisibleProxy(false)}
+            onClose={() => { setVisibleProxy(false); }}
             isVisible={isVisibleProxy}
         />,
         <SidebarNewIdentity
             key="identity"
             isMain={false}
             onSave={createIdentityOnSaveHandler}
-            onClose={() => setVisibleIdentity(false)}
+            onClose={() => { setVisibleIdentity(false); }}
             isVisible={isVisibleIdentity}
         />
     ], [isVisibleIdentity, isVisibleProxy]);
-    
+
     const footerPanel = useMemo(() => {
         return (
             <div className={classNames(style.save_block)}>
@@ -342,7 +342,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
                 <Button
                     className={classNames(style.create_identity)}
                     theme={ThemeButton.PRIMARY}
-                    onClick={()=> setVisibleIdentity(true)}
+                    onClick={() => { setVisibleIdentity(true); }}
                 >
                     {t('Создать учетку')}
                 </Button>
@@ -366,7 +366,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
                 <Button
                     className={classNames(style.create_proxy)}
                     theme={ThemeButton.PRIMARY}
-                    onClick={()=> setVisibleProxy(true)}
+                    onClick={() => { setVisibleProxy(true); }}
                 >
                     {t('Создать прокси сервер')}
                 </Button>

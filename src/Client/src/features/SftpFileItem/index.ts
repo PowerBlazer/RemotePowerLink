@@ -1,1 +1,1 @@
-﻿export { default as SftpFileItem} from './ui/SftpFileItem'
+export { default as SftpFileItem } from './ui/SftpFileItem'

@@ -3,7 +3,7 @@ import style from './NavbarSetting.module.scss';
 import { Button } from 'shared/ui/Button/Button';
 import GearIcon from 'shared/assets/icons/navbar/gear.svg';
 import NotificationIcon from 'shared/assets/icons/navbar/bell-alt.svg';
-import {ButtonExit} from "features/ButtonExit";
+import { ButtonExit } from 'features/ButtonExit';
 
 interface NavbarSettingProps {
     className?: string;

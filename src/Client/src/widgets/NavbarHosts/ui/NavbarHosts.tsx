@@ -10,20 +10,20 @@ import { SidebarNewHost } from 'widgets/SidebarNewHost';
 import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
 import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
 import { observer } from 'mobx-react-lite';
-import {CreateServerResult, EditServerResult} from "app/services/ServerService/config/serverConfig";
-import userStore from "app/store/userStore";
-import {SidebarEditHost} from "widgets/SidebarEditHost";
-import toast from "react-hot-toast";
-import {CreateProxyResult, EditProxyResult, ProxyData} from "app/services/ProxyService/config/proxyConfig";
-import {SidebarEditProxy} from "widgets/SidebarEditProxy";
+import { CreateServerResult, EditServerResult } from 'app/services/ServerService/config/serverConfig';
+import userStore from 'app/store/userStore';
+import { SidebarEditHost } from 'widgets/SidebarEditHost';
+import toast from 'react-hot-toast';
+import { CreateProxyResult, EditProxyResult, ProxyData } from 'app/services/ProxyService/config/proxyConfig';
+import { SidebarEditProxy } from 'widgets/SidebarEditProxy';
 import {
     CreateIdentityResult,
     EditIdentityResult,
     IdentityData
-} from "app/services/IdentityService/config/identityConfig";
-import {SidebarEditIdentity} from "widgets/SidebarEditIdentity";
-import {ChangeEvent, useEffect} from "react";
-import searchStore from "app/store/searchStore";
+} from 'app/services/IdentityService/config/identityConfig';
+import { SidebarEditIdentity } from 'widgets/SidebarEditIdentity';
+import { ChangeEvent, useEffect } from 'react';
+import searchStore from 'app/store/searchStore';
 
 interface NavbarHostsProps {
     className?: string;
@@ -31,7 +31,7 @@ interface NavbarHostsProps {
 
 function NavbarHosts ({ className }: NavbarHostsProps) {
     const { t } = useTranslation('translation');
-    
+
     const onEditServerHandler = async (editServerResult: EditServerResult) => {
         userStore.setUserServer({
             serverId: editServerResult.serverId,
@@ -46,9 +46,9 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             dateCreated: editServerResult.dateCreated
         });
 
-        toast.success(t("Успешно сохранено"));
+        toast.success(t('Успешно сохранено'));
     }
-    
+
     const onCreateServerHandler = async (createServerResult: CreateServerResult) => {
         const server = {
             serverId: createServerResult.serverId,
@@ -62,16 +62,16 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             systemTypeName: createServerResult.systemTypeName,
             dateCreated: createServerResult.dateCreated
         };
-        
+
         userStore.setUserServer(server);
-        
+
         sidebarStore.editHostData.server = server;
-        
+
         await sidebarStore.setSidebar({
             name: `SidebarEditHost ${createServerResult.serverId}`,
             sidebar: <SidebarEditHost isMain={true} onSave={onEditServerHandler}/>
         });
-        
+
         toast.success(t('Успешно создано'));
     }
 
@@ -84,13 +84,13 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             sshPort: editProxyResult.sshPort,
             dateCreated: editProxyResult.dateCreated
         };
-        
+
         userStore.setUserProxy(proxy);
 
-        toast.success(t("Успешно сохранено"));
+        toast.success(t('Успешно сохранено'));
     }
-    
-    const onCreateProxyHandler = async (createProxyResult: CreateProxyResult)=> {
+
+    const onCreateProxyHandler = async (createProxyResult: CreateProxyResult) => {
         const proxy: ProxyData = {
             proxyId: createProxyResult.proxyId,
             title: createProxyResult.title,
@@ -99,11 +99,11 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             sshPort: createProxyResult.sshPort,
             dateCreated: createProxyResult.dateCreated
         };
-        
+
         userStore.setUserProxy(proxy);
-        
+
         sidebarStore.editProxyData.proxy = proxy;
-        
+
         await sidebarStore.setSidebar({
             name: `SidebarEditProxy ${createProxyResult.proxyId}`,
             sidebar: <SidebarEditProxy isMain={true} onSave={onEditProxyHandler}/>
@@ -111,7 +111,7 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
 
         toast.success(t('Успешно создано'));
     }
-    
+
     const onEditIdentityHandler = async (editIdentityResult: EditIdentityResult) => {
         const identity: IdentityData = {
             title: editIdentityResult.title,
@@ -122,10 +122,10 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
 
         userStore.setUserIdentity(identity);
 
-        toast.success(t("Успешно сохранено"));
+        toast.success(t('Успешно сохранено'));
     }
 
-    const onCreateIdentityHandler = async (createIdentityResult: CreateIdentityResult)=> {
+    const onCreateIdentityHandler = async (createIdentityResult: CreateIdentityResult) => {
         const identity: IdentityData = {
             title: createIdentityResult.title,
             identityId: createIdentityResult.identityId,
@@ -144,7 +144,7 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
 
         toast.success(t('Успешно создано'));
     }
-    
+
     const createNewHostHandler = async () => {
         await sidebarStore.setSidebar({
             name: 'SidebarNewHost',
@@ -165,19 +165,19 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             sidebar: <SidebarNewIdentity isMain={true} onSave={onCreateIdentityHandler}/>
         })
     }
-    
+
     const onChangeSearchInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         searchStore.setFilterOption({
             title: e.target.value
         });
     }
-    
+
     return (
         <div className={classNames(style.navbarHosts, {}, [className])}>
             <div className={classNames(style.search_block)}>
-                <input 
-                    type={'text'} 
-                    className={classNames(style.search)} 
+                <input
+                    type={'text'}
+                    className={classNames(style.search)}
                     placeholder={t('Поиск серверов или ssh root@hostname...')}
                     onChange={onChangeSearchInputHandler}
                 />

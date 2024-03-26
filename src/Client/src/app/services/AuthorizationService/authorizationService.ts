@@ -141,10 +141,10 @@ class AuthorizationService {
             }
         }
     }
-    
+
     static logout = () => {
-        this.setAccessToken("");
-        this.setRefreshToken("");
+        this.setAccessToken('');
+        this.setRefreshToken('');
     }
 
     static getAccessToken = (): string => {

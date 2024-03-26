@@ -24,7 +24,7 @@ export class IdentityService {
         }
     }
 
-    static createIdentity = async (createIdentityData: CreateIdentityData):Promise<ServiceResult<CreateIdentityResult>> => {
+    static createIdentity = async (createIdentityData: CreateIdentityData): Promise<ServiceResult<CreateIdentityResult>> => {
         try {
             const response =
                 await HostService.api.post<ApiResult<CreateIdentityResult>>(
@@ -43,7 +43,7 @@ export class IdentityService {
             }
         }
     }
-    
+
     static editIdentity = async (editIdentityData: EditIdentityData): Promise<ServiceResult<EditIdentityResult>> => {
         try {
             const response =
@@ -62,15 +62,14 @@ export class IdentityService {
                 errors: error.response?.data.Errors
             }
         }
-        
     }
-    
+
     static deleteIdentity = async (identityId: number): Promise<ServiceResult<number>> => {
         try {
             await HostService.api.delete(`/v1/identity/${identityId}`);
 
             return {
-                isSuccess: true,
+                isSuccess: true
             }
         } catch (error) {
             return {

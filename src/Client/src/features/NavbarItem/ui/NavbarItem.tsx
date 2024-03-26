@@ -21,15 +21,15 @@ export function NavbarItem (props: NavbarItemProps) {
         navigate,
         onNavigate
     } = props;
-    
+
     const location = useNavigate();
-    
+
     const onClickNavigateHandler = () => {
         if (navigate) {
             location(navigate);
         }
-        
-        if(navigate){
+
+        if (navigate) {
             onNavigate();
         }
     }

@@ -41,12 +41,12 @@ export function Select (props: SelectProps) {
         onChange,
         icon
     } = props;
-    
+
     const [visible, setVisible] = useState<boolean>(false);
     const [selectedElement, setSelected] = useState<SelectedItem>(selectedItem);
     const { t } = useTranslation('translation');
     const refOptions = useRef<HTMLDivElement>(null);
-    
+
     const refSelect = useOutsideClick<HTMLButtonElement>(() => {
         setVisible(false);
     }, [refOptions?.current]);
@@ -54,8 +54,10 @@ export function Select (props: SelectProps) {
     const isChildren = children && Children.count(children) > 0;
 
     const defaultValueContext = {
-        visible, setVisible,
-        selectedItem, setSelected
+        visible,
+        setVisible,
+        selectedItem,
+        setSelected
     }
 
     const selectButtonHandler = () => {

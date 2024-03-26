@@ -1,4 +1,4 @@
-﻿export interface ProxyData {
+export interface ProxyData {
     proxyId: number,
     title: string,
     hostname: string,
@@ -31,7 +31,7 @@ export interface EditProxyData {
     identityId: number
 }
 
-export interface EditProxyResult{
+export interface EditProxyResult {
     proxyId: number,
     title: string,
     hostname: string,

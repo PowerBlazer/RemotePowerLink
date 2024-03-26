@@ -1,8 +1,8 @@
-﻿import {useEffect, useState} from "react";
+import { useEffect, useState } from 'react';
 
-const useRefDimensions = (ref:any) => {
+const useRefDimensions = (ref: any) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
-    
+
     useEffect(() => {
         if (ref.current) {
             const { current } = ref

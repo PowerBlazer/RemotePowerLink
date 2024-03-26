@@ -6,7 +6,7 @@ import sidebarStore from 'app/store/sidebarStore';
 import { CreateIdentityData, CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { ThemeButton } from 'shared/ui/Button/Button';
-import {ChangeEvent, useCallback, useMemo, useState} from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Input } from 'shared/ui/Input';
 import { FormBlock } from 'features/FormBlock';
@@ -24,19 +24,18 @@ const defaultIdentityData: CreateIdentityData = {
 }
 
 function SidebarNewIdentity (props: SidebarNewIdentityProps) {
-    const { 
-        className, 
-        isMain = true, 
-        onSave, 
-        onClose, 
-        isVisible 
+    const {
+        className,
+        isMain = true,
+        onSave,
+        onClose,
+        isVisible
     } = props;
-    
-    
+
     const { t } = useTranslation('translation');
     const [identityData, setIdentityData] = useState<CreateIdentityData>(defaultIdentityData);
     const [errors, setErrors] = useState<Record<string, string[]>>({});
-    
+
     const closeHandler = async () => {
         if (onClose) {
             onClose();
@@ -96,9 +95,9 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
         if (!createIdentityResult.isSuccess) {
             setErrors(createIdentityResult?.errors);
         }
-    },[identityData])
-    
-    const footerPanel = useMemo(()=> {
+    }, [identityData])
+
+    const footerPanel = useMemo(() => {
         return (
             <div className={classNames(style.save_block)}>
                 <ButtonLoader

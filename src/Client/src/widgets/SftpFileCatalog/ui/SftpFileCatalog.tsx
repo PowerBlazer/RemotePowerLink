@@ -1,11 +1,10 @@
 ﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './SftpFileCatalog.module.scss';
 import {observer} from "mobx-react-lite";
-import {SftpCatalogMode} from "widgets/SftpCatalog";
 import sftpStore from "app/store/sftpStore";
-import {useMemo} from "react";
 import {Loader} from "shared/ui/Loader/Loader";
 import {SftpFileItem} from "features/SftpFileItem";
+import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
 
 interface SftpFileCatalogProps {
     className?: string;
@@ -17,17 +16,25 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
         ? sftpStore.firstSelectedHost
         : sftpStore.secondSelectedHost;
     
-    
+    const selectedHostFileItems = mode === SftpCatalogMode.First
+        ? sftpStore.firstHostFileItems
+        : sftpStore.secondHostFileItems;
+
     return (
         <div className={classNames(style.sftpFileCatalog, {}, [className])}>
-            {selectedHost?.isLoad 
-                ? <Loader  className={classNames(style.loader)}/> 
-                : selectedHost?.sftpFileList?.fileList.map((file)=> {
-                    return (
-                        <SftpFileItem key={file.path} fileData={file} mode={mode}/>
-                    )
-                })
-            }
+            <div className={classNames(style.catalog_columns)}>
+                
+            </div>
+            <div className={classNames(style.catalog_inner)}>
+                {selectedHost?.isLoad
+                    ? <Loader  className={classNames(style.loader)}/>
+                    : selectedHostFileItems?.map((file)=> {
+                        return (
+                            <SftpFileItem key={file.path} fileData={file} mode={mode}/>
+                        )
+                    })
+                }
+            </div>
 		</div>
     );
 }

@@ -19,6 +19,11 @@
   & .arrow_icon{
     width: 20px;
     height: 20px;
+    
+    & path{
+      stroke: var(--text-color);
+      fill: var(--text-color);
+    }
   }
   
   & .next_button{

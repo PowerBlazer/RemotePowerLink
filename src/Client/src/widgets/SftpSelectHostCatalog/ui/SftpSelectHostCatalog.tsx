@@ -4,12 +4,12 @@ import {Button} from "shared/ui/Button/Button";
 import {useTranslation} from "react-i18next";
 import {useEffect} from "react";
 import {ServerData} from "app/services/ServerService/config/serverConfig";
-import {SftpCatalogMode} from "widgets/SftpCatalog/ui/SftpCatalog";
 import {SearchInput} from "features/SearchInput";
 import ArrowRight from "shared/assets/icons/arrow-right.svg";
 import searchStore from "app/store/searchStore";
 import style from './SftpSelectHostCatalog.module.scss';
 import sftpStore from "app/store/sftpStore";
+import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
 
 interface SftpSelectHostCatalogProps {
     className?: string,
@@ -39,7 +39,10 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             
             sftpStore.firstSelectedHost = {
                 server: serverData,
-                isLoad: false
+                isLoad: false,
+                error: {
+                    isError: false
+                }
             }
         }
         
@@ -50,7 +53,10 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             
             sftpStore.secondSelectedHost = {
                 server: serverData,
-                isLoad: false
+                isLoad: false,
+                error: {
+                    isError: false
+                }
             }
         }
 

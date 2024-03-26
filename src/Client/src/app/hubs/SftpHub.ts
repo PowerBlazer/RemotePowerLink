@@ -49,6 +49,10 @@ class SftpHub {
             this.connection.on("receivedFiles", (files: SftpFileList) => {
                 onFilesReceived(files);
             });
+            
+            this.connection.on("handleError", (message:string) => {
+                this.onError(message);
+            })
         };
     }
     
@@ -57,12 +61,23 @@ class SftpHub {
     ) => void;
     
     public onConnect: () => Promise<void> = async function connect() { };
+    public onError: (message:string) => void = 
+        function error(message) {
+            toast.error(message);
+        }
+        
     public closeConnection = () => {
         this.connection.stop()
     }
     
     public getFilesServer = async (serverId: number, path?:string) => {
-        await this.connection.send("getFilesServer", serverId, path);
+        try {
+            await this.connection.send("getFilesServer", serverId, path);
+            
+        } catch (e) {
+          console.log(e)  
+        }
+       
     }
 }
 export default SftpHub;

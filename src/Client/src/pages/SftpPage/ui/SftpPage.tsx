@@ -4,17 +4,14 @@ import {observer} from "mobx-react-lite";
 import ReactSplit, {SplitDirection} from "@devbookhq/splitter";
 import {SftpCatalog} from "widgets/SftpCatalog";
 import {useEffect, useRef, useState} from "react";
-import {SftpCatalogMode} from "widgets/SftpCatalog/ui/SftpCatalog";
-import * as signalR from "@microsoft/signalr";
-import {HostService} from "app/services/hostService";
-import SftpHub from "app/hubs/SftpHub";
+import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
 
 interface SftpPageProps {
     className?: string;
 }
 
 function SftpPage ({ className }: SftpPageProps) {
-    const [minSplitWidth, setMinWidth] = useState(300);
+    const [minSplitWidth, setMinWidth] = useState(450);
     const sftpPageRef = useRef<HTMLDivElement>(null);
     
     useEffect(() => {

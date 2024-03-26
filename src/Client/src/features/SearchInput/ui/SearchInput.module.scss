@@ -6,20 +6,28 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  background-color: var(--search-input-bg-color);
 
   & .search_icon{
     width: 17px;
     height: 17px
+  }
+  
+  & .search_icon path{
+    fill: var(--text-color);
   }
 
   & .search_input{
     border: none;
     font-size: 14px;
     width: 100%;
+    color: var(--text-color);
+    background-color: var(--search-input-bg-color);
 
     &::placeholder{
       font-size: 14px;
       font-weight: 600;
+      color: #8D90A5;
     }
   }
 }

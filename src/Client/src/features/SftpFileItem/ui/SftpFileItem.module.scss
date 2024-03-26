@@ -1,0 +1,72 @@
+.sftpFileItem{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 13px;
+  gap: 10px;
+  color: #8D90A5;
+  
+  &.select{
+   background-color: var(--bg-color-inverted) ;
+   color: var(--button-primary-color);
+  }
+  
+  &:hover{
+    background-color: var(--bg-color-inverted);
+  }
+}
+
+.file_title{
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  & .title{
+    font-size: 13px;
+    font-weight: 500;
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    & .highlight{
+      color: var(--button-primary-color);
+    }
+  }
+}
+
+.file_date{
+  font-size: 12px;
+  width: 100px;
+  text-align: start;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.file_size{
+  font-size: 12px;
+  font-weight: 600;
+  width: 55px;
+  white-space: nowrap;
+  overflow: hidden;
+  
+  &.center{
+    text-align: center;
+  }
+}
+
+.file_type{
+  font-size: 12px;
+  font-weight: 600;
+  text-align: start;
+  width: 70px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

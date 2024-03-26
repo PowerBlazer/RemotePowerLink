@@ -1,16 +1,16 @@
 ﻿import {classNames} from 'shared/lib/classNames/classNames';
 import style from './NavbarSftp.module.scss';
 import {observer} from "mobx-react-lite";
-import {SftpCatalogMode} from "widgets/SftpCatalog/ui/SftpCatalog";
 import {Button} from "shared/ui/Button/Button";
 import {HostService} from "app/services/hostService";
 import sftpStore from "app/store/sftpStore";
 import {useTranslation} from "react-i18next";
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {SearchInput} from "features/SearchInput";
 import {SftpCatalogSwitcher} from "features/SftpCatalogSwitcher";
 import {Loader} from "shared/ui/Loader/Loader";
+import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
 
 interface NavbarSftpProps {
     className?: string,
@@ -20,13 +20,23 @@ interface NavbarSftpProps {
 
 function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
     const { t } = useTranslation('translation');
-    const [filterValue, setFilterValue] = useState<string>("");
    
     const selectedHost = mode === SftpCatalogMode.First
         ? sftpStore.firstSelectedHost
         : sftpStore.secondSelectedHost;
     
-    const server = selectedHost?.server
+    const server = selectedHost?.server;
+
+    const onChangeSearchHandler = (value:string) => {
+        const selectedFilterOptions = mode === SftpCatalogMode.First 
+            ? sftpStore.firstFilterOptions 
+            : sftpStore.secondFilterOptions;
+        
+        sftpStore.setSftpFilterOptions(mode, {
+            ...selectedFilterOptions,
+            title: value
+        })
+    }
     
     return (
         <div className={classNames(style.navbarSftp, {}, [className])}>
@@ -57,7 +67,7 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
                <SftpCatalogSwitcher mode={mode}/>
                {selectedHost?.sftpFileList?.currentPath}
             </div>
-            <SearchInput className={classNames(style.search_input)} onChange={(value) => setFilterValue(value)}/>
+            <SearchInput className={classNames(style.search_input)} onChange={(value) => onChangeSearchHandler(value)}/>
         </div>
     );
 }

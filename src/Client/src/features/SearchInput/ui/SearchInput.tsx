@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 interface FilterInputProps {
     className?: string;
+    value?: string;
     onChange?: (value: string) => void
 }
 
-export function SearchInput ({ className, onChange }: FilterInputProps) {
+export function SearchInput ({ className, onChange, value }: FilterInputProps) {
     const { t, i18n } = useTranslation('translation');
 
     return (
@@ -20,6 +21,7 @@ export function SearchInput ({ className, onChange }: FilterInputProps) {
                 type="text"
                 className={classNames(style.search_input)}
                 placeholder={t('Поиск')}
+                value={value}
                 onChange={(e) => { onChange(e.target.value); }}
             />
         </div>

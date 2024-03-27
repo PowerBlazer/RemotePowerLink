@@ -25,13 +25,13 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
         ? sftpStore.firstSelectedHost
         : sftpStore.secondSelectedHost;
 
+    const selectedFilterOptions = mode === SftpCatalogMode.First
+        ? sftpStore.firstFilterOptions
+        : sftpStore.secondFilterOptions;
+
     const server = selectedHost?.server;
 
     const onChangeSearchHandler = (value: string) => {
-        const selectedFilterOptions = mode === SftpCatalogMode.First
-            ? sftpStore.firstFilterOptions
-            : sftpStore.secondFilterOptions;
-
         sftpStore.setSftpFilterOptions(mode, {
             ...selectedFilterOptions,
             title: value
@@ -67,7 +67,11 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
                 <SftpCatalogSwitcher mode={mode}/>
                 {selectedHost?.sftpFileList?.currentPath}
             </div>
-            <SearchInput className={classNames(style.search_input)} onChange={(value) => { onChangeSearchHandler(value); }}/>
+            <SearchInput 
+                className={classNames(style.search_input)} 
+                onChange={(value) => { onChangeSearchHandler(value); }}
+                value={selectedFilterOptions.title}
+            />
         </div>
     );
 }

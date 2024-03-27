@@ -36,9 +36,7 @@ public class SftpHub: BaseHub
             var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
 
             var sftpClient = _sftpClientService.GetClient(connectionParameter);
-
-            sftpClient.Disconnect();
-
+            
             if (string.IsNullOrWhiteSpace(path))
             {
                 path = sftpClient.WorkingDirectory;

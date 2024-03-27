@@ -11,6 +11,7 @@ import SftpHub from 'app/hubs/SftpHub';
 import { NavbarSftp } from 'widgets/NavbarSftp';
 import { SftpFileCatalog } from 'widgets/SftpFileCatalog';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import toast from "react-hot-toast";
 
 interface SftpCatalogProps {
     className?: string;
@@ -58,7 +59,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             }
 
             sftpHub.onError = (message) => {
-
+                toast.error(message)
             }
         }
     }, [sftpStore.firstSelectedHost]);

@@ -33,6 +33,8 @@ class SftpStore {
 
     @observable public firstHostFileItems: SftpFile[] = [];
     @observable public secondHostFileItems: SftpFile[] = [];
+    
+    @observable isOpenMenu: boolean = false;
 
     @action setFileItems (mode: SftpCatalogMode) {
         if (mode === SftpCatalogMode.First) {

@@ -24,6 +24,7 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
 
     const openFileHandler = async () => {
         if (fileData.fileType === 1) {
+            selectedFilter.title = "";
             selectedHost.isLoad = true;
 
             await selectedHost?.sftpHub.getFilesServer(
@@ -39,13 +40,13 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
         }
 
         const nameArray = name.split('');
-        const titleArray = title.split('');
+        const titleArray = title.toLowerCase().split('');
 
         return nameArray.map((char, index) => {
-            if (titleArray.includes(char)) {
-                return <span key={index} className={classNames(style.highlight)}>{char}</span>;
+            if (titleArray.includes(char.toLowerCase())) {
+                return <span key={index} className={classNames(style.highlight)}>{nameArray[index]}</span>;
             } else {
-                return char;
+                return nameArray[index];
             }
         });
     };
@@ -56,6 +57,14 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
         } else {
             sftpStore.setSelectFileItem(mode, fileData.path)
         }
+    }
+    
+    const contextManuHandler = (e: MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        
+        sftpStore.setSelectFileItem(mode, fileData.path);
+        
+        
     }
 
     const toLocalDateString = (dateString: string) => {
@@ -77,6 +86,7 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
             }, [className])}
             onDoubleClick={openFileHandler}
             onClick={selectFileHandler}
+            onContextMenu={contextManuHandler}
             title={fileData.name}
         >
             <div className={classNames(style.file_title)}>

@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Domain.DTOs.Sftp;
 using Domain.Enums;
+using Domain.Exceptions;
 using Domain.Repository;
 using Domain.Services;
 using Domain.Services.Parameters;
@@ -32,10 +33,25 @@ public class SftpHub: BaseHub
     {
         await HandlerOperationAsync(async () =>
         {
-            var server = await _serverRepository.GetServerAsync(serverId);
-            var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
+            var isExistSftpClient = _sftpClientService.CheckExistingConnection(ConnectionKey);
 
-            var sftpClient = _sftpClientService.GetClient(connectionParameter);
+            if (!isExistSftpClient)
+            {
+                var server = await _serverRepository.GetServerAsync(serverId);
+                var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
+
+                _sftpClientService.CreateClient(connectionParameter, ConnectionKey);
+            }
+            
+            var sftpClient = _sftpClientService.GetClient(ConnectionKey);
+
+            if (sftpClient is null)
+            {
+                throw new ConnectionServerException(
+                    $"Ошибка подключения SSH по ID ${serverId} сервера ConnectionID = ${ConnectionKey}",
+                    "Server"
+                );
+            }
             
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -64,7 +80,7 @@ public class SftpHub: BaseHub
             };
 
             await Clients
-                .Client(Context.ConnectionId)
+                .Client(ConnectionKey)
                 .SendAsync("ReceivedFiles", serverFileList);
         });
     }

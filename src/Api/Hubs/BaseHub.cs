@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Api.Hubs;
@@ -20,11 +21,19 @@ public class BaseHub: Hub
         }
     }
 
+    protected string ConnectionKey => Context.ConnectionId;
+
     protected async Task HandlerOperationAsync(Func<Task> action)
     {
         try
         {
-           await action(); 
+            await action();
+        }
+        catch (ConnectionServerException ex)
+        {
+            await Clients
+                .Client(Context.ConnectionId)
+                .SendAsync("HandleError", ex.Message);
         }
         catch (Exception ex)
         {

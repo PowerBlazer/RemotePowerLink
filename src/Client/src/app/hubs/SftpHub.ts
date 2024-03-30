@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { SftpFileList } from 'app/services/SftpService/config/sftpConfig';
 import { AppRoutes } from 'app/providers/router/config/routeConfig';
 
-const URL = `${HostService._apiHost}/sftp`;
+const URL =  `${HostService._hubHost}/sftp`;
 class SftpHub {
     private connection: signalR.HubConnection;
     constructor () {

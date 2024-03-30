@@ -21,8 +21,9 @@ export interface ServiceResult<T> {
 }
 
 export class HostService {
-    static _apiHost: string = process.env.API_HOST;
-    static _resourceHost: string = !Boolean(__IS_DEV__) ? '/resource/' : process.env.API_HOST;
+    static _apiHost: string =  process.env.API_HOST;
+    static _resourceHost: string = !Boolean(__IS_DEV__) ? '/resource' : process.env.API_HOST;
+    static _hubHost: string = !Boolean(__IS_DEV__) ? '/hub' : process.env.API_HOST
 
     private static _api: AxiosInstance = null;
     private static _apiWithoutInterceptors: AxiosInstance = null;

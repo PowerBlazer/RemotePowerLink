@@ -12,15 +12,22 @@ public class SftpClientService: ISftpClientService
     private readonly object _lock = new();
     private const int IdleTimeoutMinutes = 3;
     
-    public SftpClient GetClient(ConnectionServerParameter connectionServerParameter)
+    public SftpClient? GetClient(string connectionKey)
     {
-        var connectionKey = $"{connectionServerParameter.Hostname} " +
-                            $"${connectionServerParameter.Hostname}" +
-                            $"${connectionServerParameter.Password}";
-        
+        if (_sftpClients.TryGetValue(connectionKey, out var sftpClientInstance) &&
+            sftpClientInstance.SftpClient.IsConnected)
+        {
+            return sftpClientInstance.SftpClient;
+        }
+
+        return null;
+    }
+
+    public SftpClient CreateClient(ConnectionServerParameter connectionServerParameter, string connectionKey)
+    {
         var sftpClient = _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
         {
-            SftpClient = CreateNewClient(connectionServerParameter),
+            SftpClient = CreateNewClientInstance(connectionServerParameter),
             LastUsed = DateTime.Now
         }).SftpClient;
 
@@ -31,11 +38,17 @@ public class SftpClientService: ISftpClientService
             
         var newSftpClient = _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
         {
-            SftpClient = CreateNewClient(connectionServerParameter),
+            SftpClient = CreateNewClientInstance(connectionServerParameter),
             LastUsed = DateTime.Now
         }).SftpClient;
 
         return newSftpClient;
+    }
+
+    public bool CheckExistingConnection(string connectionKey)
+    {
+        return _sftpClients.TryGetValue(connectionKey, out var sftpClientInstance) &&
+               sftpClientInstance.SftpClient.IsConnected;
     }
 
     public void DisconnectClient(string connectionKey)
@@ -67,7 +80,7 @@ public class SftpClientService: ISftpClientService
         }
     }
     
-    private static SftpClient CreateNewClient(ConnectionServerParameter connectionServerParameter)
+    private static SftpClient CreateNewClientInstance(ConnectionServerParameter connectionServerParameter)
     {
         var connectionInfo = HostService.GetConnectionInfo(
             connectionServerParameter.Hostname,

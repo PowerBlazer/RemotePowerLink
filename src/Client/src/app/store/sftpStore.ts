@@ -2,13 +2,17 @@ import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import SftpHub from 'app/hubs/SftpHub';
 import { SftpCatalogMode, SftpFile, SftpFileList } from 'app/services/SftpService/config/sftpConfig';
 import { action, makeAutoObservable, observable } from 'mobx';
+import {Stack} from "shared/lib/Stack";
 
 export interface SftpServer {
     server: ServerData,
     sftpHub?: SftpHub,
-    sftpFileList?: SftpFileList
+    sftpFileList?: SftpFileList,
+    filterOptions: SftpFilterOptions,
+    error: SftpError,
+    historyPrevPaths: Stack<string>
+    historyNextPaths: Stack<string>
     isLoad: boolean,
-    error: SftpError
 }
 
 export interface SftpFilterOptions {
@@ -24,26 +28,23 @@ class SftpStore {
     constructor () {
         makeAutoObservable(this)
     }
-
-    public firstFilterOptions: SftpFilterOptions = {};
-    public secondFilterOptions: SftpFilterOptions = {};
-
+    
     @observable public firstSelectedHost: SftpServer | null = null;
     @observable public secondSelectedHost: SftpServer | null = null;
 
     @observable public firstHostFileItems: SftpFile[] = [];
     @observable public secondHostFileItems: SftpFile[] = [];
+    @observable public editableWidthSplit : boolean = false;
     
-    @observable isOpenMenu: boolean = false;
-
     @action setFileItems (mode: SftpCatalogMode) {
         if (mode === SftpCatalogMode.First) {
             let hostFileItems = this.firstSelectedHost?.sftpFileList.fileList;
+            let filterOptions = this.firstSelectedHost.filterOptions;
 
-            if (this.firstFilterOptions.title) {
+            if (filterOptions.title) {
                 hostFileItems = hostFileItems.filter(
-                    p => p.name.toLowerCase().includes(this.firstFilterOptions.title.toLowerCase()) ||
-                    p.fileTypeName.toLowerCase().includes(this.firstFilterOptions.title.toLowerCase())
+                    p => p.name?.toLowerCase().includes(filterOptions.title?.toLowerCase()) ||
+                    p.fileTypeName?.toLowerCase().includes(filterOptions.title?.toLowerCase())
                 )
             }
 
@@ -52,10 +53,11 @@ class SftpStore {
 
         if (mode === SftpCatalogMode.Second) {
             let hostFileItems = this.secondSelectedHost?.sftpFileList.fileList;
-            if (this.secondFilterOptions.title) {
+            let filterOptions =  this.secondSelectedHost.filterOptions;
+            if (filterOptions.title) {
                 hostFileItems = hostFileItems.filter(
-                    p => p.name.toLowerCase().includes(this.secondFilterOptions.title.toLowerCase()) ||
-                    p.fileTypeName.toLowerCase().includes(this.secondFilterOptions.title.toLowerCase())
+                    p => p.name?.toLowerCase().includes(filterOptions.title?.toLowerCase()) ||
+                    p.fileTypeName?.toLowerCase().includes(filterOptions.title?.toLowerCase())
                 )
             }
 
@@ -65,13 +67,13 @@ class SftpStore {
 
     setSftpFilterOptions (mode: SftpCatalogMode, options: SftpFilterOptions) {
         if (mode === SftpCatalogMode.First) {
-            this.firstFilterOptions = {
+            this.firstSelectedHost.filterOptions = {
                 ...options
             }
         }
 
         if (mode === SftpCatalogMode.Second) {
-            this.secondFilterOptions = {
+            this.secondSelectedHost.filterOptions = {
                 ...options
             }
         }

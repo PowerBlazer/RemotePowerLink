@@ -10,6 +10,7 @@ import searchStore from 'app/store/searchStore';
 import style from './SftpSelectHostCatalog.module.scss';
 import sftpStore from 'app/store/sftpStore';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import {Stack} from "shared/lib/Stack";
 
 interface SftpSelectHostCatalogProps {
     className?: string,
@@ -40,6 +41,9 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             sftpStore.firstSelectedHost = {
                 server: serverData,
                 isLoad: false,
+                filterOptions: {},
+                historyPrevPaths: new Stack<string>(),
+                historyNextPaths: new Stack<string>(),
                 error: {
                     isError: false
                 }
@@ -54,6 +58,9 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             sftpStore.secondSelectedHost = {
                 server: serverData,
                 isLoad: false,
+                filterOptions: {},
+                historyPrevPaths: new Stack<string>(),
+                historyNextPaths: new Stack<string>(),
                 error: {
                     isError: false
                 }

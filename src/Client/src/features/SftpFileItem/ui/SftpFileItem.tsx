@@ -5,35 +5,34 @@ import { SftpCatalogMode, SftpFile } from 'app/services/SftpService/config/sftpC
 import sftpStore from 'app/store/sftpStore';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg'
 import FileIcon from 'shared/assets/icons/sftp/file.svg'
-import { MouseEvent } from 'react';
+import {MouseEvent, useEffect, useRef, useState} from 'react';
 
-interface SftpFileItemProps {
+interface SftpFileItemProps{
     className?: string;
     fileData: SftpFile;
     mode: SftpCatalogMode
 }
 
 function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
+    const [isVisibleDate, setVisibleDate] = useState<boolean>(true);
+    const fileItemRef = useRef<HTMLDivElement>(null);
     const selectedHost = mode === SftpCatalogMode.First
         ? sftpStore.firstSelectedHost
         : sftpStore.secondSelectedHost;
-
-    const selectedFilter = mode === SftpCatalogMode.First
-        ? sftpStore.firstFilterOptions
-        : sftpStore.secondFilterOptions;
-
+    
     const openFileHandler = async () => {
         if (fileData.fileType === 1) {
-            selectedFilter.title = "";
+            selectedHost.filterOptions.title = "";
             selectedHost.isLoad = true;
-
+            selectedHost.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
+            selectedHost.historyNextPaths.clear();
             await selectedHost?.sftpHub.getFilesServer(
                 selectedHost.server.serverId,
                 fileData.path
             );
         }
     }
-
+    
     const highlightMatches = (name: string, title?: string) => {
         if (!title) {
             return name;
@@ -63,11 +62,14 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
         e.preventDefault();
         
         sftpStore.setSelectFileItem(mode, fileData.path);
-        
-        
     }
 
     const toLocalDateString = (dateString: string) => {
+        if(!dateString || dateString.length === 0){
+            return "";
+        }
+        
+        
         const date = new Date(dateString);
         let dateTimeString = date.toLocaleTimeString();
 
@@ -79,6 +81,15 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
         return `${date.toLocaleDateString()}, ${dateTimeString}`;
     }
 
+    useEffect(() => {
+        if(fileItemRef){
+            const width = fileItemRef.current.offsetWidth;
+            
+            setVisibleDate(width > 460)
+        }
+        
+    }, [sftpStore.editableWidthSplit, fileItemRef]);
+
     return (
         <div
             className={classNames(style.sftpFileItem, {
@@ -88,18 +99,22 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
             onClick={selectFileHandler}
             onContextMenu={contextManuHandler}
             title={fileData.name}
+            ref={fileItemRef}
         >
             <div className={classNames(style.file_title)}>
                 {fileData.fileType === 1
                     ? <FolderIcon width={25} height={25}/>
                     : <FileIcon width={27}/>}
                 <div className={classNames(style.title)}>
-                    {highlightMatches(fileData.name, selectedFilter.title)}
+                    {highlightMatches(fileData.name, selectedHost.filterOptions.title)}
                 </div>
             </div>
-            <div className={classNames(style.file_date)}>
-                {toLocalDateString(fileData.dateModified)}
-            </div>
+            {isVisibleDate &&
+                <div className={classNames(style.file_date)}>
+                    {toLocalDateString(fileData.dateModified)}
+                </div>
+            }
+
             <div
                 className={classNames(style.file_size, {
                     [style.center]: fileData.fileType === 1

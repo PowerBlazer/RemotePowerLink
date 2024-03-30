@@ -30,7 +30,7 @@ export function RegistrationStep () {
         });
 
         if (result.isSuccess) {
-            navigate('/');
+            location.pathname = "/"
             return;
         }
 

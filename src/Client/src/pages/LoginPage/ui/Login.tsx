@@ -25,7 +25,7 @@ export default function LoginPage () {
         const resultLogin = await AuthorizationService.login(loginModel);
 
         if (resultLogin.isSuccess) {
-            navigate('/');
+            location.pathname = "/"
             return;
         }
         setErrors(resultLogin.errors);

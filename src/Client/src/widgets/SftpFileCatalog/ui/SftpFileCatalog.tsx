@@ -5,8 +5,9 @@ import sftpStore from 'app/store/sftpStore';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpFileItem } from 'features/SftpFileItem';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import {ChangedWidthProp} from "pages/SftpPage";
 
-interface SftpFileCatalogProps {
+interface SftpFileCatalogProps{
     className?: string;
     mode: SftpCatalogMode
 }
@@ -23,14 +24,18 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
     return (
         <div className={classNames(style.sftpFileCatalog, {}, [className])}>
             <div className={classNames(style.catalog_columns)}>
-
+                
             </div>
             <div className={classNames(style.catalog_inner)}>
                 {selectedHost?.isLoad
                     ? <Loader className={classNames(style.loader)}/>
                     : selectedHostFileItems?.map((file) => {
                         return (
-                            <SftpFileItem key={file.path} fileData={file} mode={mode}/>
+                            <SftpFileItem 
+                                key={file.path} 
+                                fileData={file} 
+                                mode={mode}
+                            />
                         )
                     })
                 }

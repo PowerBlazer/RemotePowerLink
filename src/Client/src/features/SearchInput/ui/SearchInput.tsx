@@ -10,7 +10,7 @@ interface FilterInputProps {
 }
 
 export function SearchInput ({ className, onChange, value }: FilterInputProps) {
-    const { t, i18n } = useTranslation('translation');
+    const { t } = useTranslation('translation');
 
     return (
         <div className={classNames(style.search_content, {}, [className])}>

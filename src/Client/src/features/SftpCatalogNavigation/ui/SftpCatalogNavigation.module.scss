@@ -1,0 +1,75 @@
+﻿.sftpCatalogNavigation{
+  width: 100%;
+  padding: 0 10px;
+  height: 25px;
+  display: flex;
+  position: relative;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 1px;
+  cursor: text;
+  
+  &.edit .edit_path_input{
+    display: block;
+  }
+  
+  &.edit .directory_item{
+    display: none;
+  }
+  
+  & .edit_path_input{
+    width: 100%;
+    display: none;
+    background-color: var(--search-input-bg-color);
+    border: none;
+    padding: 4px 10px;
+    border-radius: 5px;
+    color: var(--text-color);
+    font-size: 14px;
+  }
+}
+
+.directory_item{
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.arrow_icon{
+  width: 20px;
+  height: 20px;
+  transform: rotate(180deg);
+  margin-top: 1px;
+  flex-shrink: 0;
+  
+  & path{
+    stroke: transparent;
+    fill: var(--text-color);
+  }
+}
+
+.directory_button{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 5px;
+  
+  & p{
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+   
+    font-size: 14px;
+  }
+  
+  &:hover{
+    background-color: var(--navigation-directory-hover-bg-color);
+  }
+  
+  & svg{
+    flex-shrink: 0;
+  }
+}
+

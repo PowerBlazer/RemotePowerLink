@@ -12,7 +12,7 @@
   }
   
   &:hover{
-    background-color: var(--bg-color-inverted);
+    background-color: var(--server-manager-item-hover-bg-color);
   }
 }
 
@@ -20,6 +20,7 @@
   display: flex;
   gap: 7px;
   align-items: center;
+  
   & .title{
     font-size: 13px;
     font-weight: 500;

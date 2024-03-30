@@ -45,7 +45,7 @@ function ServerManagerCatalog ({ className, mode = ServerManagerCatalogMode.Cata
             title: server.title,
             common: server.systemTypeName,
             dataType: DataTypeEnum.SERVER,
-            iconUrl: Boolean(server.systemTypeIcon) && `${HostService._apiHost}/${server.systemTypeIcon}`,
+            iconUrl: Boolean(server.systemTypeIcon) && `${HostService._resourceHost}/${server.systemTypeIcon}`,
             iconNode: !server.systemTypeIcon && defaultServerIcon
         })
         ), [searchStore.searchData]);

@@ -47,7 +47,7 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
                         <img
                             className={classNames(style.server_icon)}
                             alt={'server_icon'}
-                            src={`${HostService._apiHost}${server.systemTypeIcon}`}
+                            src={`${HostService._resourceHost}${server.systemTypeIcon}`}
                             width={22}
                             height={22}
                         />

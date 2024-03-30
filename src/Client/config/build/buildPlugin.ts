@@ -16,7 +16,8 @@ export function buildPlugins ({ paths, isDev, apiHost }: BuildOptions): WebpackP
         }),
         new DefinePlugin({
             __IS_DEV__: JSON.stringify(isDev),
-            'process.env.API_HOST': JSON.stringify(apiHost)
+            'process.env.API_HOST': JSON.stringify(apiHost),
+            'process.env.__IS_DEV__': JSON.stringify(isDev)
         }),
         new HotModuleReplacementPlugin(),
         new ReactRefreshWebpackPlugin({

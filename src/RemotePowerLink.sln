@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resource", "Resource", "{AD
 		Resource\nginx.conf = Resource\nginx.conf
 		Resource\test-compose.yml = Resource\test-compose.yml
 		Resource\migrationScript.txt = Resource\migrationScript.txt
+		Resource\docker-compose-dev.yml = Resource\docker-compose-dev.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email", "Infrastructure\Email\Email.csproj", "{AB59BA55-F0E6-429C-A434-B0C33124205F}"

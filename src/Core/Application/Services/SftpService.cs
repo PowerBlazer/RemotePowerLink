@@ -26,4 +26,31 @@ public class SftpService: ISftpService
             _ => $"{bytes} bytes"
         };
     }
+
+    public string? GetParentDirectory(string path)
+    {
+        // Если путь пуст или null, возвращаем null
+        if (string.IsNullOrWhiteSpace(path))
+            return null;
+
+        // Заменяем все обратные слеши на прямые, чтобы обеспечить единообразие в путях
+        path = path.Replace("\\", "/");
+
+        // Удаляем последний слеш, если он есть, чтобы получить директорию
+        if (path.EndsWith("/"))
+            path = path.Substring(0, path.Length - 1);
+
+        // Разделяем путь по слешу
+        var parts = path.Split('/');
+
+        // Если в пути меньше двух частей, возвращаем null
+        if (parts.Length < 2)
+            return null;
+
+        // Формируем путь к родительскому каталогу
+        var parentDirectory = string.Join("/", parts, 0, parts.Length - 1);
+
+        // Если родительский каталог пустой, значит это корневой каталог, возвращаем его самого
+        return string.IsNullOrEmpty(parentDirectory) ? "/" : parentDirectory;
+    }
 }

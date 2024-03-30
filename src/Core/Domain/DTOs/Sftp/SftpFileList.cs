@@ -9,5 +9,5 @@ public class SftpFileList
     /// <summary>
     /// Список файлов директории
     /// </summary>
-    public required IEnumerable<SftpFileItem> FileList { get; set; }
+    public required IList<SftpFileItem> FileList { get; set; }
 }

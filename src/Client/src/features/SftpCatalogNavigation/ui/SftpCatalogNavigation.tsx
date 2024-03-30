@@ -25,6 +25,7 @@ function SftpCatalogNavigation ({ className,mode }: SftpCatalogNavigationProps) 
     
     const inputRef = useRef<HTMLInputElement>(null);
     const [isActiveInput, setActiveInput] = useState<boolean>(false);
+    const [lastVisibleCount, setVisibleCount] = useState<number>(3);
     
     const [editPathValue, setPathValue] = useState<string>(
         selectedHost?.sftpFileList ? selectedHost.sftpFileList.currentPath : ""
@@ -79,9 +80,9 @@ function SftpCatalogNavigation ({ className,mode }: SftpCatalogNavigationProps) 
 
         let directoriesToRender = listDirectories;
         
-        //Если больше трех элементов, показываем последние 3 , также добавляем в начало списка начальную кнопку навигации
-        if (listDirectories.length > 3) {
-            directoriesToRender = listDirectories.slice(-3);
+        //Если больше трех элементов, показываем последние lastVisibleCount , также добавляем в начало списка начальную кнопку навигации
+        if (listDirectories.length > lastVisibleCount) {
+            directoriesToRender = listDirectories.slice(-lastVisibleCount);
             
             directoriesToRender = [
                 {
@@ -111,7 +112,7 @@ function SftpCatalogNavigation ({ className,mode }: SftpCatalogNavigationProps) 
                 </div>
             )
         })
-    }, [listDirectories])
+    }, [listDirectories, lastVisibleCount])
 
     useEffect(() => setPathValue(selectedHost.sftpFileList?.currentPath), [selectedHost.sftpFileList]);
 
@@ -119,6 +120,12 @@ function SftpCatalogNavigation ({ className,mode }: SftpCatalogNavigationProps) 
         if(inputRef)
             inputRef.current.focus();
     }, [isActiveInput]);
+
+    useEffect(() => {
+        if(selectedHost.widthPanel){
+            setVisibleCount(selectedHost.widthPanel > 460 ? 3 : 2);   
+        }
+    }, [selectedHost.widthPanel]);
     
     return (
         <div 

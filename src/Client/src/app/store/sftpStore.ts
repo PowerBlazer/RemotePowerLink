@@ -10,8 +10,9 @@ export interface SftpServer {
     sftpFileList?: SftpFileList,
     filterOptions: SftpFilterOptions,
     error: SftpError,
-    historyPrevPaths: Stack<string>
-    historyNextPaths: Stack<string>
+    historyPrevPaths: Stack<string>,
+    historyNextPaths: Stack<string>,
+    widthPanel?: number
     isLoad: boolean,
 }
 

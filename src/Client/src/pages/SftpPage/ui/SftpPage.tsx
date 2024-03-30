@@ -28,7 +28,7 @@ function SftpPage ({ className }: SftpPageProps) {
                 gutterClassName={classNames(style.gutter)}
                 draggerClassName={classNames(style.dragger)}
                 direction={SplitDirection.Horizontal}
-                minWidths={[350,350]}
+                minWidths={[390,390]}
                 onResizeFinished={(_,__) => sftpStore.editableWidthSplit = !sftpStore.editableWidthSplit}
             >
                 <SftpCatalog mode={SftpCatalogMode.First} />

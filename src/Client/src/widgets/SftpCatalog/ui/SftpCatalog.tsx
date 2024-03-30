@@ -1,18 +1,17 @@
-import { classNames } from 'shared/lib/classNames/classNames';
+import {classNames} from 'shared/lib/classNames/classNames';
 import style from './SftpCatalog.module.scss';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import sftpStore from 'app/store/sftpStore';
-import { createRef, useEffect, useMemo, useState } from 'react';
+import {createRef, useEffect, useMemo, useState} from 'react';
 import LogoIcon from 'shared/assets/icons/logo.svg';
-import { Button, ThemeButton } from 'shared/ui/Button/Button';
-import { useTranslation } from 'react-i18next';
-import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
+import {Button, ThemeButton} from 'shared/ui/Button/Button';
+import {useTranslation} from 'react-i18next';
+import {SftpSelectHostCatalog} from 'widgets/SftpSelectHostCatalog';
 import SftpHub from 'app/hubs/SftpHub';
-import { NavbarSftp } from 'widgets/NavbarSftp';
-import { SftpFileCatalog } from 'widgets/SftpFileCatalog';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import {NavbarSftp} from 'widgets/NavbarSftp';
+import {SftpFileCatalog} from 'widgets/SftpFileCatalog';
+import {SftpCatalogMode} from 'app/services/SftpService/config/sftpConfig';
 import toast from "react-hot-toast";
-import {ChangedWidthProp} from "pages/SftpPage";
 
 interface SftpCatalogProps{
     className?: string;
@@ -99,6 +98,16 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             }
         }
     }, [sftpStore.secondSelectedHost]);
+
+    useEffect(() => {
+        if(mode === SftpCatalogMode.First && catalogRef && sftpStore.firstSelectedHost){
+            sftpStore.firstSelectedHost.widthPanel = catalogRef.current.offsetWidth;
+        }
+
+        if(mode === SftpCatalogMode.Second && catalogRef && sftpStore.secondSelectedHost){
+            sftpStore.secondSelectedHost.widthPanel = catalogRef.current.offsetWidth;
+        }
+    }, [sftpStore.editableWidthSplit, catalogRef]);
 
     const selectHostInformationBlock = useMemo(() => (
         <div className={classNames(style.host_information_block)}>

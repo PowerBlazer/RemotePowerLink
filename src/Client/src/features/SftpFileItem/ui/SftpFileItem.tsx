@@ -82,13 +82,10 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
     }
 
     useEffect(() => {
-        if(fileItemRef){
-            const width = fileItemRef.current.offsetWidth;
-            
-            setVisibleDate(width > 460)
+        if(selectedHost.widthPanel){
+            setVisibleDate(selectedHost.widthPanel > 460)
         }
-        
-    }, [sftpStore.editableWidthSplit, fileItemRef]);
+    }, [selectedHost.widthPanel]);
 
     return (
         <div
@@ -120,7 +117,7 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
                     [style.center]: fileData.fileType === 1
                 })}
             >
-                {fileData.fileType === 1 ? '--' : fileData.size}
+                {fileData.fileType === 1 ? '- -' : fileData.size}
             </div>
             <div className={classNames(style.file_type)}>
                 {(fileData.fileTypeName &&

@@ -33,6 +33,37 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  padding: 0 13px;
+  font-size: 12px;
+  background-color: var(--search-input-bg-color);
+  
+  & > div {
+    padding: 10px 0;
+    font-weight: 500;
+    color: #8D90A5;
+  }
+  
+  & .title_column{
+    width: 162px;
+  }
+  
+  & .date_column{
+    width: 110px;
+    padding-left: 10px;
+    border-left: 1px solid var(--bg-color);
+  }
+  
+  & .size_column{
+    width: 65px;
+    padding-left: 10px;
+    border-left: 1px solid var(--bg-color);
+  }
+  
+  & .format_column{
+    border-left: 1px solid var(--bg-color);
+    padding-left: 10px;
+    width: 80px;
+  }
 }
 
 

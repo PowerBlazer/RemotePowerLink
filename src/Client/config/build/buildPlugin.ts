@@ -22,7 +22,7 @@ export function buildPlugins ({ paths, isDev, apiHost }: BuildOptions): WebpackP
         new HotModuleReplacementPlugin(),
         new CopyWebpackPlugin({
             patterns:[
-                { from: './public/locales/', to: 'locales' }
+                { from: './public', to: '.', globOptions: { ignore: ["**/*index.html"] } },
             ]
         }),
         new ReactRefreshWebpackPlugin({

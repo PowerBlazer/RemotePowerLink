@@ -15,7 +15,7 @@
       - app_network
         
   react:
-    container_name: production-project
+    container_name: client
     tty: true
     build:
       context: ../Client

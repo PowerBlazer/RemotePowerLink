@@ -36,36 +36,58 @@
   padding: 0 13px;
   font-size: 12px;
   background-color: var(--search-input-bg-color);
-  
-  & > div {
+
+  & > .column {
     padding: 10px 0;
     font-weight: 500;
     color: #8D90A5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-  
+
   & .title_column{
     width: 162px;
   }
-  
+
   & .date_column{
-    width: 110px;
+    width: 135px;
     padding-left: 10px;
     border-left: 1px solid var(--bg-color);
+
+    &.hidden{
+      display: none;
+    }
   }
-  
+
   & .size_column{
     width: 65px;
     padding-left: 10px;
     border-left: 1px solid var(--bg-color);
   }
-  
+
   & .format_column{
     border-left: 1px solid var(--bg-color);
     padding-left: 10px;
-    width: 80px;
+    width: 85px;
   }
 }
 
+.arrow_icon{
+  width: 14px;
+  height: 14px;
+  transform: rotate(90deg);
+  margin-bottom: -1px;
+  
+  &.reverse{
+    transform: rotate(90deg) scale(-1, 1);
+  }
+  
+  & path{
+    fill: #8D90A5;
+    stroke: transparent;
+  }
+}
 
 .loader{
   position: absolute;
@@ -80,3 +102,12 @@
   border-width: 2px;
   border-color: var(--loader-color) transparent;
 }
+
+
+
+
+
+
+
+
+

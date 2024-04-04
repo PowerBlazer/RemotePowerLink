@@ -9,7 +9,6 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Renci.SshNet;
-using Renci.SshNet.Sftp;
 
 namespace Api.Hubs;
 
@@ -60,7 +59,7 @@ public class SftpHub: BaseHub
                     Path = p.FullName,
                     DateModified = p.LastWriteTime,
                     FileType = p.IsDirectory ? FileTypeEnum.Folder : FileTypeEnum.File,
-                    Size = _sftpService.FormatFileSize(p.Length),
+                    Size = p.Length.ToString(),
                     FileTypeName = _sftpService.GetFileExtension(p.Name)
                 })
                 .ToList()

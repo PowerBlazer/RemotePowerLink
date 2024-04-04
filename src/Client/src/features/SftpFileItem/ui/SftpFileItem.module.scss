@@ -5,12 +5,12 @@
   padding: 6px 13px;
   gap: 10px;
   color: #8D90A5;
-  
+
   &.select{
    background-color: var(--bg-color-inverted) ;
    color: var(--button-primary-color);
   }
-  
+
   &:hover{
     background-color: var(--server-manager-item-hover-bg-color);
   }
@@ -20,7 +20,8 @@
   display: flex;
   gap: 7px;
   align-items: center;
-  
+  max-width: 170px;
+
   & .title{
     font-size: 13px;
     font-weight: 500;
@@ -34,7 +35,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    
+
     & .highlight{
       color: var(--button-primary-color);
     }
@@ -43,22 +44,24 @@
 
 .file_date{
   font-size: 12px;
-  width: 110px;
+  width: 130px;
   text-align: start;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
+  flex-shrink: 0;
+  height: 25px;
 }
 
 .file_size{
   font-size: 12px;
   font-weight: 600;
-  width: 55px;
+  width: 60px;
   white-space: nowrap;
   overflow: hidden;
-  
+
   &.center{
-    text-align: center;
+    text-align: start;
   }
 }
 
@@ -71,3 +74,4 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+

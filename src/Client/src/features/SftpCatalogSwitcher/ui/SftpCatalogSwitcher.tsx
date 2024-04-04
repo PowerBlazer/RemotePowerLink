@@ -4,7 +4,6 @@ import { Button } from 'shared/ui/Button/Button';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import sftpStore from 'app/store/sftpStore';
 import {useCallback, useState} from 'react';
-import { toJS } from 'mobx';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
 
 interface SftpCatalogSwitcherProps {

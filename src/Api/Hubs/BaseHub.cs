@@ -33,7 +33,7 @@ public class BaseHub: Hub
         {
             await Clients
                 .Client(Context.ConnectionId)
-                .SendAsync("HandleError", ex.Message);
+                .SendAsync("HandleError", ex.Errors);
         }
         catch (Exception ex)
         {

@@ -68,8 +68,6 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
         if(!dateString || dateString.length === 0){
             return "";
         }
-        
-        
         const date = new Date(dateString);
         let dateTimeString = date.toLocaleTimeString();
 
@@ -79,6 +77,21 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
             dateTimeString = dateTimeString.substring(0, position);
         }
         return `${date.toLocaleDateString()}, ${dateTimeString}`;
+    }
+
+    function formatFileSize(fileSize: number): string {
+        const byteConversion = 1024;
+        const bytes = fileSize;
+
+        if (bytes >= Math.pow(byteConversion, 3)) { // Гигабайты
+            return `${(bytes / Math.pow(byteConversion, 3)).toFixed(2)} GB`;
+        } else if (bytes >= Math.pow(byteConversion, 2)) { // Мегабайты
+            return `${(bytes / Math.pow(byteConversion, 2)).toFixed(2)} MB`;
+        } else if (bytes >= byteConversion) { // Килобайты
+            return `${(bytes / byteConversion).toFixed(2)} KB`;
+        } else { // Байты
+            return `${bytes} bytes`;
+        }
     }
 
     useEffect(() => {
@@ -117,15 +130,12 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
                     [style.center]: fileData.fileType === 1
                 })}
             >
-                {fileData.fileType === 1 ? '- -' : fileData.size}
+                {fileData.fileType === 1 ? '- -' : formatFileSize(Number(fileData.size))}
             </div>
             <div className={classNames(style.file_type)}>
-                {(fileData.fileTypeName &&
-                    fileData.fileType !== 1 &&
-                    fileData.fileTypeName.length > 0
-                )
-                    ? fileData.fileTypeName
-                    : 'folder'}
+                {fileData.name === '..' ? '' : fileData.fileTypeName 
+                    ? fileData.fileTypeName 
+                    : (fileData.fileType == 1 ? 'folder': '')}
             </div>
         </div>
     );

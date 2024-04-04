@@ -54,7 +54,7 @@ function SftpCatalogNavigation ({ className,mode }: SftpCatalogNavigationProps) 
     const onClickDirectoryItemHandler = async (e: MouseEvent<HTMLButtonElement> ,path: string) => {
         e.stopPropagation();
       
-        if(selectedHost?.sftpHub){
+        if(selectedHost?.sftpHub && selectedHost.sftpFileList){
             selectedHost.isLoad = true;
             selectedHost.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
             selectedHost.historyNextPaths.clear();
@@ -65,7 +65,7 @@ function SftpCatalogNavigation ({ className,mode }: SftpCatalogNavigationProps) 
     const onBlurNavigationInput = () => {
         setActiveInput(false);
         
-        if(selectedHost?.sftpHub){
+        if(selectedHost?.sftpHub && selectedHost.sftpFileList){
             selectedHost.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
             selectedHost.historyNextPaths.clear();
             selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, editPathValue)

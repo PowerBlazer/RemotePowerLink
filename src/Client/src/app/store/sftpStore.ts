@@ -1,8 +1,8 @@
-import {ServerData} from 'app/services/ServerService/config/serverConfig';
+import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import SftpHub from 'app/hubs/SftpHub';
-import {SftpCatalogMode, SftpFile, SftpFileList} from 'app/services/SftpService/config/sftpConfig';
-import {action, makeAutoObservable, observable} from 'mobx';
-import {Stack} from "shared/lib/Stack";
+import { SftpCatalogMode, SftpFile, SftpFileList } from 'app/services/SftpService/config/sftpConfig';
+import { makeAutoObservable, observable } from 'mobx';
+import { Stack } from 'shared/lib/Stack';
 
 export interface SftpServer {
     server: ServerData,
@@ -10,10 +10,24 @@ export interface SftpServer {
     sftpFileList?: SftpFileList,
     filterOptions: SftpFilterOptions,
     error: SftpError,
+    menuOption?: SftpMenuOption,
     historyPrevPaths: Stack<string>,
     historyNextPaths: Stack<string>,
-    widthPanel?: number
+    widthPanel?: number,
     isLoad: boolean,
+}
+
+export enum MenuMode {
+    Directory = 'DIRECTORY',
+    File = 'FILE',
+    Multitude = 'MULTITUDE'
+}
+
+export interface SftpMenuOption {
+    x?: number,
+    y?: number,
+    isVisible: boolean,
+    menuMode: MenuMode
 }
 
 export interface ColumnSort {
@@ -35,21 +49,31 @@ class SftpStore {
     constructor () {
         makeAutoObservable(this)
     }
-    
+
     @observable public firstSelectedHost: SftpServer | null = null;
     @observable public secondSelectedHost: SftpServer | null = null;
 
     @observable public firstHostFileItems: SftpFile[] = [];
     @observable public secondHostFileItems: SftpFile[] = [];
-    @observable public editableWidthSplit : boolean = false;
-    
-    @action setFileItems (mode: SftpCatalogMode) {
-        const selectedHost = mode === SftpCatalogMode.First
+    @observable public editableWidthSplit: boolean = false;
+
+    getFileItemsInMode (mode: SftpCatalogMode): SftpFile[] {
+        return mode === SftpCatalogMode.First
+            ? this.firstHostFileItems
+            : this.secondHostFileItems;
+    }
+
+    getSelectedHostInMode (mode: SftpCatalogMode): SftpServer | null {
+        return mode === SftpCatalogMode.First
             ? this.firstSelectedHost
             : this.secondSelectedHost;
-        
+    }
+
+    setFileItems (mode: SftpCatalogMode) {
+        const selectedHost = this.getSelectedHostInMode(mode);
+
         let hostFileItems = selectedHost?.sftpFileList?.fileList;
-        let filterOptions = selectedHost?.filterOptions;
+        const filterOptions = selectedHost?.filterOptions;
 
         if (filterOptions.title) {
             hostFileItems = hostFileItems.filter(
@@ -57,30 +81,30 @@ class SftpStore {
                     p.fileTypeName?.toLowerCase().includes(filterOptions.title?.toLowerCase())
             )
         }
-        
-        if(filterOptions.columnSort){
+
+        if (filterOptions.columnSort) {
             hostFileItems = [...hostFileItems].sort((a, b) => {
                 if (a.name === '..') return -1;
-                
-                if(filterOptions.columnSort.columnKey === 'fileTypeName'){
+
+                if (filterOptions.columnSort.columnKey === 'fileTypeName') {
                     return compareFileTypeName(a, b, filterOptions.columnSort.isReverse)
                 }
-                
-                if(filterOptions.columnSort.columnKey === 'size'){
-                   return compareSizes(a, b, filterOptions.columnSort.isReverse)
+
+                if (filterOptions.columnSort.columnKey === 'size') {
+                    return compareSizes(a, b, filterOptions.columnSort.isReverse)
                 }
-                
-                return filterOptions.columnSort.isReverse 
+
+                return filterOptions.columnSort.isReverse
                     ? compareReverse(a[filterOptions.columnSort.columnKey], b[filterOptions.columnSort.columnKey])
                     : compare(a[filterOptions.columnSort.columnKey], b[filterOptions.columnSort.columnKey])
             })
         }
-        
-        if(mode === SftpCatalogMode.First){
+
+        if (mode === SftpCatalogMode.First) {
             this.firstHostFileItems = hostFileItems;
         }
-        
-        if(mode === SftpCatalogMode.Second){
+
+        if (mode === SftpCatalogMode.Second) {
             this.secondHostFileItems = hostFileItems;
         }
     }
@@ -101,42 +125,69 @@ class SftpStore {
         this.setFileItems(mode);
     }
 
-    setSelectFileItem (mode: SftpCatalogMode, path: string, isClean: boolean = true) {
-        if (mode === SftpCatalogMode.First) {
-            if (isClean) {
+    setSelectFileItem (mode: SftpCatalogMode, path: string, isClean: boolean = true, isAlwaysSelect: boolean = false) {
+        const selectedFileItems = this.getFileItemsInMode(mode);
+
+        if (mode === SftpCatalogMode.First && isClean) {
+            this.firstHostFileItems.forEach((file) => {
+                file.isSelected = false;
+            })
+        }
+
+        if (mode === SftpCatalogMode.Second && isClean) {
+            this.secondHostFileItems.forEach((file) => {
+                file.isSelected = false;
+            })
+        }
+
+        const fileItems = [...selectedFileItems];
+        const selectFileIndex = fileItems.findIndex(p => p.path === path);
+
+        if (selectFileIndex !== -1 && mode === SftpCatalogMode.First) {
+            if (isAlwaysSelect && fileItems[selectFileIndex].isSelected) {
+                fileItems[selectFileIndex].isSelected = true;
+                this.firstHostFileItems = fileItems;
+                return;
+            }
+
+            if (isAlwaysSelect && !fileItems[selectFileIndex].isSelected) {
                 this.firstHostFileItems.forEach((file) => {
                     file.isSelected = false;
                 })
-            }
 
-            const fileItems = [...this.firstHostFileItems];
-            const selectFileIndex = fileItems.findIndex(p => p.path === path);
-
-            if (selectFileIndex !== -1) {
-                fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
+                fileItems[selectFileIndex].isSelected = true;
                 this.firstHostFileItems = fileItems;
+                return;
             }
+
+            fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
+            this.firstHostFileItems = fileItems;
         }
 
-        if (mode === SftpCatalogMode.Second) {
-            if (isClean) {
+        if (selectFileIndex !== -1 && mode === SftpCatalogMode.Second) {
+            if (isAlwaysSelect && fileItems[selectFileIndex].isSelected) {
+                fileItems[selectFileIndex].isSelected = true;
+                this.secondHostFileItems = fileItems;
+                return;
+            }
+
+            if (isAlwaysSelect && !fileItems[selectFileIndex].isSelected) {
                 this.secondHostFileItems.forEach((file) => {
                     file.isSelected = false;
                 })
-            }
 
-            const fileItems = [...this.secondHostFileItems];
-            const selectFileIndex = fileItems.findIndex(p => p.path === path);
-
-            if (selectFileIndex !== -1) {
-                fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
+                fileItems[selectFileIndex].isSelected = true;
                 this.secondHostFileItems = fileItems;
+                return;
             }
+
+            fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
+            this.secondHostFileItems = fileItems;
         }
     }
 }
 
-function compare(a: any, b: any): number {
+function compare (a: any, b: any): number {
     if (a < b) {
         return -1;
     }
@@ -146,7 +197,7 @@ function compare(a: any, b: any): number {
     return 0;
 }
 
-function compareReverse(a: any, b: any): number {
+function compareReverse (a: any, b: any): number {
     if (a < b) {
         return 1;
     }
@@ -156,7 +207,7 @@ function compareReverse(a: any, b: any): number {
     return 0;
 }
 
-function compareSizes(a: SftpFile, b: SftpFile, isReverse: boolean): number {
+function compareSizes (a: SftpFile, b: SftpFile, isReverse: boolean): number {
     // Проверка, если один из элементов fileType === 1
     if (a.fileType === 1 && b.fileType !== 1) {
         // Поместить элементы с fileType === 1 в конец
@@ -180,17 +231,16 @@ function compareSizes(a: SftpFile, b: SftpFile, isReverse: boolean): number {
     }
 }
 
-function compareFileTypeName (a:SftpFile, b:SftpFile, isReverse: boolean): number {
-    
+function compareFileTypeName (a: SftpFile, b: SftpFile, isReverse: boolean): number {
     const aTypeName = a.fileTypeName
         ? a.fileTypeName
-        : (a.fileType === 1 ? 'folder': '')
+        : (a.fileType === 1 ? 'folder' : '')
 
     const bTypeName = b.fileTypeName
         ? b.fileTypeName
-        : (b.fileType === 1 ? 'folder': '');
+        : (b.fileType === 1 ? 'folder' : '');
 
-    return isReverse ? compareReverse(aTypeName,bTypeName) : compare(aTypeName,bTypeName);
+    return isReverse ? compareReverse(aTypeName, bTypeName) : compare(aTypeName, bTypeName);
 }
 
 export default new SftpStore();

@@ -11,10 +11,10 @@ import { SearchInput } from 'features/SearchInput';
 import { SftpCatalogSwitcher } from 'features/SftpCatalogSwitcher';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
-import {SftpCatalogNavigation} from "features/SftpCatalogNavigation";
-import {ChangedWidthProp} from "pages/SftpPage";
+import { SftpCatalogNavigation } from 'features/SftpCatalogNavigation';
+import { ChangedWidthProp } from 'pages/SftpPage';
 
-interface NavbarSftpProps{
+interface NavbarSftpProps {
     className?: string,
     mode: SftpCatalogMode,
     onOpenCatalog: () => void
@@ -23,12 +23,8 @@ interface NavbarSftpProps{
 function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
     const { t } = useTranslation('translation');
 
-    const selectedHost = mode === SftpCatalogMode.First
-        ? sftpStore.firstSelectedHost
-        : sftpStore.secondSelectedHost;
-    
+    const selectedHost = sftpStore.getSelectedHostInMode(mode)
     const selectedTitle = selectedHost?.filterOptions.title || '';
-
     const server = selectedHost?.server;
 
     const onChangeSearchHandler = (value: string) => {
@@ -67,8 +63,8 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
                 <SftpCatalogSwitcher mode={mode}/>
                 <SftpCatalogNavigation mode={mode}/>
             </div>
-            <SearchInput 
-                className={classNames(style.search_input)} 
+            <SearchInput
+                className={classNames(style.search_input)}
                 onChange={(value) => { onChangeSearchHandler(value); }}
                 value={selectedTitle}
             />

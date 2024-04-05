@@ -51,6 +51,9 @@
     "Дата изменения": "Date Modified",
     "Тип": "Kind",
     "Размер": "Size",
-    "Название Столбец": "Name"
+    "Название Столбец": "Name",
+    "Удаление...": "Delete...",
+    "Успешно удалено": "Successfully deleted",
+    "Не удалось удалить, повторите попытку позже": "Failed to delete, try again later"
     
 }

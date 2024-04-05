@@ -1,1 +1,1 @@
-export { default as SftpPage, ChangedWidthProp } from './ui/SftpPage';
+export { default as SftpPage, type ChangedWidthProp } from './ui/SftpPage';

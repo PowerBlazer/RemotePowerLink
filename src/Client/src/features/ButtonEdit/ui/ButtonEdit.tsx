@@ -1,4 +1,4 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ButtonEdit.module.scss';
 import { Button } from 'shared/ui/Button/Button';
 import { ServerManagerData } from 'features/ServerManagerGroup';

@@ -5,8 +5,7 @@ import ReactSplit, { SplitDirection } from '@devbookhq/splitter';
 import { SftpCatalog } from 'widgets/SftpCatalog';
 import { useEffect, useRef, useState } from 'react';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
-import sftpStore from "app/store/sftpStore";
-
+import sftpStore from 'app/store/sftpStore';
 
 export interface ChangedWidthProp {
     changedWidth?: number
@@ -17,19 +16,17 @@ interface SftpPageProps {
 }
 
 function SftpPage ({ className }: SftpPageProps) {
-    const [changedWidth, setChange] = useState<number[]>([350,350]);
+    const [changedWidth, setChange] = useState<number[]>([350, 350]);
     const sftpPageRef = useRef<HTMLDivElement>(null);
-    
-   
-    
+
     return (
         <div className={classNames(style.sftpPage, {}, [className])} ref={sftpPageRef}>
             <ReactSplit
                 gutterClassName={classNames(style.gutter)}
                 draggerClassName={classNames(style.dragger)}
                 direction={SplitDirection.Horizontal}
-                minWidths={[390,390]}
-                onResizeFinished={(_,__) => sftpStore.editableWidthSplit = !sftpStore.editableWidthSplit}
+                minWidths={[390, 390]}
+                onResizeFinished={(_, __) => sftpStore.editableWidthSplit = !sftpStore.editableWidthSplit}
             >
                 <SftpCatalog mode={SftpCatalogMode.First} />
                 <SftpCatalog mode={SftpCatalogMode.Second} />
@@ -37,5 +34,4 @@ function SftpPage ({ className }: SftpPageProps) {
         </div>
     );
 }
-
 export default observer(SftpPage);

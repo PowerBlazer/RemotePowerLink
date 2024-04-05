@@ -1,19 +1,19 @@
-import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpCatalog.module.scss';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import sftpStore from 'app/store/sftpStore';
-import {createRef, useEffect, useMemo, useState} from 'react';
+import { createRef, useEffect, useMemo, useState } from 'react';
 import LogoIcon from 'shared/assets/icons/logo.svg';
-import {Button, ThemeButton} from 'shared/ui/Button/Button';
-import {useTranslation} from 'react-i18next';
-import {SftpSelectHostCatalog} from 'widgets/SftpSelectHostCatalog';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import { useTranslation } from 'react-i18next';
+import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
 import SftpHub from 'app/hubs/SftpHub';
-import {NavbarSftp} from 'widgets/NavbarSftp';
-import {SftpFileCatalog} from 'widgets/SftpFileCatalog';
-import {SftpCatalogMode} from 'app/services/SftpService/config/sftpConfig';
-import toast from "react-hot-toast";
+import { NavbarSftp } from 'widgets/NavbarSftp';
+import { SftpCatalogTable } from 'widgets/SftpCatalogTable';
+import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import toast from 'react-hot-toast';
 
-interface SftpCatalogProps{
+interface SftpCatalogProps {
     className?: string;
     mode: SftpCatalogMode
 }
@@ -23,7 +23,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     const [isViewServersCatalog, setIsView] = useState<boolean>(false);
     const [isViewErrorPanel, setIsViewErrorPanel] = useState<boolean>(false);
     const catalogRef = createRef<HTMLDivElement>();
-    
+
     const getIsSelectedServer = () => {
         if (mode === SftpCatalogMode.First && sftpStore.firstSelectedHost != null) {
             return true;
@@ -31,7 +31,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
         return mode === SftpCatalogMode.Second && sftpStore.secondSelectedHost != null;
     }
-    
+
     useEffect(() => {
         const isFirstSelectedHost = mode === SftpCatalogMode.First &&
             sftpStore.firstSelectedHost !== null &&
@@ -55,13 +55,13 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             }
 
             sftpHub.onError = (message) => {
-                if(sftpStore.firstSelectedHost){
+                if (sftpStore.firstSelectedHost) {
                     sftpStore.firstSelectedHost.isLoad = false;
                     sftpStore.firstSelectedHost.historyPrevPaths.pop()
                 }
 
                 console.log(message)
-                
+
                 toast.error(JSON.stringify(message))
             }
         }
@@ -91,11 +91,11 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             }
 
             sftpHub.onError = (message) => {
-                if(sftpStore.secondSelectedHost){
+                if (sftpStore.secondSelectedHost) {
                     sftpStore.secondSelectedHost.isLoad = false;
                     sftpStore.secondSelectedHost.historyPrevPaths.pop();
                 }
-                
+
                 console.log(message)
 
                 toast.error(JSON.stringify(message))
@@ -104,11 +104,11 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     }, [sftpStore.secondSelectedHost]);
 
     useEffect(() => {
-        if(mode === SftpCatalogMode.First && catalogRef && sftpStore.firstSelectedHost){
+        if (mode === SftpCatalogMode.First && catalogRef && sftpStore.firstSelectedHost) {
             sftpStore.firstSelectedHost.widthPanel = catalogRef.current.offsetWidth;
         }
 
-        if(mode === SftpCatalogMode.Second && catalogRef && sftpStore.secondSelectedHost){
+        if (mode === SftpCatalogMode.Second && catalogRef && sftpStore.secondSelectedHost) {
             sftpStore.secondSelectedHost.widthPanel = catalogRef.current.offsetWidth;
         }
     }, [sftpStore.editableWidthSplit, catalogRef]);
@@ -135,18 +135,18 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     if (getIsSelectedServer() && !isViewServersCatalog && !isViewErrorPanel) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-                <NavbarSftp 
-                    mode={mode} 
+                <NavbarSftp
+                    mode={mode}
                     onOpenCatalog={() => { setIsView(true); }}
                 />
-                <SftpFileCatalog mode={mode}/>
+                <SftpCatalogTable mode={mode}/>
             </div>
         )
     }
 
     return (
         <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-            { !getIsSelectedServer() && !isViewServersCatalog  && selectHostInformationBlock }
+            { !getIsSelectedServer() && !isViewServersCatalog && selectHostInformationBlock }
             { isViewServersCatalog && <SftpSelectHostCatalog mode={mode} onClose={() => { setIsView(false); }}/> }
         </div>
     );

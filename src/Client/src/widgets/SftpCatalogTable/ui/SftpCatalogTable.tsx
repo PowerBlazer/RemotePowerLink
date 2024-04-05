@@ -1,31 +1,26 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import style from './SftpFileCatalog.module.scss';
+import style from './SftpCatalogTable.module.scss';
 import { observer } from 'mobx-react-lite';
 import sftpStore from 'app/store/sftpStore';
 import { Loader } from 'shared/ui/Loader/Loader';
-import { SftpFileItem } from 'features/SftpFileItem';
-import {SftpCatalogMode, SftpFile} from 'app/services/SftpService/config/sftpConfig';
-import {useTranslation} from "react-i18next";
-import {useEffect, useMemo, useState} from "react";
+import { SftpFileRow } from 'features/SftpFileRow';
+import { SftpCatalogMode, SftpFile } from 'app/services/SftpService/config/sftpConfig';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useMemo, useState } from 'react';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
-import {Button} from "shared/ui/Button/Button";
+import { Button } from 'shared/ui/Button/Button';
 
-interface SftpFileCatalogProps{
+interface SftpCatalogTableProps {
     className?: string;
     mode: SftpCatalogMode
 }
 
-function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
+function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
     const { t, i18n } = useTranslation('translation')
     const [isVisibleDate, setVisibleDate] = useState<boolean>(true);
-    
-    const selectedHost = mode === SftpCatalogMode.First
-        ? sftpStore.firstSelectedHost
-        : sftpStore.secondSelectedHost;
 
-    const selectedHostFileItems = mode === SftpCatalogMode.First
-        ? sftpStore.firstHostFileItems
-        : sftpStore.secondHostFileItems;
+    const selectedHost = sftpStore.getSelectedHostInMode(mode)
+    const selectedHostFileItems = sftpStore.getFileItemsInMode(mode)
 
     const createColumnSortOptions = (key: keyof SftpFile) => {
         const columnSortInstance = selectedHost
@@ -34,39 +29,39 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
         let isVisible = false;
         let isReverse = false;
 
-        if(columnSortInstance){
+        if (columnSortInstance) {
             isVisible = columnSortInstance.columnKey === key;
             isReverse = columnSortInstance.isReverse;
         }
-        
+
         const setFilterOptions = () => {
             sftpStore.setSftpFilterOptions(mode, {
                 ...selectedHost.filterOptions,
                 columnSort: !columnSortInstance
                     ? { columnKey: key, isReverse: false } // Создать новый объект, если columnSortInstance равен null
-                    : columnSortInstance.isReverse === false
+                    : !columnSortInstance.isReverse
                         ? { columnKey: key, isReverse: true } // Если isReverse равен false, поменять его на true
                         : null // Если isReverse равен true, установить columnSort в null
             });
         }
-        
+
         return {
             isVisible,
             isReverse,
             setFilterOptions
         }
     }
-    
+
     const nameColumn = useMemo(() => {
-        const { 
+        const {
             isVisible,
             isReverse,
-            setFilterOptions,
+            setFilterOptions
         } = createColumnSortOptions('name');
-        
+
         return (
-            <Button 
-                className={classNames(style.column_button)} 
+            <Button
+                className={classNames(style.column_button)}
                 onClick={setFilterOptions}
             >
                 {t('Название Столбец')}
@@ -76,7 +71,6 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
                 })}>
                     <ArrowIcon width={16} height={16}/>
                 </div>
-                
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions])
@@ -87,8 +81,7 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
             isReverse,
             setFilterOptions
         } = createColumnSortOptions('dateModified');
-        
-        
+
         return (
             <Button
                 className={classNames(style.column_button)}
@@ -111,8 +104,7 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
             isReverse,
             setFilterOptions
         } = createColumnSortOptions('size');
-        
-        
+
         return (
             <Button
                 className={classNames(style.column_button)}
@@ -135,7 +127,7 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
             isReverse,
             setFilterOptions
         } = createColumnSortOptions('fileTypeName');
-        
+
         return (
             <Button
                 className={classNames(style.column_button)}
@@ -151,7 +143,6 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions])
-
 
     useEffect(() => {
         if (selectedHost.widthPanel) {
@@ -180,47 +171,23 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
                         </th>
                     </tr>
                 </thead>
-                
+
                 <tbody className={classNames(style.catalog_inner)}>
                     {!selectedHost?.isLoad && selectedHostFileItems?.map((file) => {
                         return (
-                            <SftpFileItem
+                            <SftpFileRow
                                 key={file.path}
                                 fileData={file}
                                 mode={mode}
                             />
-                        )})
+                        )
+                    })
                     }
                 </tbody>
-                {selectedHost?.isLoad && <Loader className={classNames(style.loader)}/>}
             </table>
-
-            {/*<div className={classNames(style.catalog_columns)}>*/}
-            {/*    {nameColumn}*/}
-            {/*    {isVisibleDate &&*/}
-            {/*        dateColumn*/}
-            {/*    }*/}
-            {/*    {sizeColumn}*/}
-            {/*    {typeColumn}*/}
-            {/*</div>*/}
-            
-            {/*<div className={classNames(style.catalog_inner)}>*/}
-            {/*    {selectedHost?.isLoad*/}
-            {/*        ? <Loader className={classNames(style.loader)}/>*/}
-            {/*        : selectedHostFileItems?.map((file) => {*/}
-            {/*            return (*/}
-            {/*                <SftpFileItem*/}
-            {/*                    key={file.path}*/}
-            {/*                    fileData={file}*/}
-            {/*                    mode={mode}*/}
-            {/*                />*/}
-            {/*            )*/}
-            {/*        })*/}
-            {/*    }*/}
-            {/*</div>*/}
+            {selectedHost?.isLoad && <Loader className={classNames(style.loader)}/>}
         </div>
     );
 }
 
-
-export default observer(SftpFileCatalog);
+export default observer(SftpCatalogTable);

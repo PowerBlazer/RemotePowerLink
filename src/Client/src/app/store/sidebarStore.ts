@@ -107,8 +107,8 @@ class SidebarStore {
     }
 }
 
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+async function delay (ms: number) {
+    return await new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export default new SidebarStore();

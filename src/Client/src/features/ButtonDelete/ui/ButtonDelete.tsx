@@ -9,6 +9,7 @@ import { ProxyService } from 'app/services/ProxyService/proxyService';
 import { IdentityService } from 'app/services/IdentityService/identityService';
 import userStore from 'app/store/userStore';
 import sidebarStore from 'app/store/sidebarStore';
+import {useTranslation} from "react-i18next";
 
 interface ButtonDeleteProps {
     className?: string;
@@ -17,13 +18,14 @@ interface ButtonDeleteProps {
 }
 
 export function ButtonDelete ({ className, dataType, dataId }: ButtonDeleteProps) {
+    const { t } = useTranslation('translation')
     const deleteClickHandler = () => {
         toast.promise(
             deleteData(),
             {
-                loading: 'Удаление...',
-                success: <b>Успешно удалено</b>,
-                error: <b>Не удалось удалить, повторите попытку позже</b>
+                loading: t('Удаление...'),
+                success: <b>{t('Успешно удалено')}</b>,
+                error: <b>{t('Не удалось удалить, повторите попытку позже')}</b>
             }
         );
 

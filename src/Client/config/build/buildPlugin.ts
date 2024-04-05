@@ -17,12 +17,12 @@ export function buildPlugins ({ paths, isDev, apiHost }: BuildOptions): WebpackP
         }),
         new DefinePlugin({
             __IS_DEV__: JSON.stringify(isDev),
-            'process.env.API_HOST': JSON.stringify(apiHost),
+            'process.env.API_HOST': JSON.stringify(apiHost)
         }),
         new HotModuleReplacementPlugin(),
         new CopyWebpackPlugin({
-            patterns:[
-                { from: './public', to: '.', globOptions: { ignore: ["**/*index.html"] } },
+            patterns: [
+                { from: './public', to: '.', globOptions: { ignore: ['**/*index.html'] } }
             ]
         }),
         new ReactRefreshWebpackPlugin({

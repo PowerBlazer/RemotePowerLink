@@ -10,7 +10,7 @@ import searchStore from 'app/store/searchStore';
 import style from './SftpSelectHostCatalog.module.scss';
 import sftpStore from 'app/store/sftpStore';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
-import {Stack} from "shared/lib/Stack";
+import { Stack } from 'shared/lib/Stack';
 
 interface SftpSelectHostCatalogProps {
     className?: string,

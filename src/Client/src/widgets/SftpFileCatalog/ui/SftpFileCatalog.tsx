@@ -66,15 +66,17 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
         
         return (
             <Button 
-                className={classNames(style.title_column,{}, [style.column])} 
+                className={classNames(style.column_button)} 
                 onClick={setFilterOptions}
             >
                 {t('Название Столбец')}
-                {isVisible &&
-                    <div className={classNames(style.arrow_icon, {[style.reverse]: isReverse})}>
-                        <ArrowIcon width={16} height={16}/>
-                    </div>
-                }
+                <div className={classNames(style.arrow_icon, {
+                    [style.reverse]: isReverse,
+                    [style.hidden]: !isVisible
+                })}>
+                    <ArrowIcon width={16} height={16}/>
+                </div>
+                
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions])
@@ -88,16 +90,17 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
         
         
         return (
-            <Button 
-                className={classNames(style.date_column, {}, [style.column])}
+            <Button
+                className={classNames(style.column_button)}
                 onClick={setFilterOptions}
             >
                 {t('Дата изменения')}
-                {isVisible &&
-                    <div className={classNames(style.arrow_icon, {[style.reverse]: isReverse})}>
-                        <ArrowIcon width={16} height={16}/>
-                    </div>
-                }
+                <div className={classNames(style.arrow_icon, {
+                    [style.reverse]: isReverse,
+                    [style.hidden]: !isVisible
+                })}>
+                    <ArrowIcon width={16} height={16}/>
+                </div>
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions, isVisibleDate]);
@@ -111,16 +114,17 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
         
         
         return (
-            <Button 
-                className={classNames(style.size_column, {}, [style.column])}
+            <Button
+                className={classNames(style.column_button)}
                 onClick={setFilterOptions}
             >
                 {t('Размер')}
-                {isVisible &&
-                    <div className={classNames(style.arrow_icon, {[style.reverse]: isReverse})}>
-                        <ArrowIcon width={16} height={16}/>
-                    </div>
-                }
+                <div className={classNames(style.arrow_icon, {
+                    [style.reverse]: isReverse,
+                    [style.hidden]: !isVisible
+                })}>
+                    <ArrowIcon width={16} height={16}/>
+                </div>
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions]);
@@ -133,16 +137,17 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
         } = createColumnSortOptions('fileTypeName');
         
         return (
-            <Button 
-                className={classNames(style.format_column, {}, [style.column])}
+            <Button
+                className={classNames(style.column_button)}
                 onClick={setFilterOptions}
             >
                 {t('Тип')}
-                {isVisible &&
-                    <div className={classNames(style.arrow_icon, {[style.reverse]: isReverse})}>
-                        <ArrowIcon width={16} height={16}/>
-                    </div>
-                }
+                <div className={classNames(style.arrow_icon, {
+                    [style.reverse]: isReverse,
+                    [style.hidden]: !isVisible
+                })}>
+                    <ArrowIcon width={16} height={16}/>
+                </div>
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions])
@@ -153,30 +158,66 @@ function SftpFileCatalog ({ className, mode }: SftpFileCatalogProps) {
             setVisibleDate(selectedHost.widthPanel > 460)
         }
     }, [selectedHost.widthPanel]);
-    
+
     return (
         <div className={classNames(style.sftpFileCatalog, {}, [className])}>
-            <div className={classNames(style.catalog_columns)}>
-                {nameColumn}
-                {dateColumn}
-                {sizeColumn}
-                {typeColumn}
-            </div>
-
-            <div className={classNames(style.catalog_inner_table)}>
-                {selectedHost?.isLoad
-                    ? <Loader className={classNames(style.loader)}/>
-                    : selectedHostFileItems?.map((file) => {
+            <table className={classNames(style.catalog_table)}>
+                <thead className={classNames(style.columns_table)}>
+                    <tr className={classNames(style.columns_row)}>
+                        <th className={classNames(style.column, {}, [style.name_column, style.first_column])}>
+                            {nameColumn}
+                        </th>
+                        {isVisibleDate &&
+                            <th className={classNames(style.column, {}, [style.date_column])}>
+                                {dateColumn}
+                            </th>
+                        }
+                        <th className={classNames(style.column, {}, [style.size_column])}>
+                            {sizeColumn}
+                        </th>
+                        <th className={classNames(style.column, {}, [style.type_column])}>
+                            {typeColumn}
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody className={classNames(style.catalog_inner)}>
+                    {!selectedHost?.isLoad && selectedHostFileItems?.map((file) => {
                         return (
                             <SftpFileItem
                                 key={file.path}
                                 fileData={file}
                                 mode={mode}
                             />
-                        )
-                    })
-                }
-            </div>
+                        )})
+                    }
+                </tbody>
+                {selectedHost?.isLoad && <Loader className={classNames(style.loader)}/>}
+            </table>
+
+            {/*<div className={classNames(style.catalog_columns)}>*/}
+            {/*    {nameColumn}*/}
+            {/*    {isVisibleDate &&*/}
+            {/*        dateColumn*/}
+            {/*    }*/}
+            {/*    {sizeColumn}*/}
+            {/*    {typeColumn}*/}
+            {/*</div>*/}
+            
+            {/*<div className={classNames(style.catalog_inner)}>*/}
+            {/*    {selectedHost?.isLoad*/}
+            {/*        ? <Loader className={classNames(style.loader)}/>*/}
+            {/*        : selectedHostFileItems?.map((file) => {*/}
+            {/*            return (*/}
+            {/*                <SftpFileItem*/}
+            {/*                    key={file.path}*/}
+            {/*                    fileData={file}*/}
+            {/*                    mode={mode}*/}
+            {/*                />*/}
+            {/*            )*/}
+            {/*        })*/}
+            {/*    }*/}
+            {/*</div>*/}
         </div>
     );
 }

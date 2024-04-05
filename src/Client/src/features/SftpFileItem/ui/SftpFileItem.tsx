@@ -15,7 +15,7 @@ interface SftpFileItemProps{
 
 function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
     const [isVisibleDate, setVisibleDate] = useState<boolean>(true);
-    const fileItemRef = useRef<HTMLDivElement>(null);
+    const fileItemRef = useRef<HTMLTableRowElement>(null);
     const selectedHost = mode === SftpCatalogMode.First
         ? sftpStore.firstSelectedHost
         : sftpStore.secondSelectedHost;
@@ -101,7 +101,7 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
     }, [selectedHost.widthPanel]);
 
     return (
-        <div
+        <tr
             className={classNames(style.sftpFileItem, {
                 [style.select]: fileData.isSelected
             }, [className])}
@@ -111,33 +111,33 @@ function SftpFileItem ({ className, fileData, mode }: SftpFileItemProps) {
             title={fileData.name}
             ref={fileItemRef}
         >
-            <div className={classNames(style.file_title)}>
+            <td className={classNames(style.file_name)}>
                 {fileData.fileType === 1
                     ? <FolderIcon width={25} height={25}/>
-                    : <FileIcon width={27}/>}
-                <div className={classNames(style.title)}>
+                    : <FileIcon width={27}/>
+                }
+                <div className={classNames(style.name)}>
                     {highlightMatches(fileData.name, selectedHost.filterOptions.title)}
                 </div>
-            </div>
+            </td>
             {isVisibleDate &&
-                <div className={classNames(style.file_date)}>
+                <td className={classNames(style.file_date)}>
                     {toLocalDateString(fileData.dateModified)}
-                </div>
+                </td>
             }
-
-            <div
+            <td
                 className={classNames(style.file_size, {
                     [style.center]: fileData.fileType === 1
                 })}
             >
                 {fileData.fileType === 1 ? '- -' : formatFileSize(Number(fileData.size))}
-            </div>
-            <div className={classNames(style.file_type)}>
+            </td>
+            <td className={classNames(style.file_type)}>
                 {fileData.name === '..' ? '' : fileData.fileTypeName 
                     ? fileData.fileTypeName 
                     : (fileData.fileType == 1 ? 'folder': '')}
-            </div>
-        </div>
+            </td>
+        </tr>
     );
 }
 

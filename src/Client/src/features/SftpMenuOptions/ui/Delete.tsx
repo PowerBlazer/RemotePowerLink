@@ -3,12 +3,12 @@ import style from './SftpMenuOptions.module.scss';
 import {MenuOptionProp} from "features/SftpMenuOptions";
 import {Button} from "shared/ui/Button/Button";
 
-interface DownloadProps extends MenuOptionProp {
+interface DeleteProps extends MenuOptionProp{
     className?: string;
 }
 
-export function Download ({ className, mode, disabled , onClick }: DownloadProps) {
-    const onClickDownloadHandler = () => {
+export function Delete ({ className, disabled, mode, onClick }: DeleteProps) {
+    const onClickDeleteHandler = () => {
         if(disabled)
             return;
         
@@ -19,10 +19,10 @@ export function Download ({ className, mode, disabled , onClick }: DownloadProps
     
     return (
         <Button 
-            className={classNames(style.download, { [style.disabled]: disabled }, [className, style.menu_item])}
-            onClick={onClickDownloadHandler}
+            className={classNames(style.delete, { [style.disabled]: disabled }, [className, style.menu_item])}
+            onClick={onClickDeleteHandler}
         >
-            Download
+            Delete
 		</Button>
     );
 }

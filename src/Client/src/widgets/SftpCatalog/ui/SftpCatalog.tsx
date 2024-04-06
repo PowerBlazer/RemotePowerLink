@@ -59,9 +59,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     sftpStore.firstSelectedHost.isLoad = false;
                     sftpStore.firstSelectedHost.historyPrevPaths.pop()
                 }
-
-                console.log(message)
-
+                
                 toast.error(JSON.stringify(message))
             }
         }
@@ -95,9 +93,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     sftpStore.secondSelectedHost.isLoad = false;
                     sftpStore.secondSelectedHost.historyPrevPaths.pop();
                 }
-
-                console.log(message)
-
+                
                 toast.error(JSON.stringify(message))
             }
         }

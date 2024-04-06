@@ -1,0 +1,26 @@
+.menu_item{
+  font-size: 14px;
+  padding: 7px 10px;
+  border-radius: 5px;
+  width: 100%;
+  text-align: start;
+  color: var(--text-color);
+  font-weight: 600;
+  
+  &:not(.disabled):hover{
+    background-color: var(--navigation-directory-hover-bg-color);;   
+  }
+  
+  &.delete{
+    color: #e80b36;
+  }
+  
+  &.close{
+    color: #e80b36;
+  }
+  
+  &.disabled{
+    color: #5B6673;
+    cursor: default;
+  }
+}

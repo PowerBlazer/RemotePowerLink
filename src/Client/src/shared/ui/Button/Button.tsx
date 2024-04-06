@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from 'react';
+import {ButtonHTMLAttributes, forwardRef, LegacyRef, MutableRefObject} from 'react';
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './Button.module.scss';
 
@@ -12,23 +12,30 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     theme?: ThemeButton
 }
 
-export function Button (props: ButtonProps) {
-    const {
-        className,
-        children,
-        theme = ThemeButton.CLEAR,
-        disabled,
-        ...otherProps
-    } = props;
 
-    return (
-        <button
-            className={classNames(style.button, {
-                [style.disabled]: disabled
-            }, [className, style[theme]])}
-            {...otherProps}
-        >
-            {children}
-        </button>
-    )
-}
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+    function ButtonRef (props: ButtonProps, ref: MutableRefObject<HTMLButtonElement>) {
+        const {
+            className,
+            children,
+            theme = ThemeButton.CLEAR,
+            disabled,
+            ...otherProps
+        } = props;
+
+        return (
+            <button
+                ref={ref}
+                className={classNames(style.button, {
+                    [style.disabled]: disabled
+                }, [className, style[theme]])}
+                {...otherProps}
+            >
+                {children}
+            </button>
+        )
+    }
+)
+
+

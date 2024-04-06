@@ -5,7 +5,6 @@
   flex-direction: column;
   gap: 10px;
   background-color: var(--navbar-host-bg-color);
-  overflow: hidden;
   
   
   & .search_input{
@@ -27,19 +26,43 @@
     gap: 5px;
     align-items: center;
     
-    & .actions{
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 500;
+    & .action_panel{
+      position: relative;
       
-      & .arrow_icon{
-        width: 18px;
-        height: 18px;
-        margin-top: 3px;
-        transform: rotate(-90deg);
+      & .actions{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        gap: 6px;
+        font-weight: 500;
+
+        & .arrow_icon{
+          width: 18px;
+          height: 18px;
+          margin-top: 3px;
+          transform: rotate(-90deg);
+          transition: transform .2s;
+          
+          &.rotate{
+            transform: rotate(90deg);
+          }
+
+          & path{
+            stroke: transparent;
+            fill: var(--text-color);
+          }
+        }
+      }
+      
+      & .action_menu{
+        position: absolute;
+        top: 35px;
+        left: -80px;
+        z-index: 100;
       }
     }
+    
+    
     
   }
 }
@@ -85,3 +108,5 @@
     text-overflow: ellipsis;
   }
 }
+
+

@@ -5,7 +5,7 @@ export const useOutsideClick = <T extends HTMLElement>(
     exceptions: HTMLElement[] = []
 ) => {
     const ref = useRef<T>(null);
-
+    
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (

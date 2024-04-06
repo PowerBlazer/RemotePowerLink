@@ -1,8 +1,8 @@
-import { ServerData } from 'app/services/ServerService/config/serverConfig';
+import {ServerData} from 'app/services/ServerService/config/serverConfig';
 import SftpHub from 'app/hubs/SftpHub';
-import { SftpCatalogMode, SftpFile, SftpFileList } from 'app/services/SftpService/config/sftpConfig';
-import { makeAutoObservable, observable } from 'mobx';
-import { Stack } from 'shared/lib/Stack';
+import {FileType, SftpCatalogMode, SftpFile, SftpFileList} from 'app/services/SftpService/config/sftpConfig';
+import {makeAutoObservable, observable} from 'mobx';
+import {Stack} from 'shared/lib/Stack';
 
 export interface SftpServer {
     server: ServerData,
@@ -20,12 +20,14 @@ export interface SftpServer {
 export enum MenuMode {
     Directory = 'DIRECTORY',
     File = 'FILE',
+    Default = 'DEFAULT',
     Multitude = 'MULTITUDE'
 }
 
 export interface SftpMenuOption {
     x?: number,
     y?: number,
+    heightWindow?: number
     isVisible: boolean,
     menuMode: MenuMode
 }
@@ -142,7 +144,11 @@ class SftpStore {
 
         const fileItems = [...selectedFileItems];
         const selectFileIndex = fileItems.findIndex(p => p.path === path);
-
+        
+        if(selectFileIndex !== -1 && fileItems[selectFileIndex].fileType === 3){
+            return;
+        }
+        
         if (selectFileIndex !== -1 && mode === SftpCatalogMode.First) {
             if (isAlwaysSelect && fileItems[selectFileIndex].isSelected) {
                 fileItems[selectFileIndex].isSelected = true;
@@ -183,6 +189,20 @@ class SftpStore {
 
             fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
             this.secondHostFileItems = fileItems;
+        }
+    }
+    
+    setSelectAllInFilter (mode:SftpCatalogMode){
+        if(mode === SftpCatalogMode.First){
+            this.firstHostFileItems.filter(p=> p.fileType !== FileType.BackNavigation).forEach(file=> {
+                file.isSelected = true
+            })
+        }
+
+        if(mode === SftpCatalogMode.Second){
+            this.secondHostFileItems.forEach(file=> {
+                file.isSelected = true
+            })
         }
     }
 }

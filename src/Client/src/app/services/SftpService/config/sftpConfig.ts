@@ -1,6 +1,7 @@
 export enum FileType {
     Folder = 1,
-    File = 2
+    File = 2,
+    BackNavigation = 3
 }
 
 export enum SftpCatalogMode {

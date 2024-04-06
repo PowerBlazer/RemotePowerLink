@@ -1,0 +1,28 @@
+.sftpMenuOptions{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background-color: var(--sftp-menu-bg-color);
+  border-radius: 6px;
+  visibility: hidden;
+  opacity: 0;
+  box-shadow: var(--sftp-menu-box-shadow);
+  transition: opacity .3s, visibility .3s;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 2px;
+  
+  &.relative{
+    position: relative;
+  }
+  
+  &.visible{
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  width: 170px;
+  min-height: 150px;
+}

@@ -42,7 +42,7 @@ class SftpHub {
                     return;
                 }
 
-                toast.error(err.toString());
+                this.onError(err.toString())
             });
 
         this.events = (onFilesReceived) => {
@@ -71,7 +71,23 @@ class SftpHub {
     }
 
     public getFilesServer = async (serverId: number, path?: string) => {
-        await this.connection.send('getFilesServer', serverId, path);
+        if(this.validateConnection()){
+            await this.connection.send('getFilesServer', serverId, path);
+        }
+    }
+    
+    private validateConnection(): boolean{
+        if(this.connection.state === "Disconnected"){
+            this.onError("Подключение прервано, переподключитесь или обновите страницу")
+            return false; 
+        }
+
+        if(this.connection.state === 'Reconnecting'){
+            this.onError('Идет переподключение')
+            return false; 
+        }
+        
+        return true;
     }
 }
 export default SftpHub;

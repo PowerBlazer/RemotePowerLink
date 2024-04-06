@@ -41,11 +41,8 @@ public class SftpHub: BaseHub
                 path = sftpClient.WorkingDirectory;
             }
 
-            if (path == "//")
-            {
-                path = "/";
-            }
-
+            path = path.Replace("//", "/");
+                
             var filesList = sftpClient
                 .ListDirectory(path)
                 .Where(p => p.Name is not ("." or ".."));
@@ -73,12 +70,12 @@ public class SftpHub: BaseHub
                 {
                     Name = "..",
                     Path = previousDirectoryPath,
-                    FileType = FileTypeEnum.Folder,
+                    FileType = FileTypeEnum.BackNavigation,
                 });
             }
 
             serverFileList.FileList = serverFileList.FileList
-                .OrderByDescending(p=> p.Name == "..")
+                .OrderByDescending(p=> p.FileType == FileTypeEnum.BackNavigation)
                 .ThenByDescending(p => p.FileType == FileTypeEnum.Folder)
                 .ThenBy(p => p.Name)
                 .ToList();

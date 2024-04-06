@@ -1,18 +1,18 @@
-import { classNames } from 'shared/lib/classNames/classNames';
+import {classNames} from 'shared/lib/classNames/classNames';
 import style from './NavbarSftp.module.scss';
-import { observer } from 'mobx-react-lite';
-import { Button } from 'shared/ui/Button/Button';
-import { HostService } from 'app/services/hostService';
-import sftpStore from 'app/store/sftpStore';
-import { useTranslation } from 'react-i18next';
+import {observer} from 'mobx-react-lite';
+import {Button} from 'shared/ui/Button/Button';
+import {HostService} from 'app/services/hostService';
+import sftpStore, {MenuMode} from 'app/store/sftpStore';
+import {useTranslation} from 'react-i18next';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
-import { useEffect, useState } from 'react';
-import { SearchInput } from 'features/SearchInput';
-import { SftpCatalogSwitcher } from 'features/SftpCatalogSwitcher';
-import { Loader } from 'shared/ui/Loader/Loader';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
-import { SftpCatalogNavigation } from 'features/SftpCatalogNavigation';
-import { ChangedWidthProp } from 'pages/SftpPage';
+import {SearchInput} from 'features/SearchInput';
+import {SftpCatalogSwitcher} from 'features/SftpCatalogSwitcher';
+import {Loader} from 'shared/ui/Loader/Loader';
+import {SftpCatalogMode} from 'app/services/SftpService/config/sftpConfig';
+import {SftpCatalogNavigation} from 'features/SftpCatalogNavigation';
+import {SftpMenu} from "widgets/SftpMenu";
+import {useEffect, useRef, useState} from "react";
 
 interface NavbarSftpProps {
     className?: string,
@@ -22,18 +22,31 @@ interface NavbarSftpProps {
 
 function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
     const { t } = useTranslation('translation');
-
-    const selectedHost = sftpStore.getSelectedHostInMode(mode)
+    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    
     const selectedTitle = selectedHost?.filterOptions.title || '';
     const server = selectedHost?.server;
-
+    
+    const [isVisibleMenu, setVisibleMenu] = useState<boolean>(false);
+    const actionButtonRef = useRef<HTMLButtonElement>(null)
     const onChangeSearchHandler = (value: string) => {
         sftpStore.setSftpFilterOptions(mode, {
             ...selectedHost?.filterOptions,
             title: value
         })
     }
-
+    
+    const onVisibleMenuHandler = () => {
+        if(selectedHost){
+            selectedHost.menuOption = {
+                menuMode: MenuMode.Default,
+                isVisible: false
+            }
+            
+            setVisibleMenu(value => !value)
+        }
+    }
+    
     return (
         <div className={classNames(style.navbarSftp, {}, [className])}>
             <div className={classNames(style.navbar_header)}>
@@ -51,12 +64,23 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
                     </Button>
                 }
                 <div className={classNames(style.tools)}>
-                    <div className={classNames(style.actions)}>
-                        {t('Действия')}
-                        <div className={classNames(style.arrow_icon)}>
-                            <ArrowIcon width={18} height={18}/>
-                        </div>
+                    <div className={classNames(style.action_panel)}>
+                        <Button className={classNames(style.actions)} onClick={onVisibleMenuHandler} ref={actionButtonRef}>
+                            {t('Действия')}
+                            <div className={classNames(style.arrow_icon, {[style.rotate]: isVisibleMenu})}>
+                                <ArrowIcon width={18} height={18}/>
+                            </div>
+                        </Button>
+                        <SftpMenu 
+                            mode={mode} 
+                            isPosition={false} 
+                            isVisible={isVisibleMenu} 
+                            className={classNames(style.action_menu)}
+                            ref={actionButtonRef}
+                            onClose={()=> setVisibleMenu(false)}
+                        />
                     </div>
+                   
                 </div>
             </div>
             <div className={classNames(style.catalog_tools)}>

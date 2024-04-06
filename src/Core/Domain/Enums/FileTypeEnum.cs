@@ -8,5 +8,8 @@ public enum FileTypeEnum
     Folder = 1,
     
     [Description("File")]
-    File = 2
+    File = 2,
+    
+    [Description("BackNavigation")]
+    BackNavigation = 3
 }

@@ -1,1 +1,1 @@
-export { default as SftpCatalog } from './ui/SftpCatalog'
+export { default as SftpCatalog, type SftpCatalogModeProps } from './ui/SftpCatalog'

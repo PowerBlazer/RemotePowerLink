@@ -1,7 +1,6 @@
-﻿import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
-export interface MenuOptionProp{
+export interface MenuOptionProp extends SftpCatalogModeProps {
     disabled?: boolean,
-    mode: SftpCatalogMode,
     onClick?: () => void
 }

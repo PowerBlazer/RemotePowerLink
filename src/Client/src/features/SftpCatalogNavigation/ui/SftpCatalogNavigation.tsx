@@ -1,16 +1,15 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpCatalogNavigation.module.scss';
 import { observer } from 'mobx-react-lite';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
 import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
 import sftpStore from 'app/store/sftpStore';
 import { Button } from 'shared/ui/Button/Button';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg'
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
-interface SftpCatalogNavigationProps {
+interface SftpCatalogNavigationProps extends SftpCatalogModeProps {
     className?: string;
-    mode: SftpCatalogMode
 }
 
 interface NavigationItem {

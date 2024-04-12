@@ -1,7 +1,7 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpMenuOptions.module.scss';
-import {MenuOptionProp} from "features/SftpMenuOptions";
-import {Button} from "shared/ui/Button/Button";
+import { MenuOptionProp } from 'features/SftpMenuOptions';
+import { Button } from 'shared/ui/Button/Button';
 
 interface NewFolderProps extends MenuOptionProp {
     className?: string;
@@ -9,20 +9,19 @@ interface NewFolderProps extends MenuOptionProp {
 
 export function NewFolder ({ className, disabled, mode, onClick }: NewFolderProps) {
     const onClickNewFolderHandler = () => {
-        if(disabled)
-            return;
-        
-        if(onClick){
+        if (disabled) { return; }
+
+        if (onClick) {
             onClick();
         }
     }
-    
+
     return (
-        <Button 
+        <Button
             className={classNames(style.newFolder, { [style.disabled]: disabled }, [className, style.menu_item])}
             onClick={onClickNewFolderHandler}
         >
             New Folder
-		</Button>
+        </Button>
     );
 }

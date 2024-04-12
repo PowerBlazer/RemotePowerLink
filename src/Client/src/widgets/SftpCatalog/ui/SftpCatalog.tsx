@@ -1,21 +1,25 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import style from './SftpCatalog.module.scss';
 import { observer } from 'mobx-react-lite';
-import sftpStore from 'app/store/sftpStore';
 import { createRef, useEffect, useMemo, useState } from 'react';
-import LogoIcon from 'shared/assets/icons/logo.svg';
 import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import { useTranslation } from 'react-i18next';
 import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
-import SftpHub from 'app/hubs/SftpHub';
 import { NavbarSftp } from 'widgets/NavbarSftp';
 import { SftpCatalogTable } from 'widgets/SftpCatalogTable';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import { SftpCatalogModal } from 'widgets/SftpCatalogModal';
+import SftpHub from 'app/hubs/SftpHub';
 import toast from 'react-hot-toast';
+import sftpStore from 'app/store/sftpStore';
+import LogoIcon from 'shared/assets/icons/logo.svg';
+import style from './SftpCatalog.module.scss';
 
-interface SftpCatalogProps {
-    className?: string;
+export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
+}
+
+interface SftpCatalogProps extends SftpCatalogModeProps {
+    className?: string;
 }
 
 function SftpCatalog ({ className, mode }: SftpCatalogProps) {
@@ -54,13 +58,18 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 await sftpHub.getFilesServer(sftpStore.firstSelectedHost.server.serverId);
             }
 
-            sftpHub.onError = (message) => {
+            sftpHub.onError = (errors) => {
                 if (sftpStore.firstSelectedHost) {
-                    sftpStore.firstSelectedHost.isLoad = false;
-                    sftpStore.firstSelectedHost.historyPrevPaths.pop()
+                    sftpStore.firstSelectedHost = {
+                        ...sftpStore.firstSelectedHost,
+                        isLoad:false,
+                        error: { errors: errors }
+                    }
+                    
+                    sftpStore.firstSelectedHost.historyPrevPaths.pop();
                 }
-                
-                toast.error(JSON.stringify(message))
+
+                toast.error(JSON.stringify(errors))
             }
         }
     }, [sftpStore.firstSelectedHost]);
@@ -88,13 +97,18 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 await sftpHub.getFilesServer(sftpStore.secondSelectedHost.server.serverId);
             }
 
-            sftpHub.onError = (message) => {
+            sftpHub.onError = (errors) => {
                 if (sftpStore.secondSelectedHost) {
-                    sftpStore.secondSelectedHost.isLoad = false;
+                    sftpStore.secondSelectedHost = {
+                        ...sftpStore.secondSelectedHost,
+                        isLoad:false,
+                        error: { errors: errors }
+                    }
+
                     sftpStore.secondSelectedHost.historyPrevPaths.pop();
                 }
-                
-                toast.error(JSON.stringify(message))
+
+                toast.error(JSON.stringify(errors))
             }
         }
     }, [sftpStore.secondSelectedHost]);
@@ -136,6 +150,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     onOpenCatalog={() => { setIsView(true); }}
                 />
                 <SftpCatalogTable mode={mode}/>
+                <SftpCatalogModal mode={mode}/>
             </div>
         )
     }

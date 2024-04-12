@@ -4,11 +4,10 @@ import { Button } from 'shared/ui/Button/Button';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import sftpStore from 'app/store/sftpStore';
 import { useCallback, useState } from 'react';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
-interface SftpCatalogSwitcherProps {
+interface SftpCatalogSwitcherProps extends SftpCatalogModeProps {
     className?: string;
-    mode: SftpCatalogMode
 }
 
 export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherProps) {

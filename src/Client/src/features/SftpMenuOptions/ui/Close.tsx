@@ -1,9 +1,9 @@
-﻿import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpMenuOptions.module.scss';
-import {MenuOptionProp} from "features/SftpMenuOptions";
-import {Button} from "shared/ui/Button/Button";
-import {SftpCatalogMode} from "app/services/SftpService/config/sftpConfig";
-import sftpStore from "app/store/sftpStore";
+import { MenuOptionProp } from 'features/SftpMenuOptions';
+import { Button } from 'shared/ui/Button/Button';
+import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import sftpStore from 'app/store/sftpStore';
 
 interface CloseProps extends MenuOptionProp {
     className?: string;
@@ -11,30 +11,29 @@ interface CloseProps extends MenuOptionProp {
 
 export function Close ({ className, mode, disabled, onClick }: CloseProps) {
     const onClickCloseHandler = () => {
-       if(disabled) 
-           return;
-        
-       if(mode === SftpCatalogMode.First && sftpStore.firstSelectedHost){
-           sftpStore.firstSelectedHost.sftpHub.closeConnection();
-           sftpStore.firstSelectedHost = null;
-       }
+        if (disabled) { return; }
 
-        if(mode === SftpCatalogMode.Second && sftpStore.secondSelectedHost){
+        if (mode === SftpCatalogMode.First && sftpStore.firstSelectedHost) {
+            sftpStore.firstSelectedHost.sftpHub.closeConnection();
+            sftpStore.firstSelectedHost = null;
+        }
+
+        if (mode === SftpCatalogMode.Second && sftpStore.secondSelectedHost) {
             sftpStore.secondSelectedHost.sftpHub.closeConnection();
             sftpStore.secondSelectedHost = null;
         }
-        
-        if(onClick){
+
+        if (onClick) {
             onClick();
         }
     }
-    
+
     return (
-        <Button 
+        <Button
             className={classNames(style.close, { [style.disabled]: disabled }, [className, style.menu_item])}
             onClick={onClickCloseHandler}
         >
             Close
-		</Button>
+        </Button>
     );
 }

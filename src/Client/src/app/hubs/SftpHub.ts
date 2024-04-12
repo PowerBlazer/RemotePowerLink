@@ -19,7 +19,7 @@ class SftpHub {
         this.connection.start()
             .then(async () => { await this.onConnect(); })
             .catch(async err => {
-                if (err.message && err.message.includes('401')) {
+                if (err.message?.includes('401')) {
                     const refreshResult = await AuthorizationService.refreshToken();
 
                     if (refreshResult.isSuccess) {
@@ -61,7 +61,7 @@ class SftpHub {
     ) => void;
 
     public onConnect: () => Promise<void> = async function connect () { };
-    public onError: (message: string) => void =
+    public onError: (message: any) => void =
         function error (message) {
             toast.error(message);
         }
@@ -71,22 +71,22 @@ class SftpHub {
     }
 
     public getFilesServer = async (serverId: number, path?: string) => {
-        if(this.validateConnection()){
+        if (this.validateConnection()) {
             await this.connection.send('getFilesServer', serverId, path);
         }
     }
-    
-    private validateConnection(): boolean{
-        if(this.connection.state === "Disconnected"){
-            this.onError("Подключение прервано, переподключитесь или обновите страницу")
-            return false; 
+
+    private validateConnection (): boolean {
+        if (this.connection.state === 'Disconnected') {
+            this.onError('Подключение прервано, переподключитесь или обновите страницу')
+            return false;
         }
 
-        if(this.connection.state === 'Reconnecting'){
+        if (this.connection.state === 'Reconnecting') {
             this.onError('Идет переподключение')
-            return false; 
+            return false;
         }
-        
+
         return true;
     }
 }

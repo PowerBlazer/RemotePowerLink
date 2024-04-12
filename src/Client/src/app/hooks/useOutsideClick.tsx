@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
 
 export const useOutsideClick = <T extends HTMLElement>(
-    callback: () => void,
+    callback: (e: MouseEvent) => void,
     exceptions: HTMLElement[] = []
 ) => {
     const ref = useRef<T>(null);
-    
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -13,7 +13,7 @@ export const useOutsideClick = <T extends HTMLElement>(
                 !ref.current.contains(event.target as Node) &&
                 !exceptions.some(exception => exception?.contains(event.target as Node))
             ) {
-                callback();
+                callback(event);
             }
         };
 

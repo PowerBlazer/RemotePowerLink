@@ -2,7 +2,7 @@
 
 namespace Application.Services;
 
-public class SftpIdleDisconnectService
+public class SftpIdleDisconnectService : IDisposable
 {
     private readonly ISftpClientService _sftpClientService;
     private Timer? _timer;
@@ -10,7 +10,6 @@ public class SftpIdleDisconnectService
     public SftpIdleDisconnectService(ISftpClientService sftpClientService)
     {
         _sftpClientService = sftpClientService;
-        
     }
 
     public void StartTimer()
@@ -21,9 +20,5 @@ public class SftpIdleDisconnectService
             TimeSpan.Zero, 
             TimeSpan.FromMinutes(5)); // Проверяем каждую минуту
     }
-    
-    public void Dispose()
-    {
-        _timer.Dispose();
-    }
+    public void Dispose() => _timer?.Dispose();
 }

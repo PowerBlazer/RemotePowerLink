@@ -111,7 +111,7 @@ public class SftpHub: BaseHub
         {
             throw new ConnectionServerException(
                 $"Ошибка подключения SSH по ID ${serverId} сервера ConnectionID = ${ConnectionKey}",
-                "Server"
+                "Connection"
             );
         }
 

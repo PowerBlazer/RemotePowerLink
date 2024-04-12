@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 import { classNames } from 'shared/lib/classNames/classNames';
 import LogoIcon from 'shared/assets/icons/logo.svg';
 import style from './Logotype.module.scss';

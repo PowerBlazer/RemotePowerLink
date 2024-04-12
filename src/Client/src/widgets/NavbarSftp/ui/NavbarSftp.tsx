@@ -1,32 +1,30 @@
-import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './NavbarSftp.module.scss';
-import {observer} from 'mobx-react-lite';
-import {Button} from 'shared/ui/Button/Button';
-import {HostService} from 'app/services/hostService';
-import sftpStore, {MenuMode} from 'app/store/sftpStore';
-import {useTranslation} from 'react-i18next';
+import { observer } from 'mobx-react-lite';
+import { Button } from 'shared/ui/Button/Button';
+import { HostService } from 'app/services/hostService';
+import sftpStore, { MenuMode } from 'app/store/sftpStore';
+import { useTranslation } from 'react-i18next';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
-import {SearchInput} from 'features/SearchInput';
-import {SftpCatalogSwitcher} from 'features/SftpCatalogSwitcher';
-import {Loader} from 'shared/ui/Loader/Loader';
-import {SftpCatalogMode} from 'app/services/SftpService/config/sftpConfig';
-import {SftpCatalogNavigation} from 'features/SftpCatalogNavigation';
-import {SftpMenu} from "widgets/SftpMenu";
-import {useEffect, useRef, useState} from "react";
+import { SearchInput } from 'features/SearchInput';
+import { SftpCatalogSwitcher } from 'features/SftpCatalogSwitcher';
+import { SftpCatalogNavigation } from 'features/SftpCatalogNavigation';
+import { SftpMenu } from 'widgets/SftpMenu';
+import { useRef, useState } from 'react';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
-interface NavbarSftpProps {
+interface NavbarSftpProps extends SftpCatalogModeProps {
     className?: string,
-    mode: SftpCatalogMode,
     onOpenCatalog: () => void
 }
 
 function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
     const { t } = useTranslation('translation');
     const selectedHost = sftpStore.getSelectedHostInMode(mode);
-    
+
     const selectedTitle = selectedHost?.filterOptions.title || '';
     const server = selectedHost?.server;
-    
+
     const [isVisibleMenu, setVisibleMenu] = useState<boolean>(false);
     const actionButtonRef = useRef<HTMLButtonElement>(null)
     const onChangeSearchHandler = (value: string) => {
@@ -35,52 +33,49 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
             title: value
         })
     }
-    
+
     const onVisibleMenuHandler = () => {
-        if(selectedHost){
+        if (selectedHost) {
             selectedHost.menuOption = {
                 menuMode: MenuMode.Default,
                 isVisible: false
             }
-            
+
             setVisibleMenu(value => !value)
         }
     }
-    
+
     return (
         <div className={classNames(style.navbarSftp, {}, [className])}>
             <div className={classNames(style.navbar_header)}>
-                {selectedHost?.isLoad
-                    ? <Loader className={classNames(style.loader)}/>
-                    : <Button className={classNames(style.change_host)} onClick={onOpenCatalog}>
-                        <img
-                            className={classNames(style.server_icon)}
-                            alt={'server_icon'}
-                            src={`${HostService._resourceHost}${server.systemTypeIcon}`}
-                            width={22}
-                            height={22}
-                        />
-                        <h4 className={classNames(style.server_title)}>{server.title}</h4>
-                    </Button>
-                }
+                <Button className={classNames(style.change_host)} onClick={onOpenCatalog}>
+                    <img
+                        className={classNames(style.server_icon)}
+                        alt={'server_icon'}
+                        src={`${HostService._resourceHost}${server.systemTypeIcon}`}
+                        width={22}
+                        height={22}
+                    />
+                    <h4 className={classNames(style.server_title)}>{server.title}</h4>
+                </Button>
                 <div className={classNames(style.tools)}>
                     <div className={classNames(style.action_panel)}>
                         <Button className={classNames(style.actions)} onClick={onVisibleMenuHandler} ref={actionButtonRef}>
                             {t('Действия')}
-                            <div className={classNames(style.arrow_icon, {[style.rotate]: isVisibleMenu})}>
+                            <div className={classNames(style.arrow_icon, { [style.rotate]: isVisibleMenu })}>
                                 <ArrowIcon width={18} height={18}/>
                             </div>
                         </Button>
-                        <SftpMenu 
-                            mode={mode} 
-                            isPosition={false} 
-                            isVisible={isVisibleMenu} 
+                        <SftpMenu
+                            mode={mode}
+                            isPosition={false}
+                            isVisible={isVisibleMenu}
                             className={classNames(style.action_menu)}
                             ref={actionButtonRef}
-                            onClose={()=> setVisibleMenu(false)}
+                            onClose={() => { setVisibleMenu(false); }}
                         />
                     </div>
-                   
+
                 </div>
             </div>
             <div className={classNames(style.catalog_tools)}>

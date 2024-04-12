@@ -1,16 +1,16 @@
-import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpFileRow.module.scss';
-import {observer} from 'mobx-react-lite';
-import {FileType, SftpCatalogMode, SftpFile} from 'app/services/SftpService/config/sftpConfig';
-import sftpStore, {MenuMode} from 'app/store/sftpStore';
+import { observer } from 'mobx-react-lite';
+import { FileType, SftpCatalogMode, SftpFile } from 'app/services/SftpService/config/sftpConfig';
+import sftpStore, { MenuMode } from 'app/store/sftpStore';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg'
 import FileIcon from 'shared/assets/icons/sftp/file.svg'
-import {MouseEvent, useEffect, useRef, useState} from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
-interface SftpFileRowProps {
+interface SftpFileRowProps extends SftpCatalogModeProps {
     className?: string;
     fileData: SftpFile;
-    mode: SftpCatalogMode
 }
 
 function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
@@ -26,7 +26,7 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
             selectedHost.isLoad = true;
             selectedHost.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
             selectedHost.historyNextPaths.clear();
-            
+
             await selectedHost?.sftpHub.getFilesServer(
                 selectedHost.server.serverId,
                 fileData.path
@@ -61,8 +61,8 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
 
     const contextManuHandler = (e: MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
-        
-        if(fileData.fileType === FileType.BackNavigation){
+
+        if (fileData.fileType === FileType.BackNavigation) {
             return;
         }
 
@@ -74,26 +74,26 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
 
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
+
         sftpStore.setSelectFileItem(mode, fileData.path, false, true);
 
         const selectedItemsCount = selectedFileItems?.filter(p => p.isSelected)?.length;
-        
-        if(selectedHost){
+
+        if (selectedHost) {
             let mode = fileData.fileType === FileType.File
                 ? MenuMode.File
                 : MenuMode.Directory;
-            
-            if(selectedItemsCount && selectedItemsCount > 1){
+
+            if (selectedItemsCount && selectedItemsCount > 1) {
                 mode = MenuMode.Multitude;
             }
-            
+
             selectedHost.menuOption = {
                 isVisible: true,
                 menuMode: mode,
                 heightWindow: e.currentTarget.parentElement.parentElement.parentElement.clientHeight,
-                x: x,
-                y: y
+                x,
+                y
             }
         }
     }
@@ -165,8 +165,8 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
                     [style.center]: fileData.fileType === FileType.Folder || fileData.fileType === FileType.BackNavigation
                 })}
             >
-                {fileData.fileType === FileType.Folder || fileData.fileType === FileType.BackNavigation 
-                    ? '- -' 
+                {fileData.fileType === FileType.Folder || fileData.fileType === FileType.BackNavigation
+                    ? '- -'
                     : formatFileSize(Number(fileData.size))}
             </td>
             <td className={classNames(style.file_type)}>

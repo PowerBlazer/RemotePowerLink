@@ -6,23 +6,22 @@ import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpFileRow } from 'features/SftpFileRow';
 import { SftpCatalogMode, SftpFile } from 'app/services/SftpService/config/sftpConfig';
 import { useTranslation } from 'react-i18next';
-import {UIEvent, UIEventHandler, useEffect, useMemo, useRef, useState} from 'react';
+import { UIEvent, useEffect, useMemo, useRef, useState } from 'react';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import { Button } from 'shared/ui/Button/Button';
-import {SftpMenu} from "widgets/SftpMenu";
+import { SftpMenu } from 'widgets/SftpMenu';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
-interface SftpCatalogTableProps {
+interface SftpCatalogTableProps extends SftpCatalogModeProps {
     className?: string;
-    mode: SftpCatalogMode
 }
 
 function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
     const { t, i18n } = useTranslation('translation')
     const [isVisibleDate, setVisibleDate] = useState<boolean>(true);
-    const [hasScroll, setHasScroll] = useState(false);
     const [scrollTop, setScrollTop] = useState<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
-    
+
     const selectedHost = sftpStore.getSelectedHostInMode(mode)
     const selectedHostFileItems = sftpStore.getFileItemsInMode(mode)
 
@@ -77,7 +76,8 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                 </div>
             </Button>
         )
-    }, [i18n.language, selectedHost.filterOptions])
+    }, [i18n.language, selectedHost.filterOptions]);
+
     const dateColumn = useMemo(() => {
         const {
             isVisible,
@@ -100,6 +100,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions, isVisibleDate]);
+
     const sizeColumn = useMemo(() => {
         const {
             isVisible,
@@ -144,16 +145,14 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
             </Button>
         )
     }, [i18n.language, selectedHost.filterOptions]);
-    
-    
+
     const onScrollHandler = (e: UIEvent<HTMLDivElement>) => {
-        if(selectedHost?.menuOption?.isVisible){
+        if (selectedHost?.menuOption?.isVisible) {
             e.preventDefault();
 
             requestAnimationFrame(() => {
                 containerRef.current.scrollTop = scrollTop;
             });
-            
         }
     }
 
@@ -167,49 +166,41 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
         }
     }, [selectedHost.widthPanel]);
 
-    useEffect(() => {
-        const divElement = containerRef?.current;
-
-        if (divElement) {
-            setHasScroll(divElement.scrollHeight > divElement.clientHeight);
-        }
-    }, [selectedHostFileItems]);
-
     return (
         <div className={classNames(style.sftpFileCatalog, {}, [className])}>
-            <div 
-                className={classNames(style.table_container )}
-                onScroll={onScrollHandler}  
+            <div
+                className={classNames(style.table_container)}
+                onScroll={onScrollHandler}
                 ref={containerRef}
             >
                 <table className={classNames(style.catalog_table)}>
                     <thead className={classNames(style.columns_table)}>
-                    <tr className={classNames(style.columns_row)}>
-                        <th className={classNames(style.column, {}, [style.name_column, style.first_column])}>
-                            {nameColumn}
-                        </th>
-                        {isVisibleDate &&
-                            <th className={classNames(style.column, {}, [style.date_column])}>
-                                {dateColumn}
+                        <tr className={classNames(style.columns_row)}>
+                            <th className={classNames(style.column, {}, [style.name_column, style.first_column])}>
+                                {nameColumn}
                             </th>
-                        }
-                        <th className={classNames(style.column, {}, [style.size_column])}>
-                            {sizeColumn}
-                        </th>
-                        <th className={classNames(style.column, {}, [style.type_column])}>
-                            {typeColumn}
-                        </th>
-                    </tr>
+                            {isVisibleDate &&
+                                <th className={classNames(style.column, {}, [style.date_column])}>
+                                    {dateColumn}
+                                </th>
+                            }
+                            <th className={classNames(style.column, {}, [style.size_column])}>
+                                {sizeColumn}
+                            </th>
+                            <th className={classNames(style.column, {}, [style.type_column])}>
+                                {typeColumn}
+                            </th>
+                        </tr>
                     </thead>
 
                     <tbody className={classNames(style.catalog_inner)}>
                         {!selectedHost?.isLoad && selectedHostFileItems?.map((file) => (
-                                <SftpFileRow
-                                    key={file.path}
-                                    fileData={file}
-                                    mode={mode}
-                                />
-                            )
+                            <SftpFileRow
+                                key={file.path}
+                                fileData={file}
+                                mode={mode}
+                            />
+                        )
                         )}
                     </tbody>
                 </table>

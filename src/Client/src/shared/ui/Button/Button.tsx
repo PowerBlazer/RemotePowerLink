@@ -1,4 +1,4 @@
-import {ButtonHTMLAttributes, forwardRef, LegacyRef, MutableRefObject} from 'react';
+import { ButtonHTMLAttributes, forwardRef, LegacyRef, MutableRefObject } from 'react';
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './Button.module.scss';
 
@@ -11,8 +11,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string,
     theme?: ThemeButton
 }
-
-
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     function ButtonRef (props: ButtonProps, ref: MutableRefObject<HTMLButtonElement>) {
@@ -37,5 +35,3 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )
     }
 )
-
-

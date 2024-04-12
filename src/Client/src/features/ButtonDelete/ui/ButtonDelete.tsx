@@ -9,7 +9,7 @@ import { ProxyService } from 'app/services/ProxyService/proxyService';
 import { IdentityService } from 'app/services/IdentityService/identityService';
 import userStore from 'app/store/userStore';
 import sidebarStore from 'app/store/sidebarStore';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 interface ButtonDeleteProps {
     className?: string;

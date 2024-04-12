@@ -17,9 +17,4 @@ public class ConnectionServerException : Exception
             }
         };
     }
-
-    public ConnectionServerException(Dictionary<string, List<string>> errors)
-    {
-        Errors = errors;
-    }
 }

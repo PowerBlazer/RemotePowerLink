@@ -11,11 +11,11 @@ import style from './SftpSelectHostCatalog.module.scss';
 import sftpStore from 'app/store/sftpStore';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
 import { Stack } from 'shared/lib/Stack';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
-interface SftpSelectHostCatalogProps {
+interface SftpSelectHostCatalogProps extends SftpCatalogModeProps {
     className?: string,
     onClose?: () => void,
-    mode: SftpCatalogMode
 }
 
 export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectHostCatalogProps) {
@@ -43,10 +43,7 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 isLoad: false,
                 filterOptions: {},
                 historyPrevPaths: new Stack<string>(),
-                historyNextPaths: new Stack<string>(),
-                error: {
-                    isError: false
-                }
+                historyNextPaths: new Stack<string>()
             }
         }
 
@@ -60,10 +57,7 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 isLoad: false,
                 filterOptions: {},
                 historyPrevPaths: new Stack<string>(),
-                historyNextPaths: new Stack<string>(),
-                error: {
-                    isError: false
-                }
+                historyNextPaths: new Stack<string>()
             }
         }
 

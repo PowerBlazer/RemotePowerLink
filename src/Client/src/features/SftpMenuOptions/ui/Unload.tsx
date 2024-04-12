@@ -1,7 +1,7 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpMenuOptions.module.scss';
-import {MenuOptionProp} from "features/SftpMenuOptions";
-import {Button} from "shared/ui/Button/Button";
+import { MenuOptionProp } from 'features/SftpMenuOptions';
+import { Button } from 'shared/ui/Button/Button';
 
 interface UnloadProps extends MenuOptionProp {
     className?: string;
@@ -9,22 +9,19 @@ interface UnloadProps extends MenuOptionProp {
 
 export function Unload ({ className, disabled, mode, onClick }: UnloadProps) {
     const onClickUnloadHandler = () => {
-        if(disabled)
-            return;
-        
-        
-        if(onClick){
+        if (disabled) { return; }
+
+        if (onClick) {
             onClick();
         }
     }
-    
-    
+
     return (
-        <Button 
+        <Button
             className={classNames(style.unload, { [style.disabled]: disabled }, [className, style.menu_item])}
             onClick={onClickUnloadHandler}
         >
             Unload
-		</Button>
+        </Button>
     );
 }

@@ -1,19 +1,15 @@
-import {ServerData} from 'app/services/ServerService/config/serverConfig';
+import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import SftpHub from 'app/hubs/SftpHub';
-import {FileType, SftpCatalogMode, SftpFile, SftpFileList} from 'app/services/SftpService/config/sftpConfig';
-import {makeAutoObservable, observable} from 'mobx';
-import {Stack} from 'shared/lib/Stack';
+import { FileType, SftpCatalogMode, SftpFile, SftpFileList } from 'app/services/SftpService/config/sftpConfig';
+import { makeAutoObservable, observable } from 'mobx';
+import { Stack } from 'shared/lib/Stack';
 
 export interface SftpServer {
     server: ServerData,
     sftpHub?: SftpHub,
-    sftpFileList?: SftpFileList,
-    filterOptions: SftpFilterOptions,
-    error: SftpError,
+    sftpFilesOption: SftpFilesOption
+    error?: SftpError,
     menuOption?: SftpMenuOption,
-    historyPrevPaths: Stack<string>,
-    historyNextPaths: Stack<string>,
-    widthPanel?: number,
     isLoad: boolean,
 }
 
@@ -32,6 +28,14 @@ export interface SftpMenuOption {
     menuMode: MenuMode
 }
 
+export interface SftpFilesOption {
+    sftpFileList?: SftpFileList,
+    filterOptions: SftpFilterOptions,
+    historyPrevPaths: Stack<string>,
+    historyNextPaths: Stack<string>,
+    widthPanel?: number,
+}
+
 export interface ColumnSort {
     columnKey: keyof SftpFile,
     isReverse: boolean
@@ -43,8 +47,7 @@ export interface SftpFilterOptions {
 }
 
 export interface SftpError {
-    isError: boolean,
-    message?: string
+    errors: Record<string, string[]>
 }
 
 class SftpStore {
@@ -86,8 +89,6 @@ class SftpStore {
 
         if (filterOptions.columnSort) {
             hostFileItems = [...hostFileItems].sort((a, b) => {
-                if (a.name === '..') return -1;
-
                 if (filterOptions.columnSort.columnKey === 'fileTypeName') {
                     return compareFileTypeName(a, b, filterOptions.columnSort.isReverse)
                 }
@@ -144,11 +145,11 @@ class SftpStore {
 
         const fileItems = [...selectedFileItems];
         const selectFileIndex = fileItems.findIndex(p => p.path === path);
-        
-        if(selectFileIndex !== -1 && fileItems[selectFileIndex].fileType === 3){
+
+        if (selectFileIndex !== -1 && fileItems[selectFileIndex].fileType === 3) {
             return;
         }
-        
+
         if (selectFileIndex !== -1 && mode === SftpCatalogMode.First) {
             if (isAlwaysSelect && fileItems[selectFileIndex].isSelected) {
                 fileItems[selectFileIndex].isSelected = true;
@@ -191,16 +192,16 @@ class SftpStore {
             this.secondHostFileItems = fileItems;
         }
     }
-    
-    setSelectAllInFilter (mode:SftpCatalogMode){
-        if(mode === SftpCatalogMode.First){
-            this.firstHostFileItems.filter(p=> p.fileType !== FileType.BackNavigation).forEach(file=> {
+
+    setSelectAllInFilter (mode: SftpCatalogMode) {
+        if (mode === SftpCatalogMode.First) {
+            this.firstHostFileItems.filter(p => p.fileType !== FileType.BackNavigation).forEach(file => {
                 file.isSelected = true
             })
         }
 
-        if(mode === SftpCatalogMode.Second){
-            this.secondHostFileItems.forEach(file=> {
+        if (mode === SftpCatalogMode.Second) {
+            this.secondHostFileItems.forEach(file => {
                 file.isSelected = true
             })
         }

@@ -40,7 +40,13 @@ public class BaseHub: Hub
             // Обработка исключения
             await Clients
                 .Client(Context.ConnectionId)
-                .SendAsync("HandleError", ex.Message);
+                .SendAsync("HandleError", new Dictionary<string, List<string>>
+                {
+                    {
+                        "Common",
+                        new List<string> { ex.Message }
+                    }
+                });
         }
     }
 }

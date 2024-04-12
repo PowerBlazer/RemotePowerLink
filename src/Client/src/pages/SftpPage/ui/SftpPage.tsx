@@ -16,7 +16,6 @@ interface SftpPageProps {
 }
 
 function SftpPage ({ className }: SftpPageProps) {
-    const [changedWidth, setChange] = useState<number[]>([350, 350]);
     const sftpPageRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -26,6 +25,7 @@ function SftpPage ({ className }: SftpPageProps) {
                 draggerClassName={classNames(style.dragger)}
                 direction={SplitDirection.Horizontal}
                 minWidths={[390, 390]}
+                // eslint-disable-next-line no-return-assign
                 onResizeFinished={(_, __) => sftpStore.editableWidthSplit = !sftpStore.editableWidthSplit}
             >
                 <SftpCatalog mode={SftpCatalogMode.First} />

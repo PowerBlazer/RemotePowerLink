@@ -52,8 +52,8 @@ function SftpCatalogNavigation ({ className, mode }: SftpCatalogNavigationProps)
 
         if (selectedHost?.sftpHub && selectedHost.sftpFileList) {
             selectedHost.isLoad = true;
-            selectedHost.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
-            selectedHost.historyNextPaths.clear();
+            selectedHost.sftpFilesOption.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
+            selectedHost.sftpFilesOption.historyNextPaths.clear();
             selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, `/${path}`);
         }
     }
@@ -62,8 +62,8 @@ function SftpCatalogNavigation ({ className, mode }: SftpCatalogNavigationProps)
         setActiveInput(false);
 
         if (selectedHost?.sftpHub && selectedHost.sftpFileList) {
-            selectedHost.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
-            selectedHost.historyNextPaths.clear();
+            selectedHost.sftpFilesOption.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
+            selectedHost.sftpFilesOption.historyNextPaths.clear();
             selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, editPathValue)
         }
     }
@@ -116,10 +116,10 @@ function SftpCatalogNavigation ({ className, mode }: SftpCatalogNavigationProps)
     }, [isActiveInput]);
 
     useEffect(() => {
-        if (selectedHost.widthPanel) {
-            setVisibleCount(selectedHost.widthPanel > 460 ? 3 : 2);
+        if (selectedHost.sftpFilesOption.widthPanel) {
+            setVisibleCount(selectedHost.sftpFilesOption.widthPanel > 460 ? 3 : 2);
         }
-    }, [selectedHost.widthPanel]);
+    }, [selectedHost.sftpFilesOption.widthPanel]);
 
     return (
         <div

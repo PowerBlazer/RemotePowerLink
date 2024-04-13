@@ -17,10 +17,10 @@ export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherPro
     const selectedHost = sftpStore.getSelectedHostInMode(mode)
 
     const onClickPrevButtonHandler = async () => {
-        const previousPath = selectedHost.historyPrevPaths.pop();
+        const previousPath = selectedHost.sftpFilesOption.historyPrevPaths.pop();
 
         if (previousPath) {
-            selectedHost.historyNextPaths.push(selectedHost.sftpFileList.currentPath);
+            selectedHost.sftpFilesOption.historyNextPaths.push(selectedHost.sftpFileList.currentPath);
             await selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, previousPath);
 
             forceUpdate();
@@ -28,10 +28,10 @@ export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherPro
     }
 
     const onClickNextButtonHandler = async () => {
-        const nextPath = selectedHost.historyNextPaths.pop();
+        const nextPath = selectedHost.sftpFilesOption.historyNextPaths.pop();
 
         if (nextPath) {
-            selectedHost.historyPrevPaths.push(selectedHost.sftpFileList?.currentPath);
+            selectedHost.sftpFilesOption.historyPrevPaths.push(selectedHost.sftpFileList?.currentPath);
             await selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, nextPath);
 
             forceUpdate();
@@ -42,7 +42,7 @@ export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherPro
         <div className={classNames(style.sftpCatalogSwitcher, {}, [className])}>
             <Button
                 className={classNames(style.prev_button, {
-                    [style.active]: selectedHost.historyPrevPaths.size() > 0
+                    [style.active]: selectedHost.sftpFilesOption.historyPrevPaths.size() > 0
                 })}
                 onClick={onClickPrevButtonHandler}
             >
@@ -52,7 +52,7 @@ export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherPro
             </Button>
             <Button
                 className={classNames(style.next_button, {
-                    [style.active]: selectedHost.historyNextPaths.size() > 0
+                    [style.active]: selectedHost.sftpFilesOption.historyNextPaths.size() > 0
                 })}
                 onClick={onClickNextButtonHandler}
             >

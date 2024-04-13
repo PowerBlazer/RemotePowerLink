@@ -36,6 +36,8 @@ export function SftpCatalogModal ({ className, mode }: SftpCatalogModalProps) {
     
     
     return (
-        {errorModal}
+        <>
+            {errorModal}
+        </>
     );
 }

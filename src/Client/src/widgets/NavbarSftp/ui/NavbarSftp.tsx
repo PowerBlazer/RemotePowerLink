@@ -22,14 +22,14 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
     const { t } = useTranslation('translation');
     const selectedHost = sftpStore.getSelectedHostInMode(mode);
 
-    const selectedTitle = selectedHost?.filterOptions.title || '';
+    const selectedTitle = selectedHost?.sftpFilesOption.filterOptions.title || '';
     const server = selectedHost?.server;
 
     const [isVisibleMenu, setVisibleMenu] = useState<boolean>(false);
     const actionButtonRef = useRef<HTMLButtonElement>(null)
     const onChangeSearchHandler = (value: string) => {
         sftpStore.setSftpFilterOptions(mode, {
-            ...selectedHost?.filterOptions,
+            ...selectedHost?.sftpFilesOption.filterOptions,
             title: value
         })
     }

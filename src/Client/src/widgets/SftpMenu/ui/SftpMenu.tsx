@@ -30,7 +30,8 @@ const SftpMenu = forwardRef(
         } = props;
 
         const selectedHost = sftpStore.getSelectedHostInMode(mode);
-        const selectedFileItems = sftpStore.getFileItemsInMode(mode);
+        const selectedSftpFileOptions = selectedHost.sftpFilesOption;
+       
         const [isVisibleMenu, setVisibleMenu] = useState<boolean>(isVisible);
 
         const menuRef = useOutsideClick<HTMLDivElement>(() => {
@@ -57,7 +58,7 @@ const SftpMenu = forwardRef(
         const onClickCloseMenuHandler = () => {
             setVisibleMenu(false);
 
-            if (isPosition && selectedHost.menuOption) {
+            if (isPosition && selectedHost?.menuOption) {
                 selectedHost.menuOption.isVisible = false
             }
 
@@ -67,8 +68,7 @@ const SftpMenu = forwardRef(
         }
 
         const defaultModeMenuOptions = useMemo(() => {
-            const selectedItemsCount = selectedFileItems
-                .filter(p => p.isSelected)?.length;
+            const selectedItemsCount = selectedSftpFileOptions?.fileList?.filter(p => p.isSelected)?.length;
 
             const isDisabled = !selectedItemsCount || selectedItemsCount === 0;
 
@@ -82,7 +82,7 @@ const SftpMenu = forwardRef(
                 <Unload mode={mode} key='Unload' onClick={onClickCloseMenuHandler}/>,
                 <Close mode={mode} key='Close' onClick={onClickCloseMenuHandler}/>
             ]
-        }, [selectedFileItems]);
+        }, [selectedSftpFileOptions?.fileList]);
 
         const fileModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
@@ -90,7 +90,7 @@ const SftpMenu = forwardRef(
             <Download mode={mode} key='Download' onClick={onClickCloseMenuHandler}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
-        ], [selectedFileItems]);
+        ], [selectedSftpFileOptions?.fileList]);
 
         const folderModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
@@ -98,7 +98,7 @@ const SftpMenu = forwardRef(
             <Download mode={mode} key='Download' onClick={onClickCloseMenuHandler}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
-        ], [selectedFileItems]);
+        ], [selectedSftpFileOptions?.fileList]);
 
         const multitudeModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler} disabled={true}/>,
@@ -106,7 +106,7 @@ const SftpMenu = forwardRef(
             <Download mode={mode} key='Download' onClick={onClickCloseMenuHandler}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler} disabled={true}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler} disabled={true}/>
-        ], [selectedFileItems])
+        ], [selectedSftpFileOptions?.fileList])
 
         useEffect(() => {
             setVisibleMenu(isVisible)

@@ -23,11 +23,9 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const selectedHost = sftpStore.getSelectedHostInMode(mode)
-    const selectedHostFileItems = sftpStore.getFileItemsInMode(mode)
 
     const createColumnSortOptions = (key: keyof SftpFile) => {
-        const columnSortInstance = selectedHost
-            .filterOptions?.columnSort;
+        const columnSortInstance = selectedHost.sftpFilesOption.filterOptions?.columnSort;
 
         let isVisible = false;
         let isReverse = false;
@@ -39,7 +37,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
 
         const setFilterOptions = () => {
             sftpStore.setSftpFilterOptions(mode, {
-                ...selectedHost.filterOptions,
+                ...selectedHost.sftpFilesOption.filterOptions,
                 columnSort: !columnSortInstance
                     ? { columnKey: key, isReverse: false } // Создать новый объект, если columnSortInstance равен null
                     : !columnSortInstance.isReverse
@@ -76,7 +74,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                 </div>
             </Button>
         )
-    }, [i18n.language, selectedHost.filterOptions]);
+    }, [i18n.language, selectedHost.sftpFilesOption.filterOptions]);
 
     const dateColumn = useMemo(() => {
         const {
@@ -99,7 +97,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                 </div>
             </Button>
         )
-    }, [i18n.language, selectedHost.filterOptions, isVisibleDate]);
+    }, [i18n.language, selectedHost.sftpFilesOption.filterOptions, isVisibleDate]);
 
     const sizeColumn = useMemo(() => {
         const {
@@ -122,7 +120,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                 </div>
             </Button>
         )
-    }, [i18n.language, selectedHost.filterOptions]);
+    }, [i18n.language, selectedHost.sftpFilesOption.filterOptions]);
     const typeColumn = useMemo(() => {
         const {
             isVisible,
@@ -144,7 +142,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                 </div>
             </Button>
         )
-    }, [i18n.language, selectedHost.filterOptions]);
+    }, [i18n.language, selectedHost.sftpFilesOption.filterOptions]);
 
     const onScrollHandler = (e: UIEvent<HTMLDivElement>) => {
         if (selectedHost?.menuOption?.isVisible) {
@@ -161,10 +159,10 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
     }, [selectedHost?.menuOption?.isVisible]);
 
     useEffect(() => {
-        if (selectedHost.widthPanel) {
-            setVisibleDate(selectedHost.widthPanel > 460)
+        if (selectedHost.sftpFilesOption.widthPanel) {
+            setVisibleDate(selectedHost.sftpFilesOption.widthPanel > 460)
         }
-    }, [selectedHost.widthPanel]);
+    }, [selectedHost.sftpFilesOption.widthPanel]);
 
     return (
         <div className={classNames(style.sftpFileCatalog, {}, [className])}>
@@ -194,7 +192,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                     </thead>
 
                     <tbody className={classNames(style.catalog_inner)}>
-                        {!selectedHost?.isLoad && selectedHostFileItems?.map((file) => (
+                        {!selectedHost?.isLoad && selectedHost?.sftpFilesOption.fileList?.map((file) => (
                             <SftpFileRow
                                 key={file.path}
                                 fileData={file}

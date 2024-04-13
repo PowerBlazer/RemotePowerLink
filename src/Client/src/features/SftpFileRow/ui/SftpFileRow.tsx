@@ -1,7 +1,7 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpFileRow.module.scss';
 import { observer } from 'mobx-react-lite';
-import { FileType, SftpCatalogMode, SftpFile } from 'app/services/SftpService/config/sftpConfig';
+import { FileType, SftpFile } from 'app/services/SftpService/config/sftpConfig';
 import sftpStore, { MenuMode } from 'app/store/sftpStore';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg'
 import FileIcon from 'shared/assets/icons/sftp/file.svg'
@@ -18,14 +18,13 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
     const fileItemRef = useRef<HTMLTableRowElement>(null);
 
     const selectedHost = sftpStore.getSelectedHostInMode(mode)
-    const selectedFileItems = sftpStore.getFileItemsInMode(mode)
 
     const openFileHandler = async () => {
         if (fileData.fileType === FileType.Folder || fileData.fileType === FileType.BackNavigation) {
-            selectedHost.filterOptions.title = '';
+            selectedHost.sftpFilesOption.filterOptions.title = '';
             selectedHost.isLoad = true;
-            selectedHost.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
-            selectedHost.historyNextPaths.clear();
+            selectedHost.sftpFilesOption.historyPrevPaths.push(selectedHost.sftpFileList.currentPath);
+            selectedHost.sftpFilesOption.historyNextPaths.clear();
 
             await selectedHost?.sftpHub.getFilesServer(
                 selectedHost.server.serverId,
@@ -77,7 +76,8 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
 
         sftpStore.setSelectFileItem(mode, fileData.path, false, true);
 
-        const selectedItemsCount = selectedFileItems?.filter(p => p.isSelected)?.length;
+        const selectedItemsCount = selectedHost?.sftpFilesOption
+            .fileList?.filter(p => p.isSelected)?.length;
 
         if (selectedHost) {
             let mode = fileData.fileType === FileType.File
@@ -129,10 +129,10 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
     }
 
     useEffect(() => {
-        if (selectedHost.widthPanel) {
-            setVisibleDate(selectedHost.widthPanel > 460)
+        if (selectedHost.sftpFilesOption.widthPanel) {
+            setVisibleDate(selectedHost.sftpFilesOption.widthPanel > 460)
         }
-    }, [selectedHost.widthPanel]);
+    }, [selectedHost.sftpFilesOption.widthPanel]);
 
     return (
         <tr
@@ -152,7 +152,7 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
                     : <FileIcon width={27}/>
                 }
                 <div className={classNames(style.name)}>
-                    {highlightMatches(fileData.name, selectedHost.filterOptions.title)}
+                    {highlightMatches(fileData.name, selectedHost.sftpFilesOption.filterOptions.title)}
                 </div>
             </td>
             {isVisibleDate &&

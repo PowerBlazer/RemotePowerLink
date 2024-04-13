@@ -7,6 +7,7 @@ import { Stack } from 'shared/lib/Stack';
 export interface SftpServer {
     server: ServerData,
     sftpHub?: SftpHub,
+    sftpFileList?: SftpFileList,
     sftpFilesOption: SftpFilesOption
     error?: SftpError,
     menuOption?: SftpMenuOption,
@@ -29,7 +30,7 @@ export interface SftpMenuOption {
 }
 
 export interface SftpFilesOption {
-    sftpFileList?: SftpFileList,
+    fileList?: SftpFile[]
     filterOptions: SftpFilterOptions,
     historyPrevPaths: Stack<string>,
     historyNextPaths: Stack<string>,
@@ -57,17 +58,9 @@ class SftpStore {
 
     @observable public firstSelectedHost: SftpServer | null = null;
     @observable public secondSelectedHost: SftpServer | null = null;
-
-    @observable public firstHostFileItems: SftpFile[] = [];
-    @observable public secondHostFileItems: SftpFile[] = [];
     @observable public editableWidthSplit: boolean = false;
 
-    getFileItemsInMode (mode: SftpCatalogMode): SftpFile[] {
-        return mode === SftpCatalogMode.First
-            ? this.firstHostFileItems
-            : this.secondHostFileItems;
-    }
-
+    
     getSelectedHostInMode (mode: SftpCatalogMode): SftpServer | null {
         return mode === SftpCatalogMode.First
             ? this.firstSelectedHost
@@ -78,7 +71,7 @@ class SftpStore {
         const selectedHost = this.getSelectedHostInMode(mode);
 
         let hostFileItems = selectedHost?.sftpFileList?.fileList;
-        const filterOptions = selectedHost?.filterOptions;
+        const filterOptions = selectedHost?.sftpFilesOption.filterOptions;
 
         if (filterOptions.title) {
             hostFileItems = hostFileItems.filter(
@@ -104,24 +97,32 @@ class SftpStore {
         }
 
         if (mode === SftpCatalogMode.First) {
-            this.firstHostFileItems = hostFileItems;
+            this.firstSelectedHost.sftpFilesOption = {
+                ...this.firstSelectedHost.sftpFilesOption,
+                fileList: hostFileItems
+            };
         }
 
         if (mode === SftpCatalogMode.Second) {
-            this.secondHostFileItems = hostFileItems;
+            this.secondSelectedHost.sftpFilesOption = {
+                ...this.secondSelectedHost.sftpFilesOption,
+                fileList: hostFileItems
+            };
         }
     }
 
     setSftpFilterOptions (mode: SftpCatalogMode, options: SftpFilterOptions) {
         if (mode === SftpCatalogMode.First) {
-            this.firstSelectedHost.filterOptions = {
-                ...options
+            this.firstSelectedHost.sftpFilesOption = {
+                ...this.firstSelectedHost.sftpFilesOption,
+                filterOptions: options
             }
         }
 
         if (mode === SftpCatalogMode.Second) {
-            this.secondSelectedHost.filterOptions = {
-                ...options
+            this.secondSelectedHost.sftpFilesOption = {
+                ...this.secondSelectedHost.sftpFilesOption,
+                filterOptions: options
             }
         }
 
@@ -129,16 +130,16 @@ class SftpStore {
     }
 
     setSelectFileItem (mode: SftpCatalogMode, path: string, isClean: boolean = true, isAlwaysSelect: boolean = false) {
-        const selectedFileItems = this.getFileItemsInMode(mode);
+        const selectedFileItems = this.getSelectedHostInMode(mode)?.sftpFilesOption.fileList;
 
         if (mode === SftpCatalogMode.First && isClean) {
-            this.firstHostFileItems.forEach((file) => {
+            this.firstSelectedHost.sftpFilesOption.fileList.forEach((file) => {
                 file.isSelected = false;
             })
         }
 
         if (mode === SftpCatalogMode.Second && isClean) {
-            this.secondHostFileItems.forEach((file) => {
+            this.secondSelectedHost.sftpFilesOption.fileList.forEach((file) => {
                 file.isSelected = false;
             })
         }
@@ -153,57 +154,83 @@ class SftpStore {
         if (selectFileIndex !== -1 && mode === SftpCatalogMode.First) {
             if (isAlwaysSelect && fileItems[selectFileIndex].isSelected) {
                 fileItems[selectFileIndex].isSelected = true;
-                this.firstHostFileItems = fileItems;
+                this.firstSelectedHost.sftpFilesOption = {
+                    ...this.firstSelectedHost.sftpFilesOption,
+                    fileList: fileItems
+                }
                 return;
             }
 
             if (isAlwaysSelect && !fileItems[selectFileIndex].isSelected) {
-                this.firstHostFileItems.forEach((file) => {
+                this.firstSelectedHost.sftpFilesOption.fileList.forEach((file) => {
                     file.isSelected = false;
                 })
 
                 fileItems[selectFileIndex].isSelected = true;
-                this.firstHostFileItems = fileItems;
+                this.firstSelectedHost.sftpFilesOption = {
+                    ...this.firstSelectedHost.sftpFilesOption,
+                    fileList: fileItems
+                }
                 return;
             }
 
             fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
-            this.firstHostFileItems = fileItems;
+            
+            this.firstSelectedHost.sftpFilesOption = {
+                ...this.firstSelectedHost.sftpFilesOption,
+                fileList: fileItems
+            }
         }
 
         if (selectFileIndex !== -1 && mode === SftpCatalogMode.Second) {
             if (isAlwaysSelect && fileItems[selectFileIndex].isSelected) {
                 fileItems[selectFileIndex].isSelected = true;
-                this.secondHostFileItems = fileItems;
+                this.secondSelectedHost.sftpFilesOption = {
+                    ...this.secondSelectedHost.sftpFilesOption,
+                    fileList: fileItems
+                }
                 return;
             }
 
             if (isAlwaysSelect && !fileItems[selectFileIndex].isSelected) {
-                this.secondHostFileItems.forEach((file) => {
+                this.secondSelectedHost.sftpFilesOption.fileList.forEach((file) => {
                     file.isSelected = false;
                 })
 
                 fileItems[selectFileIndex].isSelected = true;
-                this.secondHostFileItems = fileItems;
+                
+                this.secondSelectedHost.sftpFilesOption = {
+                    ...this.secondSelectedHost.sftpFilesOption,
+                    fileList: fileItems
+                }
+                
                 return;
             }
 
             fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
-            this.secondHostFileItems = fileItems;
+            
+            this.secondSelectedHost.sftpFilesOption = {
+                ...this.secondSelectedHost.sftpFilesOption,
+                fileList: fileItems
+            }
         }
     }
 
     setSelectAllInFilter (mode: SftpCatalogMode) {
         if (mode === SftpCatalogMode.First) {
-            this.firstHostFileItems.filter(p => p.fileType !== FileType.BackNavigation).forEach(file => {
-                file.isSelected = true
-            })
+            this.firstSelectedHost.sftpFilesOption.fileList
+                .filter(p => p.fileType !== FileType.BackNavigation)
+                .forEach(file => {
+                    file.isSelected = true
+                })
         }
 
         if (mode === SftpCatalogMode.Second) {
-            this.secondHostFileItems.forEach(file => {
-                file.isSelected = true
-            })
+            this.secondSelectedHost.sftpFilesOption.fileList
+                .filter(p => p.fileType !== FileType.BackNavigation)
+                .forEach(file => {
+                    file.isSelected = true
+                })
         }
     }
 }

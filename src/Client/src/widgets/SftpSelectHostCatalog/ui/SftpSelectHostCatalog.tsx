@@ -41,9 +41,11 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             sftpStore.firstSelectedHost = {
                 server: serverData,
                 isLoad: false,
-                filterOptions: {},
-                historyPrevPaths: new Stack<string>(),
-                historyNextPaths: new Stack<string>()
+                sftpFilesOption: {
+                    filterOptions: {},
+                    historyPrevPaths: new Stack<string>(),
+                    historyNextPaths: new Stack<string>()
+                }
             }
         }
 
@@ -55,9 +57,11 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             sftpStore.secondSelectedHost = {
                 server: serverData,
                 isLoad: false,
-                filterOptions: {},
-                historyPrevPaths: new Stack<string>(),
-                historyNextPaths: new Stack<string>()
+                sftpFilesOption: {
+                    filterOptions: {},
+                    historyPrevPaths: new Stack<string>(),
+                    historyNextPaths: new Stack<string>()
+                }
             }
         }
 

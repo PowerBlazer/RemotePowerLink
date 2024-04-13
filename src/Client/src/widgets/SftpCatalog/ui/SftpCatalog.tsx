@@ -66,7 +66,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                         error: { errors: errors }
                     }
                     
-                    sftpStore.firstSelectedHost.historyPrevPaths.pop();
+                    sftpStore.firstSelectedHost.sftpFilesOption.historyPrevPaths.pop();
                 }
 
                 toast.error(JSON.stringify(errors))
@@ -105,7 +105,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                         error: { errors: errors }
                     }
 
-                    sftpStore.secondSelectedHost.historyPrevPaths.pop();
+                    sftpStore.secondSelectedHost.sftpFilesOption.historyPrevPaths.pop();
                 }
 
                 toast.error(JSON.stringify(errors))
@@ -115,11 +115,11 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
     useEffect(() => {
         if (mode === SftpCatalogMode.First && catalogRef && sftpStore.firstSelectedHost) {
-            sftpStore.firstSelectedHost.widthPanel = catalogRef.current.offsetWidth;
+            sftpStore.firstSelectedHost.sftpFilesOption.widthPanel = catalogRef.current.offsetWidth;
         }
 
         if (mode === SftpCatalogMode.Second && catalogRef && sftpStore.secondSelectedHost) {
-            sftpStore.secondSelectedHost.widthPanel = catalogRef.current.offsetWidth;
+            sftpStore.secondSelectedHost.sftpFilesOption.widthPanel = catalogRef.current.offsetWidth;
         }
     }, [sftpStore.editableWidthSplit, catalogRef]);
 

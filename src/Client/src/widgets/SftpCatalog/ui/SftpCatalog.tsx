@@ -7,12 +7,13 @@ import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
 import { NavbarSftp } from 'widgets/NavbarSftp';
 import { SftpCatalogTable } from 'widgets/SftpCatalogTable';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
-import { SftpCatalogModal } from 'widgets/SftpCatalogModal';
 import SftpHub from 'app/hubs/SftpHub';
 import toast from 'react-hot-toast';
 import sftpStore from 'app/store/sftpStore';
 import LogoIcon from 'shared/assets/icons/logo.svg';
 import style from './SftpCatalog.module.scss';
+import {NewFolderModal} from "widgets/NewFolderModal";
+import {ErrorModal} from "widgets/ErrorModal";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -27,6 +28,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     const [isViewServersCatalog, setIsView] = useState<boolean>(false);
     const [isViewErrorPanel, setIsViewErrorPanel] = useState<boolean>(false);
     const catalogRef = createRef<HTMLDivElement>();
+    const selectedHost = sftpStore.getSelectedHostInMode(mode);
 
     const getIsSelectedServer = () => {
         if (mode === SftpCatalogMode.First && sftpStore.firstSelectedHost != null) {
@@ -67,6 +69,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     }
                     
                     sftpStore.firstSelectedHost.sftpFilesOption.historyPrevPaths.pop();
+                    sftpStore.firstSelectedHost.modalOption.errorState = true;
                 }
 
                 toast.error(JSON.stringify(errors))
@@ -145,12 +148,10 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     if (getIsSelectedServer() && !isViewServersCatalog && !isViewErrorPanel) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-                <NavbarSftp
-                    mode={mode}
-                    onOpenCatalog={() => { setIsView(true); }}
-                />
+                <NavbarSftp mode={mode} onOpenCatalog={() => { setIsView(true); }}/>
                 <SftpCatalogTable mode={mode}/>
-                <SftpCatalogModal mode={mode}/>
+                { selectedHost.modalOption.newFolderState && <NewFolderModal mode={mode}/> }
+                { selectedHost.modalOption.errorState && <ErrorModal mode={mode}/> }
             </div>
         )
     }

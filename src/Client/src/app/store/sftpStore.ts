@@ -11,6 +11,7 @@ export interface SftpServer {
     sftpFilesOption: SftpFilesOption
     error?: SftpError,
     menuOption?: SftpMenuOption,
+    modalOption: SftpModalOption
     isLoad: boolean,
 }
 
@@ -27,6 +28,11 @@ export interface SftpMenuOption {
     heightWindow?: number
     isVisible: boolean,
     menuMode: MenuMode
+}
+
+export interface SftpModalOption {
+    newFolderState: boolean,
+    errorState: boolean,
 }
 
 export interface SftpFilesOption {

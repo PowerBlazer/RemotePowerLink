@@ -12,6 +12,7 @@ export enum TypeModal {
 export interface ModalOptions {
     type: TypeModal
     onCancel?: () => void,
-    onConfirm?: () => void,
-    headerName?: string
+    onConfirm?: () => Promise<void>,
+    headerName?: string,
+    disabled?: boolean
 }

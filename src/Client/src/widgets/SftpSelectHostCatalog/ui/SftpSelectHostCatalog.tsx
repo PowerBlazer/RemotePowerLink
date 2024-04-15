@@ -33,20 +33,26 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
     }
 
     const onClickConnectHandler = async (serverData: ServerData) => {
+        const newHostInstance = {
+            server: serverData,
+            isLoad: false,
+            sftpFilesOption: {
+                filterOptions: {},
+                historyPrevPaths: new Stack<string>(),
+                historyNextPaths: new Stack<string>()
+            },
+            modalOption: {
+                errorState:false,
+                newFolderState: false
+            }
+        }
+        
         if (mode === SftpCatalogMode.First) {
             if (sftpStore.firstSelectedHost?.sftpHub) {
                 sftpStore.firstSelectedHost.sftpHub.closeConnection();
             }
 
-            sftpStore.firstSelectedHost = {
-                server: serverData,
-                isLoad: false,
-                sftpFilesOption: {
-                    filterOptions: {},
-                    historyPrevPaths: new Stack<string>(),
-                    historyNextPaths: new Stack<string>()
-                }
-            }
+            sftpStore.firstSelectedHost = newHostInstance;
         }
 
         if (mode === SftpCatalogMode.Second) {
@@ -54,15 +60,7 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 sftpStore.secondSelectedHost.sftpHub.closeConnection();
             }
 
-            sftpStore.secondSelectedHost = {
-                server: serverData,
-                isLoad: false,
-                sftpFilesOption: {
-                    filterOptions: {},
-                    historyPrevPaths: new Stack<string>(),
-                    historyNextPaths: new Stack<string>()
-                }
-            }
+            sftpStore.secondSelectedHost = newHostInstance;
         }
 
         if (onClose) {

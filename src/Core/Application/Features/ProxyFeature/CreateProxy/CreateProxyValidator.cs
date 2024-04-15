@@ -7,11 +7,11 @@ namespace Application.Features.ProxyFeature.CreateProxy;
 [UsedImplicitly]
 public class CreateProxyValidator: AbstractValidator<CreateProxyCommand>
 {
-    public CreateProxyValidator(IHostService hostService)
+    public CreateProxyValidator(IServerService serverService)
     {
         RuleFor(p => p.Hostname)
             .NotEmpty().WithMessage("Поле не может быть пустым")
-            .Must(hostService.ValidateServerAddress).WithMessage("Недопустимый формат адреса сервера");
+            .Must(serverService.ValidateServerAddress).WithMessage("Недопустимый формат адреса сервера");
         
         RuleFor(p => p.Title)
             .NotEmpty().WithMessage("Поле не может быть пустым")

@@ -3,7 +3,7 @@ using Domain.Services.Results;
 
 namespace Domain.Services;
 
-public interface IHostService
+public interface IServerService
 {
     /// <summary>
     /// Получает тип операционной системы сервера на основе предоставленной конфигурации.

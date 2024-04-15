@@ -5,12 +5,12 @@ namespace Application.Features.ServerFeature.EditServer;
 
 public class EditServerValidator: AbstractValidator<EditServerCommand>
 {
-    public EditServerValidator(IHostService hostService)
+    public EditServerValidator(IServerService serverService)
     {
         
         RuleFor(p => p.Hostname)
             .NotEmpty().WithMessage("Поле не может быть пустым")
-            .Must(hostService.ValidateServerAddress).WithMessage("Недопустимый формат адреса сервера");
+            .Must(serverService.ValidateServerAddress).WithMessage("Недопустимый формат адреса сервера");
 
         RuleFor(p => p.Title)
             .NotEmpty().WithMessage("Поле не может быть пустым")

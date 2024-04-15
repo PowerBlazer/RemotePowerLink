@@ -12,17 +12,17 @@ namespace Application.Features.ServerFeature.CreateServer;
 public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateServerResponse>
 {
     private readonly IServerRepository _serverRepository;
-    private readonly IHostService _hostService;
+    private readonly IServerService _serverService;
     private readonly IIdentityRepository _identityRepository;
     private readonly IProxyRepository _proxyRepository;
 
     public CreateServerHandler(IServerRepository serverRepository, 
-        IHostService hostService, 
+        IServerService serverService, 
         IIdentityRepository identityRepository, 
         IProxyRepository proxyRepository)
     {
         _serverRepository = serverRepository;
-        _hostService = hostService;
+        _serverService = serverService;
         _identityRepository = identityRepository;
         _proxyRepository = proxyRepository;
     }
@@ -64,14 +64,14 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
             };
         }
         
-        var isConnection = await _hostService.CheckConnectionServer(connectionServerParameter, cancellationToken);
+        var isConnection = await _serverService.CheckConnectionServer(connectionServerParameter, cancellationToken);
 
         if (!isConnection)
         {
             throw new ConnectionServerException("Не удалось установить соединение с сервером.","Hostname");
         }
         
-        var systemType = await _hostService.GetSystemType(connectionServerParameter, cancellationToken);
+        var systemType = await _serverService.GetSystemType(connectionServerParameter, cancellationToken);
         
         var serverResult = await _serverRepository
             .AddServerAsync(CreateServerCommand.MapToServer(request, systemType.SystemTypeId));

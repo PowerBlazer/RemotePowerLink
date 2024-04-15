@@ -7,11 +7,11 @@ namespace Application.Features.ServerFeature.CreateServer;
 [UsedImplicitly]
 public class CreateServerValidator: AbstractValidator<CreateServerCommand>
 {
-    public CreateServerValidator(IHostService hostService)
+    public CreateServerValidator(IServerService serverService)
     {
         RuleFor(p => p.Hostname)
             .NotEmpty().WithMessage("Поле не может быть пустым")
-            .Must(hostService.ValidateServerAddress).WithMessage("Недопустимый формат адреса сервера");
+            .Must(serverService.ValidateServerAddress).WithMessage("Недопустимый формат адреса сервера");
 
         RuleFor(p => p.Title)
             .NotEmpty().WithMessage("Поле не может быть пустым")

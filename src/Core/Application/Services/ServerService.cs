@@ -10,10 +10,10 @@ using Renci.SshNet;
 
 namespace Application.Services;
 
-public class HostService: IHostService
+public class ServerService: IServerService
 {
     private readonly ISystemTypeRepository _systemTypeRepository;
-    public HostService(ISystemTypeRepository systemTypeRepository)
+    public ServerService(ISystemTypeRepository systemTypeRepository)
     {
         _systemTypeRepository = systemTypeRepository;
     }

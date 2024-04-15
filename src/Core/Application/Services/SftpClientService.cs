@@ -82,7 +82,7 @@ public class SftpClientService: ISftpClientService
     
     private static SftpClient CreateNewClientInstance(ConnectionServerParameter connectionServerParameter)
     {
-        var connectionInfo = HostService.GetConnectionInfo(
+        var connectionInfo = ServerService.GetConnectionInfo(
             connectionServerParameter.Hostname,
             connectionServerParameter.SshPort ?? 22,
             connectionServerParameter.Username,

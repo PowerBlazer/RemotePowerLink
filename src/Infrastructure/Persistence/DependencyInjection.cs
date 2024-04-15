@@ -40,7 +40,7 @@ public static class DependencyInjection
         #endregion
 
         #region Services
-        services.AddScoped<IHostService, HostService>();
+        services.AddScoped<IServerService, ServerService>();
         #endregion
         
        

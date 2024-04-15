@@ -7,11 +7,11 @@ namespace Application.Features.ProxyFeature.EditProxy;
 [UsedImplicitly]
 public class EditProxyValidator: AbstractValidator<EditProxyCommand>
 {
-    public EditProxyValidator(IHostService hostService)
+    public EditProxyValidator(IServerService serverService)
     {
         RuleFor(p => p.Hostname)
             .NotEmpty().WithMessage("Поле не может быть пустым")
-            .Must(hostService.ValidateServerAddress).WithMessage("Недопустимый формат адрес сервера");
+            .Must(serverService.ValidateServerAddress).WithMessage("Недопустимый формат адрес сервера");
         
         RuleFor(p => p.Title)
             .NotEmpty().WithMessage("Поле не может быть пустым")

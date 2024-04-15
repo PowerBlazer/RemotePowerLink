@@ -9,17 +9,17 @@ namespace Application.Features.ServerFeature.EditServer;
 
 public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerResponse>
 {
-    private readonly IHostService _hostService;
+    private readonly IServerService _serverService;
     private readonly IIdentityRepository _identityRepository;
     private readonly IProxyRepository _proxyRepository;
     private readonly IServerRepository _serverRepository;
 
-    public EditServerHandler(IHostService hostService, 
+    public EditServerHandler(IServerService serverService, 
         IIdentityRepository identityRepository, 
         IProxyRepository proxyRepository, 
         IServerRepository serverRepository)
     {
-        _hostService = hostService;
+        _serverService = serverService;
         _identityRepository = identityRepository;
         _proxyRepository = proxyRepository;
         _serverRepository = serverRepository;
@@ -62,14 +62,14 @@ public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerRes
             };
         }
         
-        var isConnection = await _hostService.CheckConnectionServer(connectionServerParameter, cancellationToken);
+        var isConnection = await _serverService.CheckConnectionServer(connectionServerParameter, cancellationToken);
 
         if (!isConnection)
         {
             throw new ConnectionServerException("Не удалось установить соединение с сервером.","Hostname");
         }
         
-        var systemType = await _hostService.GetSystemType(connectionServerParameter, cancellationToken);
+        var systemType = await _serverService.GetSystemType(connectionServerParameter, cancellationToken);
 
         var updatedServer = await _serverRepository
             .UpdateServerAsync(EditServerCommand.MapToServer(request, systemType.SystemTypeId));

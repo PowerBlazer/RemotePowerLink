@@ -10,15 +10,15 @@ namespace Application.Features.ProxyFeature.EditProxy;
 public class EditProxyHandler: IRequestHandler<EditProxyCommand,EditProxyResponse>
 {
     private readonly IIdentityRepository _identityRepository;
-    private readonly IHostService _hostService;
+    private readonly IServerService _serverService;
     private readonly IProxyRepository _proxyRepository;
 
     public EditProxyHandler(IIdentityRepository identityRepository, 
-        IHostService hostService, 
+        IServerService serverService, 
         IProxyRepository proxyRepository)
     {
         _identityRepository = identityRepository;
-        _hostService = hostService;
+        _serverService = serverService;
         _proxyRepository = proxyRepository;
     }
 
@@ -39,7 +39,7 @@ public class EditProxyHandler: IRequestHandler<EditProxyCommand,EditProxyRespons
             Password = identity.Password
         };
                 
-        var isConnection = await _hostService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);
+        var isConnection = await _serverService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);
 
         if (!isConnection)
         {

@@ -14,15 +14,15 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
 {
     private readonly IIdentityRepository _identityRepository;
     private readonly IProxyRepository _proxyRepository;
-    private readonly IHostService _hostService;
+    private readonly IServerService _serverService;
 
     public CreateProxyHandler(IIdentityRepository identityRepository,
         IProxyRepository proxyRepository, 
-        IHostService hostService)
+        IServerService serverService)
     {
         _identityRepository = identityRepository;
         _proxyRepository = proxyRepository;
-        _hostService = hostService;
+        _serverService = serverService;
     }
 
     public async Task<CreateProxyResponse> Handle(CreateProxyCommand request, CancellationToken cancellationToken)
@@ -42,7 +42,7 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
             Password = identity.Password
         };
                 
-        var isConnection = await _hostService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);
+        var isConnection = await _serverService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);
 
         if (!isConnection)
         {

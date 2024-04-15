@@ -104,10 +104,10 @@ public class ServerController: BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ApiActionResult<bool>> DeleteServer([FromRoute] long serverId)
+    public async Task<ApiActionResult> DeleteServer([FromRoute] long serverId)
     {
         await Mediator.Send(new DeleteServerCommand(serverId));
 
-        return new ApiActionResult<bool>();
+        return new ApiActionResult();
     }
 }

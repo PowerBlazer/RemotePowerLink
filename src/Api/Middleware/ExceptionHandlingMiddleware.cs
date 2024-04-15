@@ -34,7 +34,11 @@ public class ExceptionHandlingMiddleware
         }
         catch (NotFoundException ex)
         {
-            await HandleExceptionAsync(httpContext,HttpStatusCode.NotFound,ex.Errors);
+            await HandleExceptionAsync(httpContext, HttpStatusCode.NotFound, ex.Errors);
+        }
+        catch (NoAccessException ex)
+        {
+            await HandleExceptionAsync(httpContext, HttpStatusCode.Forbidden, ex.Errors);
         }
         catch (AuthenticationValidException ex)
         {
@@ -64,7 +68,7 @@ public class ExceptionHandlingMiddleware
         response.ContentType = "application/json";
         response.StatusCode = (int)httpStatusCode;
 
-        var errorResult = new ApiActionResult<string>
+        var errorResult = new ApiActionResult
         {
             Errors = errors
         };

@@ -20,13 +20,7 @@ public class ServerService: IServerService
     public async Task<SystemTypeResult> GetSystemType(ConnectionServerParameter serverParameter, 
         CancellationToken cancellationToken)
     {
-        var connectionInfo = GetConnectionInfo(
-            serverParameter.Hostname,
-            serverParameter.SshPort ?? 22,
-            serverParameter.Username,
-            serverParameter.Password,
-            ProxyTypes.Http,
-            serverParameter.Proxy);
+        var connectionInfo = GetConnectionInfo(serverParameter);
         
         using var client = new SshClient(connectionInfo);
         
@@ -96,13 +90,7 @@ public class ServerService: IServerService
     public async Task<bool> CheckConnectionServer(ConnectionServerParameter serverParameter, 
         CancellationToken cancellationToken)
     {
-        var connectionInfo = GetConnectionInfo(
-            serverParameter.Hostname,
-            serverParameter.SshPort ?? 22,
-            serverParameter.Username,
-            serverParameter.Password,
-            ProxyTypes.Http,
-            serverParameter.Proxy);
+        var connectionInfo = GetConnectionInfo(serverParameter);
         
         using var client = new SshClient(connectionInfo);
 
@@ -136,31 +124,28 @@ public class ServerService: IServerService
     }
 
 
-    public static ConnectionInfo GetConnectionInfo(string hostName,
-        int port,
-        string userName,
-        string password,
-        ProxyTypes proxyType,
-        ProxyParameter? proxyParameter)
+    public static ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter)
     {
         var connectionInfo = new ConnectionInfo(
-            hostName,
-            port,
-            userName,
-            new PasswordAuthenticationMethod(userName, password));
+            connectionServerParameter.Hostname,
+            connectionServerParameter.SshPort ?? 22,
+            connectionServerParameter.Username,
+            new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
+
+        var proxyParameter = connectionServerParameter.Proxy;
 
         if (proxyParameter is not null)
         {
             connectionInfo = new ConnectionInfo(
-                hostName,
-                port,
-                userName,
-                proxyType,
+                connectionServerParameter.Hostname,
+                connectionServerParameter.SshPort ?? 22,
+                connectionServerParameter.Username,
+                ProxyTypes.Http,
                 proxyParameter.Hostname,
                 proxyParameter.SshPort ?? 22,
                 proxyParameter.Username,
                 proxyParameter.Password,
-                new PasswordAuthenticationMethod(userName, password));
+                new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
         }
 
         return connectionInfo;

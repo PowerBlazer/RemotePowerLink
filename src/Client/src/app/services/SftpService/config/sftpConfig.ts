@@ -24,3 +24,9 @@ export interface SftpFileList {
     prevPath?: string
     fileList: SftpFile[]
 }
+
+export interface CreateDirectoryData {
+    directoryPath: string,
+    directoryName: string,
+    serverId: number
+}

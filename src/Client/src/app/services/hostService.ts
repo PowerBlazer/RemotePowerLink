@@ -82,12 +82,10 @@ export class HostService {
                             return;
                         }
                     }
-
-                    if (error.response?.status === 400 || error.response?.status === 404) {
-                        throw error;
-                    }
-
+                    
                     toast.error(error.message);
+                    
+                    throw error;
                 }
             );
         }

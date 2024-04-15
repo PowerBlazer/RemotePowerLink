@@ -8,6 +8,7 @@ import {useTheme} from "shared/lib/Theme/useTheme";
 import {ChangeEvent, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {FileType} from "app/services/SftpService/config/sftpConfig";
+import {SftpService} from "app/services/SftpService/sftpService";
 
 interface NewFolderModalProps extends SftpCatalogModeProps{
     className?: string;
@@ -24,7 +25,27 @@ function NewFolderModal ({ className, mode }: NewFolderModalProps) {
     );
     
     const createNewFolderHandler = async () => {
-       
+        const createDirectoryResult = await SftpService.createDirectory({
+            directoryPath: selectedHost?.sftpFileList?.currentPath,
+            directoryName: newFolderName,
+            serverId: selectedHost?.server.serverId
+        });
+        
+        console.log(createDirectoryResult)
+        
+        if(createDirectoryResult.isSuccess){
+            selectedHost.isLoad = true;
+            
+            await selectedHost.sftpHub.getFilesServer(
+                selectedHost?.server.serverId, 
+                selectedHost?.sftpFileList?.currentPath
+            );
+        }
+        
+        if(!createDirectoryResult.isSuccess){
+            selectedHost.error = { errors: createDirectoryResult.errors }
+            selectedHost.modalOption.errorState = true;
+        }
         
         selectedHost.modalOption.newFolderState = false
     }

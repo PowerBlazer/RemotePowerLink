@@ -27,5 +27,5 @@ public class CreateDirectoryCommand : IRequest
     /// Идентификатор пользователя, инициирующего создание директории. Это свойство игнорируется при сериализации в JSON.
     /// </summary>
     [JsonIgnore]
-    public required long UserId { get; set; }
+    public long UserId { get; set; }
 }

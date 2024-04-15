@@ -56,7 +56,14 @@ public class ExceptionHandlingMiddleware
         {
             _logger.LogError(ex.Message);
             
-            await HandleExceptionAsync(httpContext,HttpStatusCode.InternalServerError, "Ошибка на сервере");
+            await HandleExceptionAsync(httpContext,HttpStatusCode.InternalServerError, 
+                new Dictionary<string, List<string>>
+                {
+                    {
+                        "InternalServerError",
+                        new List<string> { "Ошибка на стороне сервера, обращайтесь в тех поддержку" }
+                    }
+                });
         }
     }
         

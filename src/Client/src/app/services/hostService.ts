@@ -82,9 +82,9 @@ export class HostService {
                             return;
                         }
                     }
-                    
+
                     toast.error(error.message);
-                    
+
                     throw error;
                 }
             );

@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.Layers.Persistence.Contexts;
+using Domain.Layers.Persistence;
 using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 

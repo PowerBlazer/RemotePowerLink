@@ -66,7 +66,6 @@ class SftpStore {
     @observable public secondSelectedHost: SftpServer | null = null;
     @observable public editableWidthSplit: boolean = false;
 
-    
     getSelectedHostInMode (mode: SftpCatalogMode): SftpServer | null {
         return mode === SftpCatalogMode.First
             ? this.firstSelectedHost
@@ -181,7 +180,7 @@ class SftpStore {
             }
 
             fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
-            
+
             this.firstSelectedHost.sftpFilesOption = {
                 ...this.firstSelectedHost.sftpFilesOption,
                 fileList: fileItems
@@ -204,17 +203,17 @@ class SftpStore {
                 })
 
                 fileItems[selectFileIndex].isSelected = true;
-                
+
                 this.secondSelectedHost.sftpFilesOption = {
                     ...this.secondSelectedHost.sftpFilesOption,
                     fileList: fileItems
                 }
-                
+
                 return;
             }
 
             fileItems[selectFileIndex].isSelected = !fileItems[selectFileIndex].isSelected;
-            
+
             this.secondSelectedHost.sftpFilesOption = {
                 ...this.secondSelectedHost.sftpFilesOption,
                 fileList: fileItems

@@ -1,4 +1,4 @@
-﻿using Domain.Layers.Redis.Services;
+﻿using Domain.Layers.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Redis.Services;

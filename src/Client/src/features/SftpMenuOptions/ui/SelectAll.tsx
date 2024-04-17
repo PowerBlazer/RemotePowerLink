@@ -3,12 +3,14 @@ import style from './SftpMenuOptions.module.scss';
 import { MenuOptionProp } from 'features/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import sftpStore from 'app/store/sftpStore';
+import { useTranslation } from 'react-i18next';
 
 interface SelectAllProps extends MenuOptionProp {
     className?: string;
 }
 
 export function SelectAll ({ className, disabled, mode, onClick }: SelectAllProps) {
+    const { t } = useTranslation('translation')
     const onClickSelectAllHandler = () => {
         if (disabled) { return; }
 
@@ -24,7 +26,7 @@ export function SelectAll ({ className, disabled, mode, onClick }: SelectAllProp
             className={classNames(style.selectAll, { [style.disabled]: disabled }, [className, style.menu_item])}
             onClick={onClickSelectAllHandler}
         >
-            Select All
+            {t('Выбрать все')}
         </Button>
     );
 }

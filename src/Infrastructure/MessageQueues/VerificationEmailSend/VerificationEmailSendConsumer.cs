@@ -1,4 +1,4 @@
-﻿using Domain.Layers.Email.Services;
+﻿using Domain.Layers.Email;
 using Domain.Layers.MessageQueues.VerificationEmailSend;
 using JetBrains.Annotations;
 using MassTransit;

@@ -12,8 +12,8 @@ import toast from 'react-hot-toast';
 import sftpStore from 'app/store/sftpStore';
 import LogoIcon from 'shared/assets/icons/logo.svg';
 import style from './SftpCatalog.module.scss';
-import {NewFolderModal} from "widgets/NewFolderModal";
-import {ErrorModal} from "widgets/ErrorModal";
+import { NewFolderModal } from 'widgets/NewFolderModal';
+import { ErrorModal } from 'widgets/ErrorModal';
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -64,10 +64,10 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 if (sftpStore.firstSelectedHost) {
                     sftpStore.firstSelectedHost = {
                         ...sftpStore.firstSelectedHost,
-                        isLoad:false,
-                        error: { errors: errors }
+                        isLoad: false,
+                        error: { errors }
                     }
-                    
+
                     sftpStore.firstSelectedHost.sftpFilesOption.historyPrevPaths.pop();
                     sftpStore.firstSelectedHost.modalOption.errorState = true;
                 }
@@ -104,8 +104,8 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 if (sftpStore.secondSelectedHost) {
                     sftpStore.secondSelectedHost = {
                         ...sftpStore.secondSelectedHost,
-                        isLoad:false,
-                        error: { errors: errors }
+                        isLoad: false,
+                        error: { errors }
                     }
 
                     sftpStore.secondSelectedHost.sftpFilesOption.historyPrevPaths.pop();

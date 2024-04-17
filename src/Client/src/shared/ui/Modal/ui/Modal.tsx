@@ -1,11 +1,11 @@
-import {classNames} from 'shared/lib/classNames/classNames';
-import {ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
-import {ModalOptions, ThemeModal, TypeModal} from 'shared/ui/Modal';
+import { classNames } from 'shared/lib/classNames/classNames';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ModalOptions, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import style from './Modal.module.scss';
-import {Button, ThemeButton} from "shared/ui/Button/Button";
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import CloseIcon from 'shared/assets/icons/close.svg';
-import {ButtonLoader} from "shared/ui/ButtonLoader";
-import {useTranslation} from "react-i18next";
+import { ButtonLoader } from 'shared/ui/ButtonLoader';
+import { useTranslation } from 'react-i18next';
 
 interface ModalProps {
     className?: string;
@@ -42,13 +42,12 @@ export function Modal (props: ModalProps) {
 
         setVisibleModal(false);
     }, [options.onConfirm]);
-    
-    
+
     const closeButton = useMemo(() => (
-        <Button className={classNames(style.close_button)} onClick={() => closeModalHandler()}>
+        <Button className={classNames(style.close_button)} onClick={() => { closeModalHandler(); }}>
             <CloseIcon width={25} height={25}/>
         </Button>
-    ),[closeModalHandler])
+    ), [closeModalHandler])
 
     const errorModal = [
         <div className={classNames(style.header)} key={'header'}>
@@ -69,8 +68,8 @@ export function Modal (props: ModalProps) {
             {children}
         </div>,
         <div className={classNames(style.footer)} key={'footer'}>
-            <ButtonLoader 
-                className={classNames(style.confirm_button)} 
+            <ButtonLoader
+                className={classNames(style.confirm_button)}
                 theme={ThemeButton.PRIMARY}
                 actionAsync={confirmModalHandler}
                 disabled={options.disabled}

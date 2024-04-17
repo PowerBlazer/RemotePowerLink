@@ -1,4 +1,4 @@
-﻿namespace Domain.Layers.Redis.Services;
+﻿namespace Domain.Layers.Redis;
 
 public interface IRedisService
 {

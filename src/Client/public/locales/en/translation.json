@@ -58,6 +58,16 @@
     "Ошибка": "Error",
     "Название новой папки": "New folder name",
     "Название папки не может быть пустым": "The folder name cannot be empty",
-    "Подтвердить": "Confirm"
+    "Подтвердить": "Confirm",
+    "Закрыть подключение": "Close connection",
+    "Удалить": "Delete",
+    "Скачать": "Download",
+    "Новая папка": "New folder",
+    "Открыть": "Open",
+    "Обновить": "Refresh",
+    "Переименовать": "Rename",
+    "Выбрать все": "Select all",
+    "Загрузить": "Unload"
+    
     
 }

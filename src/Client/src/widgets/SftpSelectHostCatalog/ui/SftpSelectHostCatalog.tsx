@@ -42,11 +42,11 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 historyNextPaths: new Stack<string>()
             },
             modalOption: {
-                errorState:false,
+                errorState: false,
                 newFolderState: false
             }
         }
-        
+
         if (mode === SftpCatalogMode.First) {
             if (sftpStore.firstSelectedHost?.sftpHub) {
                 sftpStore.firstSelectedHost.sftpHub.closeConnection();

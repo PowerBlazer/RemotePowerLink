@@ -31,7 +31,7 @@ const SftpMenu = forwardRef(
 
         const selectedHost = sftpStore.getSelectedHostInMode(mode);
         const selectedSftpFileOptions = selectedHost.sftpFilesOption;
-       
+
         const [isVisibleMenu, setVisibleMenu] = useState<boolean>(isVisible);
 
         const menuRef = useOutsideClick<HTMLDivElement>(() => {

@@ -1,10 +1,9 @@
-﻿import {CreateDirectoryData} from "app/services/SftpService/config/sftpConfig";
-import {ApiResult, HostService, ServiceResult} from "app/services/hostService";
+import { CreateDirectoryData } from 'app/services/SftpService/config/sftpConfig';
+import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class SftpService {
-    static createDirectory = async (createDirectoryData: CreateDirectoryData): 
-        Promise<ServiceResult<any>> => {
-        
+    static createDirectory = async (createDirectoryData: CreateDirectoryData):
+    Promise<ServiceResult<any>> => {
         try {
             await HostService.api.post<ApiResult<CreateDirectoryData>>(
                 '/v1/sftp/create-directory',
@@ -12,10 +11,9 @@ export class SftpService {
             );
 
             return {
-                isSuccess: true,
+                isSuccess: true
             }
         } catch (error) {
-            console.log(error)
             return {
                 isSuccess: false,
                 errors: error.response?.data.Errors

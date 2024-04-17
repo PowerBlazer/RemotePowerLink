@@ -1,1 +1,1 @@
-﻿export { default as NewFolderModal } from './ui/NewFolderModal';
+export { default as NewFolderModal } from './ui/NewFolderModal';

@@ -4,12 +4,14 @@ import { MenuOptionProp } from 'features/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
 import sftpStore from 'app/store/sftpStore';
+import { useTranslation } from 'react-i18next';
 
 interface CloseProps extends MenuOptionProp {
     className?: string;
 }
 
 export function Close ({ className, mode, disabled, onClick }: CloseProps) {
+    const { t } = useTranslation('translation')
     const onClickCloseHandler = () => {
         if (disabled) { return; }
 
@@ -33,7 +35,7 @@ export function Close ({ className, mode, disabled, onClick }: CloseProps) {
             className={classNames(style.close, { [style.disabled]: disabled }, [className, style.menu_item])}
             onClick={onClickCloseHandler}
         >
-            Close
+            {t('Закрыть подключение')}
         </Button>
     );
 }

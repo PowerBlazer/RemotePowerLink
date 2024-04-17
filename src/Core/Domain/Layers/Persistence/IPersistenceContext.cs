@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Domain.Layers.Persistence.Contexts;
+namespace Domain.Layers.Persistence;
 
 public interface IPersistenceContext
 {

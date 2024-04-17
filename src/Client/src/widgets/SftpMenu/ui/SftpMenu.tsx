@@ -73,7 +73,7 @@ const SftpMenu = forwardRef(
             const isDisabled = !selectedItemsCount || selectedItemsCount === 0;
 
             return [
-                <Rename mode={mode} key='Rename' disabled={isDisabled} onClick={onClickCloseMenuHandler}/>,
+                <Rename mode={mode} key='Rename' disabled={isDisabled || selectedItemsCount > 1} onClick={onClickCloseMenuHandler}/>,
                 <Delete mode={mode} key='Delete' disabled={isDisabled} onClick={onClickCloseMenuHandler}/>,
                 <Refresh mode={mode} key='Refresh' onClick={onClickCloseMenuHandler}/>,
                 <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,

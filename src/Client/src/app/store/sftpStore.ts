@@ -223,19 +223,25 @@ class SftpStore {
 
     setSelectAllInFilter (mode: SftpCatalogMode) {
         if (mode === SftpCatalogMode.First) {
-            this.firstSelectedHost.sftpFilesOption.fileList
-                .filter(p => p.fileType !== FileType.BackNavigation)
+            const fileList = [...this.firstSelectedHost.sftpFilesOption.fileList];
+
+            fileList.filter(p => p.fileType !== FileType.BackNavigation)
                 .forEach(file => {
                     file.isSelected = true
-                })
+                });
+
+            this.firstSelectedHost.sftpFilesOption.fileList = fileList;
         }
 
         if (mode === SftpCatalogMode.Second) {
-            this.secondSelectedHost.sftpFilesOption.fileList
-                .filter(p => p.fileType !== FileType.BackNavigation)
+            const fileList = [...this.secondSelectedHost.sftpFilesOption.fileList];
+
+            fileList.filter(p => p.fileType !== FileType.BackNavigation)
                 .forEach(file => {
                     file.isSelected = true
-                })
+                });
+
+            this.secondSelectedHost.sftpFilesOption.fileList = fileList;
         }
     }
 }

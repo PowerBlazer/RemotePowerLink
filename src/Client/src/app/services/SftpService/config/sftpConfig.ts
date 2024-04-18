@@ -30,3 +30,8 @@ export interface CreateDirectoryData {
     directoryName: string,
     serverId: number
 }
+
+export interface DeleteFilesOrFoldersData {
+    filesOrFoldersToDeleteList: SftpFile[]
+    serverId: number
+}

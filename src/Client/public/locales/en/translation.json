@@ -67,7 +67,8 @@
     "Обновить": "Refresh",
     "Переименовать": "Rename",
     "Выбрать все": "Select all",
-    "Загрузить": "Unload"
+    "Загрузить": "Unload",
+    "Вы хотите удалить эти папки и файлы?": "Do you want to delete these folders and files?"
     
     
 }

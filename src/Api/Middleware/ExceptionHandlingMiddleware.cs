@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Domain.Common;
 using Domain.Exceptions;
+using Renci.SshNet.Common;
 using ValidationException = Domain.Exceptions.ValidationException;
 
 namespace Api.Middleware;
@@ -42,28 +43,39 @@ public class ExceptionHandlingMiddleware
         }
         catch (AuthenticationValidException ex)
         {
-            await HandleExceptionAsync(httpContext,HttpStatusCode.Unauthorized,ex.Errors);
+            await HandleExceptionAsync(httpContext, HttpStatusCode.Unauthorized, ex.Errors);
         }
         catch (SessionCodeNotFoundException ex)
         {
-            await HandleExceptionAsync(httpContext,HttpStatusCode.NotFound,ex.Errors);
+            await HandleExceptionAsync(httpContext, HttpStatusCode.NotFound, ex.Errors);
         }
         catch (SessionCodeNotValidException ex)
         {
-            await HandleExceptionAsync(httpContext,HttpStatusCode.BadRequest,ex.Errors);
+            await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Errors);
+        }
+        catch (SftpPermissionDeniedException ex)
+        {
+            await HandleExceptionAsync(httpContext, HttpStatusCode.Forbidden,
+                GetErrorsDictionary("Server", ex.Message));
+        }
+        catch (SftpPathNotFoundException ex)
+        {
+            await HandleExceptionAsync(httpContext, HttpStatusCode.NotFound,
+                GetErrorsDictionary("Server", ex.Message));
+        }
+        catch (SftpException ex)
+        {
+            await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Errors);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);
             
-            await HandleExceptionAsync(httpContext,HttpStatusCode.InternalServerError, 
-                new Dictionary<string, List<string>>
-                {
-                    {
-                        "InternalServerError",
-                        new List<string> { "Ошибка на стороне сервера, обращайтесь в тех поддержку" }
-                    }
-                });
+            await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, 
+                GetErrorsDictionary(
+                    "InternalServerError", 
+                    "Ошибка на стороне сервера, обращайтесь в тех поддержку"
+                ));
         }
     }
         
@@ -102,9 +114,16 @@ public class ExceptionHandlingMiddleware
 
         return response.WriteAsync(result);
     }
-    
-    
 
-    
+    private Dictionary<string, List<string>> GetErrorsDictionary(string key, params string[] errors)
+    {
+        return new Dictionary<string, List<string>>
+        {
+            {
+                key,
+                errors.ToList()
+            }
+        };
+    }  
     
 }

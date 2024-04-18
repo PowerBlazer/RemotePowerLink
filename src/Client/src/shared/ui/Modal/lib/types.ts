@@ -6,7 +6,8 @@ export enum ThemeModal {
 export enum TypeModal {
     ERROR = 'error',
     DEFAULT = 'default',
-    FORM = 'form'
+    FORM = 'form',
+    DELETE = 'delete'
 }
 
 export interface ModalOptions {

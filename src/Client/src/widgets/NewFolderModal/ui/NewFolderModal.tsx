@@ -1,4 +1,4 @@
-import { observer } from 'mobx-react-lite';
+﻿import { observer } from 'mobx-react-lite';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
 import { Input } from 'shared/ui/Input';
@@ -30,9 +30,7 @@ function NewFolderModal ({ className, mode }: NewFolderModalProps) {
             directoryName: newFolderName,
             serverId: selectedHost?.server.serverId
         });
-
-        console.log(createDirectoryResult)
-
+        
         if (createDirectoryResult.isSuccess) {
             selectedHost.isLoad = true;
 
@@ -76,7 +74,7 @@ function NewFolderModal ({ className, mode }: NewFolderModalProps) {
         <Modal
             options={{
                 type: TypeModal.FORM,
-                headerName: 'New Folder',
+                headerName: t('Новая папка'),
                 onCancel: () => { selectedHost.modalOption.newFolderState = false },
                 onConfirm: createNewFolderHandler,
                 disabled: errors.length > 0
@@ -93,10 +91,6 @@ function NewFolderModal ({ className, mode }: NewFolderModalProps) {
             />
         </Modal>
     );
-}
-
-async function delay (ms: number) {
-    return await new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export default observer(NewFolderModal)

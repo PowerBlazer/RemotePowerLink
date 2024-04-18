@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using Domain.Enums;
 using Domain.Repository;
@@ -147,7 +148,7 @@ public class ServerService: IServerService
                 proxyParameter.Password,
                 new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
         }
-
+        
         return connectionInfo;
     }
 }

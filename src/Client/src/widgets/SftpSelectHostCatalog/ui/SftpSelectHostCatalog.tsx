@@ -43,7 +43,8 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             },
             modalOption: {
                 errorState: false,
-                newFolderState: false
+                newFolderState: false,
+                deleteState: false
             }
         }
 

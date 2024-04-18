@@ -21,11 +21,12 @@ function ErrorModal ({ className, mode }: ErrorModalProps) {
                 type: TypeModal.ERROR,
                 onCancel: () => { selectedHost.modalOption.errorState = false; }
             }}
+            className={className}
             theme={ theme === Theme.LIGHT ? ThemeModal.CLEAR : ThemeModal.DARK }
-            isVisible={Boolean(selectedHost.error)}
+            isVisible={Boolean(selectedHost?.modalOption?.errorState)}
         >
             <div className={classNames(style.error_panel)}>
-                {selectedHost?.error && Object.entries(selectedHost.error.errors).map(([key, value]) => {
+                {selectedHost?.error && Object.entries(selectedHost.error?.errors).map(([key, value]) => {
                     return (
                         <div className={classNames(style.error)} key={key}>
                             {key}:  {value.join(' ')}

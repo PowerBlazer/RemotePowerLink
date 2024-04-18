@@ -1,11 +1,11 @@
-import { classNames } from 'shared/lib/classNames/classNames';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { ModalOptions, ThemeModal, TypeModal } from 'shared/ui/Modal';
+import {classNames} from 'shared/lib/classNames/classNames';
+import {ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
+import {ModalOptions, ThemeModal, TypeModal} from 'shared/ui/Modal';
 import style from './Modal.module.scss';
-import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import {Button, ThemeButton} from 'shared/ui/Button/Button';
 import CloseIcon from 'shared/assets/icons/close.svg';
-import { ButtonLoader } from 'shared/ui/ButtonLoader';
-import { useTranslation } from 'react-i18next';
+import {ButtonLoader} from 'shared/ui/ButtonLoader';
+import {useTranslation} from 'react-i18next';
 
 interface ModalProps {
     className?: string;
@@ -78,6 +78,26 @@ export function Modal (props: ModalProps) {
             </ButtonLoader>
         </div>
     ];
+    
+    const deleteModal = [
+        <div className={classNames(style.header)} key={'header'}>
+            <h1 className={style.header_title}>{options.headerName}</h1>
+            {closeButton}
+        </div>,
+        <div className={classNames(style.content)} key={'content'}>
+            {children}
+        </div>,
+        <div className={classNames(style.footer)} key={'footer'}>
+            <ButtonLoader
+                className={classNames(style.confirm_button)}
+                theme={ThemeButton.PRIMARY}
+                actionAsync={confirmModalHandler}
+                disabled={options.disabled}
+            >
+                {t('Удалить')}
+            </ButtonLoader>
+        </div>
+    ]
 
     const informationModal = useMemo(() => (
         <div className={classNames(style.modal_content)}>
@@ -95,13 +115,15 @@ export function Modal (props: ModalProps) {
                 [style.active]: visibleModal,
                 [style.dark]: theme === ThemeModal.DARK,
                 [style.clear]: theme === ThemeModal.CLEAR,
-                [style.error]: options.type === TypeModal.ERROR
+                [style.error]: options.type === TypeModal.ERROR,
+                [style.delete]: options.type === TypeModal.DELETE
             }, [className])}
         >
             <div className={classNames(style.modal_content)}>
                 {options.type === TypeModal.DEFAULT && informationModal}
                 {options.type === TypeModal.ERROR && errorModal}
                 {options.type === TypeModal.FORM && formModal}
+                {options.type === TypeModal.DELETE && deleteModal}
             </div>
         </div>
     );

@@ -1,4 +1,5 @@
 ﻿using Application.Features.SftpFeature.CreateDirectory;
+using Application.Features.SftpFeature.DeleteFoldersOrFiles;
 using Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +35,28 @@ public class SftpController: BaseController
     {
         createDirectoryCommand.UserId = UserId;
         await Mediator.Send(createDirectoryCommand);
+
+        return new ApiActionResult();
+    }
+    
+    /// <summary>
+    /// Удаляет переданные файлы или папки по SSH
+    /// </summary>
+    /// <param name="deleteFoldersOrFilesCommand"></param>
+    /// <response code="200">Файлы или папки успешно удалены</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="403">Доступ запрещен</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [HttpPost("delete")]
+    public async Task<ApiActionResult> DeleteFilesOrFolders([FromBody]DeleteFoldersOrFilesCommand deleteFoldersOrFilesCommand)
+    {
+        deleteFoldersOrFilesCommand.UserId = UserId;
+        await Mediator.Send(deleteFoldersOrFilesCommand);
 
         return new ApiActionResult();
     }

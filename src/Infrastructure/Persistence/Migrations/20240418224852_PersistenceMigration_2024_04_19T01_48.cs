@@ -113,234 +113,229 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropIndex(
                 name: "ix_encoding_code_page",
-                table: "encoding");
+                table: "encodings");
 
             migrationBuilder.DropIndex(
                 name: "ix_encoding_name",
-                table: "encoding");
+                table: "encodings");
+            
+            migrationBuilder.DropTable(
+                name: "encodings");
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 1L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 2L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 3L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 4L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 5L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 6L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 7L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 8L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 9L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 10L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 11L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 12L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 13L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 14L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 15L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 16L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 17L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 18L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 19L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 20L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 21L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 22L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 23L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 24L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 25L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 26L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 27L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 28L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 29L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 30L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 31L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 32L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 33L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 34L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 35L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 36L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 37L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 38L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 39L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 40L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 41L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 42L);
 
             migrationBuilder.DeleteData(
-                table: "encoding",
+                table: "encodings",
                 keyColumn: "id",
                 keyValue: 43L);
-
-            migrationBuilder.AddForeignKey(
-                name: "fk_servers_encoding_encoding_id",
-                table: "servers",
-                column: "encoding_id",
-                principalTable: "encoding",
-                principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

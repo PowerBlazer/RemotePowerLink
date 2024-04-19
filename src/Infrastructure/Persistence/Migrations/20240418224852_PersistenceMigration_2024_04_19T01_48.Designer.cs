@@ -52,7 +52,7 @@ namespace Persistence.Migrations
                     b.HasIndex("Name")
                         .HasDatabaseName("ix_encoding_name");
 
-                    b.ToTable("encoding", (string)null);
+                    b.ToTable("encodings", (string)null);
 
                     b.HasData(
                         new

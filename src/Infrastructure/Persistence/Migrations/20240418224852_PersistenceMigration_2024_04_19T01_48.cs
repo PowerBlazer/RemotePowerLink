@@ -80,12 +80,12 @@ namespace Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "ix_encoding_code_page",
-                table: "encoding",
+                table: "encodings",
                 column: "code_page");
 
             migrationBuilder.CreateIndex(
                 name: "ix_encoding_name",
-                table: "encoding",
+                table: "encodings",
                 column: "name");
             
             migrationBuilder.AddColumn<long>(
@@ -99,7 +99,7 @@ namespace Persistence.Migrations
                 name: "fk_servers_encoding_encoding_id",
                 table: "servers",
                 column: "encoding_id",
-                principalTable: "encoding",
+                principalTable: "encodings",
                 principalColumn: "id",
                 onDelete: ReferentialAction.SetNull);
         }

@@ -21,6 +21,7 @@ import { ServerService } from 'app/services/ServerService/serverService';
 import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { LangSwitcher } from 'features/LangSwitcher';
 import searchStore from 'app/store/searchStore';
+import {EncodingService} from "app/services/EncodingService/encodingService";
 
 interface NavbarProps {
     className?: string
@@ -49,6 +50,11 @@ function Navbar ({ className }: NavbarProps) {
         if (!userStore.userServers) {
             const serversResult = await ServerService.getServers();
             userStore.setUserServers(serversResult.result);
+        }
+        
+        if(!userStore.encodings){
+            const encodingsResult = await EncodingService.getEncodings();
+            userStore.setUserEncodings(encodingsResult.result);
         }
     });
 

@@ -76,6 +76,16 @@ public class Server : BaseEntity<long>
     /// </summary>
     public SystemType? SystemType { get; set; }
 
+    /// <summary>
+    /// Идентификатор кодировки
+    /// </summary>
+    public long EncodingId { get; set; }
+    
+    /// <summary>
+    /// Кодировка
+    /// </summary>
+    public Encoding? Encoding { get; set; }
+
     #endregion
 }
 

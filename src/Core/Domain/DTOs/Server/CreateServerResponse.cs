@@ -51,6 +51,11 @@ public class CreateServerResponse
     /// Дата создания
     /// </summary>
     public DateTime DateCreated { get; set; }
+    
+    /// <summary>
+    /// Идентификатор кодировки
+    /// </summary>
+    public long EncodingId { get; set; }
 
 
     public static CreateServerResponse MapToServer(Entities.Server server)
@@ -66,7 +71,8 @@ public class CreateServerResponse
             StartupCommand = server.StartupCommand,
             SystemTypeName = server.SystemType?.Name,
             SystemTypeIcon = server.SystemType?.IconPath,
-            DateCreated = server.DateCreated
+            DateCreated = server.DateCreated,
+            EncodingId = server.EncodingId
         };
     }
 }

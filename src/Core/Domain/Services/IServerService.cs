@@ -1,5 +1,6 @@
 ﻿using Domain.Services.Parameters;
 using Domain.Services.Results;
+using Renci.SshNet;
 
 namespace Domain.Services;
 
@@ -27,4 +28,11 @@ public interface IServerService
     /// <param name="serverAddress">Строка, содержащая доменное имя или IP-адрес с портом.</param>
     /// <returns>Значение true, если строка соответствует заданному шаблону, в противном случае — false.</returns>
     public bool ValidateServerAddress(string serverAddress);
+
+    /// <summary>
+    /// Получает конфигурацию подключения по SSH
+    /// </summary>
+    /// <param name="connectionServerParameter">Параметры для подключения</param>
+    /// <returns></returns>
+    public ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter);
 }

@@ -9,6 +9,7 @@ public class ConnectionServerParameter
     public int? SshPort { get; set; }
     public required string Username { get; set; }
     public required string Password { get; set; }
+    public required int EncodingCodePage { get; set; }
     public ProxyParameter? Proxy { get; set; }
 
     public static ConnectionServerParameter ServerMapTo(Server server)
@@ -23,7 +24,8 @@ public class ConnectionServerParameter
             Hostname = server.IpAddress,
             SshPort = server.SshPort,
             Username = server.Identity.Username,
-            Password = server.Identity.Password
+            Password = server.Identity.Password,
+            EncodingCodePage = server.Encoding?.CodePage ?? 65001
         };
 
         if (server.Proxy is not null)
@@ -38,7 +40,8 @@ public class ConnectionServerParameter
                 Hostname = server.Proxy.IpAddress,
                 Username = server.Proxy.Identity.Username,
                 Password = server.Proxy.Identity.Password,
-                SshPort = server.Proxy.SshPort
+                SshPort = server.Proxy.SshPort,
+                EncodingCodePage = 65001
             };
         }
 

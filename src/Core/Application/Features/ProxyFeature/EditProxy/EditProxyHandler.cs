@@ -36,7 +36,8 @@ public class EditProxyHandler: IRequestHandler<EditProxyCommand,EditProxyRespons
             Hostname = request.Hostname,
             SshPort = request.SshPort,
             Username = identity.Username,
-            Password = identity.Password
+            Password = identity.Password,
+            EncodingCodePage = 65001
         };
                 
         var isConnection = await _serverService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);

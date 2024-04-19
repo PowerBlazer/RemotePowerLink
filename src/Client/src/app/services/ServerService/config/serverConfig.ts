@@ -5,6 +5,7 @@ export interface CreateServerData {
     startupCommand?: string
     identityId: number,
     proxyId?: number,
+    encodingId: number
 }
 
 export interface EditServerData {
@@ -14,7 +15,8 @@ export interface EditServerData {
     sshPort?: string
     startupCommand?: string
     identityId: number
-    proxyId?: number
+    proxyId?: number,
+    encodingId: number
 }
 
 export interface EditServerResult {
@@ -27,7 +29,8 @@ export interface EditServerResult {
     proxyId?: number
     systemTypeName?: string
     systemTypeIcon?: string,
-    dateCreated: Date
+    dateCreated: Date,
+    encodingId: number
 }
 
 export interface CreateServerResult {
@@ -40,7 +43,8 @@ export interface CreateServerResult {
     proxyId: number,
     systemTypeName: string,
     systemTypeIcon: string,
-    dateCreated: Date
+    dateCreated: Date,
+    encodingId: number
 }
 
 export interface ServerData {
@@ -53,5 +57,6 @@ export interface ServerData {
     proxyId?: number,
     systemTypeName?: string,
     systemTypeIcon?: string,
-    dateCreated: Date
+    dateCreated: Date,
+    encodingId: number
 }

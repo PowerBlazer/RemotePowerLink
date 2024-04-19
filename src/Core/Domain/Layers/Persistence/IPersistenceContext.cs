@@ -13,6 +13,7 @@ public interface IPersistenceContext
     DbSet<Proxy> Proxies { get; }
     DbSet<Server> Servers { get; }
     DbSet<SystemType> SystemTypes { get; }
+    DbSet<Encoding> Encodings { get; }
     
     Task<int> SaveChangesAsync();
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

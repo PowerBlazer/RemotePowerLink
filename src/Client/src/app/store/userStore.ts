@@ -3,11 +3,13 @@ import { ProxyData } from 'app/services/ProxyService/config/proxyConfig';
 import { IdentityData } from 'app/services/IdentityService/config/identityConfig';
 import { UserData } from 'app/services/UserService/config/userConfig';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
+import {EncodingData} from "app/services/EncodingService/config";
 
 class UserStore {
     @observable public userProxies: ProxyData[] | null = null;
     @observable public userIdentities: IdentityData[] | null = null;
     @observable public userServers: ServerData[] | null = null;
+    @observable public encodings: EncodingData[] | null = null;
 
     public userData: UserData | null = null;
     public isLoadData: boolean = false;
@@ -26,6 +28,10 @@ class UserStore {
 
     setUserData (userData: UserData) {
         this.userData = userData;
+    }
+    
+    setUserEncodings (encodings: EncodingData[]){
+        this.encodings = encodings;
     }
 
     setUserProxies (proxies: ProxyData[]) {

@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Domain.Exceptions;
 using Domain.Repository;
+using Domain.Services;
 using Domain.Services.Parameters;
 using JetBrains.Annotations;
 using MediatR;
@@ -12,10 +13,13 @@ namespace Application.Features.SftpFeature.CreateDirectory;
 public class CreateDirectoryHandler: IRequestHandler<CreateDirectoryCommand>
 {
     private readonly IServerRepository _serverRepository;
+    private readonly IServerService _serverService;
 
-    public CreateDirectoryHandler(IServerRepository serverRepository)
+    public CreateDirectoryHandler(IServerRepository serverRepository, 
+        IServerService serverService)
     {
         _serverRepository = serverRepository;
+        _serverService = serverService;
     }
 
     public async Task Handle(CreateDirectoryCommand request, CancellationToken cancellationToken)
@@ -30,7 +34,7 @@ public class CreateDirectoryHandler: IRequestHandler<CreateDirectoryCommand>
         }
 
         var connectionServerParameter = ConnectionServerParameter.ServerMapTo(server);
-        var connectionInfo = ServerService.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
         

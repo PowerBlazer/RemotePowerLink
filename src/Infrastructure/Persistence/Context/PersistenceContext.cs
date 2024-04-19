@@ -13,6 +13,7 @@ public class PersistenceContext: DbContext, IPersistenceContext
     public DbSet<Proxy> Proxies => Set<Proxy>();
     public DbSet<Server> Servers => Set<Server>();
     public DbSet<SystemType> SystemTypes => Set<SystemType>();
+    public DbSet<Encoding> Encodings => Set<Encoding>();
     
     public PersistenceContext(DbContextOptions<PersistenceContext> options): base(options)
     {
@@ -41,5 +42,6 @@ public class PersistenceContext: DbContext, IPersistenceContext
         modelBuilder.ApplyConfiguration(new ServerConfiguration());
         modelBuilder.ApplyConfiguration(new ProxyConfiguration());
         modelBuilder.ApplyConfiguration(new SystemTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new EncodingConfiguration());
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Domain.DTOs.Proxy;
-using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Repository;
 using Domain.Services;
@@ -39,7 +38,8 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
             Hostname = request.Hostname,
             SshPort = request.SshPort,
             Username = identity.Username,
-            Password = identity.Password
+            Password = identity.Password,
+            EncodingCodePage = 65001
         };
                 
         var isConnection = await _serverService.CheckConnectionServer(checkConnectionServerParameter, cancellationToken);

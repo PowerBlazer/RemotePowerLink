@@ -43,7 +43,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             startupCommand: editServerResult.startupCommand,
             systemTypeIcon: editServerResult.systemTypeIcon,
             systemTypeName: editServerResult.systemTypeName,
-            dateCreated: editServerResult.dateCreated
+            dateCreated: editServerResult.dateCreated,
+            encodingId: editServerResult.encodingId
         });
 
         toast.success(t('Успешно сохранено'));
@@ -60,7 +61,8 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
             startupCommand: createServerResult.startupCommand,
             systemTypeIcon: createServerResult.systemTypeIcon,
             systemTypeName: createServerResult.systemTypeName,
-            dateCreated: createServerResult.dateCreated
+            dateCreated: createServerResult.dateCreated,
+            encodingId: createServerResult.encodingId
         };
 
         userStore.setUserServer(server);

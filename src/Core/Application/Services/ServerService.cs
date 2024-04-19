@@ -3,11 +3,13 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Domain.Enums;
+using Domain.Exceptions;
 using Domain.Repository;
 using Domain.Services;
 using Domain.Services.Parameters;
 using Domain.Services.Results;
 using Renci.SshNet;
+using Renci.SshNet.Common;
 
 namespace Application.Services;
 
@@ -79,6 +81,10 @@ public class ServerService: IServerService
 
             systemTypeResult.IconPath = systemType.IconPath;
         }
+        catch (Exception ex)
+        {
+            throw new ConnectionServerException(ex.Message, "Hostname");
+        }
         finally
         {
             if (client.IsConnected)
@@ -125,7 +131,7 @@ public class ServerService: IServerService
     }
 
 
-    public static ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter)
+    public ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter)
     {
         var connectionInfo = new ConnectionInfo(
             connectionServerParameter.Hostname,
@@ -148,6 +154,8 @@ public class ServerService: IServerService
                 proxyParameter.Password,
                 new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
         }
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        connectionInfo.Encoding = Encoding.GetEncoding(connectionServerParameter.EncodingCodePage);
         
         return connectionInfo;
     }

@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IProxyRepository, ProxyRepository>();
         services.AddScoped<IServerRepository, ServerRepositrory>();
         services.AddScoped<ISystemTypeRepository, SystemTypeRepository>();
+        services.AddScoped<IEncodingRepository, EncodingRepository>();
         #endregion
 
         #region Services

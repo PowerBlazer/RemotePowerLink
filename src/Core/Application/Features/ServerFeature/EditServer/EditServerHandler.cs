@@ -13,21 +13,25 @@ public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerRes
     private readonly IIdentityRepository _identityRepository;
     private readonly IProxyRepository _proxyRepository;
     private readonly IServerRepository _serverRepository;
+    private readonly IEncodingRepository _encodingRepository;
 
     public EditServerHandler(IServerService serverService, 
         IIdentityRepository identityRepository, 
         IProxyRepository proxyRepository, 
-        IServerRepository serverRepository)
+        IServerRepository serverRepository, 
+        IEncodingRepository encodingRepository)
     {
         _serverService = serverService;
         _identityRepository = identityRepository;
         _proxyRepository = proxyRepository;
         _serverRepository = serverRepository;
+        _encodingRepository = encodingRepository;
     }
 
     public async Task<EditServerResponse> Handle(EditServerCommand request, CancellationToken cancellationToken)
     {
         var identity = await _identityRepository.GetIdentityDefaultAsync(request.IdentityId);
+        var encoding = await _encodingRepository.GetEncodingAsync(request.EncodingId);
         
         if (identity is null)
         {
@@ -39,7 +43,8 @@ public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerRes
             Hostname = request.Hostname,
             SshPort = request.SshPort,
             Username = identity.Username,
-            Password = identity.Password
+            Password = identity.Password,
+            EncodingCodePage = encoding.CodePage
         };
         
         if (request.ProxyId is not null)
@@ -58,7 +63,8 @@ public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerRes
                 Hostname = proxy.IpAddress,
                 SshPort = proxy.SshPort,
                 Username = proxyIdentity.Username,
-                Password = proxyIdentity.Password
+                Password = proxyIdentity.Password,
+                EncodingCodePage = encoding.CodePage
             };
         }
         

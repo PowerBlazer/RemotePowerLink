@@ -49,6 +49,11 @@ public class EditServerResponse
     /// </summary>
     public DateTime DateCreated { get; set; }
     
+    /// <summary>
+    /// Идентификатор кодировки
+    /// </summary>
+    public long EncodingId { get; set; }
+    
     public static EditServerResponse MapServerTo(Entities.Server server)
     {
         return new EditServerResponse
@@ -62,7 +67,8 @@ public class EditServerResponse
             ProxyId = server.ProxyId,
             SystemTypeName = server.SystemType?.Name,
             SystemTypeIcon = server.SystemType?.IconPath,
-            DateCreated = server.DateCreated
+            DateCreated = server.DateCreated,
+            EncodingId = server.EncodingId
         };
     }
 }

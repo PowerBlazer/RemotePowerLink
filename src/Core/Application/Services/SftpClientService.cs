@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Text;
 using Domain.Exceptions;
 using Domain.Services;
 using Domain.Services.Parameters;
@@ -82,7 +83,7 @@ public class SftpClientService: ISftpClientService
     
     private static SftpClient CreateNewClientInstance(ConnectionServerParameter connectionServerParameter)
     {
-        var connectionInfo = ServerService.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = GetConnectionInfo(connectionServerParameter);
         
         var sftpClient = new SftpClient(connectionInfo);
         
@@ -100,7 +101,36 @@ public class SftpClientService: ISftpClientService
         return sftpClient;
     }
     
-    public class SftpClientInstance
+    private static ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter)
+    {
+        var connectionInfo = new ConnectionInfo(
+            connectionServerParameter.Hostname,
+            connectionServerParameter.SshPort ?? 22,
+            connectionServerParameter.Username,
+            new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
+
+        var proxyParameter = connectionServerParameter.Proxy;
+
+        if (proxyParameter is not null)
+        {
+            connectionInfo = new ConnectionInfo(
+                connectionServerParameter.Hostname,
+                connectionServerParameter.SshPort ?? 22,
+                connectionServerParameter.Username,
+                ProxyTypes.Http,
+                proxyParameter.Hostname,
+                proxyParameter.SshPort ?? 22,
+                proxyParameter.Username,
+                proxyParameter.Password,
+                new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
+        }
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        connectionInfo.Encoding = Encoding.GetEncoding(connectionServerParameter.EncodingCodePage);
+        
+        return connectionInfo;
+    }
+    
+    private class SftpClientInstance
     {
         public required SftpClient SftpClient { get; set; }
         public DateTime LastUsed { get; set; }

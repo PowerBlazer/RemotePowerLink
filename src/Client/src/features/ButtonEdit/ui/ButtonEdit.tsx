@@ -33,7 +33,8 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
             startupCommand: editServerData.startupCommand,
             systemTypeIcon: editServerData.systemTypeIcon,
             systemTypeName: editServerData.systemTypeName,
-            dateCreated: editServerData.dateCreated
+            dateCreated: editServerData.dateCreated,
+            encodingId: editServerData.encodingId
         });
 
         toast.success(t('Успешно сохранено'));

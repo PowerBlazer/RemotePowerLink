@@ -45,6 +45,11 @@ public class CreateServerCommand : IRequest<CreateServerResponse>
     /// Идентификатор прокси, связанного с сервером.
     /// </summary>
     public long? ProxyId { get; set; }
+    
+    /// <summary>
+    /// Идентификатор кодировки
+    /// </summary>
+    public long EncodingId { get; set; }
 
     public static Server MapToServer(CreateServerCommand createServerCommand, long systemTypeId)
     {
@@ -58,7 +63,8 @@ public class CreateServerCommand : IRequest<CreateServerResponse>
             UserId = createServerCommand.UserId,
             ProxyId = createServerCommand.ProxyId,
             DateCreated = DateTime.Now,
-            SystemTypeId = systemTypeId
+            SystemTypeId = systemTypeId,
+            EncodingId = createServerCommand.EncodingId
         };
     }
 }

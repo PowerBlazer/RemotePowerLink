@@ -30,7 +30,8 @@ interface SidebarNewHostProps extends SidebarOptions<ServerData> {
 const defaultServerValue = {
     hostname: '',
     title: '',
-    identityId: 0
+    identityId: 0,
+    encodingId:0
 }
 
 function SidebarNewHost ({ className, isMain = false, onSave, onClose }: SidebarNewHostProps) {
@@ -39,6 +40,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
     const [errors, setErrors] = useState<Record<string, string[]>>({});
     const [selectedProxy, setProxy] = useState<SelectedItem>(null);
     const [selectedIdentity, setIdentity] = useState<SelectedItem>(null);
+    const [selectedEncoding, setEncoding] = useState<SelectedItem>(null)
 
     const [isVisibleIdentity, setVisibleIdentity] = useState<boolean>(false);
     const [isVisibleProxy, setVisibleProxy] = useState<boolean>(false);
@@ -112,6 +114,38 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
         setErrors(prevValue => {
             const updatedErrors = { ...prevValue };
             delete updatedErrors.IdentityId;
+            return updatedErrors;
+        });
+    }
+
+    const selectEncodingHandler = (selectedItem?: SelectedItem) => {
+        if (!selectedItem) {
+            setServerData(prevData => ({
+                ...prevData,
+                encodingId: 0
+            }));
+
+            setErrors(prevValue => {
+                const updatedErrors = { ...prevValue };
+                delete updatedErrors.EncodingId;
+                return updatedErrors;
+            });
+
+            setEncoding(null)
+
+            return;
+        }
+
+        setEncoding(selectedItem)
+
+        setServerData(prevData => ({
+            ...prevData,
+            encodingId: Number(selectedItem.id)
+        }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.EncodingId;
             return updatedErrors;
         });
     }
@@ -321,6 +355,21 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
                         errors={errors?.StartupCommand ?? null}
 
                     />
+                    <Select
+                        placeholder={t('Выбрать кодировку')}
+                        icon={<DoubleArrow width={19} height={19}/>}
+                        onChange={selectEncodingHandler}
+                        errors={errors?.EncodingId ?? null}
+                        selectedItem={selectedEncoding}
+                    >
+                        {userStore.encodings?.map((encoding) =>
+                            <SelectItem
+                                key={encoding.encodingId}
+                                selectedItem={{ id: encoding.encodingId.toString(), title: encoding.name }}
+                                isSelected={selectedEncoding?.id === encoding.encodingId.toString()}
+                            />
+                        )}
+                    </Select>
                 </div>
             </FormBlock>
             <FormBlock headerName={'Учетные данные'} className={classNames(style.identity_block)}>

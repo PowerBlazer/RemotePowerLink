@@ -40,6 +40,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
     const server = sidebarStore.editHostData.server;
     const identity = userStore.userIdentities.find(p => p.identityId === server.identityId);
     const proxy = userStore.userProxies.find(p => p.proxyId === server.proxyId);
+    const encoding = userStore.encodings.find(p=> p.encodingId === server.encodingId);
 
     const { t } = useTranslation('translation');
     const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -51,7 +52,8 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         identityId: server.identityId,
         proxyId: server.proxyId,
         sshPort: server.sshPort?.toString(),
-        startupCommand: server.startupCommand
+        startupCommand: server.startupCommand,
+        encodingId: server.encodingId
     });
 
     const [selectedProxy, setProxy] = useState<SelectedItem>(
@@ -62,6 +64,11 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         id: identity.identityId.toString(),
         title: identity.title
     });
+
+    const [selectedEncoding, setEncoding] = useState<SelectedItem>({
+        id: encoding.encodingId.toString(),
+        title: encoding.name
+    })
 
     const [isVisibleIdentity, setVisibleIdentity] = useState<boolean>(false);
     const [isVisibleProxy, setVisibleProxy] = useState<boolean>(false);
@@ -185,6 +192,38 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         setErrors(prevValue => {
             const updatedErrors = { ...prevValue };
             delete updatedErrors.IdentityId;
+            return updatedErrors;
+        });
+    }
+
+    const selectEncodingHandler = (selectedItem?: SelectedItem) => {
+        if (!selectedItem) {
+            setServerData(prevData => ({
+                ...prevData,
+                encodingId: 0
+            }));
+
+            setErrors(prevValue => {
+                const updatedErrors = { ...prevValue };
+                delete updatedErrors.EncodingId;
+                return updatedErrors;
+            });
+
+            setEncoding(null)
+
+            return;
+        }
+
+        setEncoding(selectedItem)
+
+        setServerData(prevData => ({
+            ...prevData,
+            encodingId: Number(selectedItem.id)
+        }));
+
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.EncodingId;
             return updatedErrors;
         });
     }
@@ -352,6 +391,21 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         value={serverData.startupCommand ?? ''}
                         onChange={startupCommandChangeHandler}
                     />
+                    <Select
+                        placeholder={t('Выбрать кодировку')}
+                        icon={<DoubleArrow width={19} height={19}/>}
+                        onChange={selectEncodingHandler}
+                        errors={errors?.EncodingId ?? null}
+                        selectedItem={selectedEncoding}
+                    >
+                        {userStore.encodings?.map((encoding) =>
+                            <SelectItem
+                                key={encoding.encodingId}
+                                selectedItem={{ id: encoding.encodingId.toString(), title: encoding.name }}
+                                isSelected={selectedEncoding?.id === encoding.encodingId.toString()}
+                            />
+                        )}
+                    </Select>
                 </div>
             </FormBlock>
             <FormBlock headerName={'Учетные данные'} className={classNames(style.identity_block)}>

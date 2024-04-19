@@ -15,21 +15,25 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
     private readonly IServerService _serverService;
     private readonly IIdentityRepository _identityRepository;
     private readonly IProxyRepository _proxyRepository;
+    private readonly IEncodingRepository _encodingRepository;
 
     public CreateServerHandler(IServerRepository serverRepository, 
         IServerService serverService, 
         IIdentityRepository identityRepository, 
-        IProxyRepository proxyRepository)
+        IProxyRepository proxyRepository, 
+        IEncodingRepository encodingRepository)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
         _identityRepository = identityRepository;
         _proxyRepository = proxyRepository;
+        _encodingRepository = encodingRepository;
     }
 
     public async Task<CreateServerResponse> Handle(CreateServerCommand request, CancellationToken cancellationToken)
     {
         var identity = await _identityRepository.GetIdentityDefaultAsync(request.IdentityId);
+        var encoding = await _encodingRepository.GetEncodingAsync(request.EncodingId);
         
         if (identity is null)
         {
@@ -41,7 +45,8 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
             Hostname = request.Hostname,
             SshPort = request.SshPort,
             Username = identity.Username,
-            Password = identity.Password
+            Password = identity.Password,
+            EncodingCodePage = encoding.CodePage
         };
         
         if (request.ProxyId is not null)
@@ -60,7 +65,8 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
                 Hostname = proxy.IpAddress,
                 SshPort = proxy.SshPort,
                 Username = proxyIdentity.Username,
-                Password = proxyIdentity.Password
+                Password = proxyIdentity.Password,
+                EncodingCodePage = encoding.CodePage
             };
         }
         

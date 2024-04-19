@@ -21,6 +21,7 @@ public class ServerRepositrory: IServerRepository
             .Include(p=> p.Identity)
             .Include(p=> p.Proxy).ThenInclude(x=> x!.Identity)
             .Include(p=> p.SystemType)
+            .Include(p=> p.Encoding)
             .FirstOrDefaultAsync(p => p.Id == serverId);
 
         if (server is null)
@@ -37,6 +38,7 @@ public class ServerRepositrory: IServerRepository
             .Include(p=> p.Identity)
             .Include(p=> p.Proxy).ThenInclude(x=> x!.Identity)
             .Include(p=> p.SystemType)
+            .Include(p=> p.Encoding)
             .FirstOrDefaultAsync(p => p.Id == serverId);
         
         return server;
@@ -56,6 +58,7 @@ public class ServerRepositrory: IServerRepository
             .Include(p => p.Identity)
             .Include(p => p.Proxy)
             .Include(p => p.SystemType)
+            .Include(p=> p.Encoding)
             .Where(p=> p.UserId == userId)
             .ToListAsync();
 

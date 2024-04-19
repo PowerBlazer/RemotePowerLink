@@ -50,6 +50,11 @@ public class EditServerCommand: IRequest<EditServerResponse>
     /// Идентификатор прокси сервера.
     /// </summary>
     public long? ProxyId { get; set; }
+    
+    /// <summary>
+    /// Идентификатор кодировки
+    /// </summary>
+    public long EncodingId { get; set; }
 
     public static Server MapToServer(EditServerCommand editServerCommand, long systemTypeId)
     {
@@ -63,7 +68,8 @@ public class EditServerCommand: IRequest<EditServerResponse>
             IdentityId = editServerCommand.IdentityId,
             ProxyId = editServerCommand.ProxyId,
             UserId = editServerCommand.UserId,
-            SystemTypeId = systemTypeId
+            SystemTypeId = systemTypeId,
+            EncodingId = editServerCommand.EncodingId
         };
     }
     

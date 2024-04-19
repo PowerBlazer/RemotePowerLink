@@ -3,6 +3,7 @@ using Application.Services;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Repository;
+using Domain.Services;
 using Domain.Services.Parameters;
 using JetBrains.Annotations;
 using MediatR;
@@ -15,10 +16,13 @@ namespace Application.Features.SftpFeature.DeleteFoldersOrFiles;
 public class DeleteFoldersOrFilesHandler: IRequestHandler<DeleteFoldersOrFilesCommand>
 {
     private readonly IServerRepository _serverRepository;
+    private readonly IServerService _serverService;
 
-    public DeleteFoldersOrFilesHandler(IServerRepository serverRepository)
+    public DeleteFoldersOrFilesHandler(IServerRepository serverRepository, 
+        IServerService serverService)
     {
         _serverRepository = serverRepository;
+        _serverService = serverService;
     }
 
     public async Task Handle(DeleteFoldersOrFilesCommand request, CancellationToken cancellationToken)
@@ -33,7 +37,7 @@ public class DeleteFoldersOrFilesHandler: IRequestHandler<DeleteFoldersOrFilesCo
         }
         
         var connectionServerParameter = ConnectionServerParameter.ServerMapTo(server);
-        var connectionInfo = ServerService.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
         using var sshClient = new SshClient(connectionInfo);

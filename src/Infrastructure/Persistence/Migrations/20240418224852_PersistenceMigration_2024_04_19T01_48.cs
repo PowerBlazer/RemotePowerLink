@@ -29,7 +29,7 @@ namespace Persistence.Migrations
             
             
             migrationBuilder.InsertData(
-                table: "encoding",
+                table: "encodings",
                 columns: new[] { "id", "code_page", "name" },
                 values: new object[,]
                 {

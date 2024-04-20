@@ -33,7 +33,8 @@ export interface SftpMenuOption {
 export interface SftpModalOption {
     newFolderState: boolean,
     errorState: boolean,
-    deleteState: boolean
+    deleteState: boolean,
+    renameState: boolean
 }
 
 export interface SftpFilesOption {

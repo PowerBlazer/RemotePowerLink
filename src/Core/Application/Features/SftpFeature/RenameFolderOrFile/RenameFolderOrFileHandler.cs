@@ -1,28 +1,25 @@
-﻿using Application.Services;
-using Domain.Exceptions;
+﻿using Domain.Exceptions;
 using Domain.Repository;
 using Domain.Services;
 using Domain.Services.Parameters;
-using JetBrains.Annotations;
 using MediatR;
 using Renci.SshNet;
 
-namespace Application.Features.SftpFeature.CreateDirectory;
+namespace Application.Features.SftpFeature.RenameFolderOrFile;
 
-[UsedImplicitly]
-public class CreateDirectoryHandler: IRequestHandler<CreateDirectoryCommand>
+public class RenameFolderOrFileHandler: IRequestHandler<RenameFolderOrFileCommand>
 {
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
 
-    public CreateDirectoryHandler(IServerRepository serverRepository, 
+    public RenameFolderOrFileHandler(IServerRepository serverRepository, 
         IServerService serverService)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
     }
 
-    public async Task Handle(CreateDirectoryCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RenameFolderOrFileCommand request, CancellationToken cancellationToken)
     {
         var server = await _serverRepository.GetServerAsync(request.ServerId);
 
@@ -42,13 +39,21 @@ public class CreateDirectoryHandler: IRequestHandler<CreateDirectoryCommand>
        
         try
         {
-            if (!sftpClient.Exists(request.DirectoryPath))
+            if (!sftpClient.Exists(request.FileItemPath))
             {
-                throw new NotFoundException(
-                    $"Директория с таким путем '{request.DirectoryPath}' не найдена", "Server");
+                throw new SftpException("Server", $"Файл или папки с таким путем не найдена: {request.FileItemPath}");
             }
             
-            sftpClient.CreateDirectory(request.DirectoryPath + "/" + request.DirectoryName);
+            var parts = request.FileItemPath.Split('/');
+            // Создаем новый массив, включающий все элементы пути, кроме последнего
+            var basePathParts = parts.Take(parts.Length - 1).ToArray();
+            // Объединяем элементы массива обратно в путь
+            var basePath = string.Join("/", basePathParts);
+            // Заменяем последний элемент на новое имя
+            var newPath = basePath + "/" + request.FileItemNewName;
+
+            await sftpClient.RenameFileAsync(request.FileItemPath, newPath, cancellationToken);
+
         }
         finally
         {
@@ -58,6 +63,4 @@ public class CreateDirectoryHandler: IRequestHandler<CreateDirectoryCommand>
             }
         }
     }
-    
-    
 }

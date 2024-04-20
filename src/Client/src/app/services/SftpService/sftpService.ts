@@ -1,4 +1,8 @@
-import {CreateDirectoryData, DeleteFilesOrFoldersData} from 'app/services/SftpService/config/sftpConfig';
+import {
+    CreateDirectoryData,
+    DeleteFilesOrFoldersData,
+    RenameFileOrFolderData
+} from 'app/services/SftpService/config/sftpConfig';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class SftpService {
@@ -26,6 +30,24 @@ export class SftpService {
             await HostService.api.post<ApiResult<DeleteFilesOrFoldersData>>(
                 '/v1/sftp/delete',
                 deleteFilesOrFolderData
+            );
+
+            return {
+                isSuccess: true
+            }
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
+
+    static renameFileOrFolder = async (renameFileOrFolderData: RenameFileOrFolderData): Promise<ServiceResult<any>> => {
+        try {
+            await HostService.api.post<ApiResult<RenameFileOrFolderData>>(
+                '/v1/sftp/rename',
+                renameFileOrFolderData
             );
 
             return {

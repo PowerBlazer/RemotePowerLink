@@ -3,6 +3,7 @@ import style from './SftpMenuOptions.module.scss';
 import { MenuOptionProp } from 'features/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import { useTranslation } from 'react-i18next';
+import sftpStore from "app/store/sftpStore";
 
 interface RenameProps extends MenuOptionProp {
     className?: string;
@@ -10,8 +11,13 @@ interface RenameProps extends MenuOptionProp {
 
 export function Rename ({ className, disabled, mode, onClick }: RenameProps) {
     const { t } = useTranslation('translation');
+    const selectedHost = sftpStore.getSelectedHostInMode(mode)
     const onClickRenameHandler = () => {
         if (disabled) { return; }
+        
+        if(selectedHost){
+            selectedHost.modalOption.renameState = true;
+        }
 
         if (onClick) {
             onClick();

@@ -35,3 +35,9 @@ export interface DeleteFilesOrFoldersData {
     filesOrFoldersToDeleteList: SftpFile[]
     serverId: number
 }
+
+export interface RenameFileOrFolderData {
+    fileItemPath: string,
+    fileItemNewName: string,
+    serverId: number
+}

@@ -15,6 +15,7 @@ import style from './SftpCatalog.module.scss';
 import { NewFolderModal } from 'widgets/NewFolderModal';
 import { ErrorModal } from 'widgets/ErrorModal';
 import {DeleteModal} from "widgets/DeleteModal";
+import {RenameModal} from "widgets/RenameModal";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -154,6 +155,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 { selectedHost.modalOption.newFolderState && <NewFolderModal mode={mode}/> }
                 { selectedHost.modalOption.errorState && <ErrorModal mode={mode}/> }
                 { selectedHost.modalOption.deleteState && <DeleteModal mode={mode}/> }
+                { selectedHost.modalOption.renameState && <RenameModal mode={mode}/> }
             </div>
         )
     }

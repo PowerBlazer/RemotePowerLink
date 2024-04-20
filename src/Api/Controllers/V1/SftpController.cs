@@ -1,5 +1,6 @@
 ﻿using Application.Features.SftpFeature.CreateDirectory;
 using Application.Features.SftpFeature.DeleteFoldersOrFiles;
+using Application.Features.SftpFeature.RenameFolderOrFile;
 using Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -35,6 +36,28 @@ public class SftpController: BaseController
     {
         createDirectoryCommand.UserId = UserId;
         await Mediator.Send(createDirectoryCommand);
+
+        return new ApiActionResult();
+    }
+    
+    /// <summary>
+    /// Перименовавывает директорию или файл на удаленном сервере
+    /// </summary>
+    /// <param name="renameFolderOrFileCommand"></param>
+    /// <response code="200">Директория успешно создана.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="403">Доступ запрещен</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [HttpPost("rename")]
+    public async Task<ApiActionResult> RenameFolderOrFile([FromBody] RenameFolderOrFileCommand renameFolderOrFileCommand)
+    {
+        renameFolderOrFileCommand.UserId = UserId;
+        await Mediator.Send(renameFolderOrFileCommand);
 
         return new ApiActionResult();
     }

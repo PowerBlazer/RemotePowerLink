@@ -83,6 +83,7 @@ export class SftpService {
                 downloadFoldersOrFilesData,
                 {
                     responseType: 'blob',
+                    timeout: 3600000,
                     onDownloadProgress: function (progressEvent){
                         const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
                         console.log(`Прогресс загрузки: ${progress}%`);

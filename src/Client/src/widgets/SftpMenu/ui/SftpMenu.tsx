@@ -1,7 +1,6 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpMenu.module.scss';
 import { observer } from 'mobx-react-lite';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
 import sftpStore, { MenuMode } from 'app/store/sftpStore';
 import { useOutsideClick } from 'app/hooks/useOutsideClick';
 import { Close, Download, NewFolder, Refresh, Rename, SelectAll, Unload } from 'features/SftpMenuOptions';

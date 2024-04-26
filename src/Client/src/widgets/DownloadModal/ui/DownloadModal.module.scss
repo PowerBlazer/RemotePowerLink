@@ -1,0 +1,43 @@
+﻿.files_download{
+  width: 100%;
+  min-height: 100px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  & .size_selected_files {
+    font-size: 13px;
+    color: #b0b0b0;
+  }
+  
+  & .errors {
+    font-size: 12px;
+    color: #F25E61;
+  }
+  
+  & .header_list{
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  & .file_name{
+    font-size: 13px;
+  }
+}
+
+.loader{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 50px;
+  height: 50px;
+}
+
+.loader > div{
+  width: 50px;
+  height: 50px;
+  border-width: 2px;
+  border-color: white transparent;
+}

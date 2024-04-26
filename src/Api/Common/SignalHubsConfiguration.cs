@@ -1,4 +1,4 @@
-﻿using Api.Hubs;
+﻿using Application.Hubs;
 
 namespace Api.Common;
 

@@ -6,7 +6,7 @@ import {useTheme} from "shared/lib/Theme/useTheme";
 import {useTranslation} from "react-i18next";
 import {SftpCatalogModeProps} from "widgets/SftpCatalog";
 import {ChangeEvent, useMemo, useState} from "react";
-import {FileType} from "app/services/SftpService/config/sftpConfig";
+import {FileType} from "app/services/SftpService/config";
 import {Input} from "shared/ui/Input";
 import {SftpService} from "app/services/SftpService/sftpService";
 

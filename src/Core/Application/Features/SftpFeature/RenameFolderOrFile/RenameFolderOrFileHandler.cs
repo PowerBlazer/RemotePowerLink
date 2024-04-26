@@ -35,10 +35,10 @@ public class RenameFolderOrFileHandler: IRequestHandler<RenameFolderOrFileComman
         
         using var sftpClient = new SftpClient(connectionInfo);
         
-        await sftpClient.ConnectAsync(cancellationToken);
-       
         try
         {
+            await sftpClient.ConnectAsync(cancellationToken);
+            
             if (!sftpClient.Exists(request.FileItemPath))
             {
                 throw new SftpException("Server", $"Файл или папки с таким путем не найдена: {request.FileItemPath}");

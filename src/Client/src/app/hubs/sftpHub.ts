@@ -1,35 +1,24 @@
 import * as signalR from '@microsoft/signalr';
 import { HostService } from 'app/services/hostService';
 import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
-import toast from 'react-hot-toast';
-import { SftpFileList } from 'app/services/SftpService/config/sftpConfig';
+import { SftpFileList } from 'app/services/SftpService/config';
 import { AppRoutes } from 'app/providers/router/config/routeConfig';
+import {createHubInstance} from "app/hubs/hubFactory";
+import toast from 'react-hot-toast';
 
 const URL = `${HostService._hubHost}/sftp`;
 class SftpHub {
     private connection: signalR.HubConnection;
     constructor () {
-        this.connection = new signalR.HubConnectionBuilder()
-            .withUrl(URL, {
-                accessTokenFactory: () => AuthorizationService.getAccessToken()
-            })
-            .withAutomaticReconnect()
-            .build();
+        this.connection = createHubInstance(URL);
 
         this.connection.start()
             .then(async () => { await this.onConnect(); })
             .catch(async err => {
                 if (err.message?.includes('401')) {
                     const refreshResult = await AuthorizationService.refreshToken();
-
                     if (refreshResult.isSuccess) {
-                        this.connection = new signalR.HubConnectionBuilder()
-                            .withUrl(URL, {
-                                accessTokenFactory: () => AuthorizationService.getAccessToken()
-                            })
-                            .withAutomaticReconnect()
-                            .build();
-
+                        this.connection = createHubInstance(URL);
                         this.connection.start()
                             .then(async () => { await this.onConnect(); })
                             .catch(err => toast.error(err.toString()));

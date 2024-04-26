@@ -17,7 +17,7 @@ public class SftpFileItem
     /// <summary>
     /// Размер файла
     /// </summary>
-    public string? Size { get; set; }
+    public long? Size { get; set; }
     
     /// <summary>
     /// Тип файла каталога

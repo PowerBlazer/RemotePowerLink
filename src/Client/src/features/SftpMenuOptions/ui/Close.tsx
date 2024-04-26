@@ -2,7 +2,7 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpMenuOptions.module.scss';
 import { MenuOptionProp } from 'features/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import { SftpCatalogMode } from 'app/services/SftpService/config';
 import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
 

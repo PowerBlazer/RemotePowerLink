@@ -2,7 +2,7 @@
 using Domain.Exceptions;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Api.Hubs;
+namespace Application.Hubs;
 
 public class BaseHub: Hub
 {

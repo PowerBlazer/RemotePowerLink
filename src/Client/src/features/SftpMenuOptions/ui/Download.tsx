@@ -3,6 +3,7 @@ import style from './SftpMenuOptions.module.scss';
 import { MenuOptionProp } from 'features/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import { useTranslation } from 'react-i18next';
+import sftpStore from "app/store/sftpStore";
 
 interface DownloadProps extends MenuOptionProp {
     className?: string;
@@ -10,9 +11,14 @@ interface DownloadProps extends MenuOptionProp {
 
 export function Download ({ className, mode, disabled, onClick }: DownloadProps) {
     const { t } = useTranslation('translation');
+    const selectedHost = sftpStore.getSelectedHostInMode(mode);
     const onClickDownloadHandler = () => {
         if (disabled) { return; }
 
+        if(selectedHost){
+            selectedHost.modalOption.downloadState = true;
+        }
+        
         if (onClick) {
             onClick();
         }

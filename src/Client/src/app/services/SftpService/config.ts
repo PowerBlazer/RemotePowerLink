@@ -31,13 +31,23 @@ export interface CreateDirectoryData {
     serverId: number
 }
 
-export interface DeleteFilesOrFoldersData {
+export interface DeleteFoldersOrFilesData {
     filesOrFoldersToDeleteList: SftpFile[]
     serverId: number
 }
 
-export interface RenameFileOrFolderData {
+export interface RenameFoldersOrFilesData {
     fileItemPath: string,
     fileItemNewName: string,
+    serverId: number
+}
+
+export interface GetSizeFoldersOrFilesData {
+    foldersOrFiles: SftpFile[]
+    serverId: number
+}
+
+export interface DownloadFoldersOrFilesData {
+    filesOrFoldersToDownloadList: SftpFile[],
     serverId: number
 }

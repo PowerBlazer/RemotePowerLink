@@ -1,4 +1,5 @@
 ﻿using Domain.Services;
+using Renci.SshNet;
 
 namespace Application.Services;
 
@@ -9,7 +10,6 @@ public class SftpService: ISftpService
         var extension = Path.GetExtension(fileName);
         return extension.TrimStart('.').ToLowerInvariant();
     }
-
     public string FormatFileSize(long fileSize)
     {
         const int byteConversion = 1024;
@@ -26,7 +26,6 @@ public class SftpService: ISftpService
             _ => $"{bytes} bytes"
         };
     }
-
     public string? GetParentDirectory(string path)
     {
         // Если путь пуст или null, возвращаем null
@@ -52,5 +51,30 @@ public class SftpService: ISftpService
 
         // Если родительский каталог пустой, значит это корневой каталог, возвращаем его самого
         return string.IsNullOrEmpty(parentDirectory) ? "/" : parentDirectory;
+    }
+    public long GetDirectorySize(SftpClient client, string directoryPath)
+    {
+        long totalSize = 0;
+        // Получаем список файлов и поддиректорий в директории
+        var items = client.ListDirectory(directoryPath);
+        foreach (var item in items)
+        {
+            // Игнорируем ссылки на текущую и родительскую директории
+            if (item.Name == "." || item.Name == "..")
+                continue;
+
+            // Если поддиректория, рекурсивно считаем её размер
+            if (item.IsDirectory)
+            {
+                totalSize += GetDirectorySize(client, item.FullName);
+            }
+            // Если файл, суммируем его размер
+            else
+            {
+                totalSize += item.Length;
+            }
+        }
+
+        return totalSize;
     }
 }

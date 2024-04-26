@@ -1,14 +1,14 @@
 import {
     CreateDirectoryData,
-    DeleteFilesOrFoldersData,
-    RenameFileOrFolderData
-} from 'app/services/SftpService/config/sftpConfig';
+    DeleteFoldersOrFilesData, DownloadFoldersOrFilesData, GetSizeFoldersOrFilesData,
+    RenameFoldersOrFilesData
+} from 'app/services/SftpService/config';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class SftpService {
     static createDirectory = async (createDirectoryData: CreateDirectoryData): Promise<ServiceResult<any>> => {
         try {
-            await HostService.api.post<ApiResult<CreateDirectoryData>>(
+            await HostService.api.post<ApiResult<any>>(
                 '/v1/sftp/create-directory',
                 createDirectoryData
             );
@@ -23,11 +23,9 @@ export class SftpService {
             }
         }
     }
-
-
-    static deleteFilesOrFolders = async (deleteFilesOrFolderData: DeleteFilesOrFoldersData): Promise<ServiceResult<any>> => {
+    static deleteFilesOrFolders = async (deleteFilesOrFolderData: DeleteFoldersOrFilesData): Promise<ServiceResult<any>> => {
         try {
-            await HostService.api.post<ApiResult<DeleteFilesOrFoldersData>>(
+            await HostService.api.post<ApiResult<any>>(
                 '/v1/sftp/delete',
                 deleteFilesOrFolderData
             );
@@ -42,13 +40,62 @@ export class SftpService {
             }
         }
     }
-
-    static renameFileOrFolder = async (renameFileOrFolderData: RenameFileOrFolderData): Promise<ServiceResult<any>> => {
+    static renameFileOrFolder = async (renameFileOrFolderData: RenameFoldersOrFilesData): Promise<ServiceResult<number>> => {
         try {
-            await HostService.api.post<ApiResult<RenameFileOrFolderData>>(
+            await HostService.api.post<ApiResult<any>>(
                 '/v1/sftp/rename',
                 renameFileOrFolderData
             );
+
+            return {
+                isSuccess: true
+            }
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
+    static getSizeFoldersOrFiles = async (getSizeFoldersOrFilesData: GetSizeFoldersOrFilesData): Promise<ServiceResult<number>> => {
+        try {
+            const response = await HostService.api.post<ApiResult<number>>(
+                '/v1/sftp/size',
+                getSizeFoldersOrFilesData
+            );
+
+            return {
+                result: response.data.result,
+                isSuccess: true
+            }
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
+    
+    static download = async (downloadFoldersOrFilesData: DownloadFoldersOrFilesData): Promise<ServiceResult<any>> => {
+        try {
+            const response = await HostService.api.post(
+                '/v1/sftp/download',
+                downloadFoldersOrFilesData,
+                {
+                    responseType: 'blob',
+                    onDownloadProgress: function (progressEvent){
+                        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                        console.log(`Прогресс загрузки: ${progress}%`);
+                    }
+                });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'downloaded_files.zip';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
 
             return {
                 isSuccess: true

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
 import { NavbarSftp } from 'widgets/NavbarSftp';
 import { SftpCatalogTable } from 'widgets/SftpCatalogTable';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
-import SftpHub from 'app/hubs/SftpHub';
+import { SftpCatalogMode } from 'app/services/SftpService/config';
+import SftpHub from 'app/hubs/sftpHub';
 import toast from 'react-hot-toast';
 import sftpStore from 'app/store/sftpStore';
 import LogoIcon from 'shared/assets/icons/logo.svg';
@@ -16,6 +16,7 @@ import { NewFolderModal } from 'widgets/NewFolderModal';
 import { ErrorModal } from 'widgets/ErrorModal';
 import {DeleteModal} from "widgets/DeleteModal";
 import {RenameModal} from "widgets/RenameModal";
+import {DownloadModal} from "widgets/DownloadModal";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -152,10 +153,11 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
                 <NavbarSftp mode={mode} onOpenCatalog={() => { setIsView(true); }}/>
                 <SftpCatalogTable mode={mode}/>
-                { selectedHost.modalOption.newFolderState && <NewFolderModal mode={mode}/> }
-                { selectedHost.modalOption.errorState && <ErrorModal mode={mode}/> }
-                { selectedHost.modalOption.deleteState && <DeleteModal mode={mode}/> }
-                { selectedHost.modalOption.renameState && <RenameModal mode={mode}/> }
+                { selectedHost?.modalOption.newFolderState && <NewFolderModal mode={mode}/> }
+                { selectedHost?.modalOption.errorState && <ErrorModal mode={mode}/> }
+                { selectedHost?.modalOption.deleteState && <DeleteModal mode={mode}/> }
+                { selectedHost?.modalOption.renameState && <RenameModal mode={mode}/> }
+                { selectedHost?.modalOption.downloadState && <DownloadModal mode={mode}/> }
             </div>
         )
     }

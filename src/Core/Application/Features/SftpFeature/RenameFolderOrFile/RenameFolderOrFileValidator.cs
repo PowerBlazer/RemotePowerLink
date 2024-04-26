@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.SftpFeature.RenameFolderOrFile;
 
+[UsedImplicitly]
 public class RenameFolderOrFileValidator: AbstractValidator<RenameFolderOrFileCommand>
 {
     public RenameFolderOrFileValidator()

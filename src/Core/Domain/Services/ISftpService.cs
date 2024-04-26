@@ -1,4 +1,6 @@
-﻿namespace Domain.Services;
+﻿using Renci.SshNet;
+
+namespace Domain.Services;
 
 public interface ISftpService
 {
@@ -20,4 +22,11 @@ public interface ISftpService
     /// <param name="path">Путь к каталогу</param>
     /// <returns>Предыдущий каталог или NULL</returns>
     string? GetParentDirectory(string path);
+    /// <summary>
+    /// Получает размер папки 
+    /// </summary>
+    /// <param name="client">Клиент для получение данных о размере файлов</param>
+    /// <param name="directoryPath">Путь к директории</param>
+    /// <returns>Размер папки в байтах (long)</returns>
+    long GetDirectorySize(SftpClient client, string directoryPath);
 }

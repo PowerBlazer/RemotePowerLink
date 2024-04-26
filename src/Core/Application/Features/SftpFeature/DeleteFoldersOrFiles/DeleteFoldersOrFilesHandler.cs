@@ -1,6 +1,4 @@
-﻿using System.Text;
-using Application.Services;
-using Domain.Enums;
+﻿using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Repository;
 using Domain.Services;
@@ -42,11 +40,11 @@ public class DeleteFoldersOrFilesHandler: IRequestHandler<DeleteFoldersOrFilesCo
         using var sftpClient = new SftpClient(connectionInfo);
         using var sshClient = new SshClient(connectionInfo);
         
-        await sftpClient.ConnectAsync(cancellationToken);
-        await sshClient.ConnectAsync(cancellationToken);
-        
         try
         {
+            await sftpClient.ConnectAsync(cancellationToken);
+            await sshClient.ConnectAsync(cancellationToken);
+            
             var deleteErrors = new Dictionary<string,List<string>>();
             foreach (var sftpFileItem in request.FilesOrFoldersToDeleteList)
             {

@@ -8,8 +8,8 @@ import { SearchInput } from 'features/SearchInput';
 import ArrowRight from 'shared/assets/icons/arrow-right.svg';
 import searchStore from 'app/store/searchStore';
 import style from './SftpSelectHostCatalog.module.scss';
-import sftpStore from 'app/store/sftpStore';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import sftpStore, {SftpModalOption} from 'app/store/sftpStore';
+import { SftpCatalogMode } from 'app/services/SftpService/config';
 import { Stack } from 'shared/lib/Stack';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 
@@ -45,8 +45,9 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 errorState: false,
                 newFolderState: false,
                 deleteState: false,
-                renameState: false
-            }
+                renameState: false,
+                downloadState: false
+            } as SftpModalOption
         }
 
         if (mode === SftpCatalogMode.First) {

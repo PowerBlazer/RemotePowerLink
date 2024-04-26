@@ -1,6 +1,6 @@
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
-import SftpHub from 'app/hubs/SftpHub';
-import { FileType, SftpCatalogMode, SftpFile, SftpFileList } from 'app/services/SftpService/config/sftpConfig';
+import SftpHub from 'app/hubs/sftpHub';
+import { FileType, SftpCatalogMode, SftpFile, SftpFileList } from 'app/services/SftpService/config';
 import { makeAutoObservable, observable } from 'mobx';
 import { Stack } from 'shared/lib/Stack';
 
@@ -34,7 +34,8 @@ export interface SftpModalOption {
     newFolderState: boolean,
     errorState: boolean,
     deleteState: boolean,
-    renameState: boolean
+    renameState: boolean,
+    downloadState: boolean
 }
 
 export interface SftpFilesOption {

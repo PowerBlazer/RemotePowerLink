@@ -7,7 +7,7 @@ import sftpStore from 'app/store/sftpStore';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FileType } from 'app/services/SftpService/config/sftpConfig';
+import { FileType } from 'app/services/SftpService/config';
 import { SftpService } from 'app/services/SftpService/sftpService';
 
 interface NewFolderModalProps extends SftpCatalogModeProps {

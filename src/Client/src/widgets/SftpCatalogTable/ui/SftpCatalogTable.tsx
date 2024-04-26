@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import sftpStore from 'app/store/sftpStore';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpFileRow } from 'features/SftpFileRow';
-import { SftpCatalogMode, SftpFile } from 'app/services/SftpService/config/sftpConfig';
+import { SftpCatalogMode, SftpFile } from 'app/services/SftpService/config';
 import { useTranslation } from 'react-i18next';
 import { UIEvent, useEffect, useMemo, useRef, useState } from 'react';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';

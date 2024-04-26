@@ -1,7 +1,7 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpFileRow.module.scss';
 import { observer } from 'mobx-react-lite';
-import { FileType, SftpFile } from 'app/services/SftpService/config/sftpConfig';
+import { FileType, SftpFile } from 'app/services/SftpService/config';
 import sftpStore, { MenuMode } from 'app/store/sftpStore';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg'
 import FileIcon from 'shared/assets/icons/sftp/file.svg'

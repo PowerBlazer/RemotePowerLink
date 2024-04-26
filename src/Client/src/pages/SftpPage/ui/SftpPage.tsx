@@ -3,8 +3,8 @@ import style from './SftpPage.module.scss';
 import { observer } from 'mobx-react-lite';
 import ReactSplit, { SplitDirection } from '@devbookhq/splitter';
 import { SftpCatalog } from 'widgets/SftpCatalog';
-import { useEffect, useRef, useState } from 'react';
-import { SftpCatalogMode } from 'app/services/SftpService/config/sftpConfig';
+import { useRef } from 'react';
+import { SftpCatalogMode } from 'app/services/SftpService/config';
 import sftpStore from 'app/store/sftpStore';
 
 export interface ChangedWidthProp {

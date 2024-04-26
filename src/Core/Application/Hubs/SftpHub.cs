@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Renci.SshNet;
 
-namespace Api.Hubs;
+namespace Application.Hubs;
 
 [Authorize]
 public class SftpHub: BaseHub
@@ -56,7 +56,7 @@ public class SftpHub: BaseHub
                     Path = p.FullName,
                     DateModified = p.LastWriteTime,
                     FileType = p.IsDirectory ? FileTypeEnum.Folder : FileTypeEnum.File,
-                    Size = p.Length.ToString(),
+                    Size = p.Length,
                     FileTypeName = _sftpService.GetFileExtension(p.Name)
                 })
                 .ToList()

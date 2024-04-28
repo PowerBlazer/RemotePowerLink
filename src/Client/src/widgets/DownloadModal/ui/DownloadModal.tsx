@@ -35,14 +35,14 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
             
         selectedHost.modalOption.downloadState = false;
         
-        notificationStore.downloadNotificationOptions = {
-            data: {
-                operationName: 'Отправка запроса на скачивание файлов',
-                isProgress: false
-            },
-            onCancel: () => {
-                cancelToken.cancel("Request canceled by the user")
-            }
+        selectedHost.notificationOptions = {
+           data: {
+               operationName: 'Отправка запроса на скачивание файлов',
+               isProgress: false
+           },
+           onCancel: () => {
+               cancelToken.cancel("Request canceled by the user")
+           }
         }
         
         let prevProgressState = 0;
@@ -54,8 +54,8 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
             if(prevProgressState != progress){
                 prevProgressState = progress;
 
-                notificationStore.downloadNotificationOptions = {
-                    ...notificationStore.downloadNotificationOptions,
+                selectedHost.notificationOptions = {
+                    ...selectedHost.notificationOptions,
                     data: {
                         operationName: 'Загрузка',
                         isProgress: true,
@@ -65,7 +65,7 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
             }
         });
 
-        notificationStore.downloadNotificationOptions = null;
+        selectedHost.notificationOptions = null;
         
         if(!downloadResult.isSuccess && Boolean(downloadResult.errors)){
            selectedHost.error = { errors: downloadResult.errors }
@@ -111,7 +111,7 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
                 onCancel: () => { selectedHost.modalOption.downloadState = false; },
                 onConfirm: downloadHandler,
                 disabled: errors.length > 0 || isLoad,
-                headerName: t('Скачать'),
+                headerName: isLoad ? t('Оценка файлов для загрузки') : t('Скачать'),
             }}
             className={className}
             theme={ theme === Theme.LIGHT ? ThemeModal.CLEAR : ThemeModal.DARK }

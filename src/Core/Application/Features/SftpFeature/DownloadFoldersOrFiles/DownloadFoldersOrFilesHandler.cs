@@ -20,7 +20,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
     private readonly ISftpService _sftpService;
-    private readonly IHubContext<NotificationHub> _notificationHubContext;
+    private readonly IHubContext<SftpHub> _sftpHubContext;
 
     private const long MaximumDownloadSizeBytes = 5368709120;
     private ulong _totalSizeFiles;
@@ -28,17 +28,18 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
     private ulong _remainsSize;
 
     private readonly Dictionary<string, List<string>> _downloadErrors;
-    private Timer _timer;
+    private Timer? _timer;
     
     public DownloadFoldersOrFilesHandler(IServerRepository serverRepository, 
         IServerService serverService, 
         IHubContext<NotificationHub> notificationHubContext, 
-        ISftpService sftpService)
+        ISftpService sftpService, 
+        IHubContext<SftpHub> sftpHubContext)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
-        _notificationHubContext = notificationHubContext;
         _sftpService = sftpService;
+        _sftpHubContext = sftpHubContext;
 
         _downloadErrors = new Dictionary<string, List<string>>();
     }
@@ -90,9 +91,9 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             
             _timer = new Timer( _ =>
             {
-                ulong downloadedBytes = _totalSizeFiles - _remainsSize;
+                var downloadedBytes = _totalSizeFiles - _remainsSize;
+                
                 ulong bytesSinceLastUpdate;
-
                 if (downloadedBytes >= previousDownloadedBytes)
                 {
                     bytesSinceLastUpdate = downloadedBytes - previousDownloadedBytes;
@@ -126,8 +127,8 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                         $"{downloadSpeedString}, about ~{FormatTime(remainingTime)} remaining"
                 };
 
-                 _notificationHubContext.Clients
-                    .User(request.UserId.ToString())
+                 _sftpHubContext.Clients
+                    .Client(request.ConnectionId)
                     .SendAsync("downloadReceive", downloadNotitifactionData, cancellationToken: cancellationToken);
 
                 // Обновляем значения для следующей итерации
@@ -181,11 +182,10 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
         finally
         {
             if (sftpClient.IsConnected)
-            {
                 sftpClient.Disconnect();
-            }
             
-            await _timer.DisposeAsync();
+            if(_timer is not null)
+                await _timer.DisposeAsync();
         }
     }
     
@@ -214,6 +214,9 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
         string destinationPath,
         CancellationToken cancellationToken)
     {
+        if (client == null) 
+            throw new ArgumentNullException(nameof(client));
+        
         var folderName = Path.GetFileName(folderPath);
         var folderDestination = Path.Combine(destinationPath, folderName);
         

@@ -11,7 +11,8 @@ export interface SftpServer {
     sftpFilesOption: SftpFilesOption
     error?: SftpError,
     menuOption?: SftpMenuOption,
-    modalOption: SftpModalOption
+    modalOption: SftpModalOption,
+    notificationOptions?: SftpNotificationOptions
     isLoad: boolean,
 }
 
@@ -54,6 +55,18 @@ export interface ColumnSort {
 export interface SftpFilterOptions {
     title?: string,
     columnSort?: ColumnSort
+}
+
+export interface SftpNotificationData {
+    operationName: string,
+    informationText?: string,
+    isProgress?: boolean,
+    progressPercent?: number
+}
+
+export interface SftpNotificationOptions {
+    data: SftpNotificationData,
+    onCancel?: () => void
 }
 
 export interface SftpError {

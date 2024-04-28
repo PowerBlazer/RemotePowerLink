@@ -22,15 +22,12 @@ public class SftpController: BaseController
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IHubContext<SftpHub> _sftpHubContext;
-    private readonly IHubContext<NotificationHub> _notificationHubContext;
     public SftpController(IMediator mediator, 
         IWebHostEnvironment webHostEnvironment, 
-        IHubContext<SftpHub> sftpHubContext, 
-        IHubContext<NotificationHub> notificationHubContext) : base(mediator)
+        IHubContext<SftpHub> sftpHubContext) : base(mediator)
     {
         _webHostEnvironment = webHostEnvironment;
         _sftpHubContext = sftpHubContext;
-        _notificationHubContext = notificationHubContext;
     }
 
     /// <summary>
@@ -158,14 +155,14 @@ public class SftpController: BaseController
         if(System.IO.File.Exists(zipFilePath))
             System.IO.File.Delete(zipFilePath);
 
-        await _notificationHubContext.Clients
-            .User(UserId.ToString())
+        await _sftpHubContext.Clients
+            .Client(downloadFoldersOrFilesCommand.ConnectionId)
             .SendAsync(
                 "downloadReceive",
                 new DownloadNotification
                 {
                     OperationName = "Сжатие файлов",
-                    IsProgress = false,
+                    IsProgress = false
                 }, cancellationToken: cancellationToken);
         
         ZipFile.CreateFromDirectory(downloadFolderOrFilesResponse.FolderTempPath, zipFilePath);
@@ -173,8 +170,7 @@ public class SftpController: BaseController
         if (Directory.Exists(downloadFolderOrFilesResponse.FolderTempPath))
             Directory.Delete(downloadFolderOrFilesResponse.FolderTempPath,true);
 
-        if (!string.IsNullOrEmpty(downloadFoldersOrFilesCommand.ConnectionId) 
-            && downloadFolderOrFilesResponse.Errors?.Count > 0)
+        if (downloadFolderOrFilesResponse.Errors?.Count > 0)
         {
             await _sftpHubContext.Clients
                 .Client(downloadFoldersOrFilesCommand.ConnectionId)
@@ -184,8 +180,8 @@ public class SftpController: BaseController
                     cancellationToken: cancellationToken);
         }
         
-        await _notificationHubContext.Clients
-            .User(UserId.ToString())
+        await _sftpHubContext.Clients
+            .Client(downloadFoldersOrFilesCommand.ConnectionId)
             .SendAsync(
                 "downloadReceive",
                 new DownloadNotification

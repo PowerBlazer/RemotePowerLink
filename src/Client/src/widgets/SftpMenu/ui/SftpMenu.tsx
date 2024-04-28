@@ -77,16 +77,16 @@ const SftpMenu = forwardRef(
                 <Refresh mode={mode} key='Refresh' onClick={onClickCloseMenuHandler}/>,
                 <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
                 <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>,
-                <Download mode={mode} key='Download' disabled={isDisabled} onClick={onClickCloseMenuHandler}/>,
-                <Unload mode={mode} key='Unload' onClick={onClickCloseMenuHandler}/>,
-                <Close mode={mode} key='Close' onClick={onClickCloseMenuHandler}/>
+                <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+                <Unload mode={mode} key='Unload' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+                <Close mode={mode} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
             ]
         }, [selectedSftpFileOptions?.fileList]);
 
         const fileModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
             <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
-            <Download mode={mode} key='Download' onClick={onClickCloseMenuHandler}/>,
+            <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
         ], [selectedSftpFileOptions?.fileList]);
@@ -94,7 +94,7 @@ const SftpMenu = forwardRef(
         const folderModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
             <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
-            <Download mode={mode} key='Download' onClick={onClickCloseMenuHandler}/>,
+            <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
         ], [selectedSftpFileOptions?.fileList]);
@@ -102,7 +102,7 @@ const SftpMenu = forwardRef(
         const multitudeModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler} disabled={true}/>,
             <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
-            <Download mode={mode} key='Download' onClick={onClickCloseMenuHandler}/>,
+            <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler} disabled={true}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler} disabled={true}/>
         ], [selectedSftpFileOptions?.fileList])

@@ -17,6 +17,7 @@ import { ErrorModal } from 'widgets/ErrorModal';
 import {DeleteModal} from "widgets/DeleteModal";
 import {RenameModal} from "widgets/RenameModal";
 import {DownloadModal} from "widgets/DownloadModal";
+import {SftpNotificationPanel} from "widgets/SftpNotificationPanel";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -58,6 +59,13 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     sftpStore.firstSelectedHost.sftpFileList = files
                     sftpStore.firstSelectedHost.isLoad = false;
                     sftpStore.setFileItems(mode)
+                },(downloadData) => {
+                    if(sftpStore.firstSelectedHost.notificationOptions){
+                        sftpStore.firstSelectedHost.notificationOptions = {
+                            ...sftpStore.firstSelectedHost.notificationOptions,
+                            data: downloadData
+                        }
+                    }
                 });
 
                 await sftpHub.getFilesServer(sftpStore.firstSelectedHost.server.serverId);
@@ -70,8 +78,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                         isLoad: false,
                         error: { errors }
                     }
-
-                    sftpStore.firstSelectedHost.sftpFilesOption.historyPrevPaths.pop();
+                    
                     sftpStore.firstSelectedHost.modalOption.errorState = true;
                 }
 
@@ -98,6 +105,13 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     sftpStore.secondSelectedHost.isLoad = false;
 
                     sftpStore.setFileItems(mode)
+                }, (downloadData) => {
+                    if(sftpStore.secondSelectedHost.notificationOptions){
+                        sftpStore.secondSelectedHost.notificationOptions = {
+                            ...sftpStore.secondSelectedHost.notificationOptions,
+                            data: downloadData
+                        }
+                    }
                 });
 
                 await sftpHub.getFilesServer(sftpStore.secondSelectedHost.server.serverId);
@@ -110,8 +124,6 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                         isLoad: false,
                         error: { errors }
                     }
-
-                    sftpStore.secondSelectedHost.sftpFilesOption.historyPrevPaths.pop();
                 }
 
                 toast.error(JSON.stringify(errors))
@@ -158,6 +170,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 { selectedHost?.modalOption.deleteState && <DeleteModal mode={mode}/> }
                 { selectedHost?.modalOption.renameState && <RenameModal mode={mode}/> }
                 { selectedHost?.modalOption.downloadState && <DownloadModal mode={mode}/> }
+                <SftpNotificationPanel mode={mode}/>
             </div>
         )
     }

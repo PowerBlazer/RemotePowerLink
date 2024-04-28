@@ -32,7 +32,6 @@ function SftpPage ({ className }: SftpPageProps) {
                 <SftpCatalog mode={SftpCatalogMode.First} />
                 <SftpCatalog mode={SftpCatalogMode.Second} />
             </ReactSplit>
-            <SftpNotificationPanel/>
         </div>
     );
 }

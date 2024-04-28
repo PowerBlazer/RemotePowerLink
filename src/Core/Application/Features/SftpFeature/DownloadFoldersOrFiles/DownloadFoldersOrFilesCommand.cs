@@ -19,7 +19,7 @@ public class DownloadFoldersOrFilesCommand: IRequest<DownloadFolderOrFilesRespon
     /// <summary>
     /// Id подключения WebSocket
     /// </summary>
-    public string? ConnectionId { get; set; }
+    public required string ConnectionId { get; set; }
     
     /// <summary>
     /// Идентификатор пользователя, инициирующего удаление файлов.

@@ -5,6 +5,7 @@ import { SftpFileList } from 'app/services/SftpService/config';
 import { AppRoutes } from 'app/providers/router/config/routeConfig';
 import {createHubInstance} from "app/hubs/hubFactory";
 import toast from 'react-hot-toast';
+import {SftpNotificationData} from "app/store/sftpStore";
 
 const URL = `${HostService._hubHost}/sftp`;
 class SftpHub {
@@ -34,10 +35,14 @@ class SftpHub {
                 this.onError(err.toString())
             });
 
-        this.events = (onFilesReceived) => {
+        this.events = (onFilesReceived, onDownloadReceived) => {
             this.connection.on('receivedFiles', (files: SftpFileList) => {
                 onFilesReceived(files);
             });
+
+            this.connection.on("downloadReceive", (sftpNotificationOptions: SftpNotificationData) => {
+                onDownloadReceived(sftpNotificationOptions);
+            })
 
             this.connection.on('handleError', (message: Record<string, string[]>) => {
                 this.onError(message);
@@ -47,6 +52,7 @@ class SftpHub {
 
     public events: (
         onFilesReceived: (files: SftpFileList) => void,
+        onDownloadReceived: (sftpNotificationOptions: SftpNotificationData) => void
     ) => void;
 
     public onConnect: () => Promise<void> = async function connect () { };

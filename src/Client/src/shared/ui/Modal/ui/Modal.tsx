@@ -1,11 +1,11 @@
-import {classNames} from 'shared/lib/classNames/classNames';
-import {ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
-import {ModalOptions, ThemeModal, TypeModal} from 'shared/ui/Modal';
+import { classNames } from 'shared/lib/classNames/classNames';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ModalOptions, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import style from './Modal.module.scss';
-import {Button, ThemeButton} from 'shared/ui/Button/Button';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
 import CloseIcon from 'shared/assets/icons/close.svg';
-import {ButtonLoader} from 'shared/ui/ButtonLoader';
-import {useTranslation} from 'react-i18next';
+import { ButtonLoader } from 'shared/ui/ButtonLoader';
+import { useTranslation } from 'react-i18next';
 
 interface ModalProps {
     className?: string;
@@ -78,7 +78,7 @@ export function Modal (props: ModalProps) {
             </ButtonLoader>
         </div>
     ];
-    
+
     const deleteModal = [
         <div className={classNames(style.header)} key={'header'}>
             <h1 className={style.header_title}>{options.headerName}</h1>

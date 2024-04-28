@@ -1,4 +1,4 @@
-﻿export interface EncodingData {
-    encodingId:number,
+export interface EncodingData {
+    encodingId: number,
     name: string
 }

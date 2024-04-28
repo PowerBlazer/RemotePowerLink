@@ -183,7 +183,7 @@ function NavbarHosts ({ className }: NavbarHostsProps) {
                     placeholder={t('Поиск серверов или ssh root@hostname...')}
                     onChange={onChangeSearchInputHandler}
                 />
-                {/*<Button className={classNames(style.connect_button, {}, [])}>{t('Подключиться')}</Button>*/}
+                {/* <Button className={classNames(style.connect_button, {}, [])}>{t('Подключиться')}</Button> */}
             </div>
 
             <div className={classNames(style.control_panel)}>

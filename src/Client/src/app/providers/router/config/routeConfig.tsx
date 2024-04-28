@@ -8,7 +8,7 @@ import { Navbar } from 'widgets/Navbar';
 import { SftpPage } from 'pages/SftpPage';
 
 export enum AppRoutes {
-    MAIN = 'main',
+    MAIN = '/',
     NOT_FOUND = 'not_found',
     LOGIN = 'login',
     SIGNUP = 'signup',
@@ -25,7 +25,7 @@ export const RoutePath: Record<AppRoutes, string> = {
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.MAIN]: {
-        path: RoutePath.main,
+        path: RoutePath['/'],
         element: <MainPage/>
     },
     [AppRoutes.NOT_FOUND]: {

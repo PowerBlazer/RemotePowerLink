@@ -4,7 +4,7 @@ import {
     RenameFoldersOrFilesData
 } from 'app/services/SftpService/config';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
-import {CancelToken, CancelTokenSource} from "axios";
+import { CancelToken, CancelTokenSource } from 'axios';
 
 export class SftpService {
     static createDirectory = async (createDirectoryData: CreateDirectoryData): Promise<ServiceResult<any>> => {
@@ -24,6 +24,7 @@ export class SftpService {
             }
         }
     }
+
     static deleteFilesOrFolders = async (deleteFilesOrFolderData: DeleteFoldersOrFilesData): Promise<ServiceResult<any>> => {
         try {
             await HostService.api.post<ApiResult<any>>(
@@ -41,6 +42,7 @@ export class SftpService {
             }
         }
     }
+
     static renameFileOrFolder = async (renameFileOrFolderData: RenameFoldersOrFilesData): Promise<ServiceResult<number>> => {
         try {
             await HostService.api.post<ApiResult<any>>(
@@ -58,6 +60,7 @@ export class SftpService {
             }
         }
     }
+
     static getSizeFoldersOrFiles = async (getSizeFoldersOrFilesData: GetSizeFoldersOrFilesData): Promise<ServiceResult<number>> => {
         try {
             const response = await HostService.api.post<ApiResult<number>>(
@@ -76,11 +79,11 @@ export class SftpService {
             }
         }
     }
-    
+
     static downloadFoldersOrFiles = async (
-        downloadFoldersOrFilesData: DownloadFoldersOrFilesData, 
+        downloadFoldersOrFilesData: DownloadFoldersOrFilesData,
         cancelToken?: CancelTokenSource,
-        downloadAction?: (progress:number) => void
+        downloadAction?: (progress: number) => void
     ): Promise<ServiceResult<any>> => {
         try {
             const response = await HostService.api.post(
@@ -90,7 +93,7 @@ export class SftpService {
                     responseType: 'blob',
                     cancelToken: cancelToken.token,
                     timeout: 3600000,
-                    onDownloadProgress: function (progressEvent){
+                    onDownloadProgress: function (progressEvent) {
                         const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
                         downloadAction(progress)
                     }
@@ -108,20 +111,20 @@ export class SftpService {
                 isSuccess: true
             }
         } catch (error) {
-            if(Boolean(error?.response?.data.Errors)){
+            if (error?.response?.data.Errors) {
                 return {
                     isSuccess: false,
                     errors: error?.response?.data.Errors
                 }
             }
-            
-            if(Boolean(error?.message)){
-                return { 
-                    isSuccess: false, 
+
+            if (error?.message) {
+                return {
+                    isSuccess: false,
                     errors: { Server: [error?.message] }
                 }
             }
-            
+
             return {
                 isSuccess: false
             }

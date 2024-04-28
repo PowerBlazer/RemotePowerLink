@@ -1,11 +1,13 @@
+/* eslint-disable indent */
 import * as signalR from '@microsoft/signalr';
 import { HostService } from 'app/services/hostService';
 import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { SftpFileList } from 'app/services/SftpService/config';
 import { AppRoutes } from 'app/providers/router/config/routeConfig';
-import {createHubInstance} from "app/hubs/hubFactory";
+import { createHubInstance } from 'app/hubs/hubFactory';
 import toast from 'react-hot-toast';
-import {SftpNotificationData} from "app/store/sftpStore";
+import { SftpNotificationData } from 'app/store/sftpStore';
+import { HubConnectionState } from '@microsoft/signalr';
 
 const URL = `${HostService._hubHost}/sftp`;
 class SftpHub {
@@ -40,7 +42,7 @@ class SftpHub {
                 onFilesReceived(files);
             });
 
-            this.connection.on("downloadReceive", (sftpNotificationOptions: SftpNotificationData) => {
+            this.connection.on('downloadReceive', (sftpNotificationOptions: SftpNotificationData) => {
                 onDownloadReceived(sftpNotificationOptions);
             })
 
@@ -56,10 +58,23 @@ class SftpHub {
     ) => void;
 
     public onConnect: () => Promise<void> = async function connect () { };
-    public onError: (message: Record<string, string[]>) => void 
+    public onError: (message: Record<string, string[]>) => void
 
-    public closeConnection = () => {
-        this.connection.stop()
+    public closeConnection = async () => {
+        await this.connection.stop()
+    }
+
+    public getConnectionState = () => {
+        switch (this.connection.state) {
+            case HubConnectionState.Connected:
+                return ConnectionState.Connected;
+            case HubConnectionState.Disconnected:
+                return ConnectionState.Disconnected;
+            case HubConnectionState.Reconnecting:
+                return ConnectionState.Reconnecting;
+            default:
+                return null
+        }
     }
 
     public getFilesServer = async (serverId: number, path?: string) => {
@@ -67,31 +82,36 @@ class SftpHub {
             await this.connection.send('getFilesServer', serverId, path);
         }
     }
-    
+
     public getConnectionId = () => {
         return this.connection.connectionId;
     }
 
     private validateConnection (): boolean {
         if (this.connection.state === 'Disconnected') {
-            
             this.onError({
                 Server: ['Подключение прервано, переподключитесь или обновите страницу']
             })
-            
+
             return false;
         }
 
         if (this.connection.state === 'Reconnecting') {
-
             this.onError({
                 Server: ['Идет переподключение']
             })
-            
+
             return false;
         }
 
         return true;
     }
 }
+
+export enum ConnectionState {
+    Connected = 'Connected',
+    Disconnected = 'Disconnected',
+    Reconnecting = 'Reconnecting'
+}
+
 export default SftpHub;

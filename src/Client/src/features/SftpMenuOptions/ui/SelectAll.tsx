@@ -10,11 +10,13 @@ interface SelectAllProps extends MenuOptionProp {
 }
 
 export function SelectAll ({ className, disabled, mode, onClick }: SelectAllProps) {
-    const { t } = useTranslation('translation')
+    const { t } = useTranslation('translation');
+    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+
     const onClickSelectAllHandler = () => {
         if (disabled) { return; }
 
-        sftpStore.setSelectAllInFilter(mode);
+        if (selectedHost?.sftpFileList) { sftpStore.setSelectAllInFilter(mode); }
 
         if (onClick) {
             onClick();

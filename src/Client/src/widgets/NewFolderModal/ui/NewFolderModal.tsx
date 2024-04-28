@@ -1,4 +1,4 @@
-﻿import { observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
 import { Input } from 'shared/ui/Input';
@@ -30,7 +30,7 @@ function NewFolderModal ({ className, mode }: NewFolderModalProps) {
             directoryName: newFolderName,
             serverId: selectedHost?.server.serverId
         });
-        
+
         if (createDirectoryResult.isSuccess) {
             selectedHost.isLoad = true;
 

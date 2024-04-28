@@ -154,6 +154,7 @@ public class ServerService: IServerService
                 proxyParameter.Password,
                 new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
         }
+        
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         connectionInfo.Encoding = Encoding.GetEncoding(connectionServerParameter.EncodingCodePage);
         

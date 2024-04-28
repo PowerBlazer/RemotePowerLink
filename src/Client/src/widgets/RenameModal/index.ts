@@ -1,1 +1,1 @@
-﻿export { default as RenameModal } from './ui/RenameModal'
+export { default as RenameModal } from './ui/RenameModal'

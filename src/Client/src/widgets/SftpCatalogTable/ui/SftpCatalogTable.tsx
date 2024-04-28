@@ -11,6 +11,7 @@ import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import { Button } from 'shared/ui/Button/Button';
 import { SftpMenu } from 'widgets/SftpMenu';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
+import { ConnectionState } from 'app/hubs/sftpHub';
 
 interface SftpCatalogTableProps extends SftpCatalogModeProps {
     className?: string;
@@ -36,14 +37,16 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
         }
 
         const setFilterOptions = () => {
-            sftpStore.setSftpFilterOptions(mode, {
-                ...selectedHost.sftpFilesOption.filterOptions,
-                columnSort: !columnSortInstance
-                    ? { columnKey: key, isReverse: false } // Создать новый объект, если columnSortInstance равен null
-                    : !columnSortInstance.isReverse
-                        ? { columnKey: key, isReverse: true } // Если isReverse равен false, поменять его на true
-                        : null // Если isReverse равен true, установить columnSort в null
-            });
+            if (selectedHost?.sftpHub?.getConnectionState() === ConnectionState.Connected) {
+                sftpStore.setSftpFilterOptions(mode, {
+                    ...selectedHost.sftpFilesOption.filterOptions,
+                    columnSort: !columnSortInstance
+                        ? { columnKey: key, isReverse: false } // Создать новый объект, если columnSortInstance равен null
+                        : !columnSortInstance.isReverse
+                            ? { columnKey: key, isReverse: true } // Если isReverse равен false, поменять его на true
+                            : null // Если isReverse равен true, установить columnSort в null
+                });
+            }
         }
 
         return {

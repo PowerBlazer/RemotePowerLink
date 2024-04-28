@@ -3,7 +3,7 @@ import style from './SftpMenuOptions.module.scss';
 import { MenuOptionProp } from 'features/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import { useTranslation } from 'react-i18next';
-import sftpStore from "app/store/sftpStore";
+import sftpStore from 'app/store/sftpStore';
 
 interface DeleteProps extends MenuOptionProp {
     className?: string;
@@ -14,11 +14,11 @@ export function Delete ({ className, disabled, mode, onClick }: DeleteProps) {
     const selectedHost = sftpStore.getSelectedHostInMode(mode);
     const onClickDeleteHandler = () => {
         if (disabled) { return; }
-        
-        if(selectedHost){
+
+        if (selectedHost) {
             selectedHost.modalOption.deleteState = true;
         }
-        
+
         if (onClick) {
             onClick();
         }

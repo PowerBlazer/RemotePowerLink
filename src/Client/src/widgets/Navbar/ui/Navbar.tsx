@@ -21,7 +21,7 @@ import { ServerService } from 'app/services/ServerService/serverService';
 import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { LangSwitcher } from 'features/LangSwitcher';
 import searchStore from 'app/store/searchStore';
-import {EncodingService} from "app/services/EncodingService/encodingService";
+import { EncodingService } from 'app/services/EncodingService/encodingService';
 
 interface NavbarProps {
     className?: string
@@ -29,7 +29,6 @@ interface NavbarProps {
 
 function Navbar ({ className }: NavbarProps) {
     const { t } = useTranslation('translation');
-    const [locationPage, setLocation] = useState<string>(getAppRouteFromPath(location.pathname))
 
     const { isLoad } = useEffectLoad(async () => {
         if (!userStore.userData) {
@@ -51,8 +50,8 @@ function Navbar ({ className }: NavbarProps) {
             const serversResult = await ServerService.getServers();
             userStore.setUserServers(serversResult.result);
         }
-        
-        if(!userStore.encodings){
+
+        if (!userStore.encodings) {
             const encodingsResult = await EncodingService.getEncodings();
             userStore.setUserEncodings(encodingsResult.result);
         }
@@ -73,7 +72,7 @@ function Navbar ({ className }: NavbarProps) {
     useEffect(() => {
         userStore.setLoad(isLoad);
     }, [isLoad]);
-    
+
     return (
         <div className={classNames(style.navbar, {}, [className])}>
             <NavbarSetting/>
@@ -91,17 +90,17 @@ function Navbar ({ className }: NavbarProps) {
                     icon={<ServerIcon width={'21px'} height={'21px'}/>}
                     label={t('Сервера')}
                     className={classNames(style.server)}
-                    isSelected={locationPage === AppRoutes.MAIN}
+                    isSelected={userStore.location === AppRoutes.MAIN}
                     navigate={'/'}
-                    onNavigate={() => { setLocation(AppRoutes.MAIN); }}
+                    onNavigate={() => { userStore.location = AppRoutes.MAIN }}
                 />
                 <NavbarItem
                     icon={<FolderIcon width={'21px'} height={'21px'}/>}
                     label={t('SFTP')}
-                    isSelected={locationPage === AppRoutes.SFTP}
+                    isSelected={userStore.location === AppRoutes.SFTP}
                     navigate={'/sftp'}
                     className={classNames(style.sftp)}
-                    onNavigate={() => { setLocation(AppRoutes.SFTP); }}
+                    onNavigate={() => { userStore.location = AppRoutes.SFTP }}
                 />
                 <NavbarItem
                     icon={<h1>{'{}'}</h1>}

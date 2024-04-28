@@ -40,7 +40,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
     const server = sidebarStore.editHostData.server;
     const identity = userStore.userIdentities.find(p => p.identityId === server.identityId);
     const proxy = userStore.userProxies.find(p => p.proxyId === server.proxyId);
-    const encoding = userStore.encodings.find(p=> p.encodingId === server.encodingId);
+    const encoding = userStore.encodings.find(p => p.encodingId === server.encodingId);
 
     const { t } = useTranslation('translation');
     const [errors, setErrors] = useState<Record<string, string[]>>({});

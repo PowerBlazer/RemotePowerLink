@@ -92,7 +92,7 @@ export class HostService {
 
         return this._api;
     }
-    
+
     static getCancelToken = () => {
         return axios.CancelToken.source();
     }

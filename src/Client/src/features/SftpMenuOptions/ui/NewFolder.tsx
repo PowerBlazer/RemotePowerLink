@@ -17,7 +17,7 @@ export function NewFolder ({ className, disabled, mode, onClick }: NewFolderProp
     const onClickNewFolderHandler = () => {
         if (disabled) { return; }
 
-        if (selectedHost) {
+        if (selectedHost?.sftpFileList) {
             selectedHost.modalOption.newFolderState = true;
         }
 

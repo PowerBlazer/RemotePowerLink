@@ -1,14 +1,14 @@
-﻿import {observer} from "mobx-react-lite";
-import {Modal, ThemeModal, TypeModal} from "shared/ui/Modal";
-import {Theme} from "shared/lib/Theme/ThemeContext";
-import sftpStore from "app/store/sftpStore";
-import {useTheme} from "shared/lib/Theme/useTheme";
-import {useTranslation} from "react-i18next";
-import {SftpCatalogModeProps} from "widgets/SftpCatalog";
-import {ChangeEvent, useMemo, useState} from "react";
-import {FileType} from "app/services/SftpService/config";
-import {Input} from "shared/ui/Input";
-import {SftpService} from "app/services/SftpService/sftpService";
+import { observer } from 'mobx-react-lite';
+import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
+import { Theme } from 'shared/lib/Theme/ThemeContext';
+import sftpStore from 'app/store/sftpStore';
+import { useTheme } from 'shared/lib/Theme/useTheme';
+import { useTranslation } from 'react-i18next';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
+import { ChangeEvent, useMemo, useState } from 'react';
+import { FileType } from 'app/services/SftpService/config';
+import { Input } from 'shared/ui/Input';
+import { SftpService } from 'app/services/SftpService/sftpService';
 
 interface RenameModalProps extends SftpCatalogModeProps {
     className?: string;
@@ -24,13 +24,15 @@ function RenameModal ({ className, mode }: RenameModalProps) {
         ['Название файла или папки не может быть пустым']
     );
 
-    const selectedFileItem = useMemo(()=> selectedHost?.sftpFileList?.fileList
-        .find(p=> p.isSelected), [selectedHost?.sftpFileList?.fileList]);
-    
-    const selectedTypeName = selectedFileItem ? (selectedFileItem?.fileType === FileType.Folder
-        ? t('папки')
-        : t('файл')) : null
-    
+    const selectedFileItem = useMemo(() => selectedHost?.sftpFileList?.fileList
+        .find(p => p.isSelected), [selectedHost?.sftpFileList?.fileList]);
+
+    const selectedTypeName = selectedFileItem
+        ? (selectedFileItem?.fileType === FileType.Folder
+            ? t('папки')
+            : t('файл'))
+        : null
+
     const renameFileOrFolderHandler = async () => {
         const renameFileOrFolderResult = await SftpService.renameFileOrFolder({
             fileItemPath: selectedFileItem?.path,
@@ -51,7 +53,7 @@ function RenameModal ({ className, mode }: RenameModalProps) {
             selectedHost.error = { errors: renameFileOrFolderResult.errors }
             selectedHost.modalOption.errorState = true;
         }
-        
+
         selectedHost.modalOption.renameState = false;
     }
 
@@ -66,15 +68,15 @@ function RenameModal ({ className, mode }: RenameModalProps) {
 
             return;
         }
-        
-        if(!selectedFileItem){
+
+        if (!selectedFileItem) {
             setErrors([
                 t('Папка или файл не выбрана')
             ]);
-            
+
             return;
         }
-        
+
         const fileListWithType = selectedHost?.sftpFileList?.fileList
             .filter(p => p.fileType === selectedFileItem.fileType && p.name === e.target.value);
 
@@ -94,8 +96,8 @@ function RenameModal ({ className, mode }: RenameModalProps) {
                 disabled: errors.length > 0,
                 headerName: `${t('Переименовать')} ${selectedFileItem && (selectedFileItem?.fileType === FileType.Folder
                     ? t('папку')
-                    : t('файл'))}`,
-                
+                    : t('файл'))}`
+
             }}
             className={className}
             theme={ theme === Theme.LIGHT ? ThemeModal.CLEAR : ThemeModal.DARK }

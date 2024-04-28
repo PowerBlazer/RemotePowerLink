@@ -1,10 +1,8 @@
-﻿import {makeAutoObservable, observable} from "mobx";
-import {NotificationHub} from "app/hubs/notificationHub";
-
-
+import { makeAutoObservable, observable } from 'mobx';
+import { NotificationHub } from 'app/hubs/notificationHub';
 
 class NotificationStore {
-    constructor() {
+    constructor () {
         makeAutoObservable(this);
     }
 }

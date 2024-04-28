@@ -1,19 +1,19 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './DownloadModal.module.scss';
-import {observer} from "mobx-react-lite";
-import {Modal, ThemeModal, TypeModal} from "shared/ui/Modal";
-import {Theme} from "shared/lib/Theme/ThemeContext";
-import {SftpCatalogModeProps} from "widgets/SftpCatalog";
-import React, {useEffect, useMemo, useState} from "react";
-import sftpStore from "app/store/sftpStore";
-import {useTheme} from "shared/lib/Theme/useTheme";
-import {useTranslation} from "react-i18next";
-import {SftpService} from "app/services/SftpService/sftpService";
-import {Loader} from "shared/ui/Loader/Loader";
-import notificationStore from "app/store/notificationStore";
-import {HostService} from "app/services/hostService";
+import { observer } from 'mobx-react-lite';
+import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
+import { Theme } from 'shared/lib/Theme/ThemeContext';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
+import React, { useEffect, useMemo, useState } from 'react';
+import sftpStore from 'app/store/sftpStore';
+import { useTheme } from 'shared/lib/Theme/useTheme';
+import { useTranslation } from 'react-i18next';
+import { SftpService } from 'app/services/SftpService/sftpService';
+import { Loader } from 'shared/ui/Loader/Loader';
+import notificationStore from 'app/store/notificationStore';
+import { HostService } from 'app/services/hostService';
 
-interface DownloadModalProps extends SftpCatalogModeProps{
+interface DownloadModalProps extends SftpCatalogModeProps {
     className?: string;
 }
 
@@ -26,32 +26,32 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
     const [errors, setErrors] = useState<string[]>([]);
     const [isLoad, setLoad] = useState<boolean>(false);
     const [sizeSelectedFileItems, setSize] = useState<number>();
-    
+
     const selectedFileItems = useMemo(() => selectedHost?.sftpFileList?.fileList
-        .filter(p=> p.isSelected), [selectedHost?.sftpFileList?.fileList]);
-    
+        .filter(p => p.isSelected), [selectedHost?.sftpFileList?.fileList]);
+
     const downloadHandler = async () => {
-        const cancelToken = HostService.getCancelToken(); 
-            
+        const cancelToken = HostService.getCancelToken();
+
         selectedHost.modalOption.downloadState = false;
-        
+
         selectedHost.notificationOptions = {
-           data: {
-               operationName: 'Отправка запроса на скачивание файлов',
-               isProgress: false
-           },
-           onCancel: () => {
-               cancelToken.cancel("Request canceled by the user")
-           }
+            data: {
+                operationName: 'Отправка запроса на скачивание файлов',
+                isProgress: false
+            },
+            onCancel: () => {
+                cancelToken.cancel('Request canceled by the user')
+            }
         }
-        
+
         let prevProgressState = 0;
         const downloadResult = await SftpService.downloadFoldersOrFiles({
             filesOrFoldersToDownloadList: selectedFileItems,
             serverId: selectedHost?.server.serverId,
             connectionId: selectedHost.sftpHub.getConnectionId()
-        }, cancelToken, (progress) =>{
-            if(prevProgressState != progress){
+        }, cancelToken, (progress) => {
+            if (prevProgressState !== progress) {
                 prevProgressState = progress;
 
                 selectedHost.notificationOptions = {
@@ -66,44 +66,42 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
         });
 
         selectedHost.notificationOptions = null;
-        
-        if(!downloadResult.isSuccess && Boolean(downloadResult.errors)){
-           selectedHost.error = { errors: downloadResult.errors }
-           selectedHost.modalOption.errorState = true;
+
+        if (!downloadResult.isSuccess && Boolean(downloadResult.errors)) {
+            selectedHost.error = { errors: downloadResult.errors }
+            selectedHost.modalOption.errorState = true;
         }
     }
 
     useEffect(() => {
         setErrors([]);
-        
-        async function getSizeEvent(){
-            if(selectedHost?.modalOption.downloadState){
+
+        async function getSizeEvent () {
+            if (selectedHost?.modalOption.downloadState) {
                 setLoad(true);
                 const getSizeResult = await SftpService.getSizeFoldersOrFiles({
                     serverId: selectedHost?.server.serverId,
                     foldersOrFiles: selectedFileItems
                 });
-                
+
                 setSize(getSizeResult.result);
                 setLoad(false);
-                
-                if(getSizeResult.isSuccess && getSizeResult.result >= _maximumDownloadSizeBytes){
+
+                if (getSizeResult.isSuccess && getSizeResult.result >= _maximumDownloadSizeBytes) {
                     setErrors(['Превышен лимит выбранных файлов 5GB размера скачивания'])
                 }
-                
-                if(!getSizeResult.isSuccess){
+
+                if (!getSizeResult.isSuccess) {
                     selectedHost.error = { errors: getSizeResult.errors }
                     selectedHost.modalOption.downloadState = false;
                     selectedHost.modalOption.errorState = true;
                 }
             }
         }
-        
+
         getSizeEvent();
     }, [selectedHost?.modalOption.downloadState]);
 
-   
-    
     return (
         <Modal
             options={{
@@ -111,7 +109,7 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
                 onCancel: () => { selectedHost.modalOption.downloadState = false; },
                 onConfirm: downloadHandler,
                 disabled: errors.length > 0 || isLoad,
-                headerName: isLoad ? t('Оценка файлов для загрузки') : t('Скачать'),
+                headerName: isLoad ? t('Оценка файлов для загрузки') : t('Скачать')
             }}
             className={className}
             theme={ theme === Theme.LIGHT ? ThemeModal.CLEAR : ThemeModal.DARK }
@@ -119,18 +117,17 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
         >
             <div className={classNames(style.files_download)}>
                 { isLoad && <Loader className={style.loader}/> }
-                
-                { !isLoad && sizeSelectedFileItems && 
+                { !isLoad && sizeSelectedFileItems &&
                     <div className={classNames(style.size_selected_files)}>
                         {`${t('Размер выделенных папок и файлов: ')} ${formatFileSize(sizeSelectedFileItems)}`}
-                    </div> 
+                    </div>
                 }
-                { errors.length > 0 && 
-                    <div className={classNames(style.errors)}>  
+                { errors.length > 0 &&
+                    <div className={classNames(style.errors)}>
                         {errors.map(error => (
-                            <p className={classNames(style.error)} key={error}>{error}</p> 
+                            <p className={classNames(style.error)} key={error}>{error}</p>
                         ))}
-                    </div> 
+                    </div>
                 }
                 { !isLoad &&
                     <div className={classNames(style.list_files)}>

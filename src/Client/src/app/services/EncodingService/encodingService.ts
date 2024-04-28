@@ -1,7 +1,6 @@
-﻿import {ApiResult, HostService, ServiceResult} from "app/services/hostService";
-import {EncodingData} from "app/services/EncodingService/config";
-import {IdentityData} from "app/services/IdentityService/config/identityConfig";
-
+import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
+import { EncodingData } from 'app/services/EncodingService/config';
+import { IdentityData } from 'app/services/IdentityService/config/identityConfig';
 
 export class EncodingService {
     static getEncodings = async (): Promise<ServiceResult<EncodingData[]>> => {
@@ -18,5 +17,5 @@ export class EncodingService {
                 isSuccess: false
             }
         }
-    }   
+    }
 }

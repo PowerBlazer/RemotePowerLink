@@ -89,7 +89,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             var previousTime = DateTime.Now;
             ulong previousDownloadedBytes = 0;
             
-            _timer = new Timer( _ =>
+            _timer = new Timer(_ =>
             {
                 var downloadedBytes = _totalSizeFiles - _remainsSize;
                 
@@ -110,7 +110,6 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                 // Вычисляем скорость скачивания в байтах в секунду
                 var downloadSpeed = bytesSinceLastUpdate / elapsedTime.TotalSeconds;
                 var downloadSpeedString = $"{_sftpService.FormatFileSize((ulong)downloadSpeed)}/c";
-                
                 var percentComplete = (double)downloadedBytes / _totalSizeFiles * 100;
 
                 //Вычисляем оставшееся время для полного скачивания

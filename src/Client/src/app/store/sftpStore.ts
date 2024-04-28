@@ -94,14 +94,14 @@ class SftpStore {
         let hostFileItems = selectedHost?.sftpFileList?.fileList;
         const filterOptions = selectedHost?.sftpFilesOption.filterOptions;
 
-        if (filterOptions.title) {
+        if (filterOptions.title && hostFileItems) {
             hostFileItems = hostFileItems.filter(
                 p => p.name?.toLowerCase().includes(filterOptions.title?.toLowerCase()) ||
                     p.fileTypeName?.toLowerCase().includes(filterOptions.title?.toLowerCase())
             )
         }
 
-        if (filterOptions.columnSort) {
+        if (filterOptions.columnSort && hostFileItems) {
             hostFileItems = [...hostFileItems].sort((a, b) => {
                 if (filterOptions.columnSort.columnKey === 'fileTypeName') {
                     return compareFileTypeName(a, b, filterOptions.columnSort.isReverse)

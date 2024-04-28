@@ -15,7 +15,7 @@ export function Refresh ({ className, disabled, mode, onClick }: RefreshProps) {
         if (disabled) { return; }
 
         const selectedHost = sftpStore.getSelectedHostInMode(mode);
-        if (selectedHost) {
+        if (selectedHost?.sftpFileList) {
             selectedHost.isLoad = true;
             selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, selectedHost.sftpFileList.currentPath)
         }

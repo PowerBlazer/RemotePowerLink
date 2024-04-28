@@ -31,7 +31,7 @@ const defaultServerValue = {
     hostname: '',
     title: '',
     identityId: 0,
-    encodingId:0
+    encodingId: 0
 }
 
 function SidebarNewHost ({ className, isMain = false, onSave, onClose }: SidebarNewHostProps) {

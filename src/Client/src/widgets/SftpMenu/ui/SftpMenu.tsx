@@ -78,7 +78,7 @@ const SftpMenu = forwardRef(
                 <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
                 <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>,
                 <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-                <Unload mode={mode} key='Unload' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+                <Unload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
                 <Close mode={mode} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
             ]
         }, [selectedSftpFileOptions?.fileList]);

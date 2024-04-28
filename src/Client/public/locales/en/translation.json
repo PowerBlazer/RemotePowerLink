@@ -68,7 +68,22 @@
     "Переименовать": "Rename",
     "Выбрать все": "Select all",
     "Загрузить": "Unload",
-    "Вы хотите удалить эти папки и файлы?": "Do you want to delete these folders and files?"
+    "Вы хотите удалить эти папки и файлы?": "Do you want to delete these folders and files?",
+    "Оценка файлов для загрузки": "Evaluating files to download",
+    "Выбраны файлы на скачивание: ": "Files to download have been selected: ",
+    "Размер выделенных папок и файлов: ": "The size of the selected folders and files: ",
+    "Превышен лимит выбранных файлов 5GB размера скачивания": "The limit of selected files of 5GB download size has been exceeded",
+    "Загрузка": "Loading",
+    "Отправка запроса на скачивание файлов": "Sending a request to download files",
+    "Прервать": "Discard",
+    "Загрузка файлов": "Uploading files",
+    "Сжатие файлов": "File compression",
+    "Отправка файлов": "Sending files",
+    "Закрыть": "Close",
+    "Редактировать сервер": "Edit host",
+    "Повторно подлючиться": "Start over",
+    "Отсутсвует данные": "Missing data",
+    "Выбрать кодировку": "Select the encoding"
     
     
 }

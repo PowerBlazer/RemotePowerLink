@@ -1,1 +1,1 @@
-﻿export { default as DownloadModal } from './ui/DownloadModal';
+export { default as DownloadModal } from './ui/DownloadModal';

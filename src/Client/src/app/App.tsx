@@ -12,16 +12,16 @@ export default function App () {
         <div className={classNames('app', {}, [theme])}>
             <Suspense fallback="">
                 <div className='content-page'>
-                     <AppRouter/>
-                     <Toaster
-                         position="bottom-right"
-                         reverseOrder={false}
-                         gutter={8}
-                         toastOptions={{
-                             className: '',
-                             duration: 3000
-                         }}
-                     />
+                    <AppRouter/>
+                    <Toaster
+                        position="bottom-right"
+                        reverseOrder={false}
+                        gutter={8}
+                        toastOptions={{
+                            className: '',
+                            duration: 3000
+                        }}
+                    />
                 </div>
             </Suspense>
         </div>

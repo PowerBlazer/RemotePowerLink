@@ -8,7 +8,7 @@ import { SearchInput } from 'features/SearchInput';
 import ArrowRight from 'shared/assets/icons/arrow-right.svg';
 import searchStore from 'app/store/searchStore';
 import style from './SftpSelectHostCatalog.module.scss';
-import sftpStore, {SftpModalOption} from 'app/store/sftpStore';
+import sftpStore, { SftpModalOption } from 'app/store/sftpStore';
 import { SftpCatalogMode } from 'app/services/SftpService/config';
 import { Stack } from 'shared/lib/Stack';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
@@ -33,6 +33,14 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
     }
 
     const onClickConnectHandler = async (serverData: ServerData) => {
+        const modalOptions: SftpModalOption = {
+            errorState: false,
+            newFolderState: false,
+            deleteState: false,
+            renameState: false,
+            downloadState: false
+        }
+
         const newHostInstance = {
             server: serverData,
             isLoad: false,
@@ -41,13 +49,7 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
                 historyPrevPaths: new Stack<string>(),
                 historyNextPaths: new Stack<string>()
             },
-            modalOption: {
-                errorState: false,
-                newFolderState: false,
-                deleteState: false,
-                renameState: false,
-                downloadState: false
-            } as SftpModalOption
+            modalOption: modalOptions
         }
 
         if (mode === SftpCatalogMode.First) {

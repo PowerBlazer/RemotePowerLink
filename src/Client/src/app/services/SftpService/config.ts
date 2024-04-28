@@ -49,5 +49,6 @@ export interface GetSizeFoldersOrFilesData {
 
 export interface DownloadFoldersOrFilesData {
     filesOrFoldersToDownloadList: SftpFile[],
-    serverId: number
+    serverId: number,
+    connectionId: string
 }

@@ -1,0 +1,86 @@
+.sftpNotificationPanel{
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  height: 40px;
+  background-color: var(--notification-panel-bg-color);
+  width: 100%;
+  transition: bottom .3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  
+  &.active{
+    bottom: 0;
+  }
+  
+  & .information_panel{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 13px;
+    color: var(--notification-panel-text-color);
+    
+    & .operation_name{
+      font-weight: 600;
+    }
+  }
+  
+  & .tools_panel{
+    display: flex;
+    gap: 17px;
+    align-items: center;
+    
+    & .discard{
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    
+    & .progress_bar_panel{
+      align-items: center;
+      gap: 12px;
+      display: none;
+      
+      &.active{
+        display: flex;
+      }
+      
+      & .label{
+        font-size: 13px;
+      }
+      
+      & .progress_bar{
+        width: 200px;
+        height: 4px;
+        border-radius: 5px;
+        background-color: #8FA1A8;
+        position: relative;
+        overflow: hidden;
+        
+        & .bar{
+          position: absolute;
+          top: 0;
+          height: 8px;
+          width: 200px;
+          background-color: var(--button-primary-color);
+          transition: left .3s;
+        }
+      }
+    }
+    
+  }
+  
+}
+
+.loader{
+  width: 20px;
+  height: 20px;
+}
+
+.loader > div{
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}

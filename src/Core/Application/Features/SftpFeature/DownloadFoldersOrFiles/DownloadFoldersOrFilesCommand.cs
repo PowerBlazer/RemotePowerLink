@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Features.SftpFeature.DownloadFoldersOrFiles;
 
-public class DownloadFoldersOrFilesCommand: IRequest<string>
+public class DownloadFoldersOrFilesCommand: IRequest<DownloadFolderOrFilesResponse>
 {
     /// <summary>
     /// Список файлов или папок для удаления.
@@ -15,6 +15,11 @@ public class DownloadFoldersOrFilesCommand: IRequest<string>
     /// Идентификатор сервера, с которого будет скачаны файлы и папки.
     /// </summary>
     public required long ServerId { get; set; }
+    
+    /// <summary>
+    /// Id подключения WebSocket
+    /// </summary>
+    public string? ConnectionId { get; set; }
     
     /// <summary>
     /// Идентификатор пользователя, инициирующего удаление файлов.

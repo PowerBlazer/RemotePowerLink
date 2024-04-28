@@ -10,7 +10,7 @@ public class SftpService: ISftpService
         var extension = Path.GetExtension(fileName);
         return extension.TrimStart('.').ToLowerInvariant();
     }
-    public string FormatFileSize(long fileSize)
+    public string FormatFileSize(ulong fileSize)
     {
         const int byteConversion = 1024;
         var bytes = Convert.ToDouble(fileSize);

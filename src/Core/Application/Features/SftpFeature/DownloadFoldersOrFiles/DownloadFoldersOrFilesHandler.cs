@@ -1,4 +1,6 @@
 ﻿using Application.Hubs;
+using Domain.DTOs.Notification;
+using Domain.DTOs.Sftp;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Repository;
@@ -8,33 +10,40 @@ using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Renci.SshNet;
+using Renci.SshNet.Common;
 
 namespace Application.Features.SftpFeature.DownloadFoldersOrFiles;
 
 [UsedImplicitly]
-public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFilesCommand, string>
+public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFilesCommand, DownloadFolderOrFilesResponse>
 {
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
     private readonly ISftpService _sftpService;
-    private readonly IHubContext<SftpHub> _sftpHubContext;
+    private readonly IHubContext<NotificationHub> _notificationHubContext;
 
     private const long MaximumDownloadSizeBytes = 5368709120;
-    private ulong _totalSizeFiles = 0;
-    private ulong _remainsSize = 0;
+    private ulong _totalSizeFiles;
+    private ulong _totalRemainsSizeFiles;
+    private ulong _remainsSize;
+
+    private readonly Dictionary<string, List<string>> _downloadErrors;
+    private Timer _timer;
     
     public DownloadFoldersOrFilesHandler(IServerRepository serverRepository, 
         IServerService serverService, 
-        IHubContext<SftpHub> sftpHubContext, 
+        IHubContext<NotificationHub> notificationHubContext, 
         ISftpService sftpService)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
-        _sftpHubContext = sftpHubContext;
+        _notificationHubContext = notificationHubContext;
         _sftpService = sftpService;
+
+        _downloadErrors = new Dictionary<string, List<string>>();
     }
 
-    public async Task<string> Handle(DownloadFoldersOrFilesCommand request, CancellationToken cancellationToken)
+    public async Task<DownloadFolderOrFilesResponse> Handle(DownloadFoldersOrFilesCommand request, CancellationToken cancellationToken)
     {
         var server = await _serverRepository.GetServerAsync(request.ServerId);
 
@@ -64,19 +73,67 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             if (_totalSizeFiles >= MaximumDownloadSizeBytes)
             {
                 throw new NoAccessException($"Превышен лимит 5GB выбранных файлов размера скачивания , выделенный размер " +
-                                            $"{_sftpService.FormatFileSize((long)_totalSizeFiles)}", "Server");
+                                            $"{_sftpService.FormatFileSize(_totalSizeFiles)}", "Server");
             }
 
-            _remainsSize = _totalSizeFiles;
+            _totalRemainsSizeFiles = _totalSizeFiles;
+            _remainsSize = _totalRemainsSizeFiles;
             
             var tempDirectory = Path.Combine(request.TempPath!, Guid.NewGuid().ToString());
+
+            if (!Directory.Exists(tempDirectory))
+                Directory.CreateDirectory(tempDirectory);
             
-            Console.WriteLine($"TotalSize: {_totalSizeFiles}");
             
-            var timer = new Timer(_ =>
+            var previousTime = DateTime.Now;
+            ulong previousDownloadedBytes = 0;
+            
+            _timer = new Timer( _ =>
             {
-                Console.WriteLine(_remainsSize);
-            }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(500));
+                ulong downloadedBytes = _totalSizeFiles - _remainsSize;
+                ulong bytesSinceLastUpdate;
+
+                if (downloadedBytes >= previousDownloadedBytes)
+                {
+                    bytesSinceLastUpdate = downloadedBytes - previousDownloadedBytes;
+                }
+                else
+                {
+                    bytesSinceLastUpdate = 0;
+                }
+
+                // Вычисляем прошедшее время с момента последнего обновления
+                var currentTime = DateTime.Now;
+                var elapsedTime = currentTime - previousTime;
+
+                // Вычисляем скорость скачивания в байтах в секунду
+                var downloadSpeed = bytesSinceLastUpdate / elapsedTime.TotalSeconds;
+                var downloadSpeedString = $"{_sftpService.FormatFileSize((ulong)downloadSpeed)}/c";
+                
+                var percentComplete = (double)downloadedBytes / _totalSizeFiles * 100;
+
+                //Вычисляем оставшееся время для полного скачивания
+                var remainingSeconds = (long)Math.Round(_remainsSize / downloadSpeed, 0, MidpointRounding.AwayFromZero);
+                var remainingTime = TimeSpan.FromSeconds(remainingSeconds >= 0 ? remainingSeconds : 0);
+
+                var downloadNotitifactionData = new DownloadNotification
+                {
+                    OperationName = "Загрузка файлов",
+                    IsProgress = true,
+                    ProgressPercent = (int)Math.Round(percentComplete, 0),
+                    InformationText =
+                        $"{_sftpService.FormatFileSize(downloadedBytes)}/{_sftpService.FormatFileSize(_totalSizeFiles)}, " +
+                        $"{downloadSpeedString}, about ~{FormatTime(remainingTime)} remaining"
+                };
+
+                 _notificationHubContext.Clients
+                    .User(request.UserId.ToString())
+                    .SendAsync("downloadReceive", downloadNotitifactionData, cancellationToken: cancellationToken);
+
+                // Обновляем значения для следующей итерации
+                previousDownloadedBytes = downloadedBytes;
+                previousTime = currentTime;
+            }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
             
             foreach (var fileItem in request.FilesOrFoldersToDownloadList)
             {
@@ -84,13 +141,28 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                 {
                     var tempFilePath = Path.Combine(tempDirectory, fileItem.Name);
                     await using var fileStream = File.Create(tempFilePath);
-                
-                    sftpClient.DownloadFile(fileItem.Path, fileStream, sendBytes =>
-                    {
-                        _remainsSize = _totalSizeFiles - sendBytes;
-                    });
                     
-                    _totalSizeFiles -= (ulong)fileItem.Size!;
+                    try
+                    {
+                        sftpClient.DownloadFile(fileItem.Path, fileStream, sendBytes =>
+                        {
+                            _remainsSize = _totalRemainsSizeFiles - sendBytes;
+                        });
+                    }
+                    catch (SftpPathNotFoundException ex)
+                    {
+                        _downloadErrors.Add(fileItem.Path, new List<string>{ ex.Message });
+                    }
+                    catch (SftpPermissionDeniedException ex)
+                    {
+                        _downloadErrors.Add(fileItem.Path, new List<string>{ ex.Message });
+                    }
+                    catch (SshException ex)
+                    {
+                        _downloadErrors.Add(fileItem.Path, new List<string>{ ex.Message });
+                    }
+                    
+                    _totalRemainsSizeFiles -= (ulong)fileItem.Size!;
                 }
 
                 if (fileItem.FileType == FileTypeEnum.Folder)
@@ -99,9 +171,11 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                 }
             }
             
-            await timer.DisposeAsync();
-
-            return request.TempPath!;
+            return new DownloadFolderOrFilesResponse
+            {
+                FolderTempPath = tempDirectory,
+                Errors = _downloadErrors
+            };
 
         }
         finally
@@ -110,7 +184,29 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             {
                 sftpClient.Disconnect();
             }
+            
+            await _timer.DisposeAsync();
         }
+    }
+    
+    private static string FormatTime(TimeSpan time)
+    {
+        if (time.TotalDays >= 1)
+        {
+            return $"{time.TotalDays:F2} days";
+        }
+
+        if (time.TotalHours >= 1)
+        {
+            return $"{time.TotalHours:F2} hours";
+        }
+
+        if (time.TotalMinutes >= 1)
+        {
+            return $"{time.TotalMinutes:F2} minutes";
+        }
+
+        return $"{time.TotalSeconds:F2} seconds";
     }
     
     private async Task DownloadFolderAsync(SftpClient client, 
@@ -142,14 +238,27 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             {
                 // Если это файл, скачиваем его
                 await using var fileStream = File.Create(Path.Combine(folderDestination, item.Name));
-                
-                client.DownloadFile(item.FullName, fileStream,sendBytes =>
+
+                try
                 {
-                    _remainsSize = _totalSizeFiles - sendBytes;
-                });
+                    client.DownloadFile(item.FullName, fileStream,
+                        sendBytes => { _remainsSize = _totalRemainsSizeFiles - sendBytes; });
+                }
+                catch (SftpPathNotFoundException ex)
+                {
+                    _downloadErrors.Add(item.FullName, new List<string>{ ex.Message });
+                }
+                catch (SftpPermissionDeniedException ex)
+                {
+                    _downloadErrors.Add(item.FullName, new List<string>{ ex.Message });
+                }
+                catch (SshException ex)
+                {
+                    _downloadErrors.Add(item.FullName, new List<string>{ ex.Message });
+                }
                 
-                _totalSizeFiles -= (ulong)item.Length;
+                _totalRemainsSizeFiles -= (ulong)item.Length;
             }
         }
-    } 
+    }
 }

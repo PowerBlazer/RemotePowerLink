@@ -6,6 +6,7 @@ import { SftpCatalog } from 'widgets/SftpCatalog';
 import { useRef } from 'react';
 import { SftpCatalogMode } from 'app/services/SftpService/config';
 import sftpStore from 'app/store/sftpStore';
+import {SftpNotificationPanel} from "widgets/SftpNotificationPanel";
 
 export interface ChangedWidthProp {
     changedWidth?: number
@@ -31,6 +32,7 @@ function SftpPage ({ className }: SftpPageProps) {
                 <SftpCatalog mode={SftpCatalogMode.First} />
                 <SftpCatalog mode={SftpCatalogMode.Second} />
             </ReactSplit>
+            <SftpNotificationPanel/>
         </div>
     );
 }

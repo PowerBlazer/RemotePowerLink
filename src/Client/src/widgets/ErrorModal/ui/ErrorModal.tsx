@@ -26,10 +26,10 @@ function ErrorModal ({ className, mode }: ErrorModalProps) {
             isVisible={Boolean(selectedHost?.modalOption?.errorState)}
         >
             <div className={classNames(style.error_panel)}>
-                {selectedHost?.error && Object.entries(selectedHost.error?.errors).map(([key, value]) => {
+                {selectedHost?.error?.errors && Object.entries(selectedHost.error?.errors).map(([key, value]) => {
                     return (
                         <div className={classNames(style.error)} key={key}>
-                            {key}:  {value.join(' ')}
+                            {key}:  {value?.join(' ')}
                         </div>
                     )
                 })}

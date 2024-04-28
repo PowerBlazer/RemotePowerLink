@@ -15,7 +15,7 @@ public interface ISftpService
     /// </summary>
     /// <param name="fileSize">Размер файла в байтах</param>
     /// <returns>Строка с размером файла</returns>
-    string FormatFileSize(long fileSize);
+    string FormatFileSize(ulong fileSize);
     /// <summary>
     /// Получает предыдущий путь каталога 
     /// </summary>

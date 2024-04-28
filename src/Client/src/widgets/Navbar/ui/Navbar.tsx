@@ -22,6 +22,10 @@ import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { LangSwitcher } from 'features/LangSwitcher';
 import searchStore from 'app/store/searchStore';
 import {EncodingService} from "app/services/EncodingService/encodingService";
+import notificationStore from "app/store/notificationStore";
+import NotificationHub from "app/hubs/notificationHub";
+import toast from "react-hot-toast";
+
 
 interface NavbarProps {
     className?: string
@@ -73,6 +77,32 @@ function Navbar ({ className }: NavbarProps) {
     useEffect(() => {
         userStore.setLoad(isLoad);
     }, [isLoad]);
+    
+    useEffect(() => {
+        if(!notificationStore.notificationHub){
+            const notificationHub = new NotificationHub();
+            
+            notificationHub.onConnect = async () => {
+                notificationStore.notificationHub = notificationHub;
+
+                notificationHub.events((downloadNotificationData) => {
+                    if(notificationStore.downloadNotificationOptions){
+                        notificationStore.downloadNotificationOptions = {
+                            ...notificationStore.downloadNotificationOptions,
+                            data: downloadNotificationData
+                        }
+                    }
+                    
+                })
+            }
+            
+            notificationHub.onError = (message: string) => {
+                toast.error(message)
+            }
+        }
+        
+        return () => notificationStore.notificationHub.closeConnection();
+    }, [])
 
     return (
         <div className={classNames(style.navbar, {}, [className])}>

@@ -1,13 +1,17 @@
 ﻿import {makeAutoObservable, observable} from "mobx";
 import {NotificationHub} from "app/hubs/notificationHub";
 
-export interface SftpNotificationOptions {
+export interface SftpNotificationData {
     operationName: string,
     informationText?: string,
     isProgress?: boolean,
-    isLoad?: boolean
+    progressPercent?: number
 }
 
+export interface SftpNotificationOptions {
+    data: SftpNotificationData,
+    onCancel?: () => void
+}
 
 class NotificationStore {
     constructor() {
@@ -16,5 +20,6 @@ class NotificationStore {
     
     @observable public notificationHub: NotificationHub | null = null;
     @observable public downloadNotificationOptions: SftpNotificationOptions | null = null;
-    
 }
+
+export default new NotificationStore();

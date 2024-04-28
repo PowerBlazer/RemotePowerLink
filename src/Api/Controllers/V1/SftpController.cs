@@ -4,10 +4,13 @@ using Application.Features.SftpFeature.DeleteFoldersOrFiles;
 using Application.Features.SftpFeature.DownloadFoldersOrFiles;
 using Application.Features.SftpFeature.GetSizeFoldersOrFiles;
 using Application.Features.SftpFeature.RenameFolderOrFile;
+using Application.Hubs;
 using Domain.Common;
+using Domain.DTOs.Notification;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Api.Controllers.V1;
 
@@ -18,10 +21,16 @@ namespace Api.Controllers.V1;
 public class SftpController: BaseController
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IHubContext<SftpHub> _sftpHubContext;
+    private readonly IHubContext<NotificationHub> _notificationHubContext;
     public SftpController(IMediator mediator, 
-        IWebHostEnvironment webHostEnvironment) : base(mediator)
+        IWebHostEnvironment webHostEnvironment, 
+        IHubContext<SftpHub> sftpHubContext, 
+        IHubContext<NotificationHub> notificationHubContext) : base(mediator)
     {
         _webHostEnvironment = webHostEnvironment;
+        _sftpHubContext = sftpHubContext;
+        _notificationHubContext = notificationHubContext;
     }
 
     /// <summary>
@@ -124,6 +133,7 @@ public class SftpController: BaseController
     /// Скачивает файлы или папки по SFTP
     /// </summary>
     /// <param name="downloadFoldersOrFilesCommand"></param>
+    /// <param name="cancellationToken"></param>
     /// <response code="200">Файлы или папки успешно скачаны</response>
     /// <response code="400">Ошибка валидации данных.</response>
     /// <response code="403">Доступ запрещен</response>
@@ -135,22 +145,54 @@ public class SftpController: BaseController
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [HttpPost("download")]
     public async Task<IActionResult> DownloadFoldersOrFiles(
-        [FromBody]DownloadFoldersOrFilesCommand downloadFoldersOrFilesCommand)
+        [FromBody]DownloadFoldersOrFilesCommand downloadFoldersOrFilesCommand,
+        CancellationToken cancellationToken)
     {
         downloadFoldersOrFilesCommand.UserId = UserId;
         downloadFoldersOrFilesCommand.TempPath =
-            Path.Combine(_webHostEnvironment.WebRootPath, "Temp", Guid.NewGuid().ToString());
+            Path.Combine(_webHostEnvironment.WebRootPath, "Temp");
 
-        var downloadedFilesPath = await Mediator.Send(downloadFoldersOrFilesCommand);
+        var downloadFolderOrFilesResponse = await Mediator.Send(downloadFoldersOrFilesCommand,cancellationToken);
         var zipFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "Temp", $"downloaded_files_{UserId}.zip");
         
         if(System.IO.File.Exists(zipFilePath))
             System.IO.File.Delete(zipFilePath);
-        
-        ZipFile.CreateFromDirectory(downloadedFilesPath, zipFilePath);
 
-        if (Directory.Exists(downloadedFilesPath))
-            Directory.Delete(downloadedFilesPath,true);
+        await _notificationHubContext.Clients
+            .User(UserId.ToString())
+            .SendAsync(
+                "downloadReceive",
+                new DownloadNotification
+                {
+                    OperationName = "Сжатие файлов",
+                    IsProgress = false,
+                }, cancellationToken: cancellationToken);
+        
+        ZipFile.CreateFromDirectory(downloadFolderOrFilesResponse.FolderTempPath, zipFilePath);
+
+        if (Directory.Exists(downloadFolderOrFilesResponse.FolderTempPath))
+            Directory.Delete(downloadFolderOrFilesResponse.FolderTempPath,true);
+
+        if (!string.IsNullOrEmpty(downloadFoldersOrFilesCommand.ConnectionId) 
+            && downloadFolderOrFilesResponse.Errors?.Count > 0)
+        {
+            await _sftpHubContext.Clients
+                .Client(downloadFoldersOrFilesCommand.ConnectionId)
+                .SendAsync(
+                    "HandleError", 
+                    downloadFolderOrFilesResponse.Errors, 
+                    cancellationToken: cancellationToken);
+        }
+        
+        await _notificationHubContext.Clients
+            .User(UserId.ToString())
+            .SendAsync(
+                "downloadReceive",
+                new DownloadNotification
+                {
+                    OperationName = "Отправка файлов",
+                    IsProgress = false,
+                }, cancellationToken: cancellationToken);
         
         return PhysicalFile(zipFilePath, "application/zip", enableRangeProcessing: true);
     }

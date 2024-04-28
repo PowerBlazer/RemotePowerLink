@@ -10,6 +10,8 @@ import {useTheme} from "shared/lib/Theme/useTheme";
 import {useTranslation} from "react-i18next";
 import {SftpService} from "app/services/SftpService/sftpService";
 import {Loader} from "shared/ui/Loader/Loader";
+import notificationStore from "app/store/notificationStore";
+import {HostService} from "app/services/hostService";
 
 interface DownloadModalProps extends SftpCatalogModeProps{
     className?: string;
@@ -29,12 +31,46 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
         .filter(p=> p.isSelected), [selectedHost?.sftpFileList?.fileList]);
     
     const downloadHandler = async () => {
-        const result = await SftpService.download({
-            filesOrFoldersToDownloadList: selectedFileItems,
-            serverId: selectedHost?.server.serverId
-        })
-        
+        const cancelToken = HostService.getCancelToken(); 
+            
         selectedHost.modalOption.downloadState = false;
+        
+        notificationStore.downloadNotificationOptions = {
+            data: {
+                operationName: 'Отправка запроса на скачивание файлов',
+                isProgress: false
+            },
+            onCancel: () => {
+                cancelToken.cancel("Request canceled by the user")
+            }
+        }
+        
+        let prevProgressState = 0;
+        const downloadResult = await SftpService.downloadFoldersOrFiles({
+            filesOrFoldersToDownloadList: selectedFileItems,
+            serverId: selectedHost?.server.serverId,
+            connectionId: selectedHost.sftpHub.getConnectionId()
+        }, cancelToken, (progress) =>{
+            if(prevProgressState != progress){
+                prevProgressState = progress;
+
+                notificationStore.downloadNotificationOptions = {
+                    ...notificationStore.downloadNotificationOptions,
+                    data: {
+                        operationName: 'Загрузка',
+                        isProgress: true,
+                        progressPercent: progress
+                    }
+                }
+            }
+        });
+
+        notificationStore.downloadNotificationOptions = null;
+        
+        if(!downloadResult.isSuccess && Boolean(downloadResult.errors)){
+           selectedHost.error = { errors: downloadResult.errors }
+           selectedHost.modalOption.errorState = true;
+        }
     }
 
     useEffect(() => {

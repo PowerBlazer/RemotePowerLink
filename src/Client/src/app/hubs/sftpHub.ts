@@ -39,7 +39,7 @@ class SftpHub {
                 onFilesReceived(files);
             });
 
-            this.connection.on('handleError', (message: string) => {
+            this.connection.on('handleError', (message: Record<string, string[]>) => {
                 this.onError(message);
             })
         };
@@ -50,10 +50,7 @@ class SftpHub {
     ) => void;
 
     public onConnect: () => Promise<void> = async function connect () { };
-    public onError: (message: any) => void =
-        function error (message) {
-            toast.error(message);
-        }
+    public onError: (message: Record<string, string[]>) => void 
 
     public closeConnection = () => {
         this.connection.stop()
@@ -64,15 +61,27 @@ class SftpHub {
             await this.connection.send('getFilesServer', serverId, path);
         }
     }
+    
+    public getConnectionId = () => {
+        return this.connection.connectionId;
+    }
 
     private validateConnection (): boolean {
         if (this.connection.state === 'Disconnected') {
-            this.onError('Подключение прервано, переподключитесь или обновите страницу')
+            
+            this.onError({
+                Server: ['Подключение прервано, переподключитесь или обновите страницу']
+            })
+            
             return false;
         }
 
         if (this.connection.state === 'Reconnecting') {
-            this.onError('Идет переподключение')
+
+            this.onError({
+                Server: ['Идет переподключение']
+            })
+            
             return false;
         }
 

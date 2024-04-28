@@ -23,7 +23,7 @@ export interface ServiceResult<T> {
 export class HostService {
     static _apiHost: string = process.env.API_HOST;
     static _resourceHost: string = !__IS_DEV__ ? '/resource' : process.env.API_HOST;
-    static _hubHost: string = !__IS_DEV__ ? '/hub' : process.env.API_HOST
+    static _hubHost: string = !__IS_DEV__ ? '/hub' : process.env.API_HOST;
 
     private static _api: AxiosInstance = null;
     private static _apiWithoutInterceptors: AxiosInstance = null;
@@ -91,5 +91,9 @@ export class HostService {
         }
 
         return this._api;
+    }
+    
+    static getCancelToken = () => {
+        return axios.CancelToken.source();
     }
 }

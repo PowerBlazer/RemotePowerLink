@@ -347,7 +347,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
             footer={footerPanel}
             isMain={isMain}
         >
-            <FormBlock headerName={'Адресс'}>
+            <FormBlock headerName={'Адрес'}>
                 <div className={classNames(style.address_block)}>
                     <div className={classNames(style.icon_server)}>
                         <ServerIcon width={24} height={24}/>

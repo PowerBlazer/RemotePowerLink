@@ -28,15 +28,15 @@ export class SidebarNewIdentityData extends SidebarData {
 }
 
 export class SidebarEditHostData extends SidebarData {
-    server?: ServerData = null;
+    server?: ServerData = undefined;
 }
 
 export class SidebarEditProxyData extends SidebarData {
-    proxy?: ProxyData = null;
+    proxy?: ProxyData = undefined;
 }
 
 export class SidebarEditIdentityData extends SidebarData {
-    identity?: IdentityData = null;
+    identity?: IdentityData = undefined;
 }
 
 class SidebarStore {
@@ -48,7 +48,7 @@ class SidebarStore {
     editProxyData: SidebarEditProxyData = { isVisible: false };
     editIdentityData: SidebarEditIdentityData = { isVisible: false };
 
-    mainSideBar: SidebarState | null = null;
+    mainSideBar: SidebarState | undefined = undefined;
     isVisible: boolean = false;
 
     constructor () {
@@ -87,21 +87,21 @@ class SidebarStore {
             return;
         }
 
-        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name !== sideBar.name) {
+        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar?.name !== sideBar?.name) {
             this.mainSideBar = sideBar;
             return;
         }
 
-        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar.name === sideBar.name) {
+        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar?.name === sideBar?.name) {
             await this.setVisible(false);
-            this.mainSideBar = null;
+            this.mainSideBar = undefined;
             this.resetVisibleSidebars();
             return;
         }
 
         if (sideBar === null) {
             this.isVisible = false
-            this.mainSideBar = null;
+            this.mainSideBar = undefined;
             this.resetVisibleSidebars();
         }
     }

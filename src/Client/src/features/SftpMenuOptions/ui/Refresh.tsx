@@ -11,10 +11,11 @@ interface RefreshProps extends MenuOptionProp {
 
 export function Refresh ({ className, disabled, mode, onClick }: RefreshProps) {
     const { t } = useTranslation('translation');
+    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+
     const onClickRefreshHandler = () => {
         if (disabled) { return; }
 
-        const selectedHost = sftpStore.getSelectedHostInMode(mode);
         if (selectedHost?.sftpFileList) {
             selectedHost.isLoad = true;
             selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, selectedHost.sftpFileList.currentPath)

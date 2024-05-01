@@ -50,7 +50,6 @@ public class DeleteFoldersOrFilesHandler: IRequestHandler<DeleteFoldersOrFilesCo
             {
                 if(!sftpClient.Exists(sftpFileItem.Path))
                     continue;
-
                 try
                 {
                     if (sftpFileItem.FileType == FileTypeEnum.File)

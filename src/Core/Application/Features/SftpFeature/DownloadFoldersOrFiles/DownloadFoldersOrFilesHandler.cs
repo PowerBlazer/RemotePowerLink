@@ -133,7 +133,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                 // Обновляем значения для следующей итерации
                 previousDownloadedBytes = downloadedBytes;
                 previousTime = currentTime;
-            }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
+            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
             
             foreach (var fileItem in request.FilesOrFoldersToDownloadList)
             {

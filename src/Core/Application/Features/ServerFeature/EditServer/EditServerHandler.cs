@@ -3,10 +3,12 @@ using Domain.Exceptions;
 using Domain.Repository;
 using Domain.Services;
 using Domain.Services.Parameters;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace Application.Features.ServerFeature.EditServer;
 
+[UsedImplicitly]
 public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerResponse>
 {
     private readonly IServerService _serverService;

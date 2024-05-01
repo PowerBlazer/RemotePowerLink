@@ -24,8 +24,8 @@ import { SidebarEditHost } from 'widgets/SidebarEditHost';
 import { EditServerResult } from 'app/services/ServerService/config/serverConfig';
 import userStore from 'app/store/userStore';
 import { useNavigate } from 'react-router-dom';
-import { AppRoutes } from 'app/providers/router/config/routeConfig';
 import { Stack } from 'shared/lib/Stack';
+import { UploadModal } from 'widgets/UploadModal';
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -101,7 +101,6 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             });
 
             userStore.location = '/'
-
             location('/');
         }
     }
@@ -113,7 +112,8 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             newFolderState: false,
             deleteState: false,
             renameState: false,
-            downloadState: false
+            downloadState: false,
+            uploadState: false
         }
 
         const newHostInstance = {
@@ -315,6 +315,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 { selectedHost?.modalOption.deleteState && <DeleteModal mode={mode}/> }
                 { selectedHost?.modalOption.renameState && <RenameModal mode={mode}/> }
                 { selectedHost?.modalOption.downloadState && <DownloadModal mode={mode}/> }
+                { selectedHost?.modalOption.uploadState && <UploadModal mode={mode}/> }
                 <SftpNotificationPanel mode={mode}/>
             </div>
         )

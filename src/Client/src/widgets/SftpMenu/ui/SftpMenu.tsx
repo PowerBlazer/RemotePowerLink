@@ -3,7 +3,7 @@ import style from './SftpMenu.module.scss';
 import { observer } from 'mobx-react-lite';
 import sftpStore, { MenuMode } from 'app/store/sftpStore';
 import { useOutsideClick } from 'app/hooks/useOutsideClick';
-import { Close, Download, NewFolder, Refresh, Rename, SelectAll, Unload } from 'features/SftpMenuOptions';
+import { Close, Download, NewFolder, Reconnect, Refresh, Rename, SelectAll, Upload } from 'features/SftpMenuOptions';
 import { forwardRef, MutableRefObject, useEffect, useMemo, useState } from 'react';
 import { Delete } from 'features/SftpMenuOptions/ui/Delete';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
@@ -56,7 +56,6 @@ const SftpMenu = forwardRef(
 
         const onClickCloseMenuHandler = () => {
             setVisibleMenu(false);
-
             if (isPosition && selectedHost?.menuOption) {
                 selectedHost.menuOption.isVisible = false
             }
@@ -78,7 +77,8 @@ const SftpMenu = forwardRef(
                 <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
                 <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>,
                 <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-                <Unload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+                <Upload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+                <Reconnect mode={mode} key='Reconnect' onClick={onClickCloseMenuHandler}/>,
                 <Close mode={mode} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
             ]
         }, [selectedSftpFileOptions?.fileList]);

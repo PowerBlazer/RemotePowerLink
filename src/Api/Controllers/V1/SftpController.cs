@@ -150,7 +150,12 @@ public class SftpController: BaseController
             Path.Combine(_webHostEnvironment.WebRootPath, "Temp");
 
         var downloadFolderOrFilesResponse = await Mediator.Send(downloadFoldersOrFilesCommand,cancellationToken);
-        var zipFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "Temp", $"downloaded_files_{UserId}.zip");
+        var zipFileName = $"{downloadFoldersOrFilesCommand.FilesOrFoldersToDownloadList.First().Name}";
+        var zipFilePath = Path.Combine(
+            _webHostEnvironment.WebRootPath, 
+            "Temp",
+            "ZipFiles",
+            $"{zipFileName}_{Guid.NewGuid().ToString()[..10]}.zip");
         
         if(System.IO.File.Exists(zipFilePath))
             System.IO.File.Delete(zipFilePath);
@@ -190,7 +195,9 @@ public class SftpController: BaseController
                     IsProgress = false,
                 }, cancellationToken: cancellationToken);
         
-        return PhysicalFile(zipFilePath, "application/zip", enableRangeProcessing: true);
+        Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+        
+        return PhysicalFile(zipFilePath, "application/zip", enableRangeProcessing: true, fileDownloadName:zipFileName);
     }
     
 }

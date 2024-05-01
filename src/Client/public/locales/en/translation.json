@@ -16,7 +16,7 @@
     "Новый сервер": "New Host",
     "Новый прокси сервер": "New proxy",
     "Новый иденитификатор": "New identity",
-    "Адресс": "Address",
+    "Адрес": "Address",
     "IP или домен": "IP or Hostname",
     "Название": "Title",
     "Ssh порт": "Ssh port",
@@ -83,7 +83,9 @@
     "Редактировать сервер": "Edit host",
     "Повторно подлючиться": "Start over",
     "Отсутсвует данные": "Missing data",
-    "Выбрать кодировку": "Select the encoding"
+    "Выбрать кодировку": "Select the encoding",
+    "Скачивание": "Downloading",
+    "Переподключиться": "Reconnect"
     
     
 }

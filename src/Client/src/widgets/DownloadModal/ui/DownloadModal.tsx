@@ -57,7 +57,7 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
                 selectedHost.notificationOptions = {
                     ...selectedHost.notificationOptions,
                     data: {
-                        operationName: 'Загрузка',
+                        operationName: 'Скачивание',
                         isProgress: true,
                         progressPercent: progress
                     }

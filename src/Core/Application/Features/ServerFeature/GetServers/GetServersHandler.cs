@@ -1,13 +1,14 @@
 ﻿using Domain.DTOs.Server;
 using Domain.Repository;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace Application.Features.ServerFeature.GetServers;
 
+[UsedImplicitly]
 public class GetServersHandler: IRequestHandler<GetServersCommand,IEnumerable<GetServerResponse>>
 {
     private readonly IServerRepository _serverRepository;
-    
     public GetServersHandler(IServerRepository serverRepository)
     {
         _serverRepository = serverRepository;

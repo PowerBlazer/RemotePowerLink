@@ -91,18 +91,29 @@ export class SftpService {
                 downloadFoldersOrFilesData,
                 {
                     responseType: 'blob',
-                    cancelToken: cancelToken.token,
+                    cancelToken: cancelToken?.token,
                     timeout: 3600000,
                     onDownloadProgress: function (progressEvent) {
-                        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-                        downloadAction(progress)
+                        if(downloadAction && progressEvent.total){
+                            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                            downloadAction(progress)
+                        }
+                       
                     }
                 });
+
+            const contentDisposition = response.headers['content-disposition'];
+            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            const matches = filenameRegex.exec(contentDisposition);
+            let filename = 'downloaded_files.zip'; // По умолчанию
+            if (matches != null && matches[1]) {
+                filename = matches[1].replace(/['"]/g, '') + '.zip';
+            }
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'downloaded_files.zip';
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);

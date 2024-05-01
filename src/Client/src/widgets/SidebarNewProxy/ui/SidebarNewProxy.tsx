@@ -36,9 +36,9 @@ const defaultProxyData: CreateProxyData = {
 function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible }: SidebarNewProxyProps) {
     const { t } = useTranslation('translation');
     const [proxyData, setProxyData] = useState<CreateProxyData>(defaultProxyData);
-    const [errors, setErrors] = useState<Record<string, string[]>>({});
+    const [errors, setErrors] = useState<Record<string, string[] | null>>({});
 
-    const [selectedIdentity, setIdentity] = useState<SelectedItem>(null);
+    const [selectedIdentity, setIdentity] = useState<SelectedItem | null>(null);
     const [isVisibleIdentity, setVisibleIdentity] = useState<boolean>(false);
 
     const closeHandler = async () => {
@@ -211,7 +211,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
             isMain={isMain}
 
         >
-            <FormBlock headerName={'Адресс'}>
+            <FormBlock headerName={'Адрес'}>
                 <div className={classNames(style.address_block)}>
                     <div className={classNames(style.icon_server)}>
                         <ServerIcon width={24} height={24}/>
@@ -230,7 +230,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                     <Input
                         type={'text'}
                         className={classNames(style.title_input)}
-                        placeholder={t('Название')}
+                        placeholder={t('Название')!}
                         icon={<TitleIcon width={20} height={20}/>}
                         onChange={nameChangeHandler}
                         errors={errors?.Title ?? null}

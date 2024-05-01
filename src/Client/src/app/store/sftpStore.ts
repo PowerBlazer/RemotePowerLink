@@ -36,7 +36,8 @@ export interface SftpModalOption {
     errorState: boolean,
     deleteState: boolean,
     renameState: boolean,
-    downloadState: boolean
+    downloadState: boolean,
+    uploadState: boolean
 }
 
 export interface SftpFilesOption {
@@ -94,7 +95,7 @@ class SftpStore {
         let hostFileItems = selectedHost?.sftpFileList?.fileList;
         const filterOptions = selectedHost?.sftpFilesOption.filterOptions;
 
-        if (filterOptions.title && hostFileItems) {
+        if (filterOptions?.title && hostFileItems) {
             hostFileItems = hostFileItems.filter(
                 p => p.name?.toLowerCase().includes(filterOptions.title?.toLowerCase()) ||
                     p.fileTypeName?.toLowerCase().includes(filterOptions.title?.toLowerCase())
@@ -102,19 +103,27 @@ class SftpStore {
         }
 
         if (filterOptions.columnSort && hostFileItems) {
-            hostFileItems = [...hostFileItems].sort((a, b) => {
-                if (filterOptions.columnSort.columnKey === 'fileTypeName') {
-                    return compareFileTypeName(a, b, filterOptions.columnSort.isReverse)
-                }
+            hostFileItems = [...hostFileItems]
+                .sort((a, b) => {
+                    const aIsBackNavifation = a.fileType === FileType.BackNavigation;
+                    const bIsBackNavifation = b.fileType === FileType.BackNavigation;
 
-                if (filterOptions.columnSort.columnKey === 'size') {
-                    return compareSizes(a, b, filterOptions.columnSort.isReverse)
-                }
+                    if ((aIsBackNavifation && !bIsBackNavifation) || (!aIsBackNavifation && bIsBackNavifation)) {
+                        return 1;
+                    }
 
-                return filterOptions.columnSort.isReverse
-                    ? compareReverse(a[filterOptions.columnSort.columnKey], b[filterOptions.columnSort.columnKey])
-                    : compare(a[filterOptions.columnSort.columnKey], b[filterOptions.columnSort.columnKey])
-            })
+                    if (filterOptions.columnSort.columnKey === 'fileTypeName') {
+                        return compareFileTypeName(a, b, filterOptions.columnSort.isReverse)
+                    }
+
+                    if (filterOptions.columnSort.columnKey === 'size') {
+                        return compareSizes(a, b, filterOptions.columnSort.isReverse)
+                    }
+
+                    return filterOptions.columnSort.isReverse
+                        ? compareReverse(a[filterOptions.columnSort.columnKey], b[filterOptions.columnSort.columnKey])
+                        : compare(a[filterOptions.columnSort.columnKey], b[filterOptions.columnSort.columnKey])
+                });
         }
 
         if (mode === SftpCatalogMode.First) {
@@ -168,7 +177,7 @@ class SftpStore {
         const fileItems = [...selectedFileItems];
         const selectFileIndex = fileItems.findIndex(p => p.path === path);
 
-        if (selectFileIndex !== -1 && fileItems[selectFileIndex].fileType === 3) {
+        if (selectFileIndex !== -1 && fileItems[selectFileIndex].fileType === FileType.BackNavigation) {
             return;
         }
 

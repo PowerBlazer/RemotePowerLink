@@ -60,45 +60,52 @@ class UserStore {
     }
 
     setUserProxy (proxy: ProxyData) {
-        const existingProxyIndex = this.userProxies.findIndex(
-            (s) => s.proxyId === proxy.proxyId
-        );
+        if(this.userProxies){
+            const existingProxyIndex = this.userProxies.findIndex(
+                (s) => s.proxyId === proxy.proxyId
+            );
+            
+            if (existingProxyIndex !== -1) {
+                // Если прокси уже существует, обновляем его
+                this.userProxies[existingProxyIndex] = proxy;
 
-        if (existingProxyIndex !== -1) {
-            // Если прокси уже существует, обновляем его
-            this.userProxies[existingProxyIndex] = proxy;
+                this.userProxies = [
+                    ...this.userProxies
+                ]
+            } else {
+                // Иначе добавляем новый прокси в список
 
-            this.userProxies = [
-                ...this.userProxies
-            ]
-        } else {
-            // Иначе добавляем новый сервер в список
-            this.userProxies = [
-                ...this.userProxies,
-                proxy
-            ]
+                this.userProxies = [
+                    ...this.userProxies,
+                    proxy
+                ]
+            }
         }
+       
     }
 
     setUserIdentity (identity: IdentityData) {
-        const existingIdentityIndex = this.userIdentities.findIndex(
-            (s) => s.identityId === identity.identityId
-        );
+        if(this.userIdentities){
+            const existingIdentityIndex = this.userIdentities.findIndex(
+                (s) => s.identityId === identity.identityId
+            );
 
-        if (existingIdentityIndex !== -1) {
-            // Если прокси уже существует, обновляем его
-            this.userIdentities[existingIdentityIndex] = identity;
+            if (existingIdentityIndex !== -1) {
+                // Если прокси уже существует, обновляем его
+                this.userIdentities[existingIdentityIndex] = identity;
 
-            this.userIdentities = [
-                ...this.userIdentities
-            ]
-        } else {
-            // Иначе добавляем новый сервер в список
-            this.userIdentities = [
-                ...this.userIdentities,
-                identity
-            ]
+                this.userIdentities = [
+                    ...this.userIdentities
+                ]
+            } else {
+                // Иначе добавляем новый сервер в список
+                this.userIdentities = [
+                    ...this.userIdentities,
+                    identity
+                ]
+            }
         }
+       
     }
 
     setUserServers (servers: ServerData[]) {
@@ -113,24 +120,26 @@ class UserStore {
         ];
     }
 
-    setUserServer (server: ServerData) {
-        const existingServerIndex = this.userServers.findIndex(
-            (s) => s.serverId === server.serverId
-        );
+    setUserServer (server: ServerData){
+        if(this.userServers){
+            const existingServerIndex = this.userServers.findIndex(
+                (s) => s.serverId === server.serverId
+            );
 
-        if (existingServerIndex !== -1) {
-            // Если сервер уже существует, обновляем его
-            this.userServers[existingServerIndex] = server;
+            if (existingServerIndex !== -1) {
+                // Если сервер уже существует, обновляем его
+                this.userServers[existingServerIndex] = server;
 
-            this.userServers = [
-                ...this.userServers
-            ]
-        } else {
-            // Иначе добавляем новый сервер в список
-            this.userServers = [
-                ...this.userServers,
-                server
-            ]
+                this.userServers = [
+                    ...this.userServers
+                ]
+            } else {
+                // Иначе добавляем новый сервер в список
+                this.userServers = [
+                    ...this.userServers,
+                    server
+                ]
+            }
         }
     }
 
@@ -139,19 +148,17 @@ class UserStore {
             this.userProxies = this.userProxies
                 .filter(proxy => proxy.proxyId !== proxyId);
 
-            const serversInProxy = this.userServers
-                .filter(p => p.proxyId === proxyId);
+            const serversInProxy = this.userServers?.filter(p => p.proxyId === proxyId);
 
-            serversInProxy.forEach(server => {
-                server.proxyId = null;
+            serversInProxy?.forEach(server => {
+                server.proxyId = undefined;
             })
         }
     }
 
     removeUserIdentity (identityId: number) {
-        if (this.userIdentities) {
-            const serversInIdentity = this.userServers
-                .filter(p => p.identityId === identityId)
+        if (this.userIdentities && this.userServers && this.userProxies) {
+            const serversInIdentity = this.userServers.filter(p => p.identityId === identityId)
                 .map(p => p.serverId);
 
             const proxiesInIdentity = this.userProxies

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 export const useOutsideClick = <T extends HTMLElement>(
     callback: (e: MouseEvent) => void,
-    exceptions: HTMLElement[] = []
+    exceptions: HTMLElement[] | null = []
 ) => {
     const ref = useRef<T>(null);
 
@@ -11,7 +11,7 @@ export const useOutsideClick = <T extends HTMLElement>(
             if (
                 ref.current &&
                 !ref.current.contains(event.target as Node) &&
-                !exceptions.some(exception => exception?.contains(event.target as Node))
+                !exceptions?.some(exception => exception?.contains(event.target as Node))
             ) {
                 callback(event);
             }

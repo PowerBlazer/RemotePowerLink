@@ -12,11 +12,13 @@ import FileIcon from 'shared/assets/icons/sftp/file.svg';
 import {ChangeEvent, DragEvent, useMemo, useRef, useState} from "react";
 import {Button, ThemeButton} from "shared/ui/Button/Button";
 import {Loader} from "shared/ui/Loader/Loader";
+import {formatByteString} from "shared/lib/formatByteString";
 
 interface UploadModalProps extends SftpCatalogModeProps {
     className?: string;
 }
 
+const maximumUploadSize = 5368709120;
 function UploadModal ({ className, mode }: UploadModalProps) {
     const selectedHost = sftpStore.getSelectedHostInMode(mode);
     const { t } = useTranslation('translation');
@@ -43,12 +45,14 @@ function UploadModal ({ className, mode }: UploadModalProps) {
         e.stopPropagation();
         setDragActive(false);
         
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        const fileItems = e.dataTransfer.files;
+        
+        if (fileItems) {
             const fileList: File[] = [];
-            console.log(e.dataTransfer.files)
+         
             setLoad(true);
-            for (let i = 0; i < e.dataTransfer.files.length; i++){
-                const file = e.dataTransfer.files.item(i);
+            for (let i = 0; i < fileItems.length; i++){
+                const file = fileItems.item(i);
                 
                 if(file){
                     const isFile = await isFileAsync(file);
@@ -100,12 +104,21 @@ function UploadModal ({ className, mode }: UploadModalProps) {
             reader.readAsDataURL(file.slice(0, 4));
         });
     }
+
+    const calculateTotalSize = (files: File[]) => {
+        let totalSize = 0;
+        for (let i = 0; i < files.length; i++) {
+            totalSize += files[i].size;
+        }
+        return totalSize;
+    };
     
     const browseFilesButton = useMemo(() => (
         <Button
             className={classNames(style.browse_files)}
             theme={ThemeButton.PRIMARY}
             onClick={() => inputRef?.current?.click()}
+            disabled={fileList.length > 0 && calculateTotalSize(fileList) >= maximumUploadSize}
         >
             {fileList.length === 0 ? 'Browse files' : 'Add files'}
         </Button>
@@ -121,8 +134,8 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                     }
                 },
                 onConfirm: async () => { },
-                disabled: false,
-                headerName: t('Загрузка файлов') ?? ''
+                disabled: isLoad || (fileList.length > 0 && calculateTotalSize(fileList) >= maximumUploadSize),
+                headerName: t('Загрузка файлов')
             }}
             className={className}
             theme={ theme === Theme.LIGHT ? ThemeModal.CLEAR : ThemeModal.DARK }
@@ -162,6 +175,12 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                 <div className={classNames(style.file_list_panel, {
                     [style.visible]: fileList.length > 0 && !isLoad
                 })}>
+                    <div className={classNames(style.size_added_files)}>
+                        Размер добавленных файлов {formatByteString(calculateTotalSize(fileList))}
+                        {calculateTotalSize(fileList) >= maximumUploadSize && 
+                            <p className={classNames(style.error)}>Превышен лимит загрузки файлов (5GB)</p>
+                        }
+                    </div>
                     <div className={classNames(style.file_list)}>
                         {fileList.map((file, index) => (
                             <div className={classNames(style.file_item)} key={index}>
@@ -170,8 +189,12 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                                     <div className={classNames(style.file_name)}>{file.name}</div>
                                 </div>
                                 <Button 
-                                    className={classNames(style.delete_file)} 
-                                    onClick={() => setFileList(files => files.slice(index, 1))}
+                                    className={classNames(style.delete_file)}
+                                    onClick={() => {
+                                        fileList.splice(index, 1);
+                                        
+                                        setFileList([...fileList])
+                                    }}
                                 >
                                     <div></div>
                                 </Button>

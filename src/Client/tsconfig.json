@@ -12,6 +12,7 @@
         "allowSyntheticDefaultImports": true,
         "baseUrl": ".",
         "strictNullChecks": false,
+        "sourceMap": true,
         "paths": {
             "*": ["./src/*"]
         },
@@ -19,6 +20,7 @@
     },
     "ts-node": {
         "compilerOptions": {
+            "sourceMap": true,
             "module": "CommonJS"
         }
     }

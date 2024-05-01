@@ -57,6 +57,7 @@
   
   & .file_list_panel{
     width: 100%;
+    min-height: 100px;
     display: none;
     flex-direction: column;
     gap: 20px;
@@ -69,22 +70,59 @@
       width: 100px;
     }
     
+    & .error{
+      color: #F25E61;
+    }
+    
     & .file_list{
       display: flex;
       flex-direction: column;
       gap: 7px;
       max-height: 300px;
       overflow-y: auto;
+      padding-right: 8px;
+
+      &::-webkit-scrollbar{
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-track{
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb{
+        background-color: rgba(90, 94, 115, 0.57);
+        border-radius: 5px;
+      }
       
       & .file_item{
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: #8D90A5;
+        
         & .file_header{
           display: flex;
           gap: 5px;
           align-items: center;
+        }
+        
+        & .delete_file{
+          width: 20px;
+          height: 20px;
+          background-color: var(--bg-color-inverted);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 5px;
+          
+          & div{
+            flex-shrink: 0;
+            width: 12px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: #c21f39;
+          }
         }
       }
       

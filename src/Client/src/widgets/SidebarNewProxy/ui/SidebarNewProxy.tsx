@@ -36,9 +36,9 @@ const defaultProxyData: CreateProxyData = {
 function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible }: SidebarNewProxyProps) {
     const { t } = useTranslation('translation');
     const [proxyData, setProxyData] = useState<CreateProxyData>(defaultProxyData);
-    const [errors, setErrors] = useState<Record<string, string[] | null>>({});
+    const [errors, setErrors] = useState<Record<string, string[]> | undefined>({});
 
-    const [selectedIdentity, setIdentity] = useState<SelectedItem | null>(null);
+    const [selectedIdentity, setIdentity] = useState<SelectedItem | undefined>(undefined);
     const [isVisibleIdentity, setVisibleIdentity] = useState<boolean>(false);
 
     const closeHandler = async () => {
@@ -72,7 +72,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                 return updatedErrors;
             });
 
-            setIdentity(null)
+            setIdentity(undefined)
 
             return;
         }

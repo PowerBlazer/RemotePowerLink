@@ -10,7 +10,7 @@ import { Loader } from 'shared/ui/Loader/Loader';
 
 export interface SidebarOptions<T> {
     isMain?: boolean,
-    onSave?: (data: T) => Promise<void>,
+    onSave?: (data?: T) => Promise<void>,
     onClose?: () => void,
     isVisible?: boolean
 }
@@ -50,13 +50,13 @@ function Sidebar (props: SidebarProps) {
 
         if (isMain) {
             await sidebarStore.setVisible(false);
-            await sidebarStore.setSidebar(null);
+            await sidebarStore.setSidebar(undefined);
         }
     }
     return (
         <div className={classNames(style.sidebar, {
-            [style.main]: isMain,
-            [style.main_active]: sidebarStore.isVisible && isMain
+            [style.main]: Boolean(isMain),
+            [style.main_active]:Boolean(sidebarStore.isVisible && isMain)
         }, [className])}>
             {headerName && (
                 <div className={classNames(style.header)}>

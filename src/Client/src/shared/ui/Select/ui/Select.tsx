@@ -43,13 +43,13 @@ export function Select (props: SelectProps) {
     } = props;
 
     const [visible, setVisible] = useState<boolean>(false);
-    const [selectedElement, setSelected] = useState<SelectedItem>(selectedItem);
+    const [selectedElement, setSelected] = useState<SelectedItem | undefined>(selectedItem);
     const { t } = useTranslation('translation');
     const refOptions = useRef<HTMLDivElement>(null);
 
     const refSelect = useOutsideClick<HTMLButtonElement>(() => {
         setVisible(false);
-    }, [refOptions?.current]);
+    }, refOptions?.current ? [refOptions?.current] : null);
 
     const isChildren = children && Children.count(children) > 0;
 
@@ -65,11 +65,11 @@ export function Select (props: SelectProps) {
     }
 
     const canselSelectedItemHandler = () => {
-        setSelected(null);
+        setSelected(undefined);
         setVisible(false);
 
         if (onChange) {
-            onChange(null)
+            onChange(undefined)
         }
     }
 

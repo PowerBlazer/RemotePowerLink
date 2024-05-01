@@ -14,12 +14,13 @@
         font-weight: 600;
         transition: background-color .3s;
 
-        &:hover{
+        &:not(.disabled):hover{
             background-color: var(--button-primary-hover-color);
         }
     }
 
     &.disabled{
+        cursor: default;
         background-color: gray;
     }
 }

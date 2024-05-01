@@ -99,11 +99,15 @@ export function Modal (props: ModalProps) {
         </div>
     ]
 
-    const informationModal = useMemo(() => (
-        <div className={classNames(style.modal_content)}>
-
+    const informationModal = [
+        <div className={classNames(style.header)} key={'header'}>
+            <h1 className={style.header_title}>{options.headerName}</h1>
+            {closeButton}
+        </div>,
+        <div className={classNames(style.content)} key={'content'}>
+            {children}
         </div>
-    ), [options.headerName, theme, i18n.language]);
+    ]
 
     useEffect(() => {
         setVisibleModal(isVisible)

@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, forwardRef, LegacyRef, MutableRefObject } from 'react';
+import {ButtonHTMLAttributes, forwardRef, LegacyRef, MouseEvent, MutableRefObject} from 'react';
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './Button.module.scss';
 
@@ -19,8 +19,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             children,
             theme = ThemeButton.CLEAR,
             disabled,
+            onClick,
             ...otherProps
         } = props;
+        
+        const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
+            if(!disabled && onClick){
+                onClick(e);
+            }
+        }
 
         return (
             <button
@@ -28,6 +35,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 className={classNames(style.button, {
                     [style.disabled]: disabled
                 }, [className, style[theme]])}
+                onClick={clickHandler}
                 {...otherProps}
             >
                 {children}

@@ -145,17 +145,22 @@ public class SftpController: BaseController
         [FromBody]DownloadFoldersOrFilesCommand downloadFoldersOrFilesCommand,
         CancellationToken cancellationToken)
     {
-        downloadFoldersOrFilesCommand.UserId = UserId;
-        downloadFoldersOrFilesCommand.TempPath =
-            Path.Combine(_webHostEnvironment.WebRootPath, "Temp");
+        var tempPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temp");
+        var zipFilesPath = Path.Combine(tempPath, "ZipFiles");
+        
+        if (!Directory.Exists(tempPath))
+            Directory.CreateDirectory(tempPath);
 
+        if (!Directory.Exists(zipFilesPath))
+            Directory.CreateDirectory(zipFilesPath);
+        
+        downloadFoldersOrFilesCommand.UserId = UserId;
+        downloadFoldersOrFilesCommand.TempPath = tempPath;
+        
         var downloadFolderOrFilesResponse = await Mediator.Send(downloadFoldersOrFilesCommand,cancellationToken);
+        
         var zipFileName = $"{downloadFoldersOrFilesCommand.FilesOrFoldersToDownloadList.First().Name}";
-        var zipFilePath = Path.Combine(
-            _webHostEnvironment.WebRootPath, 
-            "Temp",
-            "ZipFiles",
-            $"{zipFileName}_{Guid.NewGuid().ToString()[..10]}.zip");
+        var zipFilePath = Path.Combine(zipFilesPath, $"{zipFileName}_{Guid.NewGuid().ToString()[..10]}.zip");
         
         if(System.IO.File.Exists(zipFilePath))
             System.IO.File.Delete(zipFilePath);

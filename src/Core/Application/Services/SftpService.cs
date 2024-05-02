@@ -77,4 +77,24 @@ public class SftpService: ISftpService
 
         return totalSize;
     }
+
+    public string FormatTime(TimeSpan time)
+    {
+        if (time.TotalDays >= 1)
+        {
+            return $"{time.TotalDays:F2} days";
+        }
+
+        if (time.TotalHours >= 1)
+        {
+            return $"{time.TotalHours:F2} hours";
+        }
+
+        if (time.TotalMinutes >= 1)
+        {
+            return $"{time.TotalMinutes:F2} minutes";
+        }
+
+        return $"{time.TotalSeconds:F2} seconds";
+    }
 }

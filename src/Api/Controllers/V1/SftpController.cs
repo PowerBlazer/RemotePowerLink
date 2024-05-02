@@ -4,9 +4,11 @@ using Application.Features.SftpFeature.DeleteFoldersOrFiles;
 using Application.Features.SftpFeature.DownloadFoldersOrFiles;
 using Application.Features.SftpFeature.GetSizeFoldersOrFiles;
 using Application.Features.SftpFeature.RenameFolderOrFile;
+using Application.Features.SftpFeature.UploadFiles;
 using Application.Hubs;
 using Domain.Common;
 using Domain.DTOs.Notification;
+using Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -204,5 +206,37 @@ public class SftpController: BaseController
         
         return PhysicalFile(zipFilePath, "application/zip", enableRangeProcessing: true, fileDownloadName:zipFileName);
     }
-    
+
+
+    /// <summary>
+    /// Загружает файлы на сервер по SFTP
+    /// </summary>
+    /// <param name="uploadFilesCommand"></param>
+    /// <param name="cancellationToken"></param>
+    /// <response code="200">Файлы или папки успешно загружены</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="403">Доступ запрещен</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [RequestSizeLimit(5_368_709_120)]
+    [HttpPost("upload")]
+    public async Task<ApiActionResult> UploadFiles([FromForm] UploadFilesCommand uploadFilesCommand,
+        CancellationToken cancellationToken)
+    {
+        uploadFilesCommand.UserId = UserId;
+
+        var uploadResult = await Mediator.Send(uploadFilesCommand, cancellationToken);
+
+        if (uploadResult.Errors is not null && uploadResult.Errors.Count > 0)
+        {
+            throw new SftpException(uploadResult.Errors);
+        }
+
+        return new ApiActionResult();
+    }
+
 }

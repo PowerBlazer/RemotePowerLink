@@ -13,6 +13,8 @@ import {ChangeEvent, DragEvent, useMemo, useRef, useState} from "react";
 import {Button, ThemeButton} from "shared/ui/Button/Button";
 import {Loader} from "shared/ui/Loader/Loader";
 import {formatByteString} from "shared/lib/formatByteString";
+import {HostService} from "app/services/hostService";
+import {SftpService} from "app/services/SftpService/sftpService";
 
 interface UploadModalProps extends SftpCatalogModeProps {
     className?: string;
@@ -113,6 +115,54 @@ function UploadModal ({ className, mode }: UploadModalProps) {
         return totalSize;
     };
     
+    const uploadFiles = async () => {
+        const cancelToken = HostService.getCancelToken();
+        
+        selectedHost.modalOption.uploadState = false;
+        selectedHost.notificationOptions = {
+            data: {
+                operationName: 'Отправка запроса на загрузку файлов',
+                isProgress: false
+            },
+            onCancel: () => {
+                cancelToken.cancel('Request canceled by the user')
+            }
+        }
+
+        let prevProgressState = 0;
+        const uploadResult = await SftpService.uploadFiles({
+            uploadFiles: fileList,
+            serverId: selectedHost?.server.serverId,
+            connectionId: selectedHost?.sftpHub?.getConnectionId(),
+            uploadPath: selectedHost?.sftpFileList.currentPath
+        }, cancelToken , (uploadPogress) => {
+            if (prevProgressState !== uploadPogress) {
+                prevProgressState = uploadPogress;
+
+                selectedHost.notificationOptions = {
+                    ...selectedHost.notificationOptions,
+                    data: {
+                        operationName: 'Отправка файлов на сервер',
+                        isProgress: true,
+                        progressPercent: uploadPogress
+                    }
+                }
+            }
+        });
+
+        selectedHost.notificationOptions = null;
+        
+        if(uploadResult.isSuccess){
+            selectedHost.isLoad = true;
+            selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, selectedHost.sftpFileList.currentPath);
+        }
+        
+        if(!uploadResult.isSuccess && Boolean(uploadResult.errors)){
+            selectedHost.error = { errors: uploadResult.errors }
+            selectedHost.modalOption.errorState = true;
+        }
+    }
+    
     const browseFilesButton = useMemo(() => (
         <Button
             className={classNames(style.browse_files)}
@@ -133,8 +183,8 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                         selectedHost.modalOption.uploadState = false;
                     }
                 },
-                onConfirm: async () => { },
-                disabled: isLoad || (fileList.length > 0 && calculateTotalSize(fileList) >= maximumUploadSize),
+                onConfirm: uploadFiles,
+                disabled: isLoad || (fileList.length === 0 || calculateTotalSize(fileList) >= maximumUploadSize),
                 headerName: t('Загрузка файлов')
             }}
             className={className}

@@ -59,7 +59,7 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
         }
     }
 
-    const contextManuHandler = (e: MouseEvent<HTMLDivElement>) => {
+    const contextMenuHandler = (e: MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
 
         if (fileData.fileType === FileType.BackNavigation) {
@@ -130,7 +130,7 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
             }, [className])}
             onDoubleClick={openFileHandler}
             onClick={selectFileHandler}
-            onContextMenu={contextManuHandler}
+            onContextMenu={contextMenuHandler}
             title={fileData.name}
             ref={fileItemRef}
         >

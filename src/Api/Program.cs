@@ -9,6 +9,7 @@ using Email;
 using Identity;
 using MessageQueues;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.SignalR;
 using Persistence;
 using Redis;
@@ -30,6 +31,11 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddHttpContextAccessor()
     .AddSignalR();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 5368709120;
+});
 
 builder.Services.AddSwaggerConfiguration();
 

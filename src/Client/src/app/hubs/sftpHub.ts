@@ -37,7 +37,7 @@ class SftpHub {
                 this.onError(err.toString())
             });
 
-        this.events = (onFilesReceived, onDownloadReceived) => {
+        this.events = (onFilesReceived, onDownloadReceived, onUploadReceived) => {
             this.connection.on('receivedFiles', (files: SftpFileList) => {
                 onFilesReceived(files);
             });
@@ -48,13 +48,18 @@ class SftpHub {
 
             this.connection.on('handleError', (message: Record<string, string[]>) => {
                 this.onError(message);
+            });
+            
+            this.connection.on('uploadReceive', (sftpNotificationOptions: SftpNotificationData) => {
+                onUploadReceived(sftpNotificationOptions)
             })
         };
     }
 
     public events: (
         onFilesReceived: (files: SftpFileList) => void,
-        onDownloadReceived: (sftpNotificationOptions: SftpNotificationData) => void
+        onDownloadReceived: (sftpNotificationOptions: SftpNotificationData) => void,
+        onUploadReceived: (sftpNotificationOptions: SftpNotificationData) => void
     ) => void;
 
     public onConnect: () => Promise<void> = async function connect () { };

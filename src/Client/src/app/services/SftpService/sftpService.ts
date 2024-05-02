@@ -1,10 +1,10 @@
 import {
     CreateDirectoryData,
     DeleteFoldersOrFilesData, DownloadFoldersOrFilesData, GetSizeFoldersOrFilesData,
-    RenameFoldersOrFilesData
+    RenameFoldersOrFilesData, UploadFilesData
 } from 'app/services/SftpService/config';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
-import { CancelToken, CancelTokenSource } from 'axios';
+import { CancelTokenSource } from 'axios';
 
 export class SftpService {
     static createDirectory = async (createDirectoryData: CreateDirectoryData): Promise<ServiceResult<any>> => {
@@ -87,7 +87,7 @@ export class SftpService {
     ): Promise<ServiceResult<any>> => {
         try {
             const response = await HostService.api.post(
-                '/v1/sftp/download',
+                '/v1.0/sftp/download',
                 downloadFoldersOrFilesData,
                 {
                     responseType: 'blob',
@@ -140,5 +140,70 @@ export class SftpService {
                 isSuccess: false
             }
         }
+    }
+    
+    static uploadFiles = async (
+        uploadFilesData: UploadFilesData,
+        cancelToken?: CancelTokenSource,
+        uploadAction?: (progress: number) => void
+    ): Promise<ServiceResult<any>> => {
+        try {
+            const formData = new FormData();
+            formData.append('uploadPath', uploadFilesData.uploadPath);
+            formData.append('serverId', uploadFilesData.serverId.toString());
+            formData.append('connectionId', uploadFilesData.connectionId);
+
+            uploadFilesData.uploadFiles.forEach(file=> {
+                formData.append('uploadFiles', file);
+            })
+
+            await HostService.api.post(
+                '/v1.0/sftp/upload',
+                formData,
+                {
+                    cancelToken: cancelToken?.token,
+                    timeout: 3600000,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    maxContentLength: 5368709120,
+                    onUploadProgress: function (progressEvent) {
+                        if(uploadAction && progressEvent.total){
+                            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                            uploadAction(progress)
+                        }
+
+                    }
+                }
+            );
+
+
+            return {
+                isSuccess: true
+            }
+        }
+        catch (error) {
+            if (error?.response?.data.Errors) {
+                return {
+                    isSuccess: false,
+                    errors: error?.response?.data.Errors
+                }
+            }
+
+            if (error?.message) {
+                return {
+                    isSuccess: false,
+                    errors: { Server: [error?.message] }
+                }
+            }
+
+            return {
+                isSuccess: false
+            }
+        }
+        
+        
+        
+        
     }
 }

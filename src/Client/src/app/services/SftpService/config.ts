@@ -52,3 +52,10 @@ export interface DownloadFoldersOrFilesData {
     serverId: number,
     connectionId: string
 }
+
+export interface UploadFilesData {
+    uploadFiles: File[],
+    uploadPath: string,
+    serverId: number,
+    connectionId: string
+}

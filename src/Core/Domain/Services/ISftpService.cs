@@ -29,4 +29,11 @@ public interface ISftpService
     /// <param name="directoryPath">Путь к директории</param>
     /// <returns>Размер папки в байтах (long)</returns>
     long GetDirectorySize(SftpClient client, string directoryPath);
+    
+    /// <summary>
+    /// Форматирует время в строку
+    /// </summary>
+    /// <param name="time">Время TimeSpan</param>
+    /// <returns>Форматированное время (string)</returns>
+    string FormatTime(TimeSpan time);
 }

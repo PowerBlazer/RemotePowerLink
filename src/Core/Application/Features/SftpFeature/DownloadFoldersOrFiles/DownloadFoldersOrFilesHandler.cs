@@ -123,7 +123,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                     ProgressPercent = (int)Math.Round(percentComplete, 0),
                     InformationText =
                         $"{_sftpService.FormatFileSize(downloadedBytes)}/{_sftpService.FormatFileSize(_totalSizeFiles)}, " +
-                        $"{downloadSpeedString}, about ~{FormatTime(remainingTime)} remaining"
+                        $"{downloadSpeedString}, about ~{_sftpService.FormatTime(remainingTime)} remaining"
                 };
 
                  _sftpHubContext.Clients
@@ -186,26 +186,6 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             if(_timer is not null)
                 await _timer.DisposeAsync();
         }
-    }
-    
-    private static string FormatTime(TimeSpan time)
-    {
-        if (time.TotalDays >= 1)
-        {
-            return $"{time.TotalDays:F2} days";
-        }
-
-        if (time.TotalHours >= 1)
-        {
-            return $"{time.TotalHours:F2} hours";
-        }
-
-        if (time.TotalMinutes >= 1)
-        {
-            return $"{time.TotalMinutes:F2} minutes";
-        }
-
-        return $"{time.TotalSeconds:F2} seconds";
     }
     
     private async Task DownloadFolderAsync(SftpClient client, 

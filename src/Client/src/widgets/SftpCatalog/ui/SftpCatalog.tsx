@@ -1,31 +1,31 @@
-import { classNames } from 'shared/lib/classNames/classNames';
-import { observer } from 'mobx-react-lite';
-import { createRef, useEffect, useMemo, useState } from 'react';
-import { Button, ThemeButton } from 'shared/ui/Button/Button';
-import { useTranslation } from 'react-i18next';
-import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
-import { NavbarSftp } from 'widgets/NavbarSftp';
-import { SftpCatalogTable } from 'widgets/SftpCatalogTable';
-import { SftpCatalogMode } from 'app/services/SftpService/config';
-import SftpHub, { ConnectionState } from 'app/hubs/sftpHub';
+import {classNames} from 'shared/lib/classNames/classNames';
+import {observer} from 'mobx-react-lite';
+import {createRef, useEffect, useMemo, useState} from 'react';
+import {Button, ThemeButton} from 'shared/ui/Button/Button';
+import {useTranslation} from 'react-i18next';
+import {SftpSelectHostCatalog} from 'widgets/SftpSelectHostCatalog';
+import {NavbarSftp} from 'widgets/NavbarSftp';
+import {SftpCatalogTable} from 'widgets/SftpCatalogTable';
+import {SftpCatalogMode} from 'app/services/SftpService/config';
+import SftpHub, {ConnectionState} from 'app/hubs/sftpHub';
 import toast from 'react-hot-toast';
-import sftpStore, { SftpModalOption } from 'app/store/sftpStore';
+import sftpStore, {SftpModalOption, SftpNotificationData} from 'app/store/sftpStore';
 import LogoIcon from 'shared/assets/icons/logo.svg';
 import style from './SftpCatalog.module.scss';
-import { NewFolderModal } from 'widgets/NewFolderModal';
-import { ErrorModal } from 'widgets/ErrorModal';
-import { DeleteModal } from 'widgets/DeleteModal';
-import { RenameModal } from 'widgets/RenameModal';
-import { DownloadModal } from 'widgets/DownloadModal';
-import { SftpNotificationPanel } from 'widgets/SftpNotificationPanel';
-import { HostService } from 'app/services/hostService';
+import {NewFolderModal} from 'widgets/NewFolderModal';
+import {ErrorModal} from 'widgets/ErrorModal';
+import {DeleteModal} from 'widgets/DeleteModal';
+import {RenameModal} from 'widgets/RenameModal';
+import {DownloadModal} from 'widgets/DownloadModal';
+import {SftpNotificationPanel} from 'widgets/SftpNotificationPanel';
+import {HostService} from 'app/services/hostService';
 import sidebarStore from 'app/store/sidebarStore';
-import { SidebarEditHost } from 'widgets/SidebarEditHost';
-import { EditServerResult } from 'app/services/ServerService/config/serverConfig';
+import {SidebarEditHost} from 'widgets/SidebarEditHost';
+import {EditServerResult} from 'app/services/ServerService/config/serverConfig';
 import userStore from 'app/store/userStore';
-import { useNavigate } from 'react-router-dom';
-import { Stack } from 'shared/lib/Stack';
-import { UploadModal } from 'widgets/UploadModal';
+import {useNavigate} from 'react-router-dom';
+import {Stack} from 'shared/lib/Stack';
+import {UploadModal} from 'widgets/UploadModal';
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -143,6 +143,22 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             sftpStore.secondSelectedHost = newHostInstance;
         }
     }
+    
+    const notificationDownloadOrUploadHandler = (notificationData: SftpNotificationData, mode: SftpCatalogMode) => {
+        if(mode === SftpCatalogMode.First && sftpStore.firstSelectedHost.notificationOptions){
+            sftpStore.firstSelectedHost.notificationOptions = {
+                ...sftpStore.firstSelectedHost.notificationOptions,
+                data: notificationData
+            }
+        }
+
+        if(mode === SftpCatalogMode.Second && sftpStore.secondSelectedHost.notificationOptions){
+            sftpStore.secondSelectedHost.notificationOptions = {
+                ...sftpStore.secondSelectedHost.notificationOptions,
+                data: notificationData
+            }
+        }
+    } 
 
     useEffect(() => {
         const isFirstSelectedHost = mode === SftpCatalogMode.First &&
@@ -153,22 +169,22 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             const sftpHub = new SftpHub();
 
             sftpStore.firstSelectedHost.isLoad = true;
+            
+            
 
             sftpHub.onConnect = async () => {
                 sftpStore.firstSelectedHost.sftpHub = sftpHub;
-
-                sftpHub.events((files) => {
-                    sftpStore.firstSelectedHost.sftpFileList = files
-                    sftpStore.firstSelectedHost.isLoad = false;
-                    sftpStore.setFileItems(mode)
-                }, (downloadData) => {
-                    if (sftpStore.firstSelectedHost.notificationOptions) {
-                        sftpStore.firstSelectedHost.notificationOptions = {
-                            ...sftpStore.firstSelectedHost.notificationOptions,
-                            data: downloadData
-                        }
-                    }
-                });
+                sftpHub.events(
+                    (files) => {
+                        sftpStore.firstSelectedHost.sftpFileList = files
+                        sftpStore.firstSelectedHost.isLoad = false;
+                        sftpStore.setFileItems(mode)
+                    },
+                    (downloadData) => 
+                        notificationDownloadOrUploadHandler(downloadData, SftpCatalogMode.First),
+                    (uploadData) => 
+                        notificationDownloadOrUploadHandler(uploadData, SftpCatalogMode.First)
+                );
 
                 await sftpHub.getFilesServer(sftpStore.firstSelectedHost.server.serverId);
             }
@@ -206,19 +222,18 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             sftpHub.onConnect = async () => {
                 sftpStore.secondSelectedHost.sftpHub = sftpHub;
 
-                sftpHub.events((files) => {
-                    sftpStore.secondSelectedHost.sftpFileList = files
-                    sftpStore.secondSelectedHost.isLoad = false;
-
-                    sftpStore.setFileItems(mode)
-                }, (downloadData) => {
-                    if (sftpStore.secondSelectedHost.notificationOptions) {
-                        sftpStore.secondSelectedHost.notificationOptions = {
-                            ...sftpStore.secondSelectedHost.notificationOptions,
-                            data: downloadData
-                        }
-                    }
-                });
+                sftpHub.events(
+                    (files) => {
+                        sftpStore.secondSelectedHost.sftpFileList = files
+                        sftpStore.secondSelectedHost.isLoad = false;
+    
+                        sftpStore.setFileItems(mode)
+                    }, 
+                    (downloadData) => 
+                        notificationDownloadOrUploadHandler(downloadData, SftpCatalogMode.Second),
+                    (uploadData) =>
+                        notificationDownloadOrUploadHandler(uploadData, SftpCatalogMode.Second)
+                );
 
                 await sftpHub.getFilesServer(sftpStore.secondSelectedHost.server.serverId);
             }

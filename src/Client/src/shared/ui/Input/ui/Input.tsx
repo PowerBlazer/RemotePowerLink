@@ -10,7 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export function Input ({ className, icon, errors, ...otherProps }: InputProps) {
     return (
-        <div className={classNames(style.input_inner)}>
+        <div className={classNames(style.input_inner,{}, [className])}>
             <div className={classNames(style.input_block)}>
                 {icon && <div className={classNames(style.icon)}>{icon}</div> }
                 <input

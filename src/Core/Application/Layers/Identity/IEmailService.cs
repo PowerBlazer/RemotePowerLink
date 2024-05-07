@@ -1,4 +1,4 @@
-﻿namespace Domain.Layers.Identity;
+﻿namespace Application.Layers.Identity;
 
 public interface IEmailService
 {

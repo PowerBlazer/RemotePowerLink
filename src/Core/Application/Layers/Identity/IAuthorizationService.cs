@@ -1,6 +1,6 @@
 ﻿using Domain.DTOs.Authorization;
 
-namespace Domain.Layers.Identity;
+namespace Application.Layers.Identity;
 
 public interface IAuthorizationService
 {

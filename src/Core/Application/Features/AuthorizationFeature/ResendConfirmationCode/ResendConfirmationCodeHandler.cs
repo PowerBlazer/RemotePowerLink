@@ -1,4 +1,4 @@
-﻿using Domain.Layers.Identity;
+﻿using Application.Layers.Identity;
 using JetBrains.Annotations;
 using MediatR;
 

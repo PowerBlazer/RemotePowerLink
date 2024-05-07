@@ -1,5 +1,5 @@
-﻿using Domain.Layers.MessageQueues.UserRegistered;
-using Domain.Layers.MessageQueues.VerificationEmailSend;
+﻿using Application.Layers.MessageQueues.UserRegistered;
+using Application.Layers.MessageQueues.VerificationEmailSend;
 using MassTransit;
 using MessageQueues.UserRegistered;
 using MessageQueues.VerificationEmailSend;

@@ -4,7 +4,7 @@ using Api;
 using Api.Common;
 using Api.Middleware;
 using Application;
-using Domain.Layers.Identity;
+using Application.Layers.Identity;
 using Email;
 using Identity;
 using MessageQueues;

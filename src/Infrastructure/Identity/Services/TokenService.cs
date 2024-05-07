@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Application.Layers.Identity;
 using Domain.Exceptions;
-using Domain.Layers.Identity;
 using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.IdentityModel.Tokens;

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Domain.Layers.Identity;
+namespace Application.Layers.Identity;
 
 public class JwtOptions
 {

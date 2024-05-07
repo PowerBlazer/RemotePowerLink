@@ -1,4 +1,4 @@
-﻿using Domain.Layers.MessageQueues.UserRegistered;
+﻿using Application.Layers.MessageQueues.UserRegistered;
 using MassTransit;
 
 namespace MessageQueues.UserRegistered;

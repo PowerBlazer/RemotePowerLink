@@ -1,4 +1,4 @@
-﻿namespace Domain.Layers.MessageQueues.UserRegistered;
+﻿namespace Application.Layers.MessageQueues.UserRegistered;
 
 public interface IUserRegisteredProducer
 {

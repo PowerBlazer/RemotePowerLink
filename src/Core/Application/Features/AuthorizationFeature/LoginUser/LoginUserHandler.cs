@@ -1,6 +1,6 @@
-﻿using AutoMapper;
+﻿using Application.Layers.Identity;
+using AutoMapper;
 using Domain.DTOs.Authorization;
-using Domain.Layers.Identity;
 using JetBrains.Annotations;
 using MediatR;
 

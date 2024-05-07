@@ -1,5 +1,5 @@
-﻿using Application.Services;
-using Domain.Layers.Persistence;
+﻿using Application.Layers.Persistence;
+using Application.Services;
 using Domain.Repository;
 using Domain.Services;
 using JetBrains.Annotations;

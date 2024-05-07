@@ -1,4 +1,4 @@
-﻿namespace Domain.Layers.Email;
+﻿namespace Application.Layers.Email;
 
 /// <summary>
 /// Определяет методы для отправки электронной почты через SMTP-сервер.

@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Application.Layers.Identity;
+using Application.Layers.Identity.Models;
 using Domain.Exceptions;
 using Identity.Entities;
 using Identity.Interfaces;

@@ -1,4 +1,5 @@
 ﻿using Application.Layers.Identity;
+using Application.Layers.Identity.Models;
 using Identity.Contexts;
 using Identity.Interfaces;
 using Identity.Repositories;
@@ -43,6 +44,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthorizationService, AuthorizationService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUserService, UserService>();
         #endregion
         
         return services;

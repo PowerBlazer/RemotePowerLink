@@ -5,6 +5,7 @@ using Api.Common;
 using Api.Middleware;
 using Application;
 using Application.Layers.Identity;
+using Application.Layers.Identity.Models;
 using Email;
 using Identity;
 using MessageQueues;

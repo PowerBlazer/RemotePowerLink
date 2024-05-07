@@ -9,7 +9,6 @@ using Domain.Services;
 using Domain.Services.Parameters;
 using Domain.Services.Results;
 using Renci.SshNet;
-using Renci.SshNet.Common;
 
 namespace Application.Services;
 
@@ -38,32 +37,30 @@ public class ServerService: IServerService
             await client.ConnectAsync(cancellationToken);
 
             var responseCat = client.RunCommand("cat /etc/os-release").Result;
-
-            if (!string.IsNullOrEmpty(responseCat))
+            
+            foreach (SystemTypeEnum systemTypeEnumItem in Enum.GetValues(typeof(SystemTypeEnum)))
             {
-                foreach (SystemTypeEnum systemTypeEnumItem in Enum.GetValues(typeof(SystemTypeEnum)))
+                var enumMember = typeof(SystemTypeEnum)
+                    .GetMember(systemTypeEnumItem.ToString())
+                    .FirstOrDefault();
+
+                if (enumMember == null)
+                    continue;
+
+                var descriptionAttribute = enumMember.GetCustomAttribute<DescriptionAttribute>();
+
+                if (descriptionAttribute != null && (responseCat.Contains(descriptionAttribute.Description) || 
+                    client.ConnectionInfo.ServerVersion.Contains(descriptionAttribute.Description)))
                 {
-                    var enumMember = typeof(SystemTypeEnum)
-                        .GetMember(systemTypeEnumItem.ToString())
-                        .FirstOrDefault();
-
-                    if (enumMember == null)
-                        continue;
-
-                    var descriptionAttribute = enumMember.GetCustomAttribute<DescriptionAttribute>();
-
-                    if (descriptionAttribute != null && responseCat.Contains(descriptionAttribute.Description))
+                    systemTypeResult = new SystemTypeResult
                     {
-                        systemTypeResult = new SystemTypeResult
-                        {
-                            SystemTypeId = (long)systemTypeEnumItem,
-                            Name = systemTypeEnumItem.ToString()
-                        };
-                    }
+                        SystemTypeId = (long)systemTypeEnumItem,
+                        Name = systemTypeEnumItem.ToString()
+                    };
                 }
             }
-
-            if (string.IsNullOrEmpty(responseCat))
+            
+            if (systemTypeResult.SystemTypeId == (long)SystemTypeEnum.Default)
             {
                 var responseSystemInfo = client.RunCommand("systeminfo").Result;
 

@@ -6,13 +6,15 @@ import { SignupPage } from 'pages/SignupPage';
 import RegistrationProvider from 'app/providers/RegistrationProvider/ui/RegistrationProvider';
 import { Navbar } from 'widgets/Navbar';
 import { SftpPage } from 'pages/SftpPage';
+import {SettingsPage} from "pages/SettingsPage";
 
 export enum AppRoutes {
     MAIN = '/',
     NOT_FOUND = 'not_found',
     LOGIN = 'login',
     SIGNUP = 'signup',
-    SFTP = 'sftp'
+    SFTP = 'sftp',
+    SETTINGS = 'settings'
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
@@ -20,7 +22,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.NOT_FOUND]: '*',
     [AppRoutes.LOGIN]: '/login',
     [AppRoutes.SIGNUP]: '/signup',
-    [AppRoutes.SFTP]: '/sftp'
+    [AppRoutes.SFTP]: '/sftp',
+    [AppRoutes.SETTINGS]: '/settings'
 }
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -38,11 +41,17 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     },
     [AppRoutes.SIGNUP]: {
         path: RoutePath.signup,
-        element: <RegistrationProvider><SignupPage/></RegistrationProvider>
+        element: <RegistrationProvider>
+            <SignupPage/>
+        </RegistrationProvider>
     },
     [AppRoutes.SFTP]: {
         path: RoutePath.sftp,
         element: <SftpPage/>
+    },
+    [AppRoutes.SETTINGS]: {
+        path: RoutePath.settings,
+        element: <SettingsPage/>
     }
 }
 

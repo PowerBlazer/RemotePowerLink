@@ -12,6 +12,7 @@ import UserCard from 'shared/assets/icons/user-card.svg';
 import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
 import searchStore from 'app/store/searchStore';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
+import {DefaultServerIcon} from "features/DefaultServerIcon";
 
 export enum ServerManagerCatalogMode {
     Catalog = 'CATALOG',
@@ -26,13 +27,7 @@ interface ServerManagerCatalogProps {
 
 function ServerManagerCatalog ({ className, mode = ServerManagerCatalogMode.Catalog, onConnect }: ServerManagerCatalogProps) {
     const { t } = useTranslation('translation');
-
-    const defaultServerIcon = useMemo(() => (
-        <div className={classNames(style.server_block)}>
-            <ServerIcon width={20} height={20}/>
-        </div>
-    ), [])
-
+    
     const identityIcon = useMemo(() => (
         <div className={classNames(style.identity_block)}>
             <UserCard width={30} height={30}/>
@@ -46,7 +41,7 @@ function ServerManagerCatalog ({ className, mode = ServerManagerCatalogMode.Cata
             common: server.systemTypeName,
             dataType: DataTypeEnum.SERVER,
             iconUrl: Boolean(server.systemTypeIcon) && `${HostService._resourceHost}${server.systemTypeIcon}`,
-            iconNode: !server.systemTypeIcon && defaultServerIcon
+            iconNode: !server.systemTypeIcon && <DefaultServerIcon width={25} height={25}/>
         })
         ), [searchStore.searchData]);
 
@@ -55,7 +50,7 @@ function ServerManagerCatalog ({ className, mode = ServerManagerCatalogMode.Cata
             id: proxy.proxyId,
             dataType: DataTypeEnum.PROXY,
             title: proxy.title,
-            iconNode: defaultServerIcon
+            iconNode: <DefaultServerIcon width={25} height={25}/>
         })
         ), [searchStore.searchData]);
 

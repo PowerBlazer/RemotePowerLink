@@ -26,6 +26,7 @@ import userStore from 'app/store/userStore';
 import {useNavigate} from 'react-router-dom';
 import {Stack} from 'shared/lib/Stack';
 import {UploadModal} from 'widgets/UploadModal';
+import {DefaultServerIcon} from "features/DefaultServerIcon";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -285,12 +286,12 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
         <div className={classNames(style.connection_error_panel)}>
             <div className={classNames(style.panel_inner)}>
                 <div className={classNames(style.server_logo)}>
-                    <img
+                    {selectedHost?.server.systemTypeIcon ? <img
                         src={`${HostService._resourceHost}${selectedHost?.server.systemTypeIcon}`}
                         alt={'server_logo'}
                         width={37}
                         height={37}
-                    />
+                    /> : <DefaultServerIcon width={22} height={22}/>}
                     <div className={classNames(style.server_information)}>
                         <div className={classNames(style.name)}>{selectedHost?.server.title}</div>
                         <div className={classNames(style.about)}>SSH {selectedHost?.server.hostname}:{selectedHost?.server.sshPort ?? 22}</div>

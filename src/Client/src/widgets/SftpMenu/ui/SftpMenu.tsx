@@ -74,10 +74,10 @@ const SftpMenu = forwardRef(
                 <Rename mode={mode} key='Rename' disabled={isDisabled || selectedItemsCount > 1} onClick={onClickCloseMenuHandler}/>,
                 <Delete mode={mode} key='Delete' disabled={isDisabled} onClick={onClickCloseMenuHandler}/>,
                 <Refresh mode={mode} key='Refresh' onClick={onClickCloseMenuHandler}/>,
-                <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
-                <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>,
-                <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-                <Upload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+                <NewFolder mode={mode} key='NewFolder' disabled={selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
+                <SelectAll mode={mode} key='SelectAll' disabled={selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
+                <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions) || selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
+                <Upload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
                 <Reconnect mode={mode} key='Reconnect' onClick={onClickCloseMenuHandler}/>,
                 <Close mode={mode} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
             ]

@@ -5,6 +5,7 @@ import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import sftpStore from 'app/store/sftpStore';
 import { useCallback, useState } from 'react';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
+import {Tr} from "@chakra-ui/react";
 
 interface SftpCatalogSwitcherProps extends SftpCatalogModeProps {
     className?: string;
@@ -21,6 +22,7 @@ export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherPro
 
         if (previousPath) {
             selectedHost.sftpFilesOption.historyNextPaths.push(selectedHost.sftpFileList.currentPath);
+            selectedHost.isLoad = true;
             await selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, previousPath);
 
             forceUpdate();
@@ -32,6 +34,7 @@ export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherPro
 
         if (nextPath) {
             selectedHost.sftpFilesOption.historyPrevPaths.push(selectedHost.sftpFileList?.currentPath);
+            selectedHost.isLoad = true;
             await selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, nextPath);
 
             forceUpdate();

@@ -1,0 +1,14 @@
+﻿.server_block{
+  width: 33px;
+  height: 33px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#004878 ;
+  border-radius: 5px;
+  flex-shrink: 0;
+
+  & path {
+    fill: var(--setting-button-color);
+  }
+}

@@ -19,7 +19,7 @@ public class VerificationEmailSendConsumer: IConsumer<VerificationEmailSendEvent
 
     public async Task Consume(ConsumeContext<VerificationEmailSendEvent> context)
     {
-        var emailPagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Common","EmailPage.cshtml");
+        var emailPagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Common", "EmailPage.cshtml");
         
         if (!File.Exists(emailPagePath))
         {
@@ -32,7 +32,7 @@ public class VerificationEmailSendConsumer: IConsumer<VerificationEmailSendEvent
 
         var template = await File.ReadAllTextAsync(emailPagePath);
 
-        var htmlContent = await razor.CompileRenderStringAsync("template", template,context.Message);
+        var htmlContent = await razor.CompileRenderStringAsync("template", template, context.Message);
 
         await _smtpEmailService.SendEmailAsync(context.Message.Email, "Подтверждение почты в RemotePowerLink",
             htmlContent);

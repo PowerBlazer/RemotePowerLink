@@ -25,7 +25,8 @@ export function Reconnect ({ className, mode, disabled, onClick }: ReconnectProp
                 deleteState: false,
                 renameState: false,
                 downloadState: false,
-                uploadState: false
+                uploadState: false,
+                sendState: false,
             }
 
             const newHostInstance: SftpServer = {

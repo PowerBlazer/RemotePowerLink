@@ -1,0 +1,97 @@
+﻿.accountSettingBlock{
+  min-height: 100px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  &.load{
+    .setting_row{
+      display: none;
+    }
+    
+    .tools_panel{
+      display: none;
+    }
+  }
+  
+  & .setting_row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    & .label{
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      
+      & .header{
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--te);
+      }
+      
+      & p{
+        font-size: 13px;
+        color: #8A919F;
+      }
+    }
+  }
+}
+
+
+.tools_panel{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  
+  & .logout{
+    width: fit-content;
+    padding: 8px 10px;
+    background-color: #c21f39;
+    
+    &:hover{
+      background-color: #e13553 !important; 
+    }
+  }
+  
+  & .delete_account{
+    width: fit-content;
+    padding: 8px 10px;
+    background-color: #c21f39;
+
+    &:hover{
+      background-color: #e13553 !important;
+    }
+  }
+  
+  & .change_password{
+    width: fit-content;
+    padding: 8px 10px;
+  }
+}
+
+.button_change {
+  color: var(--button-primary-color);
+  font-size: 14px;
+  font-weight: 600;
+  transition: color .3s;
+  
+  &:hover{
+    color: var(--button-primary-hover-color);
+  }
+}
+
+.loader{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% ,-50%);
+  
+  & > div{
+    width: 45px;
+    height: 45px;
+    border-width: 2px;
+    border-color: var(--loader-color) transparent;
+  }
+}

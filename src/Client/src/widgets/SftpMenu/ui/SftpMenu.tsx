@@ -7,6 +7,7 @@ import { Close, Download, NewFolder, Reconnect, Refresh, Rename, SelectAll, Uplo
 import { forwardRef, MutableRefObject, useEffect, useMemo, useState } from 'react';
 import { Delete } from 'features/SftpMenuOptions/ui/Delete';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
+import {Send} from "features/SftpMenuOptions/ui/Send";
 
 interface SftpMenuProps extends SftpCatalogModeProps {
     className?: string;
@@ -78,34 +79,38 @@ const SftpMenu = forwardRef(
                 <SelectAll mode={mode} key='SelectAll' disabled={selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
                 <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions) || selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
                 <Upload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-                <Reconnect mode={mode} key='Reconnect' onClick={onClickCloseMenuHandler}/>,
+                <Reconnect mode={mode} key='Reconnect' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
+                <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={!selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)}/>,
                 <Close mode={mode} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
             ]
-        }, [selectedSftpFileOptions?.fileList]);
+        }, [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions, selectedHost?.isLoad]);
 
         const fileModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
             <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
             <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+            <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
-        ], [selectedSftpFileOptions?.fileList]);
+        ], [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions]);
 
         const folderModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
             <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
             <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+            <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
-        ], [selectedSftpFileOptions?.fileList]);
+        ], [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions]);
 
         const multitudeModeMenuOptions = useMemo(() => [
             <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler} disabled={true}/>,
             <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
             <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
             <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler} disabled={true}/>,
+            <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
             <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler} disabled={true}/>
-        ], [selectedSftpFileOptions?.fileList])
+        ], [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions])
 
         useEffect(() => {
             setVisibleMenu(isVisible)

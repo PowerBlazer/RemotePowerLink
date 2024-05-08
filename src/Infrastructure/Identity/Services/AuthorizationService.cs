@@ -144,7 +144,7 @@ public class AuthorizationService: IAuthorizationService
 
         var session = JsonSerializer.Deserialize<SessionVerifyEmail>(sessionJson);
 
-        if (!session!.IsOk)
+        if (session is null || !session.IsOk)
         {
             throw new SessionCodeNotValidException("Сессия не подтверждена");
         }

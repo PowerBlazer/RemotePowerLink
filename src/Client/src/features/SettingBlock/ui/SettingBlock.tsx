@@ -15,11 +15,11 @@ export function SettingBlock (props: SettingBlockProps) {
     } = props;
     
     return (
-        <div className={classNames(style.settingBlock, {}, [className])} {...otherProps}>
+        <div className={classNames(style.settingBlock)} {...otherProps}>
             <div className={classNames(style.header_name)}>
                 {headerName}
             </div>
-            <div className={classNames(style.content)}>
+            <div className={classNames(style.content, {}, [className])}>
                 {children}
             </div>
 		</div>

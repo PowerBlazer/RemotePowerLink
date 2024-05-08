@@ -1,25 +1,21 @@
 ﻿using Application.Layers.Identity;
 using Application.Layers.Identity.Models;
 using Domain.Exceptions;
-using Identity.Contexts;
-using Microsoft.EntityFrameworkCore;
+using Identity.Interfaces;
 
 namespace Identity.Services;
 
 public class UserService: IUserService
 {
-    private readonly IdentityContext _identityContext;
-
-    public UserService(IdentityContext identityContext)
+    private readonly IIdentityUserRepository _identityUserRepository;
+    public UserService(IIdentityUserRepository identityUserRepository)
     {
-        _identityContext = identityContext;
+        _identityUserRepository = identityUserRepository;
     }
 
     public async Task<UserInformation> GetUserInformationAsync(long userId)
     {
-        var identityUser = await _identityContext
-            .IdentityUsers
-            .FirstOrDefaultAsync(p => p.Id == userId);
+        var identityUser = await _identityUserRepository.GetUserByIdAsync(userId);
 
         if (identityUser is null)
         {

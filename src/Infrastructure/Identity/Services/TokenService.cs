@@ -1,7 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Application.Layers.Identity;
 using Application.Layers.Identity.Models;
 using Domain.Exceptions;
 using Identity.Entities;
@@ -29,7 +28,7 @@ public class TokenService: ITokenService
 
         var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Email,identityUser.Email!),
+            new (JwtRegisteredClaimNames.Email,identityUser.Email),
             new (JwtRegisteredClaimNames.Sub,identityUser.Id.ToString())
         };
 

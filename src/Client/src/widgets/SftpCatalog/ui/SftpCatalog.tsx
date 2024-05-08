@@ -27,6 +27,7 @@ import {useNavigate} from 'react-router-dom';
 import {Stack} from 'shared/lib/Stack';
 import {UploadModal} from 'widgets/UploadModal';
 import {DefaultServerIcon} from "features/DefaultServerIcon";
+import SendModal from "widgets/SendModal/ui/SendModal";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -114,7 +115,8 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             deleteState: false,
             renameState: false,
             downloadState: false,
-            uploadState: false
+            uploadState: false,
+            sendState: false
         }
 
         const newHostInstance = {
@@ -332,6 +334,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                 { selectedHost?.modalOption.renameState && <RenameModal mode={mode}/> }
                 { selectedHost?.modalOption.downloadState && <DownloadModal mode={mode}/> }
                 { selectedHost?.modalOption.uploadState && <UploadModal mode={mode}/> }
+                { selectedHost?.modalOption.sendState && <SendModal mode={mode}/> }
                 <SftpNotificationPanel mode={mode}/>
             </div>
         )

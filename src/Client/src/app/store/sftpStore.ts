@@ -37,7 +37,8 @@ export interface SftpModalOption {
     deleteState: boolean,
     renameState: boolean,
     downloadState: boolean,
-    uploadState: boolean
+    uploadState: boolean,
+    sendState: boolean
 }
 
 export interface SftpFilesOption {

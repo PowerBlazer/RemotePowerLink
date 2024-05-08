@@ -39,7 +39,8 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
             deleteState: false,
             renameState: false,
             downloadState: false,
-            uploadState: false
+            uploadState: false,
+            sendState: false
         }
 
         const newHostInstance = {

@@ -1,17 +1,17 @@
-import { classNames } from 'shared/lib/classNames/classNames';
+import {classNames} from 'shared/lib/classNames/classNames';
 import style from './DownloadModal.module.scss';
-import { observer } from 'mobx-react-lite';
-import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
-import { Theme } from 'shared/lib/Theme/ThemeContext';
-import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
-import React, { useEffect, useMemo, useState } from 'react';
+import {observer} from 'mobx-react-lite';
+import {Modal, ThemeModal, TypeModal} from 'shared/ui/Modal';
+import {Theme} from 'shared/lib/Theme/ThemeContext';
+import {SftpCatalogModeProps} from 'widgets/SftpCatalog';
+import React, {useEffect, useMemo, useState} from 'react';
 import sftpStore from 'app/store/sftpStore';
-import { useTheme } from 'shared/lib/Theme/useTheme';
-import { useTranslation } from 'react-i18next';
-import { SftpService } from 'app/services/SftpService/sftpService';
-import { Loader } from 'shared/ui/Loader/Loader';
-import notificationStore from 'app/store/notificationStore';
-import { HostService } from 'app/services/hostService';
+import {useTheme} from 'shared/lib/Theme/useTheme';
+import {useTranslation} from 'react-i18next';
+import {SftpService} from 'app/services/SftpService/sftpService';
+import {Loader} from 'shared/ui/Loader/Loader';
+import {HostService} from 'app/services/hostService';
+import {SftpCatalogMode} from "app/services/SftpService/config";
 
 interface DownloadModalProps extends SftpCatalogModeProps {
     className?: string;
@@ -65,7 +65,13 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
             }
         });
 
-        selectedHost.notificationOptions = null;
+        if(mode === SftpCatalogMode.First){
+            sftpStore.firstSelectedHost.notificationOptions = null;
+        }
+        
+        if(mode === SftpCatalogMode.Second){
+            sftpStore.secondSelectedHost.notificationOptions = null;
+        }
 
         if (!downloadResult.isSuccess && Boolean(downloadResult.errors)) {
             selectedHost.error = { errors: downloadResult.errors }

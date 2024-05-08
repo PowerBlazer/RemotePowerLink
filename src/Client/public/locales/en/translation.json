@@ -2,7 +2,7 @@
     "Тестовый пример":"Test Example",
     "Перевод":"Translate",
     "Главная страница":"Main page", 
-    "Язык":"English",
+    "Язык":"Language",
     "Главная":"Main",
     "О нас":"About Us",
     "Страница не найдена": "Notfound page",
@@ -85,7 +85,9 @@
     "Отсутсвует данные": "Missing data",
     "Выбрать кодировку": "Select the encoding",
     "Скачивание": "Downloading",
-    "Переподключиться": "Reconnect"
+    "Переподключиться": "Reconnect",
+    "Тема": "Theme",
+    "Изменить": "Change"
     
     
 }

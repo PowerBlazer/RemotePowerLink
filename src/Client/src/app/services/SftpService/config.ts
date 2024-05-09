@@ -59,3 +59,8 @@ export interface UploadFilesData {
     serverId: number,
     connectionId: string
 }
+
+export interface ExistDirectoryOrFileData{
+    folderOrFilePath: string,
+    serverId: number
+}

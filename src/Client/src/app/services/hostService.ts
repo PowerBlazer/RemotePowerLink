@@ -27,6 +27,10 @@ export class HostService {
 
     private static _api: AxiosInstance = null;
     private static _apiWithoutInterceptors: AxiosInstance = null;
+    
+    public static MaximumDownloadSizeBytes = 5368709120;
+    public static MaximumUploadSize = 5368709120;
+    public static MaximisSendBytes = 5368709120;
 
     static get apiWithoutInterceptors (): AxiosInstance {
         if (!this._apiWithoutInterceptors) {

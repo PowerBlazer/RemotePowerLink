@@ -20,7 +20,6 @@ interface UploadModalProps extends SftpCatalogModeProps {
     className?: string;
 }
 
-const maximumUploadSize = 5368709120;
 function UploadModal ({ className, mode }: UploadModalProps) {
     const selectedHost = sftpStore.getSelectedHostInMode(mode);
     const { t } = useTranslation('translation');
@@ -168,7 +167,7 @@ function UploadModal ({ className, mode }: UploadModalProps) {
             className={classNames(style.browse_files)}
             theme={ThemeButton.PRIMARY}
             onClick={() => { inputRef?.current?.click(); }}
-            disabled={fileList.length > 0 && calculateTotalSize(fileList) >= maximumUploadSize}
+            disabled={fileList.length > 0 && calculateTotalSize(fileList) >= HostService.MaximumUploadSize}
         >
             {fileList.length === 0 ? 'Browse files' : 'Add files'}
         </Button>
@@ -184,7 +183,7 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                     }
                 },
                 onConfirm: uploadFiles,
-                disabled: isLoad || (fileList.length === 0 || calculateTotalSize(fileList) >= maximumUploadSize),
+                disabled: isLoad || (fileList.length === 0 || calculateTotalSize(fileList) >= HostService.MaximumUploadSize),
                 headerName: t('Загрузка файлов')
             }}
             className={className}
@@ -227,7 +226,7 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                 })}>
                     <div className={classNames(style.size_added_files)}>
                         Размер добавленных файлов {formatByteString(calculateTotalSize(fileList))}
-                        {calculateTotalSize(fileList) >= maximumUploadSize &&
+                        {calculateTotalSize(fileList) >= HostService.MaximumUploadSize &&
                             <p className={classNames(style.error)}>Превышен лимит загрузки файлов (5GB)</p>
                         }
                     </div>

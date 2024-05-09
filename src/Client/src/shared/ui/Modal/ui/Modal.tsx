@@ -40,7 +40,11 @@ export function Modal (props: ModalProps) {
             await options.onConfirm();
         }
 
-        setVisibleModal(false);
+        const isCloseModal = options.isCloseConfirm ?? true;
+        
+        if(isCloseModal){
+            setVisibleModal(false);
+        }
     }, [options.onConfirm]);
 
     const closeButton = useMemo(() => (
@@ -64,7 +68,7 @@ export function Modal (props: ModalProps) {
             <h1 className={style.header_title}>{options.headerName}</h1>
             {closeButton}
         </div>,
-        <div className={classNames(style.content)} key={'content'}>
+        <div className={classNames(style.content, {}, [className])} key={'content'}>
             {children}
         </div>,
         <div className={classNames(style.footer)} key={'footer'}>
@@ -121,7 +125,7 @@ export function Modal (props: ModalProps) {
                 [style.clear]: theme === ThemeModal.CLEAR,
                 [style.error]: options.type === TypeModal.ERROR,
                 [style.delete]: options.type === TypeModal.DELETE
-            }, [className])}
+            }, [])}
         >
             <div className={classNames(style.modal_content)}>
                 {options.type === TypeModal.DEFAULT && informationModal}

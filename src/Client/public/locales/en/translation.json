@@ -87,7 +87,12 @@
     "Скачивание": "Downloading",
     "Переподключиться": "Reconnect",
     "Тема": "Theme",
-    "Изменить": "Change"
+    "Изменить": "Change",
+    "Отправить файлы на другой сервер": "Send files to another server",
+    "Выбранные файлы для отправки": "Send files to another server",
+    "Путь к директории": "Directory path",
+    "Путь к директории сервера": "Server directory path",
+    "Отправить": "Send"
     
     
 }

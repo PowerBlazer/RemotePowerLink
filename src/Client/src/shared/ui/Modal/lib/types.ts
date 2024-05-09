@@ -15,5 +15,6 @@ export interface ModalOptions {
     onCancel?: () => void,
     onConfirm?: () => Promise<void>,
     headerName?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    isCloseConfirm?: boolean
 }

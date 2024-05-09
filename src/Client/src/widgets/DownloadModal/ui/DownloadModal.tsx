@@ -17,7 +17,6 @@ interface DownloadModalProps extends SftpCatalogModeProps {
     className?: string;
 }
 
-const _maximumDownloadSizeBytes = 5368709120;
 function DownloadModal ({ className, mode }: DownloadModalProps) {
     const selectedHost = sftpStore.getSelectedHostInMode(mode);
     const { t } = useTranslation('translation');
@@ -93,7 +92,7 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
                 setSize(getSizeResult.result);
                 setLoad(false);
 
-                if (getSizeResult.isSuccess && getSizeResult.result >= _maximumDownloadSizeBytes) {
+                if (getSizeResult.isSuccess && getSizeResult.result >= HostService.MaximumDownloadSizeBytes) {
                     setErrors(['Превышен лимит выбранных файлов 5GB размера скачивания'])
                 }
 

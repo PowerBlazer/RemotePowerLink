@@ -1,5 +1,4 @@
-﻿using Domain.Enums;
-using Domain.Exceptions;
+﻿using Domain.Exceptions;
 using Domain.Repository;
 using Domain.Services;
 using Domain.Services.Parameters;
@@ -7,25 +6,22 @@ using JetBrains.Annotations;
 using MediatR;
 using Renci.SshNet;
 
-namespace Application.Features.SftpFeature.GetSizeFoldersOrFiles;
+namespace Application.Features.SftpFeature.ExistDirectoryOrFile;
 
 [UsedImplicitly]
-public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFilesCommand, ulong>
+public class ExistDirectoryOrFileHandle: IRequestHandler<ExistDirectoryOrFileCommand, bool>
 {
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
-    private readonly ISftpService _sftpService;
 
-    public GetSizeFoldersOrFilesHandler(IServerRepository serverRepository, 
-        IServerService serverService, 
-        ISftpService sftpService)
+    public ExistDirectoryOrFileHandle(IServerRepository serverRepository, 
+        IServerService serverService)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
-        _sftpService = sftpService;
     }
 
-    public async Task<ulong> Handle(GetSizeFoldersOrFilesCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(ExistDirectoryOrFileCommand request, CancellationToken cancellationToken)
     {
         var server = await _serverRepository.GetServerAsync(request.ServerId);
 
@@ -40,19 +36,12 @@ public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFiles
         var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
+
         try
         {
             await sftpClient.ConnectAsync(cancellationToken);
-
-            ulong totalSizeFiles = 0;
-            foreach (var fileItem in request.FoldersOrFiles)
-            {
-                totalSizeFiles += fileItem.FileType == FileTypeEnum.Folder
-                    ? (ulong)_sftpService.GetDirectorySize(sftpClient, fileItem.Path)
-                    : (ulong)(fileItem.Size ?? 0);
-            }
-
-            return totalSizeFiles;
+            
+            return sftpClient.Exists(request.FolderOrFilePath);
         }
         finally
         {
@@ -61,6 +50,5 @@ public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFiles
                 sftpClient.Disconnect();
             }
         }
-       
     }
 }

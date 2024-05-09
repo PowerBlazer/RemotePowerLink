@@ -19,7 +19,7 @@ interface SelectProps {
     className?: string;
     children?: ReactElement<SelectItemProps> | Array<ReactElement<SelectItemProps>>;
     theme?: ThemeSelect
-    selectedItem?: SelectedItem,
+    selectedItem: SelectedItem | null,
     placeholder: string,
     icon?: ReactNode,
     errors?: string[],
@@ -95,9 +95,9 @@ export function Select (props: SelectProps) {
                     >
                         <div className={classNames(style.select_header)}>
                             <div className={classNames(style.header_content)}>
-                                <div className={classNames(style.header_icon)}>
+                                {icon && <div className={classNames(style.header_icon)}>
                                     {icon}
-                                </div>
+                                </div>}
                                 { selectedItem
                                     ? selectedItem.title
                                     : (selectedElement ? selectedElement.title : placeholder)

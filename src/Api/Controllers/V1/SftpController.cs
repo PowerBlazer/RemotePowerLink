@@ -2,6 +2,7 @@
 using Application.Features.SftpFeature.CreateDirectory;
 using Application.Features.SftpFeature.DeleteFoldersOrFiles;
 using Application.Features.SftpFeature.DownloadFoldersOrFiles;
+using Application.Features.SftpFeature.ExistDirectoryOrFile;
 using Application.Features.SftpFeature.GetSizeFoldersOrFiles;
 using Application.Features.SftpFeature.RenameFolderOrFile;
 using Application.Features.SftpFeature.UploadFiles;
@@ -50,7 +51,7 @@ public class SftpController: BaseController
         [FromBody]CreateDirectoryCommand createDirectoryCommand)
     {
         createDirectoryCommand.UserId = UserId;
-        await Mediator.Send(createDirectoryCommand);
+        await Mediator.Publish(createDirectoryCommand);
 
         return new ApiActionResult();
     }
@@ -73,7 +74,7 @@ public class SftpController: BaseController
         [FromBody]RenameFolderOrFileCommand renameFolderOrFileCommand)
     {
         renameFolderOrFileCommand.UserId = UserId;
-        await Mediator.Send(renameFolderOrFileCommand);
+        await Mediator.Publish(renameFolderOrFileCommand);
 
         return new ApiActionResult();
     }
@@ -96,7 +97,7 @@ public class SftpController: BaseController
         [FromBody]DeleteFoldersOrFilesCommand deleteFoldersOrFilesCommand)
     {
         deleteFoldersOrFilesCommand.UserId = UserId;
-        await Mediator.Send(deleteFoldersOrFilesCommand);
+        await Mediator.Publish(deleteFoldersOrFilesCommand);
 
         return new ApiActionResult();
     }
@@ -237,6 +238,32 @@ public class SftpController: BaseController
         }
 
         return new ApiActionResult();
+    }
+
+    
+    /// <summary>
+    /// Проверяет на существования пути к директории или к файлу по SFTP
+    /// </summary>
+    /// <param name="existDirectoryOrFileCommand"></param>
+    /// <param name="cancellationToken"></param>
+    /// <response code="200">Проверен путь</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="403">Доступ запрещен</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPost("exist")]
+    public async Task<ApiActionResult<bool>> ExistFolderOrFile(
+        [FromBody] ExistDirectoryOrFileCommand existDirectoryOrFileCommand,
+        CancellationToken cancellationToken)
+    {
+        existDirectoryOrFileCommand.UserId = UserId;
+        
+        var existResult = await Mediator.Send(existDirectoryOrFileCommand, cancellationToken);
+
+        return new ApiActionResult<bool>
+        {
+            Result = existResult
+        };
     }
 
 }

@@ -13,7 +13,7 @@ export interface SelectItemProps {
     isSelected?: boolean
 }
 
-export function SelectItem ({ className, selectedItem, isSelected }: SelectItemProps) {
+export function SelectItem ({ className, selectedItem, isSelected, icon }: SelectItemProps) {
     const {
         setVisible,
         setSelected
@@ -26,7 +26,7 @@ export function SelectItem ({ className, selectedItem, isSelected }: SelectItemP
 
     return (
         <Button className={classNames(style.selectItem, { [style.selected]: isSelected }, [className])} onClick={selectItemHandler}>
-            <ServerIcon className={classNames(style.server_icon)} width={15} height={15}/>
+            {icon ?? <ServerIcon className={classNames(style.server_icon)} width={15} height={15}/>}
             <p className={classNames(style.item_title)}>{selectedItem.title}</p>
         </Button>
     );

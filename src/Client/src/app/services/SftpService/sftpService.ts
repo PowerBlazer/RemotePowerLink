@@ -1,6 +1,6 @@
 import {
     CreateDirectoryData,
-    DeleteFoldersOrFilesData, DownloadFoldersOrFilesData, GetSizeFoldersOrFilesData,
+    DeleteFoldersOrFilesData, DownloadFoldersOrFilesData, ExistDirectoryOrFileData, GetSizeFoldersOrFilesData,
     RenameFoldersOrFilesData, UploadFilesData
 } from 'app/services/SftpService/config';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
@@ -68,6 +68,25 @@ export class SftpService {
                 getSizeFoldersOrFilesData
             );
 
+            return {
+                result: response.data.result,
+                isSuccess: true
+            }
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    }
+    
+    static existFolerOrFile = async (existDirectoryOrFileData: ExistDirectoryOrFileData): Promise<ServiceResult<boolean>> => {
+        try {
+            const response = await HostService.api.post<ApiResult<boolean>>(
+                '/v1.0/sftp/exist',
+                existDirectoryOrFileData
+            );
+            
             return {
                 result: response.data.result,
                 isSuccess: true

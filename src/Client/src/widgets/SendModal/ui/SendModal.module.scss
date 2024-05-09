@@ -1,0 +1,135 @@
+
+.send_modal{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+.sended_files_panel{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 240px;
+  padding-top: 10px;
+  position: relative;
+  
+  &.load{
+    & .files_list_label{
+      display: none;
+    }
+    
+    & .files_list{
+      display: none;
+    }
+    
+    & .size_label{
+      display: none;
+    }
+  }
+  
+  & .files_list{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 240px;
+    overflow-y: auto;
+    padding-right:10px;
+    
+    &::-webkit-scrollbar{
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track{
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb{
+      background-color: rgba(90, 94, 115, 0.57);
+      border-radius: 5px;
+    }
+
+    & .file_icon{
+      width: 25px;
+      height: 25px;
+    }
+
+    & .file_title {
+      display: flex;
+      gap: 7px;
+      color: #8D90AA;
+      font-size: 15px;
+      font-weight: 600;
+      align-items: center;
+
+      & .file_label{
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    & .file_item{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  & .size_label {
+    font-size: 13px;
+    color: #b0b0b0;
+  }
+  
+  & .size_error{
+    color: #c21f39;
+  }
+}
+
+.select_server_panel{
+  min-height: 50px;
+  
+  &.active{
+    min-height: 100px;
+  }
+}
+
+.send_path_panel{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.remove_file{
+  width: 20px;
+  height: 20px;
+  background-color: var(--bg-color-inverted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+
+  & div {
+    flex-shrink: 0;
+    width: 12px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #c21f39;
+  }
+}
+
+.loader{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% ,-50%);
+
+  & > div{
+    width: 45px;
+    height: 45px;
+    border-width: 2px;
+    border-color: var(--loader-color) transparent;
+  }
+}

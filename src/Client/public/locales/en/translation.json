@@ -92,7 +92,13 @@
     "Выбранные файлы для отправки": "Send files to another server",
     "Путь к директории": "Directory path",
     "Путь к директории сервера": "Server directory path",
-    "Отправить": "Send"
+    "Отправить": "Send",
+    "Подтвержден": "Confirmed",
+    "Изменить пароль": "Change password",
+    "Удалить аккаунт": "Delete account",
+    "Выйти из системы": "Log out",
+    "Почта": "Mail",
+    "Не указан": "Not specified"
     
     
 }

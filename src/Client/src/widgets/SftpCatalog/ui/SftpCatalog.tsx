@@ -12,11 +12,11 @@ import toast from 'react-hot-toast';
 import sftpStore, { SftpModalOption, SftpNotificationData } from 'app/store/sftpStore';
 import LogoIcon from 'shared/assets/icons/logo.svg';
 import style from './SftpCatalog.module.scss';
-import { NewFolderModal } from 'widgets/NewFolderModal';
-import { ErrorModal } from 'widgets/ErrorModal';
-import { DeleteModal } from 'widgets/DeleteModal';
-import { RenameModal } from 'widgets/RenameModal';
-import { DownloadModal } from 'widgets/DownloadModal';
+import { NewFolderModal } from 'widgets/SftpModals/NewFolderModal';
+import { ErrorModal } from 'widgets/SftpModals/ErrorModal';
+import { DeleteModal } from 'widgets/SftpModals/DeleteModal';
+import { RenameModal } from 'widgets/SftpModals/RenameModal';
+import { DownloadModal } from 'widgets/SftpModals/DownloadModal';
 import { SftpNotificationPanel } from 'widgets/SftpNotificationPanel';
 import { HostService } from 'app/services/hostService';
 import sidebarStore from 'app/store/sidebarStore';
@@ -25,9 +25,9 @@ import { EditServerResult } from 'app/services/ServerService/config/serverConfig
 import userStore from 'app/store/userStore';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from 'shared/lib/Stack';
-import { UploadModal } from 'widgets/UploadModal';
+import { UploadModal } from 'widgets/SftpModals/UploadModal';
 import { DefaultServerIcon } from 'features/DefaultServerIcon';
-import SendModal from 'widgets/SendModal/ui/SendModal';
+import SendModal from 'widgets/SftpModals/SendModal/ui/SendModal';
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode

@@ -12,7 +12,7 @@ import UserCard from 'shared/assets/icons/user-card.svg';
 import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
 import searchStore from 'app/store/searchStore';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
-import {DefaultServerIcon} from "features/DefaultServerIcon";
+import { DefaultServerIcon } from 'features/DefaultServerIcon';
 
 export enum ServerManagerCatalogMode {
     Catalog = 'CATALOG',
@@ -27,7 +27,7 @@ interface ServerManagerCatalogProps {
 
 function ServerManagerCatalog ({ className, mode = ServerManagerCatalogMode.Catalog, onConnect }: ServerManagerCatalogProps) {
     const { t } = useTranslation('translation');
-    
+
     const identityIcon = useMemo(() => (
         <div className={classNames(style.identity_block)}>
             <UserCard width={30} height={30}/>

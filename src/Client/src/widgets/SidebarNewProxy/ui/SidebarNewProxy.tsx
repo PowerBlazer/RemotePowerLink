@@ -230,7 +230,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
                     <Input
                         type={'text'}
                         className={classNames(style.title_input)}
-                        placeholder={t('Название')!}
+                        placeholder={t('Название')}
                         icon={<TitleIcon width={20} height={20}/>}
                         onChange={nameChangeHandler}
                         errors={errors?.Title ?? null}

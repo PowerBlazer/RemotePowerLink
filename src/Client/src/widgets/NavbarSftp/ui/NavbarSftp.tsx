@@ -10,7 +10,7 @@ import { SearchInput } from 'features/SearchInput';
 import { SftpCatalogSwitcher } from 'features/SftpCatalogSwitcher';
 import { SftpCatalogNavigation } from 'features/SftpCatalogNavigation';
 import { SftpMenu } from 'widgets/SftpMenu';
-import {useMemo, useRef, useState} from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
 import { DefaultServerIcon } from 'features/DefaultServerIcon'
 
@@ -45,18 +45,20 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
             setVisibleMenu(value => !value)
         }
     }
-    
+
     return (
         <div className={classNames(style.navbarSftp, {}, [className])}>
             <div className={classNames(style.navbar_header)}>
                 <Button className={classNames(style.change_host)} onClick={onOpenCatalog}>
-                    {server.systemTypeIcon ? <img
-                        className={classNames(style.server_icon)}
-                        alt={'server_icon'}
-                        src={`${HostService._resourceHost}${server.systemTypeIcon}`}
-                        width={22}
-                        height={22}
-                    /> : <DefaultServerIcon width={18} height={18}/>}
+                    {server.systemTypeIcon
+                        ? <img
+                            className={classNames(style.server_icon)}
+                            alt={'server_icon'}
+                            src={`${HostService._resourceHost}${server.systemTypeIcon}`}
+                            width={22}
+                            height={22}
+                        />
+                        : <DefaultServerIcon width={18} height={18}/>}
                     <h4 className={classNames(style.server_title)}>{server.title}</h4>
                 </Button>
                 <div className={classNames(style.tools)}>

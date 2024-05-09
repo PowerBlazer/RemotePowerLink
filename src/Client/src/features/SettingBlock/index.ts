@@ -1,1 +1,1 @@
-﻿export { SettingBlock } from './ui/SettingBlock';
+export { SettingBlock } from './ui/SettingBlock';

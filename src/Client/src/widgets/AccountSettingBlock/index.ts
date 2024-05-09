@@ -1,1 +1,1 @@
-﻿export { default as AccountSettingBlock } from './ui/AccountSettingBlock'
+export { default as AccountSettingBlock } from './ui/AccountSettingBlock'

@@ -49,7 +49,7 @@ class SftpHub {
             this.connection.on('handleError', (message: Record<string, string[]>) => {
                 this.onError(message);
             });
-            
+
             this.connection.on('uploadReceive', (sftpNotificationOptions: SftpNotificationData) => {
                 onUploadReceived(sftpNotificationOptions)
             })

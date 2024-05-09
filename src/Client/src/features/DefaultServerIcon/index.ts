@@ -1,1 +1,1 @@
-﻿export { DefaultServerIcon } from './ui/DefaultServerIcon'
+export { DefaultServerIcon } from './ui/DefaultServerIcon'

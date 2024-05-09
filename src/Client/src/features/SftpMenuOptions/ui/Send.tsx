@@ -1,4 +1,4 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpMenuOptions.module.scss';
 import { MenuOptionProp } from 'features/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
@@ -16,7 +16,7 @@ export function Send ({ className, disabled, mode, onClick }: SendProps) {
     const onClickSendHandler = () => {
         if (disabled) { return; }
 
-        if (selectedHost?.sftpFileList) { 
+        if (selectedHost?.sftpFileList) {
             selectedHost.modalOption.sendState = true;
         }
 

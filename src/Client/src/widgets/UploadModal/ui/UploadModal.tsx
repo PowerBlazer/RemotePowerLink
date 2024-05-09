@@ -1,20 +1,20 @@
-import {classNames} from 'shared/lib/classNames/classNames';
-import {observer} from 'mobx-react-lite';
-import {Modal, ThemeModal, TypeModal} from 'shared/ui/Modal';
-import {Theme} from 'shared/lib/Theme/ThemeContext';
-import {SftpCatalogModeProps} from 'widgets/SftpCatalog';
-import {useTranslation} from 'react-i18next';
-import {useTheme} from 'shared/lib/Theme/useTheme';
+import { classNames } from 'shared/lib/classNames/classNames';
+import { observer } from 'mobx-react-lite';
+import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
+import { Theme } from 'shared/lib/Theme/ThemeContext';
+import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from 'shared/lib/Theme/useTheme';
 import sftpStore from 'app/store/sftpStore';
 import style from './UploadModal.module.scss';
 import UploadIcon from 'shared/assets/icons/upload.svg';
 import FileIcon from 'shared/assets/icons/sftp/file.svg';
-import {ChangeEvent, DragEvent, useMemo, useRef, useState} from "react";
-import {Button, ThemeButton} from "shared/ui/Button/Button";
-import {Loader} from "shared/ui/Loader/Loader";
-import {formatByteString} from "shared/lib/formatByteString";
-import {HostService} from "app/services/hostService";
-import {SftpService} from "app/services/SftpService/sftpService";
+import { ChangeEvent, DragEvent, useMemo, useRef, useState } from 'react';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import { Loader } from 'shared/ui/Loader/Loader';
+import { formatByteString } from 'shared/lib/formatByteString';
+import { HostService } from 'app/services/hostService';
+import { SftpService } from 'app/services/SftpService/sftpService';
 
 interface UploadModalProps extends SftpCatalogModeProps {
     className?: string;
@@ -31,69 +31,69 @@ function UploadModal ({ className, mode }: UploadModalProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [fileList, setFileList] = useState<File[]>([]);
 
-    const handleDrag = (e:DragEvent<HTMLDivElement | HTMLLabelElement>) => {
+    const handleDrag = (e: DragEvent<HTMLDivElement | HTMLLabelElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        
-        if (e.type === "dragenter" || e.type === "dragover") {
+
+        if (e.type === 'dragenter' || e.type === 'dragover') {
             setDragActive(true);
-        } else if (e.type === "dragleave") {
+        } else if (e.type === 'dragleave') {
             setDragActive(false);
         }
     };
-    
+
     const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
         setDragActive(false);
-        
+
         const fileItems = e.dataTransfer.files;
-        
+
         if (fileItems) {
             const fileList: File[] = [];
-         
+
             setLoad(true);
-            for (let i = 0; i < fileItems.length; i++){
+            for (let i = 0; i < fileItems.length; i++) {
                 const file = fileItems.item(i);
-                
-                if(file){
+
+                if (file) {
                     const isFile = await isFileAsync(file);
-                    if(isFile){
+                    if (isFile) {
                         fileList.push(file);
                     }
                 }
             }
-            
-            setFileList(files => [...files, ...fileList]);
-            setLoad(false);
-        }
-    } 
-    
-    const inputChangeHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        if (e.target.files && e.target.files[0]) {
-            const fileList: File[] = [];
-                
-            setLoad(true);
-            
-            for (let i = 0; i < e.target.files.length; i++){
-                const file = e.target.files.item(i);
-                
-                if(file){
-                    const isFile = await isFileAsync(file);
-                    if(isFile){
-                        fileList.push(file);
-                    }
-                }
-            }
-            
+
             setFileList(files => [...files, ...fileList]);
             setLoad(false);
         }
     }
 
-    const isFileAsync = (file: File): Promise<boolean> => {
-        return new Promise((resolve) => {
+    const inputChangeHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if (e.target.files && e.target.files[0]) {
+            const fileList: File[] = [];
+
+            setLoad(true);
+
+            for (let i = 0; i < e.target.files.length; i++) {
+                const file = e.target.files.item(i);
+
+                if (file) {
+                    const isFile = await isFileAsync(file);
+                    if (isFile) {
+                        fileList.push(file);
+                    }
+                }
+            }
+
+            setFileList(files => [...files, ...fileList]);
+            setLoad(false);
+        }
+    }
+
+    const isFileAsync = async (file: File): Promise<boolean> => {
+        return await new Promise((resolve) => {
             const reader = new FileReader();
             reader.onload = () => {
                 // Если файл успешно прочитан, это, вероятно, файл, а не папка
@@ -114,10 +114,10 @@ function UploadModal ({ className, mode }: UploadModalProps) {
         }
         return totalSize;
     };
-    
+
     const uploadFiles = async () => {
         const cancelToken = HostService.getCancelToken();
-        
+
         selectedHost.modalOption.uploadState = false;
         selectedHost.notificationOptions = {
             data: {
@@ -135,7 +135,7 @@ function UploadModal ({ className, mode }: UploadModalProps) {
             serverId: selectedHost?.server.serverId,
             connectionId: selectedHost?.sftpHub?.getConnectionId(),
             uploadPath: selectedHost?.sftpFileList.currentPath
-        }, cancelToken , (uploadPogress) => {
+        }, cancelToken, (uploadPogress) => {
             if (prevProgressState !== uploadPogress) {
                 prevProgressState = uploadPogress;
 
@@ -151,23 +151,23 @@ function UploadModal ({ className, mode }: UploadModalProps) {
         });
 
         selectedHost.notificationOptions = null;
-        
-        if(uploadResult.isSuccess){
+
+        if (uploadResult.isSuccess) {
             selectedHost.isLoad = true;
             selectedHost.sftpHub.getFilesServer(selectedHost.server.serverId, selectedHost.sftpFileList.currentPath);
         }
-        
-        if(!uploadResult.isSuccess && Boolean(uploadResult.errors)){
+
+        if (!uploadResult.isSuccess && Boolean(uploadResult.errors)) {
             selectedHost.error = { errors: uploadResult.errors }
             selectedHost.modalOption.errorState = true;
         }
     }
-    
+
     const browseFilesButton = useMemo(() => (
         <Button
             className={classNames(style.browse_files)}
             theme={ThemeButton.PRIMARY}
-            onClick={() => inputRef?.current?.click()}
+            onClick={() => { inputRef?.current?.click(); }}
             disabled={fileList.length > 0 && calculateTotalSize(fileList) >= maximumUploadSize}
         >
             {fileList.length === 0 ? 'Browse files' : 'Add files'}
@@ -178,8 +178,8 @@ function UploadModal ({ className, mode }: UploadModalProps) {
         <Modal
             options={{
                 type: TypeModal.FORM,
-                onCancel: () => { 
-                    if(selectedHost) {
+                onCancel: () => {
+                    if (selectedHost) {
                         selectedHost.modalOption.uploadState = false;
                     }
                 },
@@ -197,14 +197,14 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                     type='file'
                     multiple={true}
                     id='input-file-upload'
-                    style={{display: 'none'}}
+                    style={{ display: 'none' }}
                     onChange={inputChangeHandler}
                 />
-                <label 
+                <label
                     className={classNames(style.input_label, {
                         [style.drag_active]: dragActive,
                         [style.active]: fileList.length === 0 && !isLoad
-                    })} 
+                    })}
                     htmlFor='input-file-upload'
                     onDragEnter={handleDrag}
                 >
@@ -212,12 +212,12 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                     <p className={classNames(style.description)}>Drag and drop files here</p>
                     <p className={classNames(style.or)}>or</p>
                     { browseFilesButton }
-                    { dragActive && 
+                    { dragActive &&
                         <div
                             className={classNames(style.drag_window)}
-                            onDragEnter={handleDrag} 
-                            onDragLeave={handleDrag} 
-                            onDragOver={handleDrag} 
+                            onDragEnter={handleDrag}
+                            onDragLeave={handleDrag}
+                            onDragOver={handleDrag}
                             onDrop={handleDrop}
                         ></div> }
                 </label>
@@ -227,7 +227,7 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                 })}>
                     <div className={classNames(style.size_added_files)}>
                         Размер добавленных файлов {formatByteString(calculateTotalSize(fileList))}
-                        {calculateTotalSize(fileList) >= maximumUploadSize && 
+                        {calculateTotalSize(fileList) >= maximumUploadSize &&
                             <p className={classNames(style.error)}>Превышен лимит загрузки файлов (5GB)</p>
                         }
                     </div>
@@ -238,11 +238,11 @@ function UploadModal ({ className, mode }: UploadModalProps) {
                                     <FileIcon width={30}/>
                                     <div className={classNames(style.file_name)}>{file.name}</div>
                                 </div>
-                                <Button 
+                                <Button
                                     className={classNames(style.delete_file)}
                                     onClick={() => {
                                         fileList.splice(index, 1);
-                                        
+
                                         setFileList([...fileList])
                                     }}
                                 >

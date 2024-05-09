@@ -56,7 +56,7 @@ function Sidebar (props: SidebarProps) {
     return (
         <div className={classNames(style.sidebar, {
             [style.main]: Boolean(isMain),
-            [style.main_active]:Boolean(sidebarStore.isVisible && isMain)
+            [style.main_active]: Boolean(sidebarStore.isVisible && isMain)
         }, [className])}>
             {headerName && (
                 <div className={classNames(style.header)}>

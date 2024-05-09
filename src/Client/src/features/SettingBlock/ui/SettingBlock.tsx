@@ -1,6 +1,6 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SettingBlock.module.scss';
-import {HTMLAttributes} from "react";
+import { HTMLAttributes } from 'react';
 
 interface SettingBlockProps extends HTMLAttributes<HTMLDivElement> {
     headerName: string
@@ -13,7 +13,7 @@ export function SettingBlock (props: SettingBlockProps) {
         children,
         ...otherProps
     } = props;
-    
+
     return (
         <div className={classNames(style.settingBlock)} {...otherProps}>
             <div className={classNames(style.header_name)}>
@@ -22,6 +22,6 @@ export function SettingBlock (props: SettingBlockProps) {
             <div className={classNames(style.content, {}, [className])}>
                 {children}
             </div>
-		</div>
+        </div>
     );
 }

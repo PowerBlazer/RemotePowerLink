@@ -7,7 +7,7 @@ import { Close, Download, NewFolder, Reconnect, Refresh, Rename, SelectAll, Uplo
 import { forwardRef, MutableRefObject, useEffect, useMemo, useState } from 'react';
 import { Delete } from 'features/SftpMenuOptions/ui/Delete';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
-import {Send} from "features/SftpMenuOptions/ui/Send";
+import { Send } from 'features/SftpMenuOptions/ui/Send';
 
 interface SftpMenuProps extends SftpCatalogModeProps {
     className?: string;
@@ -80,7 +80,7 @@ const SftpMenu = forwardRef(
                 <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions) || selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
                 <Upload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
                 <Reconnect mode={mode} key='Reconnect' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
-                <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={!selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)}/>,
+                <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={selectedItemsCount === 0 || !selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)}/>,
                 <Close mode={mode} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
             ]
         }, [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions, selectedHost?.isLoad]);

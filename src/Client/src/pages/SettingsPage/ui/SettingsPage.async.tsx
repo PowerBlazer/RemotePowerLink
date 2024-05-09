@@ -1,4 +1,4 @@
-﻿import { lazy } from 'react';
+import { lazy } from 'react';
 
-export const SettingsPageAsync = lazy(async () => import('./SettingsPage')
-    .then(module => ({default: module.default})))
+export const SettingsPageAsync = lazy(async () => await import('./SettingsPage')
+    .then(module => ({ default: module.default })))

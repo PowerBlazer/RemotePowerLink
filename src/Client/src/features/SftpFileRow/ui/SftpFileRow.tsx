@@ -7,7 +7,7 @@ import FolderIcon from 'shared/assets/icons/sftp/folder.svg'
 import FileIcon from 'shared/assets/icons/sftp/file.svg'
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { SftpCatalogModeProps } from 'widgets/SftpCatalog';
-import {formatByteString} from "shared/lib/formatByteString";
+import { formatByteString } from 'shared/lib/formatByteString';
 
 interface SftpFileRowProps extends SftpCatalogModeProps {
     className?: string;
@@ -113,8 +113,6 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
         }
         return `${date.toLocaleDateString()}, ${dateTimeString}`;
     }
-
-    
 
     useEffect(() => {
         if (selectedHost.sftpFilesOption.widthPanel) {

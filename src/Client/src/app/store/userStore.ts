@@ -60,11 +60,11 @@ class UserStore {
     }
 
     setUserProxy (proxy: ProxyData) {
-        if(this.userProxies){
+        if (this.userProxies) {
             const existingProxyIndex = this.userProxies.findIndex(
                 (s) => s.proxyId === proxy.proxyId
             );
-            
+
             if (existingProxyIndex !== -1) {
                 // Если прокси уже существует, обновляем его
                 this.userProxies[existingProxyIndex] = proxy;
@@ -81,11 +81,10 @@ class UserStore {
                 ]
             }
         }
-       
     }
 
     setUserIdentity (identity: IdentityData) {
-        if(this.userIdentities){
+        if (this.userIdentities) {
             const existingIdentityIndex = this.userIdentities.findIndex(
                 (s) => s.identityId === identity.identityId
             );
@@ -105,7 +104,6 @@ class UserStore {
                 ]
             }
         }
-       
     }
 
     setUserServers (servers: ServerData[]) {
@@ -120,8 +118,8 @@ class UserStore {
         ];
     }
 
-    setUserServer (server: ServerData){
-        if(this.userServers){
+    setUserServer (server: ServerData) {
+        if (this.userServers) {
             const existingServerIndex = this.userServers.findIndex(
                 (s) => s.serverId === server.serverId
             );

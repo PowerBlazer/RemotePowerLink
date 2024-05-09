@@ -94,11 +94,10 @@ export class SftpService {
                     cancelToken: cancelToken?.token,
                     timeout: 3600000,
                     onDownloadProgress: function (progressEvent) {
-                        if(downloadAction && progressEvent.total){
+                        if (downloadAction && progressEvent.total) {
                             const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
                             downloadAction(progress)
                         }
-                       
                     }
                 });
 
@@ -141,7 +140,7 @@ export class SftpService {
             }
         }
     }
-    
+
     static uploadFiles = async (
         uploadFilesData: UploadFilesData,
         cancelToken?: CancelTokenSource,
@@ -153,7 +152,7 @@ export class SftpService {
             formData.append('serverId', uploadFilesData.serverId.toString());
             formData.append('connectionId', uploadFilesData.connectionId);
 
-            uploadFilesData.uploadFiles.forEach(file=> {
+            uploadFilesData.uploadFiles.forEach(file => {
                 formData.append('uploadFiles', file);
             })
 
@@ -168,21 +167,18 @@ export class SftpService {
                     },
                     maxContentLength: 5368709120,
                     onUploadProgress: function (progressEvent) {
-                        if(uploadAction && progressEvent.total){
+                        if (uploadAction && progressEvent.total) {
                             const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
                             uploadAction(progress)
                         }
-
                     }
                 }
             );
 
-
             return {
                 isSuccess: true
             }
-        }
-        catch (error) {
+        } catch (error) {
             if (error?.response?.data.Errors) {
                 return {
                     isSuccess: false,
@@ -201,9 +197,5 @@ export class SftpService {
                 isSuccess: false
             }
         }
-        
-        
-        
-        
     }
 }

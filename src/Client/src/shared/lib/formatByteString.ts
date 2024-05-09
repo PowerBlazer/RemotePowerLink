@@ -1,4 +1,4 @@
-﻿export function formatByteString (fileSize: number): string {
+export function formatByteString (fileSize: number): string {
     const byteConversion = 1024;
     const bytes = fileSize;
 

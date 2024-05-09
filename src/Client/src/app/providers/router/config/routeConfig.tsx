@@ -6,7 +6,7 @@ import { SignupPage } from 'pages/SignupPage';
 import RegistrationProvider from 'app/providers/RegistrationProvider/ui/RegistrationProvider';
 import { Navbar } from 'widgets/Navbar';
 import { SftpPage } from 'pages/SftpPage';
-import {SettingsPage} from "pages/SettingsPage";
+import { SettingsPage } from 'pages/SettingsPage';
 
 export enum AppRoutes {
     MAIN = '/',

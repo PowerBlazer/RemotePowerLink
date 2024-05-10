@@ -1,7 +1,7 @@
 import {
     CreateDirectoryData,
     DeleteFoldersOrFilesData, DownloadFoldersOrFilesData, ExistDirectoryOrFileData, GetSizeFoldersOrFilesData,
-    RenameFoldersOrFilesData, UploadFilesData
+    RenameFoldersOrFilesData, SendFolderOrFilesResponse, SendFoldersOrFilesData, UploadFilesData
 } from 'app/services/SftpService/config';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 import { CancelTokenSource } from 'axios';
@@ -196,6 +196,44 @@ export class SftpService {
 
             return {
                 isSuccess: true
+            }
+        } catch (error) {
+            if (error?.response?.data.Errors) {
+                return {
+                    isSuccess: false,
+                    errors: error?.response?.data.Errors
+                }
+            }
+
+            if (error?.message) {
+                return {
+                    isSuccess: false,
+                    errors: { Server: [error?.message] }
+                }
+            }
+
+            return {
+                isSuccess: false
+            }
+        }
+    }
+    
+    static sendFoldersOrFiles = async (
+        sendFoldersOrFilesData: SendFoldersOrFilesData,
+        cancelToken?: CancelTokenSource,
+    ): Promise<ServiceResult<SendFolderOrFilesResponse>> => {
+        try {
+            const response = await HostService.api.post<ApiResult<SendFolderOrFilesResponse>>(
+                '/v1.0/sftp/send',
+                sendFoldersOrFilesData,
+                {
+                    cancelToken: cancelToken?.token,
+                    timeout: 3600000,
+                });
+            
+            return {
+                isSuccess: true,
+                result: response.data.result
             }
         } catch (error) {
             if (error?.response?.data.Errors) {

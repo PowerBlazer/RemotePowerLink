@@ -64,3 +64,15 @@ export interface ExistDirectoryOrFileData{
     folderOrFilePath: string,
     serverId: number
 }
+
+export interface SendFoldersOrFilesData{
+    foldersOrFilesToSendList: SftpFile[],
+    sourceServerId: number,
+    targetServerId: number,
+    connectionId: string,
+    remotePath: string
+}
+
+export interface SendFolderOrFilesResponse{
+    errors?: Record<string, string[]>
+}

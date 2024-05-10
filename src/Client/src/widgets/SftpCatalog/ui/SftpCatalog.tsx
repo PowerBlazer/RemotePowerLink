@@ -1,32 +1,32 @@
-import { classNames } from 'shared/lib/classNames/classNames';
-import { observer } from 'mobx-react-lite';
-import { createRef, useEffect, useMemo, useState } from 'react';
-import { Button, ThemeButton } from 'shared/ui/Button/Button';
-import { useTranslation } from 'react-i18next';
-import { SftpSelectHostCatalog } from 'widgets/SftpSelectHostCatalog';
-import { NavbarSftp } from 'widgets/NavbarSftp';
-import { SftpCatalogTable } from 'widgets/SftpCatalogTable';
-import { SftpCatalogMode } from 'app/services/SftpService/config';
-import SftpHub, { ConnectionState } from 'app/hubs/sftpHub';
+import {classNames} from 'shared/lib/classNames/classNames';
+import {observer} from 'mobx-react-lite';
+import {createRef, useEffect, useMemo, useState} from 'react';
+import {Button, ThemeButton} from 'shared/ui/Button/Button';
+import {useTranslation} from 'react-i18next';
+import {SftpSelectHostCatalog} from 'widgets/SftpSelectHostCatalog';
+import {NavbarSftp} from 'widgets/NavbarSftp';
+import {SftpCatalogTable} from 'widgets/SftpCatalogTable';
+import {SftpCatalogMode} from 'app/services/SftpService/config';
+import SftpHub, {ConnectionState} from 'app/hubs/sftpHub';
 import toast from 'react-hot-toast';
-import sftpStore, { SftpModalOption, SftpNotificationData } from 'app/store/sftpStore';
+import sftpStore, {SftpModalOption, SftpNotificationData} from 'app/store/sftpStore';
 import LogoIcon from 'shared/assets/icons/logo.svg';
 import style from './SftpCatalog.module.scss';
-import { NewFolderModal } from 'widgets/SftpModals/NewFolderModal';
-import { ErrorModal } from 'widgets/SftpModals/ErrorModal';
-import { DeleteModal } from 'widgets/SftpModals/DeleteModal';
-import { RenameModal } from 'widgets/SftpModals/RenameModal';
-import { DownloadModal } from 'widgets/SftpModals/DownloadModal';
-import { SftpNotificationPanel } from 'widgets/SftpNotificationPanel';
-import { HostService } from 'app/services/hostService';
+import {NewFolderModal} from 'widgets/SftpModals/NewFolderModal';
+import {ErrorModal} from 'widgets/SftpModals/ErrorModal';
+import {DeleteModal} from 'widgets/SftpModals/DeleteModal';
+import {RenameModal} from 'widgets/SftpModals/RenameModal';
+import {DownloadModal} from 'widgets/SftpModals/DownloadModal';
+import {SftpNotificationPanel} from 'widgets/SftpNotificationPanel';
+import {HostService} from 'app/services/hostService';
 import sidebarStore from 'app/store/sidebarStore';
-import { SidebarEditHost } from 'widgets/SidebarEditHost';
-import { EditServerResult } from 'app/services/ServerService/config/serverConfig';
+import {SidebarEditHost} from 'widgets/SidebarEditHost';
+import {EditServerResult} from 'app/services/ServerService/config/serverConfig';
 import userStore from 'app/store/userStore';
-import { useNavigate } from 'react-router-dom';
-import { Stack } from 'shared/lib/Stack';
-import { UploadModal } from 'widgets/SftpModals/UploadModal';
-import { DefaultServerIcon } from 'features/DefaultServerIcon';
+import {useNavigate} from 'react-router-dom';
+import {Stack} from 'shared/lib/Stack';
+import {UploadModal} from 'widgets/SftpModals/UploadModal';
+import {DefaultServerIcon} from 'features/DefaultServerIcon';
 import SendModal from 'widgets/SftpModals/SendModal/ui/SendModal';
 
 export interface SftpCatalogModeProps {
@@ -182,7 +182,8 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                         sftpStore.setFileItems(mode)
                     },
                     (downloadData) => { notificationDownloadOrUploadHandler(downloadData, SftpCatalogMode.First); },
-                    (uploadData) => { notificationDownloadOrUploadHandler(uploadData, SftpCatalogMode.First); }
+                    (uploadData) => { notificationDownloadOrUploadHandler(uploadData, SftpCatalogMode.First);},
+                    (sendData) => { notificationDownloadOrUploadHandler(sendData, SftpCatalogMode.First) }
                 );
 
                 await sftpHub.getFilesServer(sftpStore.firstSelectedHost.server.serverId);
@@ -229,7 +230,8 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                         sftpStore.setFileItems(mode)
                     },
                     (downloadData) => { notificationDownloadOrUploadHandler(downloadData, SftpCatalogMode.Second); },
-                    (uploadData) => { notificationDownloadOrUploadHandler(uploadData, SftpCatalogMode.Second); }
+                    (uploadData) => { notificationDownloadOrUploadHandler(uploadData, SftpCatalogMode.Second); },
+                    (sendData) => { notificationDownloadOrUploadHandler(sendData, SftpCatalogMode.Second) }
                 );
 
                 await sftpHub.getFilesServer(sftpStore.secondSelectedHost.server.serverId);

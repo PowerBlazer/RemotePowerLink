@@ -5,10 +5,12 @@ using Application.Features.SftpFeature.DownloadFoldersOrFiles;
 using Application.Features.SftpFeature.ExistDirectoryOrFile;
 using Application.Features.SftpFeature.GetSizeFoldersOrFiles;
 using Application.Features.SftpFeature.RenameFolderOrFile;
+using Application.Features.SftpFeature.SendFoldersOrFiles;
 using Application.Features.SftpFeature.UploadFiles;
 using Application.Hubs;
 using Domain.Common;
 using Domain.DTOs.Notification;
+using Domain.DTOs.Sftp;
 using Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -51,7 +53,7 @@ public class SftpController: BaseController
         [FromBody]CreateDirectoryCommand createDirectoryCommand)
     {
         createDirectoryCommand.UserId = UserId;
-        await Mediator.Publish(createDirectoryCommand);
+        await Mediator.Send(createDirectoryCommand);
 
         return new ApiActionResult();
     }
@@ -74,7 +76,7 @@ public class SftpController: BaseController
         [FromBody]RenameFolderOrFileCommand renameFolderOrFileCommand)
     {
         renameFolderOrFileCommand.UserId = UserId;
-        await Mediator.Publish(renameFolderOrFileCommand);
+        await Mediator.Send(renameFolderOrFileCommand);
 
         return new ApiActionResult();
     }
@@ -97,7 +99,7 @@ public class SftpController: BaseController
         [FromBody]DeleteFoldersOrFilesCommand deleteFoldersOrFilesCommand)
     {
         deleteFoldersOrFilesCommand.UserId = UserId;
-        await Mediator.Publish(deleteFoldersOrFilesCommand);
+        await Mediator.Send(deleteFoldersOrFilesCommand);
 
         return new ApiActionResult();
     }
@@ -251,6 +253,10 @@ public class SftpController: BaseController
     /// <response code="403">Доступ запрещен</response>
     /// <response code="401">Пользователь не авторизован.</response>
     /// <response code="500">Ошибка на сервере.</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [HttpPost("exist")]
     public async Task<ApiActionResult<bool>> ExistFolderOrFile(
         [FromBody] ExistDirectoryOrFileCommand existDirectoryOrFileCommand,
@@ -263,6 +269,36 @@ public class SftpController: BaseController
         return new ApiActionResult<bool>
         {
             Result = existResult
+        };
+    }
+
+    /// <summary>
+    /// Отправляет файлы или папки к указанному серверу по указанному пути с помощью SFTP
+    /// </summary>
+    /// <param name="sendFoldersOrFilesCommand"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <response code="200">Файлы или папки отправлены</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="403">Доступ запрещен</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [HttpPost("send")]
+    public async Task<ApiActionResult<SendFoldersOrFilesResponse>> SendFoldersOrFiles(
+        [FromBody] SendFoldersOrFilesCommand sendFoldersOrFilesCommand,
+        CancellationToken cancellationToken)
+    {
+        sendFoldersOrFilesCommand.UserId = UserId;
+
+        var sendResult = await Mediator.Send(sendFoldersOrFilesCommand, cancellationToken);
+
+        return new ApiActionResult<SendFoldersOrFilesResponse>
+        {
+            Result = sendResult
         };
     }
 

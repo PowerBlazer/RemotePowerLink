@@ -13,7 +13,7 @@ public interface ISftpClientService
     SftpClient? GetClient(string connectionKey);
     
     /// <summary>
-    /// Создает новое подключение по SSH или возвращает сущетсвующее
+    /// Создает новое подключение по SSH или возвращает существующее
     /// </summary>
     /// <param name="connectionServerParameter">Параметры для подключения по SSH</param>
     /// <param name="connectionKey">Строка подключения пользователя</param>

@@ -17,11 +17,6 @@ public class UserService: IUserService
     {
         var identityUser = await _identityUserRepository.GetUserByIdAsync(userId);
 
-        if (identityUser is null)
-        {
-            throw new NotFoundException("Пользователь с указанным 'UserId' не найден", "UserId");
-        }
-
         return new UserInformation
         {
             UserId = identityUser.Id,

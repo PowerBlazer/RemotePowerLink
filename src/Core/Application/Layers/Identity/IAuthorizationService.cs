@@ -46,4 +46,11 @@ public interface IAuthorizationService
     /// <param name="refreshTokenRequest">Данные запроса обновления токенов.</param>
     /// <returns>Обновленные токены.</returns>
     Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest refreshTokenRequest);
+    
+    /// <summary>
+    /// Обновление пароля у пользователя
+    /// </summary>
+    /// <param name="updatePasswordRequest"></param>
+    /// <returns></returns>
+    Task UpdatePassword(UpdatePasswordRequest updatePasswordRequest);
 }

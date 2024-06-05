@@ -1,4 +1,5 @@
-﻿using Identity.Contexts;
+﻿using Domain.Exceptions;
+using Identity.Contexts;
 using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,26 @@ public class IdentityUserRepository: IIdentityUserRepository
         return _identityContext.IdentityUsers.FirstOrDefaultAsync(p => p.Email == email);
     }
 
-    public Task<IdentityUser?> GetUserByIdAsync(long userId)
+    public async Task<IdentityUser> GetUserByIdAsync(long userId)
     {
-        return _identityContext.IdentityUsers.FirstOrDefaultAsync(p => p.Id == userId);
+        var identityUser = await _identityContext.IdentityUsers
+            .FirstOrDefaultAsync(p => p.Id == userId);
+        
+        if (identityUser is null)
+        {
+            throw new NotFoundException("Пользователь с указанным 'UserId' не найден", "UserId");
+        }
+
+        return identityUser;
+    }
+
+    public async Task<IdentityUser> UpdateUserAsync(IdentityUser identityUser)
+    {
+        _identityContext.Attach(identityUser);
+        _identityContext.IdentityUsers.Update(identityUser);
+        
+        await _identityContext.SaveChangesAsync();
+
+        return identityUser;
     }
 }

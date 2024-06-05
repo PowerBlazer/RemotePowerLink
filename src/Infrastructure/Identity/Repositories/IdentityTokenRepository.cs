@@ -44,4 +44,11 @@ public class IdentityTokenRepository: IIdentityTokenRepository
         return _identityContext.IdentityTokens
             .FirstOrDefaultAsync(p => p.UserId == userId && p.IpAddress == ipAddress);
     }
+
+    public async Task DeleteTokensByUserIdAsync(long userId)
+    { 
+        await _identityContext.IdentityTokens
+            .Where(p => p.UserId == userId)
+            .ExecuteDeleteAsync();
+    }
 }

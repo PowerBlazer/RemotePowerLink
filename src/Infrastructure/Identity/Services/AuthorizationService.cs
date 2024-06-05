@@ -230,10 +230,27 @@ public class AuthorizationService: IAuthorizationService
         {
             var identityUser = await _identityUserRepository.GetUserByIdAsync(userId);
             
-            accessToken = _tokenService.GenerateAccessToken(identityUser!);
-            refreshToken = await _tokenService.UpdateRefreshTokenAsync(identityUser!.Id,refreshTokenRequest.IpAddress);
+            accessToken = _tokenService.GenerateAccessToken(identityUser);
+            refreshToken = await _tokenService.UpdateRefreshTokenAsync(identityUser.Id,refreshTokenRequest.IpAddress);
         });
 
         return new RefreshTokenResponse(accessToken, refreshToken);
+    }
+
+    public async Task UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+    {
+        var identityUser = await _identityUserRepository.GetUserByIdAsync(updatePasswordRequest.UserId);
+        
+        if (identityUser.PasswordHash != ComputeHash256.ComputeSha256Hash(updatePasswordRequest.PreviousPassword))
+        {
+            throw new AuthenticationValidException("Password","Неправильный пароль");
+        }
+        
+        var newPasswordHash = ComputeHash256.ComputeSha256Hash(updatePasswordRequest.NewPassword);
+
+        identityUser.PasswordHash = newPasswordHash;
+
+        await _identityUserRepository.UpdateUserAsync(identityUser);
+        await _tokenRepository.DeleteTokensByUserIdAsync(identityUser.Id);
     }
 }

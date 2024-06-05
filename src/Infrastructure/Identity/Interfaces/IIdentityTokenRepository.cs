@@ -8,4 +8,5 @@ public interface IIdentityTokenRepository
     Task<IdentityToken?> GetTokenByRefreshAsync(string refreshToken);
     Task<IdentityToken> UpdateTokenAsync(IdentityToken newToken);
     Task<IdentityToken?> GetTokenByUserAndIpAddress(long userId,string ipAddress);
+    Task DeleteTokensByUserIdAsync(long userId);
 }

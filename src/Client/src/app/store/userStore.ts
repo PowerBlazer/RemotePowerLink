@@ -5,6 +5,12 @@ import { UserData } from 'app/services/UserService/config/userConfig';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { EncodingData } from 'app/services/EncodingService/config';
 
+export interface SettingsModalOption {
+    passwordState: boolean
+}
+
+
+
 class UserStore {
     @observable public userProxies: ProxyData[] | null = null;
     @observable public userIdentities: IdentityData[] | null = null;
@@ -13,7 +19,11 @@ class UserStore {
 
     public userData: UserData | null = null;
     public isLoadData: boolean = false;
-    @observable public location: string = document.location.pathname;
+    public location: string = document.location.pathname;
+    
+    public settingsModalOptions: SettingsModalOption = {
+        passwordState: false
+    }
 
     constructor () {
         makeAutoObservable(this);

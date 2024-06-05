@@ -30,6 +30,8 @@ function SettingsPage ({ className }: SettingsPageProps) {
                     </div>
                 </SettingBlock>
             </div>
+            
+            
         </div>
     );
 }

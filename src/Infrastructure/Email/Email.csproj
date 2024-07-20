@@ -13,6 +13,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0-preview.7.23375.6" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-preview.7.23375.6" />
       <PackageReference Include="MimeKit" Version="4.1.0" />
+      <PackageReference Include="RazorLight" Version="2.3.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,8 +22,16 @@
 
     <ItemGroup>
       <None Remove="Common\EmailPage.cshtml" />
-      <Content Include="Common\EmailPage.cshtml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Common\ConfirmEmailPage.cshtml" />
+      <Content Include="Common\ConfirmEmailPage.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Common\ConfirmCodeResetPassword.cshtml" />
+      <Content Include="Common\ConfirmCodeResetPassword.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
 

@@ -17,7 +17,7 @@ interface PasswordModalProps {
     className?: string;
 }
 
-export function PasswordModal ({ className }: PasswordModalProps) {
+function PasswordModal ({ className }: PasswordModalProps) {
     const { theme } = useTheme();
     const [errors, setErrors] = useState<Record<string, string[]>>({});
     const { t } = useTranslation('translation');
@@ -53,7 +53,6 @@ export function PasswordModal ({ className }: PasswordModalProps) {
             previousPassword: e.target.value
         })
     }
-    
     const onChangeNewPassword = (e: ChangeEvent<HTMLInputElement>) => {
         setErrors(prevValue => {
             const updatedErrors = { ...prevValue };

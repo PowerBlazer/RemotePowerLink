@@ -19,7 +19,7 @@ public class VerificationEmailSendConsumer: IConsumer<VerificationEmailSendEvent
 
     public async Task Consume(ConsumeContext<VerificationEmailSendEvent> context)
     {
-        var emailPagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Common", "EmailPage.cshtml");
+        var emailPagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Common", "ConfirmEmailPage.cshtml");
         
         if (!File.Exists(emailPagePath))
         {

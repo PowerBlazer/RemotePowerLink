@@ -42,7 +42,7 @@ export function ServerManagerItem (props: ServerManagerItemProps) {
             </div>
             <div className={classNames(style.data_options)}>
                 {mode === ServerManagerCatalogMode.Catalog && <ButtonEdit className={style.button_edit} serverManagerData={serverManagerDataItem}/>}
-                {serverManagerDataItem.dataType === DataTypeEnum.SERVER &&
+                {serverManagerDataItem.dataType === DataTypeEnum.SERVER && onConnect &&
                     <ButtonConnect serverData={serverManagerDataItem} onConnect={onConnect}/>
                 }
             </div>

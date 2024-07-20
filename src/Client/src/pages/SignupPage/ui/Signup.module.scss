@@ -88,17 +88,19 @@
     background-color: #F7F9FA;
     border: 1px solid #E6EBED;
     border-radius: 10px;
+    
+    & > svg {
+        width: 25px;
+    }
+
+   & > p{
+        width: 100%;
+        color: black;
+        font-size: 15px;
+    }
 }
 
-.info_block > svg {
-    width: 25px;
-}
 
-.info_block > p{
-    width: 100%;
-    color: black;
-    font-size: 15px;
-}
 
 .login_link{
     font-weight: 600;

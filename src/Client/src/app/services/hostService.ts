@@ -20,6 +20,9 @@ export interface ServiceResult<T> {
     result?: T
 }
 
+
+
+
 export class HostService {
     static _apiHost: string = process.env.API_HOST;
     static _resourceHost: string = !__IS_DEV__ ? '/resource' : process.env.API_HOST;
@@ -30,7 +33,7 @@ export class HostService {
     
     public static MaximumDownloadSizeBytes = 5368709120;
     public static MaximumUploadSize = 5368709120;
-    public static MaximisSendBytes = 5368709120;
+    public static MaximumSendBytes = 5368709120;
 
     static get apiWithoutInterceptors (): AxiosInstance {
         if (!this._apiWithoutInterceptors) {

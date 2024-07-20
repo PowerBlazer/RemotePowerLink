@@ -80,6 +80,14 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
                 >
                     {t('Выйти из системы')}
                 </Button>
+
+                <Button
+                    className={classNames(style.logout, {}, [style.tool_button])}
+                    theme={ThemeButton.PRIMARY}
+                >
+                    {t('Выйти из системы со всех устройств')}
+                </Button>
+                
                 <Button
                     className={classNames(style.delete_account, {}, [style.tool_button])}
                     theme={ThemeButton.PRIMARY}
@@ -90,6 +98,7 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
                 <Button
                     className={classNames(style.change_password, {}, [style.tool_button])}
                     theme={ThemeButton.PRIMARY}
+                    onClick={() => userStore.settingsModalOptions.passwordState = true }
                 >
                     {t('Изменить пароль')}
                 </Button>

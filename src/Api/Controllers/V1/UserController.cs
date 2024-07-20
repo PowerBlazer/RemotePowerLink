@@ -1,4 +1,5 @@
-﻿using Application.Features.UserFeature.GetUserData;
+﻿using Application.Features.UserFeature.ChangePassword;
+using Application.Features.UserFeature.GetUserData;
 using Domain.Common;
 using Domain.DTOs.User;
 using MediatR;
@@ -39,5 +40,31 @@ public class UserController : BaseController
         {
             Result = result
         };
+    }
+
+
+    /// <summary>
+    /// Обновляет пароль у пользователя
+    /// </summary>
+    /// <returns></returns>
+    /// <response code="200">Успешно обновлен пароль</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="404">Пользователь не найден.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPut("password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ApiActionResult> ChangePassword([FromBody] ChangePasswordCommand changePasswordCommand,
+        CancellationToken cancellationToken)
+    {
+
+        changePasswordCommand.UserId = UserId;
+        
+        await Mediator.Send(changePasswordCommand, cancellationToken);
+
+        return new ApiActionResult();
     }
 }

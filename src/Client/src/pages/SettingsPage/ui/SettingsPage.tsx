@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { LangSwitcher } from 'features/LangSwitcher';
 import { AccountSettingBlock } from 'widgets/AccountSettingBlock';
+import userStore from "app/store/userStore";
+import {PasswordModal} from "widgets/SettingModals/PasswordModal/ui/PasswordModal";
 
 interface SettingsPageProps {
     className?: string;
@@ -30,7 +32,7 @@ function SettingsPage ({ className }: SettingsPageProps) {
                     </div>
                 </SettingBlock>
             </div>
-            
+            {userStore.settingsModalOptions.passwordState && <PasswordModal/>}
             
         </div>
     );

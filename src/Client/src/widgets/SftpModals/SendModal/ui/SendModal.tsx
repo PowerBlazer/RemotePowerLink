@@ -51,7 +51,7 @@ function SendModal ({ className, mode }: SendModalProps) {
             return;
         }
         
-        if(size >= HostService.MaximisSendBytes){
+        if(size >= HostService.MaximumSendBytes){
             setErrors(prevErrors => {
                 return {
                     ...prevErrors,

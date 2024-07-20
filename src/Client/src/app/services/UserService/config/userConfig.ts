@@ -7,3 +7,8 @@ export interface UserData {
     emailConfirmed?: boolean,
     twoFactorEnabled?: boolean
 }
+
+export interface ChangePasswordData{
+    previousPassword: string,
+    newPassword: string
+}

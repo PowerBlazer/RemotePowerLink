@@ -1,4 +1,4 @@
-import { UserData } from 'app/services/UserService/config/userConfig';
+import {ChangePasswordData, UserData} from 'app/services/UserService/config/userConfig';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class UserService {
@@ -14,6 +14,21 @@ export class UserService {
         } catch (e) {
             return {
                 isSuccess: false
+            }
+        }
+    }
+    
+    static changePassword = async (changePasswordData: ChangePasswordData): Promise<ServiceResult<any>> => {
+        try {
+            await HostService.api.put('/v1/user/password', changePasswordData)
+
+            return {
+                isSuccess: true,
+            };
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
             }
         }
     }

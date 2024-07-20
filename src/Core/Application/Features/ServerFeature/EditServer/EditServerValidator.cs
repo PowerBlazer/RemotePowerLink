@@ -1,4 +1,4 @@
-﻿using Domain.Services;
+﻿using Application.Services.Abstract;
 using FluentValidation;
 
 namespace Application.Features.ServerFeature.EditServer;

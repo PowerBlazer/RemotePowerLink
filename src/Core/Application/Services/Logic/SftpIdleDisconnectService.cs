@@ -1,6 +1,6 @@
-﻿using Domain.Services;
+﻿using Application.Services.Abstract;
 
-namespace Application.Services;
+namespace Application.Services.Logic;
 
 public class SftpIdleDisconnectService : IDisposable
 {

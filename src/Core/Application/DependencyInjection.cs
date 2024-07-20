@@ -2,7 +2,8 @@
 using Application.Features.AuthorizationFeature;
 using Application.Middlewares;
 using Application.Services;
-using Domain.Services;
+using Application.Services.Abstract;
+using Application.Services.Logic;
 using FluentValidation;
 using JetBrains.Annotations;
 using MediatR;

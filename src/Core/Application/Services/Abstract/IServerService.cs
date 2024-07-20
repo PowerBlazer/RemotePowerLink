@@ -1,8 +1,8 @@
-﻿using Domain.Services.Parameters;
-using Domain.Services.Results;
+﻿using Application.Services.Abstract.Parameters;
+using Application.Services.Abstract.Results;
 using Renci.SshNet;
 
-namespace Domain.Services;
+namespace Application.Services.Abstract;
 
 public interface IServerService
 {

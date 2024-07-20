@@ -1,8 +1,8 @@
-﻿using Domain.DTOs.Server;
+﻿using Application.Services.Abstract;
+using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Server;
 using Domain.Exceptions;
 using Domain.Repository;
-using Domain.Services;
-using Domain.Services.Parameters;
 using JetBrains.Annotations;
 using MediatR;
 

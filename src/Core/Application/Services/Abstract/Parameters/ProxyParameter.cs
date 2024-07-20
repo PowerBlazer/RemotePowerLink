@@ -1,4 +1,4 @@
-﻿namespace Domain.Services.Parameters;
+﻿namespace Application.Services.Abstract.Parameters;
 
 public class ProxyParameter : ConnectionServerParameter
 {

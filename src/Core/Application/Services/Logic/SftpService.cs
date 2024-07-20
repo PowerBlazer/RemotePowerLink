@@ -1,7 +1,7 @@
-﻿using Domain.Services;
+﻿using Application.Services.Abstract;
 using Renci.SshNet;
 
-namespace Application.Services;
+namespace Application.Services.Logic;
 
 public class SftpService: ISftpService
 {

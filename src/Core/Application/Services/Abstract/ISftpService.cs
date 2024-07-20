@@ -1,6 +1,6 @@
 ﻿using Renci.SshNet;
 
-namespace Domain.Services;
+namespace Application.Services.Abstract;
 
 public interface ISftpService
 {

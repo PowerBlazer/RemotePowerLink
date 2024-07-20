@@ -1,7 +1,7 @@
-﻿using Domain.Services.Parameters;
+﻿using Application.Services.Abstract.Parameters;
 using Renci.SshNet;
 
-namespace Domain.Services;
+namespace Application.Services.Abstract;
 
 public interface ISftpClientService
 {

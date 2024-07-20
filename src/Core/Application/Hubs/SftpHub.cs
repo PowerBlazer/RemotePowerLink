@@ -1,10 +1,11 @@
 ﻿using Application.Services;
+using Application.Services.Abstract;
+using Application.Services.Abstract.Parameters;
+using Application.Services.Logic;
 using Domain.DTOs.Sftp;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Repository;
-using Domain.Services;
-using Domain.Services.Parameters;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;

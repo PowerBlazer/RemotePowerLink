@@ -1,4 +1,4 @@
-﻿namespace Domain.Services.Results;
+﻿namespace Application.Services.Abstract.Results;
 
 public class SystemTypeResult
 {

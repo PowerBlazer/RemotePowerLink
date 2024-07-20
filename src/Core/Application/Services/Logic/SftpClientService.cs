@@ -1,11 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Text;
+using Application.Services.Abstract;
+using Application.Services.Abstract.Parameters;
 using Domain.Exceptions;
-using Domain.Services;
-using Domain.Services.Parameters;
 using Renci.SshNet;
 
-namespace Application.Services;
+namespace Application.Services.Logic;
 
 public class SftpClientService: ISftpClientService
 {

@@ -2,15 +2,15 @@
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Application.Services.Abstract;
+using Application.Services.Abstract.Parameters;
+using Application.Services.Abstract.Results;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Repository;
-using Domain.Services;
-using Domain.Services.Parameters;
-using Domain.Services.Results;
 using Renci.SshNet;
 
-namespace Application.Services;
+namespace Application.Services.Logic;
 
 public class ServerService: IServerService
 {

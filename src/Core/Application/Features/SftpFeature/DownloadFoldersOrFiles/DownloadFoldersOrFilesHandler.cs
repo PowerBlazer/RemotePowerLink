@@ -1,11 +1,11 @@
 ﻿using Application.Hubs;
+using Application.Services.Abstract;
+using Application.Services.Abstract.Parameters;
 using Domain.DTOs.Notification;
 using Domain.DTOs.Sftp;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Repository;
-using Domain.Services;
-using Domain.Services.Parameters;
 using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;

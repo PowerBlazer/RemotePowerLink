@@ -1,8 +1,8 @@
-﻿using Domain.DTOs.Proxy;
+﻿using Application.Services.Abstract;
+using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Proxy;
 using Domain.Exceptions;
 using Domain.Repository;
-using Domain.Services;
-using Domain.Services.Parameters;
 using MediatR;
 
 namespace Application.Features.ProxyFeature.EditProxy;

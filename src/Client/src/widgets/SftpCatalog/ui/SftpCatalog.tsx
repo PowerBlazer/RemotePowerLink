@@ -238,12 +238,18 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             }
 
             sftpHub.onError = (errors) => {
+                if (errors?.Connection) {
+                    setIsViewErrorPanel(true);
+                }
+                
                 if (sftpStore.secondSelectedHost) {
                     sftpStore.secondSelectedHost = {
                         ...sftpStore.secondSelectedHost,
                         isLoad: false,
                         error: { errors }
                     }
+
+                    sftpStore.secondSelectedHost.modalOption.errorState = true;
                 }
 
                 toast.error(JSON.stringify(errors))

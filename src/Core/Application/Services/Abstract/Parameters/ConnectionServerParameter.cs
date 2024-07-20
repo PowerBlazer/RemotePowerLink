@@ -1,7 +1,7 @@
 ﻿
 using Domain.Entities;
 
-namespace Domain.Services.Parameters;
+namespace Application.Services.Abstract.Parameters;
 
 public class ConnectionServerParameter
 {

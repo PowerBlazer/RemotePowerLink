@@ -1,5 +1,6 @@
 ﻿using Application.Layers.Identity;
 using Domain.DTOs.Authorization;
+using Domain.DTOs.User;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -21,7 +22,8 @@ public class ChangePasswordHandler: IRequestHandler<ChangePasswordCommand>
         {
             PreviousPassword = request.PreviousPassword,
             NewPassword = request.NewPassword,
-            UserId = request.UserId
+            UserId = request.UserId,
+            SessionId = request.SessionId
         });
     }
 }

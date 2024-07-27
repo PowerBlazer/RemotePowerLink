@@ -22,7 +22,7 @@ public class GetUserDataHandler: IRequestHandler<GetUserDataCommand, GetUserData
     public async Task<GetUserDataResponse> Handle(GetUserDataCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserAsync(request.UserId);
-        var identityUserData = await _userService.GetUserInformationAsync(request.UserId);
+        var identityUserData = await _userService.GetUserInformation(request.UserId);
         
         var userDataResponse = GetUserDataResponse.MapUserTo(user);
 

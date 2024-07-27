@@ -115,7 +115,7 @@ public class AuthorizationService: IAuthorizationService
 
         var sessionVerifyEmail = JsonSerializer.Deserialize<SessionVerifyEmail>(sessionValue);
 
-        if (verifyCode != sessionVerifyEmail!.VerificationCode)
+        if (verifyCode != sessionVerifyEmail?.VerificationCode)
         {
             throw new SessionCodeNotValidException("Неправильный код верификации");
         }

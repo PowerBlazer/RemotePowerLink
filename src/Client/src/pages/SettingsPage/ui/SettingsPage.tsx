@@ -21,7 +21,7 @@ function SettingsPage ({ className }: SettingsPageProps) {
             <div className={classNames(style.setting_inner)}>
                 <AccountSettingBlock/>
 
-                <SettingBlock className={classNames(style.general_block)} headerName={'General'}>
+                <SettingBlock className={classNames(style.general_block)} headerName={t('Главная')}>
                     <div className={classNames(style.theme_switcher, {}, [style.general_row])}>
                         {t('Тема')}
                         <ThemeSwitcher/>

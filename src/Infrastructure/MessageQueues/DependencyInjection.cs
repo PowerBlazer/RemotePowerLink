@@ -1,6 +1,8 @@
-﻿using Application.Layers.MessageQueues.UserRegistered;
+﻿using Application.Layers.MessageQueues.ResetPasswordCode;
+using Application.Layers.MessageQueues.UserRegistered;
 using Application.Layers.MessageQueues.VerificationEmailSend;
 using MassTransit;
+using MessageQueues.SendResetPasswordCode;
 using MessageQueues.UserRegistered;
 using MessageQueues.VerificationEmailSend;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,7 @@ public static class DependencyInjection
         {
             x.AddConsumer<UserRegisteredConsumer>();
             x.AddConsumer<VerificationEmailSendConsumer>();
+            x.AddConsumer<SendResetPasswordCodeConsumer>();
 
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -30,21 +33,21 @@ public static class DependencyInjection
                     h.Password(rabbitMqConfiguration?.Password);
                 });
 
-                cfg.ReceiveEndpoint("user-registered-queue", e =>
-                {
-                    e.ConfigureConsumer<UserRegisteredConsumer>(context);
-                });
-                
+                cfg.ReceiveEndpoint("user-registered-queue", e => 
+                    e.ConfigureConsumer<UserRegisteredConsumer>(context));
+
                 cfg.ReceiveEndpoint("verification-email-send-queue", e =>
-                {
-                    e.ConfigureConsumer<VerificationEmailSendConsumer>(context);
-                });
+                    e.ConfigureConsumer<VerificationEmailSendConsumer>(context));
+                
+                cfg.ReceiveEndpoint("send-reset-password-code-queue", e => 
+                    e.ConfigureConsumer<SendResetPasswordCodeConsumer>(context));
 
             });
         });
 
         services.AddScoped<IUserRegisteredProducer, UserRegisteredProducer>();
         services.AddScoped<IVerificationEmailSendProducer, VerificationEmailSendProducer>();
+        services.AddScoped<ISendResetPasswordCodeProducer, SendResetPasswordCodeProducer>();
 
         return services;
     }

@@ -11,7 +11,7 @@ public class ResendConfirmationCodeValidator: AbstractValidator<ResendConfirmati
         RuleFor(p => p.SessionId)
             .NotNull().WithMessage("Поле не может быть пустым");
         
-        RuleFor(p=>p.Email)
+        RuleFor(p=> p.Email)
             .NotNull().WithMessage("Поле не может быть пустым");
     }
 }

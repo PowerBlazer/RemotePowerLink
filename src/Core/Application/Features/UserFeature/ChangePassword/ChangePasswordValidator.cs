@@ -18,6 +18,9 @@ public class ChangePasswordValidator: AbstractValidator<ChangePasswordCommand>
 
 
         RuleFor(p=> p.PreviousPassword)
-            .NotEmpty().WithMessage("Поле не может быть пустым"); 
+            .NotEmpty().WithMessage("Поле не может быть пустым");
+        
+        RuleFor(p => p.SessionId)
+            .NotEmpty().WithMessage("Поле не может быть пустым");
     }
 }

@@ -19,6 +19,11 @@ public class ChangePasswordCommand: IRequest
     public required string NewPassword { get; set; }
     
     /// <summary>
+    /// Идентификатор сессии сброса пароля
+    /// </summary>
+    public required string SessionId { get; set; }
+    
+    /// <summary>
     /// Идентификатор пользователя
     /// </summary>
     [JsonIgnore]

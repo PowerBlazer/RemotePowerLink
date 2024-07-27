@@ -132,7 +132,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
         if (mode === SftpCatalogMode.First) {
             if (sftpStore.firstSelectedHost?.sftpHub) {
-                sftpStore.firstSelectedHost.sftpHub.closeConnection();
+               await sftpStore.firstSelectedHost.sftpHub.closeConnection();
             }
 
             sftpStore.firstSelectedHost = newHostInstance;
@@ -140,7 +140,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
         if (mode === SftpCatalogMode.Second) {
             if (sftpStore.secondSelectedHost?.sftpHub) {
-                sftpStore.secondSelectedHost.sftpHub.closeConnection();
+               await sftpStore.secondSelectedHost.sftpHub.closeConnection();
             }
 
             sftpStore.secondSelectedHost = newHostInstance;

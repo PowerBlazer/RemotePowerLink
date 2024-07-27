@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Domain.DTOs.Authorization;
+namespace Domain.DTOs.User;
 
 public class UpdatePasswordRequest
 {
@@ -13,6 +13,11 @@ public class UpdatePasswordRequest
     /// Новый пароль пользователя
     /// </summary>
     public required string NewPassword { get; set; }
+    
+    /// <summary>
+    /// Идентификатор сессии сброса пароля
+    /// </summary>
+    public required string SessionId { get; set; }
     
     /// <summary>
     /// Идентификатор пользователя

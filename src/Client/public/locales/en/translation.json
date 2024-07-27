@@ -99,11 +99,13 @@
     "Выйти из системы": "Log out",
     "Почта": "Mail",
     "Не указан": "Not specified",
-    "Смена пароля": "Chnage Password",
+    "Смена пароля": "Change Password",
     "Введите старый пароль": "Enter the old password",
     "Введите новый пароль": "Enter the new password",
     "Предыдущий пароль": "Old password",
     "Новый пароль": "New password",
-    "Смена пароля аккаунта, произведет к выходу из системы со всех устройств": "Changing the account password will cause you to log out from all devices"
-    
+    "Смена пароля аккаунта, произведет к выходу из системы со всех устройств": "Changing the account password will cause you to log out from all devices",
+    "Номер телефона": "Phone number",
+    "Выйти из системы со всех устройств": "Log out from all devices",
+    "Аккаунт": "Account"
 }

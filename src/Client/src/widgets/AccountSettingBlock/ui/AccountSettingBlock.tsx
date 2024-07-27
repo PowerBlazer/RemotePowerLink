@@ -23,6 +23,10 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
     const usernameChangeHandler = () => {
 
     }
+    
+    const passwordChangeHandler = () => {
+        userStore.settingsModalOptions.passwordState = true;
+    }
 
     const logoutHandler = () => {
         AuthorizationService.logout();
@@ -32,7 +36,7 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
 
     return (
         <SettingBlock
-            headerName={'Account'}
+            headerName={t('Аккаунт')}
             className={classNames(style.accountSettingBlock, { [style.load]: userStore.isLoadData }, [className])}
         >
             {userStore.isLoadData && <Loader className={classNames(style.loader)}/>}
@@ -72,6 +76,18 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
                     {t('Изменить')}
                 </Button>
             </div>
+
+            <div className={classNames(style.password_setting, {}, [style.setting_row])}>
+                <div className={classNames(style.password_label, {}, [style.label])}>
+                    <div className={classNames(style.header)}>{t('Пароль')}:</div>
+                    <p>
+                        *********
+                    </p>
+                </div>
+                <Button className={classNames(style.button_change)} onClick={passwordChangeHandler}>
+                    {t('Изменить')}
+                </Button>
+            </div>
             <div className={classNames(style.tools_panel)}>
                 <Button
                     className={classNames(style.logout, {}, [style.tool_button])}
@@ -86,21 +102,6 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
                     theme={ThemeButton.PRIMARY}
                 >
                     {t('Выйти из системы со всех устройств')}
-                </Button>
-                
-                <Button
-                    className={classNames(style.delete_account, {}, [style.tool_button])}
-                    theme={ThemeButton.PRIMARY}
-                >
-                    {t('Удалить аккаунт')}
-                </Button>
-
-                <Button
-                    className={classNames(style.change_password, {}, [style.tool_button])}
-                    theme={ThemeButton.PRIMARY}
-                    onClick={() => userStore.settingsModalOptions.passwordState = true }
-                >
-                    {t('Изменить пароль')}
                 </Button>
             </div>
         </SettingBlock>

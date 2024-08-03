@@ -10,7 +10,7 @@ public class SessionCodeNotFoundException: Exception
         Errors = new Dictionary<string, List<string>>
         {
             {
-                "Session",
+                "SessionId",
                 new List<string>
                 {
                     error
@@ -18,4 +18,6 @@ public class SessionCodeNotFoundException: Exception
             }
         };
     }
+    
+    
 }

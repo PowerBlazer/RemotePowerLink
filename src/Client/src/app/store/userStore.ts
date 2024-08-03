@@ -1,7 +1,7 @@
 import { makeAutoObservable, configure, observable } from 'mobx';
 import { ProxyData } from 'app/services/ProxyService/config/proxyConfig';
 import { IdentityData } from 'app/services/IdentityService/config/identityConfig';
-import { UserData } from 'app/services/UserService/config/userConfig';
+import { UserData } from 'app/services/UserService/config';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { EncodingData } from 'app/services/EncodingService/config';
 
@@ -166,7 +166,8 @@ class UserStore {
 
     removeUserIdentity (identityId: number) {
         if (this.userIdentities && this.userServers && this.userProxies) {
-            const serversInIdentity = this.userServers.filter(p => p.identityId === identityId)
+            const serversInIdentity = this.userServers
+                .filter(p => p.identityId === identityId)
                 .map(p => p.serverId);
 
             const proxiesInIdentity = this.userProxies

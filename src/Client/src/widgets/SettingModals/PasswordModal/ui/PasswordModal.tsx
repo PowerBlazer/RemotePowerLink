@@ -1,18 +1,23 @@
-﻿import {observer} from "mobx-react-lite";
-import {Modal, ThemeModal, TypeModal} from "shared/ui/Modal";
-import {useTheme} from "shared/lib/Theme/useTheme";
-import {Theme} from "shared/lib/Theme/ThemeContext";
+﻿import { observer } from "mobx-react-lite";
+import { Modal, ThemeModal, TypeModal } from "shared/ui/Modal";
+import { useTheme } from "shared/lib/Theme/useTheme";
+import { Theme } from "shared/lib/Theme/ThemeContext";
 import userStore from "app/store/userStore";
-import {ChangeEvent, useCallback, useMemo, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {classNames} from "shared/lib/classNames/classNames";
+import { ChangeEvent, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { classNames } from "shared/lib/classNames/classNames";
 import style from './PasswordModal.module.scss';
-import {Input} from "shared/ui/Input";
-import {ChangePasswordData} from "app/services/UserService/config";
-import {UserService} from "app/services/UserService/userService";
+import { Input } from "shared/ui/Input";
+import { ChangePasswordData } from "app/services/UserService/config";
+import { UserService } from "app/services/UserService/userService";
 import toast from "react-hot-toast";
 import InfoIcon from "shared/assets/icons/info.svg";
-import {useTimer} from "react-timer-and-stopwatch";
+import { useTimer } from "react-timer-and-stopwatch";
+import {Button} from "shared/ui/Button/Button";
+import {ErrorLabel} from "shared/ui/ErrorLabel";
+import {ErrorList} from "shared/ui/ErrorList";
+import {useNavigate} from "react-router-dom";
+import {AppRoutes} from "app/providers/router/config/routeConfig";
 
 interface PasswordModalProps {
     className?: string;
@@ -23,6 +28,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
     const [errors, setErrors] = useState<Record<string, string[]>>({});
     const { t } = useTranslation('translation');
     const [sessionState, setSessionState] = useState<boolean>(false);
+    const location = useNavigate();
     
     const [
         changePasswordData, 
@@ -30,7 +36,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
     ] = useState<ChangePasswordData>({ previousPassword: '', newPassword: '', sessionId:'' });
     
     const [verificationCode, setVerificationCode] = useState<string>('');
-    const [isResend, setResendValue] = useState<boolean>(true);
+    const [isResend, setResendValue] = useState<boolean>(false);
 
     const timer = useTimer({
         create: {
@@ -48,7 +54,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
     })
 
     const { timerText, resetTimer } = timer;
-    
+    const isSessionNull = changePasswordData.sessionId.length === 0;
     
     const changePasswordHandler = async () => {
         const changePasswordResult = await UserService.changePassword(changePasswordData);
@@ -57,6 +63,10 @@ function PasswordModal ({ className }: PasswordModalProps) {
             userStore.settingsModalOptions.passwordState = false;
             
             toast.success(t('Пароль успешно изменен'));
+            
+            await delay(1000);
+            
+            location(`/${AppRoutes.LOGIN}`)
         }
         
         if(!changePasswordResult.isSuccess){
@@ -71,7 +81,10 @@ function PasswordModal ({ className }: PasswordModalProps) {
             setChangePasswordData({
                 ...changePasswordData,
                 sessionId: codeResult.result.sessionId
-            })
+            });
+            
+            resetTimer();
+            setResendValue(false);
         }
         
         if(!codeResult.isSuccess){
@@ -79,21 +92,46 @@ function PasswordModal ({ className }: PasswordModalProps) {
         }
         
     }
+    const resendCodeResetPasswordHandler = async () => {
+        if (isResend) {
+            const codeResult = await UserService.resendResetPasswordCode({
+                sessionId: changePasswordData.sessionId
+            });
+
+            if(codeResult.isSuccess){
+                setChangePasswordData({
+                    ...changePasswordData,
+                    sessionId: codeResult.result.sessionId
+                })
+
+                resetTimer();
+                setResendValue(false);
+            }
+
+            if(!codeResult.isSuccess){
+                setErrors(codeResult.errors);
+            }
+        }
+       
+    } 
     
     const confirmSessionHandler = async () => {
+        const verifyResult = await UserService.verifyResetPassword({
+            sessionId: changePasswordData.sessionId,
+            verificationCode: verificationCode
+        });
         
+        if(verifyResult.isSuccess){
+            setSessionState(true)
+        }
         
-        
-        
-        setSessionState(true)
+        if(!verifyResult.isSuccess){
+            setErrors(verifyResult.errors);
+        }
     }
     
     const onChangePreviousPassword = (e: ChangeEvent<HTMLInputElement>) => {
-        setErrors(prevValue => {
-            const updatedErrors = { ...prevValue };
-            delete updatedErrors.PreviousPassword;
-            return updatedErrors;
-        });
+        setErrors({});
         
         setChangePasswordData({
             ...changePasswordData,
@@ -102,21 +140,12 @@ function PasswordModal ({ className }: PasswordModalProps) {
     }
     
     const onChangeVerificationCode = (e: ChangeEvent<HTMLInputElement>) => {
-        setErrors(prevValue => {
-            const updatedErrors = { ...prevValue };
-            delete updatedErrors.VerificationCode;
-            return updatedErrors;
-        });
-        
+        setErrors({});
         setVerificationCode(e.target.value);
     }
     
     const onChangeNewPassword = (e: ChangeEvent<HTMLInputElement>) => {
-        setErrors(prevValue => {
-            const updatedErrors = { ...prevValue };
-            delete updatedErrors.NewPassword;
-            return updatedErrors;
-        });
+        setErrors({});
 
         setChangePasswordData({
             ...changePasswordData,
@@ -124,14 +153,47 @@ function PasswordModal ({ className }: PasswordModalProps) {
         })
     }
     
-    const sessionConfirmPanel = useMemo(()=> {
+    const sessionConfirmPanel = useMemo(() => {
         return (
             <div className={classNames(style.session_confirm_panel)}>
-                
+                <div className={classNames(style.session_confirm_inner)}>
+                    <div className={classNames(style.label)}>{t('Введите код подтверждения')}</div>
+                    <Input
+                        value={verificationCode}
+                        className={classNames(style.session_confirm_input)}
+                        placeholder={t('Код подтверждения')}
+                        onChange={onChangeVerificationCode}
+                    />
+                </div>
+                <ErrorList errors={errors}/>
+                <Button 
+                    className={classNames(style.send_verification_code, {
+                        [style.resend_disabled]: !isResend && !isSessionNull 
+                    })}
+                    onClick={async () => {
+                        if(isSessionNull) {
+                            await sendCodeResetPasswordHandler()
+                        }
+                        else if (isResend)
+                            await resendCodeResetPasswordHandler()
+                    }}
+                >
+                    {isSessionNull && t('Отправить код потдверждения на почту')}
+                    {!isSessionNull ? isResend 
+                            ? t('Повторно отправить на почту') 
+                            :`${t('Повторно отправить на почту через')} ${timerText}` 
+                        : ''
+                    }
+                </Button>
             </div>
         )
-    },[])
-    
+    }, [
+        verificationCode, 
+        timerText, 
+        isSessionNull, 
+        isResend
+    ])
+
     const changePasswordPanel = useMemo(() => {
         return (
             <div className={classNames(style.change_password_panel)}>
@@ -142,7 +204,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
                         className={classNames(style.previousPassword)}
                         placeholder={t('Предыдущий пароль')}
                         onChange={onChangePreviousPassword}
-                        errors={errors.PreviousPassword}
+                        errors={errors?.PreviousPassword}
                     />
                 </div>
 
@@ -153,10 +215,10 @@ function PasswordModal ({ className }: PasswordModalProps) {
                         className={classNames(style.newPassword)}
                         placeholder={t('Новый пароль')}
                         onChange={onChangeNewPassword}
-                        errors={errors.NewPassword}
+                        errors={errors?.NewPassword}
                     />
                 </div>
-
+                <ErrorList errors={errors} keyIgnoreList={['NewPassword', 'PreviousPassword']}/>
                 <div className={classNames(style.info_block)}>
                     <InfoIcon/>
                     <p>{t('Смена пароля аккаунта, произведет к выходу из системы со всех устройств')}</p>
@@ -166,6 +228,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
     }, [
         changePasswordData.previousPassword,
         changePasswordData.newPassword,
+        errors
     ])
 
     return (

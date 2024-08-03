@@ -12,7 +12,7 @@ public class ResendResetPasswordCodeCommand: IRequest<string>
     /// Идентификатор пользователя
     /// </summary>
     [JsonIgnore]
-    public required long UserId { get; set; }
+    public long UserId { get; set; }
     
     /// <summary>
     /// Идентификатор сессии

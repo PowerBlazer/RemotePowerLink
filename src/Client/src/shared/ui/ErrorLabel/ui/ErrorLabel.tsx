@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 interface ErrorLabelProps {
     className?: string;
-    errors: string[]
+    errors: string[],
+    keyName?: string
 }
 
-export function ErrorLabel ({ className, errors }: ErrorLabelProps) {
+export function ErrorLabel ({ className, errors, keyName }: ErrorLabelProps) {
     return (
         <div className={classNames(style.errorLabel, {}, [className])}>
             {
@@ -16,7 +17,7 @@ export function ErrorLabel ({ className, errors }: ErrorLabelProps) {
                     return (
                         <div className={classNames(style.label_item)} key={key}>
                             <ErrorIcon width={20} height={20}/>
-                            <h4 className={style.error_message}>{errorMessage}</h4>
+                            <h4 className={style.error_message}>{Boolean(keyName) && `${keyName} :`} {errorMessage}</h4>
                         </div>
                     )
                 })

@@ -42,13 +42,13 @@ export class UserService {
         Promise<ServiceResult<ResendResetPasswordCodeResponse>> => {
         
         try {
-            const response = await HostService.api.post<ResendResetPasswordCodeResponse>(
-                '/api/v1.0/user/ResendResetPasswordCode', 
+            const response = await HostService.api.post<ApiResult<ResendResetPasswordCodeResponse>>(
+                '/v1.0/user/ResendResetPasswordCode', 
                 resendResetPasswordCodeData)
 
             return {
                 isSuccess: true,
-                result: response.data
+                result: response.data.result
             };
         } catch (error) {
             return {
@@ -61,12 +61,12 @@ export class UserService {
     static sendCodeResetPassword = async (): Promise<ServiceResult<SendCodeResetPasswordCodeResponse>> => {
 
         try {
-            const response = await HostService.api.post<SendCodeResetPasswordCodeResponse>(
-                '/api/v1.0/user/SendCodeResetPassword');
+            const response = await HostService.api.post<ApiResult<SendCodeResetPasswordCodeResponse>>(
+                '/v1.0/user/SendCodeResetPassword');
 
             return {
                 isSuccess: true,
-                result: response.data
+                result: response.data.result
             };
         } catch (error) {
             return {
@@ -79,7 +79,7 @@ export class UserService {
     static verifyResetPassword = async (verifyResetPasswordCodeData: VerifyResetPasswordCodeData): Promise<ServiceResult<any>> => {
 
         try {
-            await HostService.api.post('/api/v1.0/user/VerifyResetPasswordCode', verifyResetPasswordCodeData);
+            await HostService.api.post('/v1.0/user/VerifyResetPasswordCode', verifyResetPasswordCodeData);
 
             return {
                 isSuccess: true,

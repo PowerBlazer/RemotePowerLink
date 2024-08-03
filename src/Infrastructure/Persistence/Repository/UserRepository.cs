@@ -15,7 +15,7 @@ public class UserRepository: IUserRepository
         _persistenceContext = persistenceContext;
     }
 
-    public async Task<User> GetUserAsync(long userId)
+    public async Task<User> GetUser(long userId)
     {
         var user = await _persistenceContext.Users
             .FirstOrDefaultAsync(p => p.UserId == userId);
@@ -28,7 +28,7 @@ public class UserRepository: IUserRepository
         return user;
     }
 
-    public async Task<User?> GetUserDefaultAsync(long userId)
+    public async Task<User?> GetUserDefault(long userId)
     {
         var user = await _persistenceContext.Users
             .FirstOrDefaultAsync(p => p.UserId == userId);
@@ -36,9 +36,19 @@ public class UserRepository: IUserRepository
         return user;
     }
 
-    public async Task<User> AddUserAsync(User user)
+    public async Task<User> AddUser(User user)
     {
         await _persistenceContext.Users.AddAsync(user);
+        await _persistenceContext.SaveChangesAsync();
+
+        return user;
+    }
+
+    public async Task<User> UpdateUser(User user)
+    {
+        _persistenceContext.Users.Attach(user);
+        _persistenceContext.Users.Update(user);
+
         await _persistenceContext.SaveChangesAsync();
 
         return user;

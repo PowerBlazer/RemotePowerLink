@@ -17,7 +17,7 @@ public class EmailService: IEmailService
 
     public async Task<bool> ContainEmailAsync(string email)
     {
-        var user = await _identityUserRepository.GetUserByEmailAsync(email);
+        var user = await _identityUserRepository.GetUserByEmail(email);
 
         return user is not null;
     }

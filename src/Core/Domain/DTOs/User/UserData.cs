@@ -3,7 +3,7 @@
 /// <summary>
 /// Ответ на запрос получения информации о пользователе.
 /// </summary>
-public class GetUserDataResponse
+public class UserData
 {
     /// <summary>
     /// Идентификатор пользователя.
@@ -40,9 +40,9 @@ public class GetUserDataResponse
     /// </summary>
     public bool TwoFactorEnabled { get; set; }
 
-    public static GetUserDataResponse MapUserTo(Entities.User user)
+    public static UserData MapUserTo(Entities.User user)
     {
-        return new GetUserDataResponse
+        return new UserData
         {
             UserId = user.UserId,
             Username = user.Username

@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
 using Application.Layers.Identity;
+using Application.Layers.Identity.Models;
+using Application.Layers.Identity.Models.Authorization;
 using Application.Layers.MessageQueues.UserRegistered;
 using Application.Layers.MessageQueues.VerificationEmailSend;
 using Application.Layers.Redis;
 using Domain.Common;
-using Domain.DTOs.Authorization;
 using Domain.Exceptions;
 using Identity.Common;
 using Identity.Entities;
@@ -157,18 +158,18 @@ public class AuthorizationService: IAuthorizationService
             PasswordHash = ComputeHash256.ComputeSha256Hash(registrationRequest.Password)
         };
 
-        string accessToken = null!, refreshToken = null!;
+        string accessToken = string.Empty, refreshToken = string.Empty;
         await _identityUnitOfWork.ExecuteWithExecutionStrategyAsync(async () =>
         {
-            var identityUser = await _identityUserRepository.AddUserAsync(newIdentityUser);
+            var identityUser = await _identityUserRepository.AddUser(newIdentityUser);
         
             await _userRegisteredProducer.PublishUserRegistered(new UserRegisteredEvent(
                 identityUser.Id,
                 registrationRequest.UserName
             ));
         
-             accessToken = _tokenService.GenerateAccessToken(identityUser);
-             refreshToken = await _tokenService.GenerateRefreshTokenAsync(
+            accessToken = _tokenService.GenerateAccessToken(identityUser);
+            refreshToken = await _tokenService.GenerateRefreshTokenAsync(
                  identityUser.Id,
                  registrationRequest.IpAddress,
                  registrationRequest.DeviceName);
@@ -181,7 +182,7 @@ public class AuthorizationService: IAuthorizationService
 
     public async Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest)
     {
-        var identityUser = await _identityUserRepository.GetUserByEmailAsync(loginRequest.Email);
+        var identityUser = await _identityUserRepository.GetUserByEmail(loginRequest.Email);
 
         if (identityUser is null)
         {
@@ -228,7 +229,7 @@ public class AuthorizationService: IAuthorizationService
 
         await _identityUnitOfWork.ExecuteWithExecutionStrategyAsync(async () =>
         {
-            var identityUser = await _identityUserRepository.GetUserByIdAsync(userId);
+            var identityUser = await _identityUserRepository.GetUserById(userId);
             
             accessToken = _tokenService.GenerateAccessToken(identityUser);
             refreshToken = await _tokenService.UpdateRefreshTokenAsync(identityUser.Id,refreshTokenRequest.IpAddress);

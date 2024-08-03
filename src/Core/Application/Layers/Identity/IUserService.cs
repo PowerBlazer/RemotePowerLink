@@ -1,24 +1,30 @@
 ﻿using Application.Layers.Identity.Models;
-using Domain.DTOs.Authorization;
-using Domain.DTOs.User;
+using UserData = Application.Layers.Identity.Models.UserData;
 
 namespace Application.Layers.Identity;
 
 public interface IUserService
 {
     /// <summary>
-    /// Получение информации о пользователя по его Id
+    /// Получение информации о пользователя
     /// </summary>
     /// <param name="userId">Идентификатор пользователя</param>
     /// <returns></returns>
-    Task<UserInformation> GetUserInformation(long userId);
+    Task<UserData> GetUserData(long userId);
+
+    /// <summary>
+    /// Обновление информации о пользователя
+    /// </summary>
+    /// <param name="updatePasswordInput">Новые данные пользователя</param>
+    /// <returns>Обновленная информация о пользователя</returns>
+    Task<UserData> UpdateUserData(UpdateUserDataInput updateUserDataInput);
     
     /// <summary>
     /// Обновление пароля у пользователя
     /// </summary>
-    /// <param name="updatePasswordRequest"></param>
+    /// <param name="updatePasswordInput"></param>
     /// <returns></returns>
-    Task UpdatePassword(UpdatePasswordRequest updatePasswordRequest);
+    Task UpdatePassword(UpdatePasswordInput updatePasswordInput);
     
     /// <summary>
     /// Отправляет код, для сброса пароля пользователя

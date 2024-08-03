@@ -96,3 +96,13 @@
     border-color: var(--loader-color) transparent;
   }
 }
+
+.account_date_created{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+  color: #8A919F;
+  font-weight: 500;
+  margin-top: 5px;
+}

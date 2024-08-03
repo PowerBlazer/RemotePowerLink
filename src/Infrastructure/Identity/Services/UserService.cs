@@ -4,12 +4,14 @@ using Application.Layers.Identity.Models;
 using Application.Layers.MessageQueues.ResetPasswordCode;
 using Application.Layers.Redis;
 using Domain.Common;
-using Domain.DTOs.Authorization;
 using Domain.DTOs.User;
 using Domain.Exceptions;
 using Identity.Common;
+using Identity.Entities;
 using Identity.Helpers;
 using Identity.Interfaces;
+using Identity.Models;
+using UserData = Application.Layers.Identity.Models.UserData;
 
 namespace Identity.Services;
 
@@ -34,11 +36,11 @@ public class UserService: IUserService
         _identityUnitOfWork = identityUnitOfWork;
     }
 
-    public async Task<UserInformation> GetUserInformation(long userId)
+    public async Task<UserData> GetUserData(long userId)
     {
-        var identityUser = await _identityUserRepository.GetUserByIdAsync(userId);
+        var identityUser = await _identityUserRepository.GetUserById(userId);
 
-        return new UserInformation
+        return new UserData
         {
             UserId = identityUser.Id,
             Email = identityUser.Email,
@@ -49,10 +51,31 @@ public class UserService: IUserService
         };
     }
 
-    public async Task UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+    public async Task<UserData> UpdateUserData(UpdateUserDataInput updateUserDataInput)
     {
-        var identityUser = await _identityUserRepository.GetUserByIdAsync(updatePasswordRequest.UserId);
-        var sessionJson = await _redisService.GetValueAsync(updatePasswordRequest.SessionId);
+        var updateIdentityUserInput = new UpdateIdentityUserInput
+        {
+            Id = updateUserDataInput.UserId,
+            PhoneNumber = updateUserDataInput.PhoneNumber,
+        };
+
+        var updatedUser = await _identityUserRepository.UpdateUserData(updateIdentityUserInput);
+        
+        return new UserData
+        {
+            UserId = updatedUser.Id,
+            Email = updatedUser.Email,
+            DateCreated = updatedUser.DateCreated,
+            EmailConfirmed = updatedUser.EmailConfirmed,
+            PhoneNumber = updatedUser.PhoneNumber,
+            TwoFactorEnabled = updatedUser.TwoFactorEnabled
+        };
+    }
+
+    public async Task UpdatePassword(UpdatePasswordInput updatePasswordInput)
+    {
+        var identityUser = await _identityUserRepository.GetUserById(updatePasswordInput.UserId);
+        var sessionJson = await _redisService.GetValueAsync(updatePasswordInput.SessionId);
 
         if (sessionJson is null)
         {
@@ -66,18 +89,18 @@ public class UserService: IUserService
             throw new SessionCodeNotValidException("Сессия не подтверждена");
         }
         
-        if (identityUser.PasswordHash != ComputeHash256.ComputeSha256Hash(updatePasswordRequest.PreviousPassword))
+        if (identityUser.PasswordHash != ComputeHash256.ComputeSha256Hash(updatePasswordInput.PreviousPassword))
         {
             throw new AuthenticationValidException("PreviousPassword","Неправильный пароль");
         }
         
-        var newPasswordHash = ComputeHash256.ComputeSha256Hash(updatePasswordRequest.NewPassword);
+        var newPasswordHash = ComputeHash256.ComputeSha256Hash(updatePasswordInput.NewPassword);
 
         identityUser.PasswordHash = newPasswordHash;
 
         await _identityUnitOfWork.ExecuteWithExecutionStrategyAsync(async () =>
         {
-            await _identityUserRepository.UpdateUserAsync(identityUser);
+            await _identityUserRepository.UpdateUser(identityUser);
             await _identityTokenRepository.DeleteTokensByUserIdAsync(identityUser.Id);
         });
     }
@@ -87,7 +110,7 @@ public class UserService: IUserService
         var verificationCode = VerificationCode.GenerateVerificationCode();
         var sessionId = Guid.NewGuid().ToString();
 
-        var user = await _identityUserRepository.GetUserByIdAsync(userId);
+        var user = await _identityUserRepository.GetUserById(userId);
         
         var verifySessionResetPassword = new SessionResetPassword
         {
@@ -152,7 +175,7 @@ public class UserService: IUserService
             throw new SessionCodeNotFoundException("Сессия не найдена");
         }
 
-        var user = await _identityUserRepository.GetUserByIdAsync(userId);
+        var user = await _identityUserRepository.GetUserById(userId);
         
         var verificationCode = VerificationCode.GenerateVerificationCode();
 

@@ -1,4 +1,4 @@
-﻿namespace Domain.DTOs.User;
+﻿namespace Application.Layers.Identity.Models.Authorization;
 
 public class ResendResetPasswordCodeResponse
 {

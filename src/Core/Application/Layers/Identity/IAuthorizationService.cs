@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Authorization;
+﻿using Application.Layers.Identity.Models;
+using Application.Layers.Identity.Models.Authorization;
 
 namespace Application.Layers.Identity;
 

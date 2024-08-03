@@ -1,7 +1,7 @@
 ﻿
 using JetBrains.Annotations;
 
-namespace Domain.DTOs.Authorization;
+namespace Application.Layers.Identity.Models.Authorization;
 
 [UsedImplicitly]
 public class RegistrationRequest

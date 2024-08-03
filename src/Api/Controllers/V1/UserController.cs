@@ -2,12 +2,16 @@
 using Application.Features.UserFeature.GetUserData;
 using Application.Features.UserFeature.ResendResetPasswordCode;
 using Application.Features.UserFeature.SendCodeResetPassword;
+using Application.Features.UserFeature.UpdateUserData;
 using Application.Features.UserFeature.VerifyResetPasswordCode;
+using Application.Layers.Identity.Models;
+using Application.Layers.Identity.Models.Authorization;
 using Domain.Common;
 using Domain.DTOs.User;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UserData = Domain.DTOs.User.UserData;
 
 namespace Api.Controllers.V1;
 
@@ -31,15 +35,41 @@ public class UserController : BaseController
     /// <response code="404">Пользователь не найден.</response>
     /// <response code="500">Ошибка на сервере.</response>
     [HttpGet]
-    [ProducesResponseType(typeof(ApiActionResult<GetUserDataResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<GetUserDataResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiActionResult<UserData>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<UserData>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ApiActionResult<GetUserDataResponse>> GetUserData()
+    public async Task<ApiActionResult<UserData>> GetUserData()
     {
         var result = await Mediator.Send(new GetUserDataCommand(UserId));
 
-        return new ApiActionResult<GetUserDataResponse>
+        return new ApiActionResult<UserData>
+        {
+            Result = result
+        };
+    }
+
+    /// <summary>
+    /// Обновляет информацию о пользователе.
+    /// </summary>
+    /// <returns>Обновленная информация о пользователе.</returns>
+    /// <response code="200">Успешно обновлена информация о пользователе.</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="404">Пользователь не найден.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPut("update")]
+    [ProducesResponseType(typeof(ApiActionResult<UserData>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiActionResult<UserData>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ApiActionResult<UserData>> UpdateUserData([FromBody]UpdateUserDataCommand updateUserDataCommand)
+    {
+        updateUserDataCommand.UserId = UserId;
+
+        var result = await Mediator.Send(updateUserDataCommand);
+        
+        return new ApiActionResult<UserData>
         {
             Result = result
         };

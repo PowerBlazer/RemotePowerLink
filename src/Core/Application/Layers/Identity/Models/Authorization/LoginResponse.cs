@@ -1,11 +1,11 @@
 ﻿using JetBrains.Annotations;
 
-namespace Domain.DTOs.Authorization;
+namespace Application.Layers.Identity.Models.Authorization;
 
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
-public class RefreshTokenResponse
+public class LoginResponse
 {
-    public RefreshTokenResponse(string accessToken, 
+    public LoginResponse(string accessToken, 
         string refreshToken)
     {
         AccessToken = accessToken;

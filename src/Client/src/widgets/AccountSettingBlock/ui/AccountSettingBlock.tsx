@@ -104,6 +104,10 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
                     {t('Выйти из системы со всех устройств')}
                 </Button>
             </div>
+            <div className={classNames(style.account_date_created)}>
+                {t('Дата создания аккаунта')}
+                <p>{new Date(userStore.userData?.dateCreated).toLocaleString()}</p>
+            </div>
         </SettingBlock>
     );
 }

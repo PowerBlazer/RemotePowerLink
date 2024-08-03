@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Domain.DTOs.Authorization;
+namespace Application.Layers.Identity.Models.Authorization;
 
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class RegistrationResponse

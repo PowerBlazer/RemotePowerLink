@@ -1,5 +1,5 @@
 ﻿using Application.Layers.Identity;
-using Domain.DTOs.Authorization;
+using Application.Layers.Identity.Models;
 using Domain.DTOs.User;
 using JetBrains.Annotations;
 using MediatR;
@@ -18,7 +18,7 @@ public class ChangePasswordHandler: IRequestHandler<ChangePasswordCommand>
 
     public Task Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        return _userService.UpdatePassword(new UpdatePasswordRequest
+        return _userService.UpdatePassword(new UpdatePasswordInput
         {
             PreviousPassword = request.PreviousPassword,
             NewPassword = request.NewPassword,

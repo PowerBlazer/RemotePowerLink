@@ -7,7 +7,7 @@ using MediatR;
 namespace Application.Features.UserFeature.GetUserData;
 
 [UsedImplicitly]
-public class GetUserDataHandler: IRequestHandler<GetUserDataCommand, GetUserDataResponse>
+public class GetUserDataHandler: IRequestHandler<GetUserDataCommand, UserData>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserService _userService;
@@ -19,12 +19,12 @@ public class GetUserDataHandler: IRequestHandler<GetUserDataCommand, GetUserData
         _userService = userService;
     }
 
-    public async Task<GetUserDataResponse> Handle(GetUserDataCommand request, CancellationToken cancellationToken)
+    public async Task<UserData> Handle(GetUserDataCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetUserAsync(request.UserId);
-        var identityUserData = await _userService.GetUserInformation(request.UserId);
+        var user = await _userRepository.GetUser(request.UserId);
+        var identityUserData = await _userService.GetUserData(request.UserId);
         
-        var userDataResponse = GetUserDataResponse.MapUserTo(user);
+        var userDataResponse = UserData.MapUserTo(user);
 
         userDataResponse.Email = identityUserData.Email;
         userDataResponse.DateCreated = identityUserData.DateCreated;

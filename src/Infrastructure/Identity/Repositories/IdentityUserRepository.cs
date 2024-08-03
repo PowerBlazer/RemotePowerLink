@@ -1,7 +1,9 @@
-﻿using Domain.Exceptions;
+﻿using System.Linq.Expressions;
+using Domain.Exceptions;
 using Identity.Contexts;
 using Identity.Entities;
 using Identity.Interfaces;
+using Identity.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Repositories;
@@ -15,7 +17,7 @@ public class IdentityUserRepository: IIdentityUserRepository
         _identityContext = identityContext;
     }
 
-    public async Task<IdentityUser> AddUserAsync(IdentityUser identityUser)
+    public async Task<IdentityUser> AddUser(IdentityUser identityUser)
     {
         var userEntity = await _identityContext.IdentityUsers.AddAsync(identityUser);
 
@@ -24,12 +26,12 @@ public class IdentityUserRepository: IIdentityUserRepository
         return userEntity.Entity;
     }
 
-    public Task<IdentityUser?> GetUserByEmailAsync(string email)
+    public Task<IdentityUser?> GetUserByEmail(string email)
     {
         return _identityContext.IdentityUsers.FirstOrDefaultAsync(p => p.Email == email);
     }
 
-    public async Task<IdentityUser> GetUserByIdAsync(long userId)
+    public async Task<IdentityUser> GetUserById(long userId)
     {
         var identityUser = await _identityContext.IdentityUsers
             .FirstOrDefaultAsync(p => p.Id == userId);
@@ -42,9 +44,25 @@ public class IdentityUserRepository: IIdentityUserRepository
         return identityUser;
     }
 
-    public async Task<IdentityUser> UpdateUserAsync(IdentityUser identityUser)
+    public async Task<IdentityUser> UpdateUser(IdentityUser identityUser)
     {
         _identityContext.Attach(identityUser);
+        _identityContext.IdentityUsers.Update(identityUser);
+
+        _identityContext.Entry(identityUser)
+            .Property(p => p.DateCreated).IsModified = false;
+
+        await _identityContext.SaveChangesAsync();
+
+        return identityUser;
+    }
+
+    public async Task<IdentityUser> UpdateUserData(UpdateIdentityUserInput updateIdentityUserInput)
+    {
+        var identityUser = await GetUserById(updateIdentityUserInput.Id);
+
+        identityUser.PhoneNumber = updateIdentityUserInput.PhoneNumber;
+        
         _identityContext.IdentityUsers.Update(identityUser);
         
         await _identityContext.SaveChangesAsync();

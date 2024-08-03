@@ -1,11 +1,13 @@
 ﻿using Identity.Entities;
+using Identity.Models;
 
 namespace Identity.Interfaces;
 
 public interface IIdentityUserRepository
 {
-    Task<IdentityUser> AddUserAsync(IdentityUser identityUser);
-    Task<IdentityUser?> GetUserByEmailAsync(string email);
-    Task<IdentityUser> GetUserByIdAsync(long userId);
-    Task<IdentityUser> UpdateUserAsync(IdentityUser identityUser);
+    Task<IdentityUser> AddUser(IdentityUser identityUser);
+    Task<IdentityUser?> GetUserByEmail(string email);
+    Task<IdentityUser> GetUserById(long userId);
+    Task<IdentityUser> UpdateUser(IdentityUser identityUser);
+    Task<IdentityUser> UpdateUserData(UpdateIdentityUserInput identityUser);
 }

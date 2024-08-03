@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Domain.DTOs.User;
+namespace Application.Layers.Identity.Models;
 
-public class UpdatePasswordRequest
+public class UpdatePasswordInput
 {
     /// <summary>
     /// Предыдущий пароль полльзователя

@@ -107,5 +107,6 @@
     "Смена пароля аккаунта, произведет к выходу из системы со всех устройств": "Changing the account password will cause you to log out from all devices",
     "Номер телефона": "Phone number",
     "Выйти из системы со всех устройств": "Log out from all devices",
-    "Аккаунт": "Account"
+    "Аккаунт": "Account",
+    "Дата создания аккаунта": "Account creation date"
 }

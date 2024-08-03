@@ -1,6 +1,6 @@
 ﻿namespace Application.Layers.Identity.Models;
 
-public class UserInformation
+public class UserData
 {
     public required long UserId { get; set; }
     public required string Email { get; set; }

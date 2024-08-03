@@ -6,7 +6,7 @@ namespace Application.Features.UserFeature.GetUserData;
 /// <summary>
 /// Команда для получения данных пользователя.
 /// </summary>
-public class GetUserDataCommand : IRequest<GetUserDataResponse>
+public class GetUserDataCommand : IRequest<UserData>
 {
     public GetUserDataCommand(long userId)
     {

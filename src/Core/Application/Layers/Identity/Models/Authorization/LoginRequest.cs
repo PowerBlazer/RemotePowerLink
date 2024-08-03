@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace Domain.DTOs.Authorization;
+﻿namespace Application.Layers.Identity.Models.Authorization;
 
 public class LoginRequest
 {

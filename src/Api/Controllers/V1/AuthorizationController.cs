@@ -4,8 +4,8 @@ using Application.Features.AuthorizationFeature.RegisterUser;
 using Application.Features.AuthorizationFeature.ResendConfirmationCode;
 using Application.Features.AuthorizationFeature.SendEmailVerificationCode;
 using Application.Features.AuthorizationFeature.VerifyEmailCode;
+using Application.Layers.Identity.Models.Authorization;
 using Domain.Common;
-using Domain.DTOs.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

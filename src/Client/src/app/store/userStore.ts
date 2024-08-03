@@ -6,7 +6,9 @@ import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { EncodingData } from 'app/services/EncodingService/config';
 
 export interface SettingsModalOption {
-    passwordState: boolean
+    passwordState: boolean,
+    usernameState: boolean,
+    phoneNumberState:boolean
 }
 
 
@@ -22,7 +24,9 @@ class UserStore {
     public location: string = document.location.pathname;
     
     public settingsModalOptions: SettingsModalOption = {
-        passwordState: false
+        passwordState: false,
+        usernameState: false,
+        phoneNumberState: false
     }
 
     constructor () {

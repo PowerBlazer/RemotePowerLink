@@ -8,6 +8,11 @@ export interface UserData {
     twoFactorEnabled?: boolean
 }
 
+export interface UpdateUserData {
+    username: string,
+    phoneNumber?: string
+}
+
 export interface ChangePasswordData{
     previousPassword: string,
     newPassword: string,

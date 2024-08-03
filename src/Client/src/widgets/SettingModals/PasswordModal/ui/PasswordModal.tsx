@@ -14,7 +14,6 @@ import toast from "react-hot-toast";
 import InfoIcon from "shared/assets/icons/info.svg";
 import { useTimer } from "react-timer-and-stopwatch";
 import {Button} from "shared/ui/Button/Button";
-import {ErrorLabel} from "shared/ui/ErrorLabel";
 import {ErrorList} from "shared/ui/ErrorList";
 import {useNavigate} from "react-router-dom";
 import {AppRoutes} from "app/providers/router/config/routeConfig";

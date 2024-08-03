@@ -20,10 +20,12 @@ public class UpdateUserDataHandler: IRequestHandler<UpdateUserDataCommand, UserD
 
     public async Task<UserData> Handle(UpdateUserDataCommand request, CancellationToken cancellationToken)
     {
-        var user = UpdateUserDataCommand.MapToUser(request);
+        var currentUser = await _userRepository.GetUser(request.UserId);
+        currentUser.Username = request.Username;
+        
         var identityUpdatedUser = UpdateUserDataCommand.MapToUpdateUserData(request);
         
-        var updatedUser = await _userRepository.UpdateUser(user);
+        var updatedUser = await _userRepository.UpdateUser(currentUser);
         var updatedIdentityUser = await _userService.UpdateUserData(identityUpdatedUser);
 
         var userDataResponse = UserData.MapUserTo(updatedUser);

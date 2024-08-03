@@ -1,7 +1,7 @@
 import {
     ChangePasswordData,
     ResendResetPasswordCodeData,
-    ResendResetPasswordCodeResponse, SendCodeResetPasswordCodeResponse,
+    ResendResetPasswordCodeResponse, SendCodeResetPasswordCodeResponse, UpdateUserData,
     UserData, VerifyResetPasswordCodeData
 } from 'app/services/UserService/config';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
@@ -19,6 +19,23 @@ export class UserService {
         } catch (e) {
             return {
                 isSuccess: false
+            }
+        }
+    }
+    
+    static updateUserData = async (updateUserData: UpdateUserData): Promise<ServiceResult<UserData>> => {
+        try {
+            const response =
+                await HostService.api.put<ApiResult<UserData>>('/v1.0/user/update', updateUserData);
+
+            return {
+                isSuccess: true,
+                result: response.data.result
+            };
+        } catch (e) {
+            return {
+                isSuccess: false,
+                errors: e.response?.data.Errors
             }
         }
     }

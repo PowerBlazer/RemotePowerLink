@@ -11,7 +11,7 @@ interface ErrorListProps {
 export function ErrorList ({ className, errors, keyIgnoreList = [] }: ErrorListProps) {
     return (
         <div className={classNames(style.errorList, {}, [className])}>
-            {Object.keys(errors)
+            {errors && Object.keys(errors)
                 .filter(p=> keyIgnoreList.indexOf(p) === -1)
                 .map(key=> {
                     const errorList = errors[key];

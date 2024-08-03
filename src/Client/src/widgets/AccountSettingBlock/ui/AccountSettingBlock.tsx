@@ -19,9 +19,13 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
     const emailChangeHandler = () => {
 
     }
+    
+    const phoneNumberChangeHandler = () => {
+        userStore.settingsModalOptions.phoneNumberState = true;
+    }
 
     const usernameChangeHandler = () => {
-
+        userStore.settingsModalOptions.usernameState = true;
     }
     
     const passwordChangeHandler = () => {
@@ -72,7 +76,7 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
                         {userStore.userData?.phoneNumber ?? t('Не указан')}
                     </p>
                 </div>
-                <Button className={classNames(style.button_change)} onClick={usernameChangeHandler}>
+                <Button className={classNames(style.button_change)} onClick={phoneNumberChangeHandler}>
                     {t('Изменить')}
                 </Button>
             </div>

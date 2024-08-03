@@ -108,5 +108,14 @@
     "Номер телефона": "Phone number",
     "Выйти из системы со всех устройств": "Log out from all devices",
     "Аккаунт": "Account",
-    "Дата создания аккаунта": "Account creation date"
+    "Дата создания аккаунта": "Account creation date",
+    "Введите код подтверждения": "Enter the confirmation code",
+    "Код подтверждения": "Confirmation code",
+    "Отправить код потдверждения на почту": "Send the confirmation code by email",
+    "Смена никнейма": "Nickname change",
+    "Введите никнейм": "Enter a nickname",
+    "Никнейм": "Nickname",
+    "Изменить номер телефона": "Change the phone number",
+    "Введите номер телефона": "Enter the phone number"
+    
 }

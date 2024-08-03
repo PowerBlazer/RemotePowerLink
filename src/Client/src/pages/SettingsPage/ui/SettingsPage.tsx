@@ -8,6 +8,8 @@ import { LangSwitcher } from 'features/LangSwitcher';
 import { AccountSettingBlock } from 'widgets/AccountSettingBlock';
 import userStore from "app/store/userStore";
 import { PasswordModal } from "widgets/SettingModals/PasswordModal";
+import {UsernameModal} from "widgets/SettingModals/UsernameModal";
+import {PhoneNumberModal} from "widgets/SettingModals/PhoneNumberModal";
 
 interface SettingsPageProps {
     className?: string;
@@ -33,6 +35,8 @@ function SettingsPage ({ className }: SettingsPageProps) {
                 </SettingBlock>
             </div>
             { userStore.settingsModalOptions.passwordState && <PasswordModal/> }
+            { userStore.settingsModalOptions.usernameState && <UsernameModal/> }
+            { userStore.settingsModalOptions.phoneNumberState && <PhoneNumberModal/> }
             
         </div>
     );

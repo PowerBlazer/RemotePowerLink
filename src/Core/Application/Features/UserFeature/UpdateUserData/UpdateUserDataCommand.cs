@@ -27,10 +27,11 @@ public class UpdateUserDataCommand: IRequest<UserData>
     /// </summary>
     public string? PhoneNumber { get; set; }
 
-    public static User MapToUser(UpdateUserDataCommand updateUserDataCommand)
+    public static User MapToUser(UpdateUserDataCommand updateUserDataCommand, long entityId)
     {
         return new User
         {
+            Id = entityId,
             UserId = updateUserDataCommand.UserId,
             Username = updateUserDataCommand.Username
         };

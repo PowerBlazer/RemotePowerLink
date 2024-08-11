@@ -27,14 +27,9 @@ public class UpdateUserDataCommand: IRequest<UserData>
     /// </summary>
     public string? PhoneNumber { get; set; }
 
-    public static User MapToUser(UpdateUserDataCommand updateUserDataCommand, long entityId)
+    public static void SetUdpateDataToUser(UpdateUserDataCommand updateUserDataCommand, ref User currentUser)
     {
-        return new User
-        {
-            Id = entityId,
-            UserId = updateUserDataCommand.UserId,
-            Username = updateUserDataCommand.Username
-        };
+        currentUser.Username = updateUserDataCommand.Username;
     }
 
     public static UpdateUserDataInput MapToUpdateUserData(UpdateUserDataCommand updateUserDataCommand)

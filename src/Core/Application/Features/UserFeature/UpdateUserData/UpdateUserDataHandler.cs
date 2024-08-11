@@ -21,20 +21,21 @@ public class UpdateUserDataHandler: IRequestHandler<UpdateUserDataCommand, UserD
     public async Task<UserData> Handle(UpdateUserDataCommand request, CancellationToken cancellationToken)
     {
         var currentUser = await _userRepository.GetUser(request.UserId);
-        currentUser.Username = request.Username;
-        
+
+        //Маппинг запроса для обновления IdentityUser
         var identityUpdatedUser = UpdateUserDataCommand.MapToUpdateUserData(request);
         
-        var updatedUser = await _userRepository.UpdateUser(currentUser);
-        var updatedIdentityUser = await _userService.UpdateUserData(identityUpdatedUser);
-
-        var userDataResponse = UserData.MapUserTo(updatedUser);
+        //Проставление данных для обновления User
+        UpdateUserDataCommand.SetUdpateDataToUser(request, ref currentUser);
         
-        userDataResponse.Email = updatedIdentityUser.Email;
-        userDataResponse.DateCreated = updatedIdentityUser.DateCreated;
-        userDataResponse.EmailConfirmed = updatedIdentityUser.EmailConfirmed;
-        userDataResponse.PhoneNumber = updatedIdentityUser.PhoneNumber;
-        userDataResponse.TwoFactorEnabled = updatedIdentityUser.TwoFactorEnabled;
+        //Обновление данных User
+        var updatedUser = await _userRepository.UpdateUser(currentUser);
+        //Обновление данных IdentityUser
+        var updatedIdentityUser = await _userService.UpdateUserData(identityUpdatedUser);
+        
+        var userDataResponse = UserData.MapUserTo(updatedUser);
+        // Проставление обновленных данных IdentityUser
+        Layers.Identity.Models.UserData.SetIdentityDataToUserData(updatedIdentityUser, ref userDataResponse);
 
         return userDataResponse;
     }

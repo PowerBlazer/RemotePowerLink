@@ -1,5 +1,5 @@
 ﻿using Application.Layers.Email;
-using Application.Layers.MessageQueues.ResetPasswordCode;
+using Application.Layers.MessageQueues.SendResetPasswordCode;
 using MassTransit;
 using RazorLight;
 

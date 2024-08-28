@@ -1,6 +1,6 @@
-﻿using Application.Layers.MessageQueues.ResetPasswordCode;
+﻿using Application.Layers.MessageQueues.SendResetPasswordCode;
+using Application.Layers.MessageQueues.SendVerificationEmail;
 using Application.Layers.MessageQueues.UserRegistered;
-using Application.Layers.MessageQueues.VerificationEmailSend;
 using MassTransit;
 using MessageQueues.SendResetPasswordCode;
 using MessageQueues.UserRegistered;

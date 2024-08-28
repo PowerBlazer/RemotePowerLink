@@ -1,4 +1,4 @@
-﻿namespace Application.Layers.MessageQueues.ResetPasswordCode;
+﻿namespace Application.Layers.MessageQueues.SendResetPasswordCode;
 
 public interface ISendResetPasswordCodeProducer
 {

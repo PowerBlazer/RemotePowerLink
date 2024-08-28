@@ -1,5 +1,5 @@
 ﻿using Application.Layers.Email;
-using Application.Layers.MessageQueues.VerificationEmailSend;
+using Application.Layers.MessageQueues.SendVerificationEmail;
 using JetBrains.Annotations;
 using MassTransit;
 using RazorLight;

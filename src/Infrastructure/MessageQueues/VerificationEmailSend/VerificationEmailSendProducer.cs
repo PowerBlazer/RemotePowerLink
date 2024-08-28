@@ -1,4 +1,4 @@
-﻿using Application.Layers.MessageQueues.VerificationEmailSend;
+﻿using Application.Layers.MessageQueues.SendVerificationEmail;
 using MassTransit;
 
 namespace MessageQueues.VerificationEmailSend;

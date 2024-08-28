@@ -231,7 +231,6 @@ function PasswordModal ({ className }: PasswordModalProps) {
     ])
 
     return (
-
         <Modal
             options={{
                 type: TypeModal.FORM,

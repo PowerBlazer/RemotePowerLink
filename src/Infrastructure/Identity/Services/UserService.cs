@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Application.Layers.Identity;
 using Application.Layers.Identity.Models;
-using Application.Layers.MessageQueues.ResetPasswordCode;
+using Application.Layers.MessageQueues.SendResetPasswordCode;
 using Application.Layers.Redis;
 using Domain.Common;
 using Domain.DTOs.User;

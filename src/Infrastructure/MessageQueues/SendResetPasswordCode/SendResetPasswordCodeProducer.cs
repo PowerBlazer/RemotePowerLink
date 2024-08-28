@@ -1,4 +1,4 @@
-﻿using Application.Layers.MessageQueues.ResetPasswordCode;
+﻿using Application.Layers.MessageQueues.SendResetPasswordCode;
 using MassTransit;
 
 namespace MessageQueues.SendResetPasswordCode;

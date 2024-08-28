@@ -33,6 +33,7 @@ public class UpdateUserDataHandler: IRequestHandler<UpdateUserDataCommand, UserD
         //Обновление данных IdentityUser
         var updatedIdentityUser = await _userService.UpdateUserData(identityUpdatedUser);
         
+        //Маппинг результат обновленя
         var userDataResponse = UserData.MapUserTo(updatedUser);
         // Проставление обновленных данных IdentityUser
         Layers.Identity.Models.UserData.SetIdentityDataToUserData(updatedIdentityUser, ref userDataResponse);

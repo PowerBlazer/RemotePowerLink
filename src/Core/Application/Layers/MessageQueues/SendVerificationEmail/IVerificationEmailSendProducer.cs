@@ -1,4 +1,4 @@
-﻿namespace Application.Layers.MessageQueues.VerificationEmailSend;
+﻿namespace Application.Layers.MessageQueues.SendVerificationEmail;
 
 public interface IVerificationEmailSendProducer
 {

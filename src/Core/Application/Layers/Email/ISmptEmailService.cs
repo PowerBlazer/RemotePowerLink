@@ -11,5 +11,5 @@ public interface ISmtpEmailService
     /// <param name="toEmail">Адрес электронной почты получателя.</param>
     /// <param name="subject">Тема письма.</param>
     /// <param name="message">Сообщение письма.</param>
-    Task SendEmailAsync(string toEmail, string subject, string message);
+    Task SendEmail(string toEmail, string subject, string message);
 }

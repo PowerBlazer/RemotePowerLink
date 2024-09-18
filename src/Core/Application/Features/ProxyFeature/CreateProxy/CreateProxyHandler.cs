@@ -26,7 +26,7 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
 
     public async Task<CreateProxyResponse> Handle(CreateProxyCommand request, CancellationToken cancellationToken)
     {
-        var identity = await _identityRepository.GetIdentityDefaultAsync(request.IdentityId);
+        var identity = await _identityRepository.GetIdentityDefault(request.IdentityId);
 
         if (identity is null)
         {
@@ -50,7 +50,7 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
         }
         
         var proxyResult = await _proxyRepository
-            .AddProxyAsync(CreateProxyCommand.MapToProxy(request));
+            .AddProxy(CreateProxyCommand.MapToProxy(request));
 
         return CreateProxyResponse.ProxyMapTo(proxyResult);
     }

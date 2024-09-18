@@ -23,7 +23,7 @@ public class CreateDirectoryHandler: IRequestHandler<CreateDirectoryCommand>
 
     public async Task Handle(CreateDirectoryCommand request, CancellationToken cancellationToken)
     {
-        var server = await _serverRepository.GetServerAsync(request.ServerId);
+        var server = await _serverRepository.GetServer(request.ServerId);
 
         if (server.UserId != request.UserId)
         {

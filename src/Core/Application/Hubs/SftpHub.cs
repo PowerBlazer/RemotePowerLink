@@ -32,7 +32,7 @@ public class SftpHub: BaseHub
     [UsedImplicitly]
     public Task GetFilesServer(long serverId, string path)
     {
-        return HandlerOperationAsync(async () =>
+        return HandlerOperation(async () =>
         {
             var sftpClient = await CreateOrGetSftpClient(serverId);
             
@@ -99,7 +99,7 @@ public class SftpHub: BaseHub
 
         if (!isExistSftpClient)
         {
-            var server = await _serverRepository.GetServerAsync(serverId);
+            var server = await _serverRepository.GetServer(serverId);
             var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
 
             _sftpClientService.CreateClient(connectionParameter, ConnectionKey);

@@ -4,9 +4,9 @@ namespace Identity.Interfaces;
 
 public interface IIdentityTokenRepository
 {
-    Task<IdentityToken> AddTokenAsync(IdentityToken token);
-    Task<IdentityToken?> GetTokenByRefreshAsync(string refreshToken);
-    Task<IdentityToken> UpdateTokenAsync(IdentityToken newToken);
+    Task<IdentityToken> AddToken(IdentityToken token);
+    Task<IdentityToken?> GetTokenByRefresh(string refreshToken);
+    Task<IdentityToken> UpdateToken(IdentityToken newToken);
     Task<IdentityToken?> GetTokenByUserAndIpAddress(long userId,string ipAddress);
-    Task DeleteTokensByUserIdAsync(long userId);
+    Task DeleteTokensByUserId(long userId);
 }

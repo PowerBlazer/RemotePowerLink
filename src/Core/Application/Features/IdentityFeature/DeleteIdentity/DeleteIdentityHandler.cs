@@ -1,8 +1,10 @@
 ﻿using Domain.Repository;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace Application.Features.IdentityFeature.DeleteIdentity;
 
+[UsedImplicitly]
 public class DeleteIdentityHandler: IRequestHandler<DeleteIdentityCommand>
 {
     private readonly IIdentityRepository _identityRepository;
@@ -14,6 +16,6 @@ public class DeleteIdentityHandler: IRequestHandler<DeleteIdentityCommand>
 
     public Task Handle(DeleteIdentityCommand request, CancellationToken cancellationToken)
     {
-        return _identityRepository.DeleteIdentityAsync(request.IdentityId);
+        return _identityRepository.DeleteIdentity(request.IdentityId);
     }
 }

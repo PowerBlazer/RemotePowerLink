@@ -68,7 +68,7 @@ public class TokenService: ITokenService
         return principal;
     }
 
-    public async Task<string> GenerateRefreshTokenAsync(long userId,string ipAddress,string? deviceName)
+    public async Task<string> GenerateRefreshToken(long userId,string ipAddress,string? deviceName)
     {
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
@@ -85,12 +85,12 @@ public class TokenService: ITokenService
             DeviceName = deviceName
         };
         
-        await _tokenRepository.AddTokenAsync(newIdentityToken);
+        await _tokenRepository.AddToken(newIdentityToken);
 
         return newRefreshToken;
     }
 
-    public async Task<string> UpdateRefreshTokenAsync(long userId,string ipAddress)
+    public async Task<string> UpdateRefreshToken(long userId,string ipAddress)
     {
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
@@ -103,7 +103,7 @@ public class TokenService: ITokenService
         refreshIdentityToken!.Token = newRefreshToken;
         refreshIdentityToken.Expiration = DateTime.Now.AddDays(_jwtOptions.RefreshExpirationDays);
 
-        var updatedToken = await _tokenRepository.UpdateTokenAsync(refreshIdentityToken);
+        var updatedToken = await _tokenRepository.UpdateToken(refreshIdentityToken);
 
         return updatedToken.Token!;
     }

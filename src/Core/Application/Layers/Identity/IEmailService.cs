@@ -7,7 +7,7 @@ public interface IEmailService
     /// </summary>
     /// <param name="email">Адрес электронной почты.</param>
     /// <returns>Значение true, если адрес электронной почты существует в системе, в противном случае — false.</returns>
-    Task<bool> ContainEmailAsync(string email);
+    Task<bool> ContainEmail(string email);
 
     /// <summary>
     /// Проверяет валидность указанного адреса электронной почты.

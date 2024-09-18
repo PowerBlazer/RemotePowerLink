@@ -32,7 +32,7 @@ public class SendCodeToChangeEmailConsumer: IConsumer<SendCodeToChangeEmailEvent
 
         var htmlContent = await razor.CompileRenderStringAsync("template", template, context.Message);
 
-        await _smtpEmailService.SendEmailAsync(context.Message.Email, "Изменени почтового ящика в RemotePowerLink",
+        await _smtpEmailService.SendEmail(context.Message.Email, "Изменени почтового ящика в RemotePowerLink",
             htmlContent);
     }
 }

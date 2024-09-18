@@ -9,21 +9,21 @@ public interface IServerRepository
     /// </summary>
     /// <param name="serverId">Идентификатор сервера.</param>
     /// <returns>Объект сервер для подключения по SSH.</returns>
-    Task<Server> GetServerAsync(long serverId);
+    Task<Server> GetServer(long serverId);
     
     /// <summary>
     /// Получает информацию о сервере на основе предоставленного идентификатора сервера.
     /// </summary>
     /// <param name="serverId">Id сервера</param>
     /// <returns>Объект сервер для подключения по SSH или NULL если не найден</returns>
-    Task<Server?> GetServerDefaultAsync(long serverId);
+    Task<Server?> GetServerDefault(long serverId);
 
     /// <summary>
     /// Добавляет новый сервер в систему.
     /// </summary>
     /// <param name="server">Сервер для добавления.</param>
     /// <returns>Добавленный сервер.</returns>
-    Task<Server> AddServerAsync(Server server);
+    Task<Server> AddServer(Server server);
     
     /// <summary>
     /// Получает список серверов для подключения по SSH, принадлежащих указанному пользователю.
@@ -37,14 +37,14 @@ public interface IServerRepository
     /// </summary>
     /// <param name="server">Сервер для обновления</param>
     /// <returns>Обновленный сервер</returns>
-    Task<Server> UpdateServerAsync(Server server);
+    Task<Server> UpdateServer(Server server);
     
     /// <summary>
     /// Удаляет данные сервера
     /// </summary>
     /// <param name="serverId">Id сервера</param>
     /// <returns></returns>
-    Task DeleteServerAsync(long serverId);
+    Task DeleteServer(long serverId);
 
 
 }

@@ -14,7 +14,7 @@ public class SystemTypeRepository: ISystemTypeRepository
         _persistenceContext = persistenceContext;
     }
 
-    public async Task<SystemType?> GetSystemTypeDefaultAsync(long systemTypeId)
+    public async Task<SystemType?> GetSystemTypeDefault(long systemTypeId)
     {
         var systemType = await _persistenceContext.SystemTypes
             .FirstOrDefaultAsync(p => p.Id == systemTypeId);
@@ -22,7 +22,7 @@ public class SystemTypeRepository: ISystemTypeRepository
         return systemType;
     }
 
-    public async Task<SystemType> GetSystemTypeAsync(long systemTypeId)
+    public async Task<SystemType> GetSystemType(long systemTypeId)
     {
         var systemType = await _persistenceContext.SystemTypes
             .FirstAsync(p => p.Id == systemTypeId);

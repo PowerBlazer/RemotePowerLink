@@ -46,7 +46,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
 
     public async Task<DownloadFolderOrFilesResponse> Handle(DownloadFoldersOrFilesCommand request, CancellationToken cancellationToken)
     {
-        var server = await _serverRepository.GetServerAsync(request.ServerId);
+        var server = await _serverRepository.GetServer(request.ServerId);
 
         if (server.UserId != request.UserId)
         {
@@ -167,7 +167,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
 
                 if (fileItem.FileType == FileTypeEnum.Folder)
                 {
-                    await DownloadFolderAsync(sftpClient, fileItem.Path, tempDirectory, cancellationToken);
+                    await DownloadFolder(sftpClient, fileItem.Path, tempDirectory, cancellationToken);
                 }
             }
             
@@ -188,7 +188,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
         }
     }
     
-    private async Task DownloadFolderAsync(SftpClient client, 
+    private async Task DownloadFolder(SftpClient client, 
         string folderPath, 
         string destinationPath,
         CancellationToken cancellationToken)
@@ -213,7 +213,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             if (item.IsDirectory)
             {
                 // Если это директория, рекурсивно скачиваем её содержимое
-                await DownloadFolderAsync(client, item.FullName, folderDestination, cancellationToken);
+                await DownloadFolder(client, item.FullName, folderDestination, cancellationToken);
             }
             
             if(!item.IsDirectory)

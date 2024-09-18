@@ -54,7 +54,7 @@ public class AuthorizationService: IAuthorizationService
          };
          
          var isAdded = await _redisService
-             .SetValueAsync(sessionId,verifyMailSession.ToString(),TimeSpan.FromMinutes(5));
+             .SetValue(sessionId,verifyMailSession.ToString(),TimeSpan.FromMinutes(5));
 
          if (!isAdded)
          {
@@ -71,7 +71,7 @@ public class AuthorizationService: IAuthorizationService
 
     public async Task<string> ResendCodeToVerification(string sessionId,string email)
     {
-        var sessionJson = await _redisService.GetValueAsync(sessionId);
+        var sessionJson = await _redisService.GetValue(sessionId);
 
         if (sessionJson is null)
         {
@@ -87,7 +87,7 @@ public class AuthorizationService: IAuthorizationService
             IsOk = false
         };
 
-        var isUpdate = await _redisService.UpdateValueAsync(
+        var isUpdate = await _redisService.UpdateValue(
             sessionId, 
             newSession.ToString(), 
             TimeSpan.FromMinutes(5));
@@ -106,7 +106,7 @@ public class AuthorizationService: IAuthorizationService
 
     public async Task VerifyEmail(string sessionId,string verifyCode)
     {
-        var sessionValue = await _redisService.GetValueAsync(sessionId);
+        var sessionValue = await _redisService.GetValue(sessionId);
 
         if (sessionValue is null)
         {
@@ -122,7 +122,7 @@ public class AuthorizationService: IAuthorizationService
         
         sessionVerifyEmail.IsOk = true;
 
-        var isUpdate = await _redisService.UpdateValueAsync(
+        var isUpdate = await _redisService.UpdateValue(
             sessionId,
             sessionVerifyEmail.ToString(),
             TimeSpan.FromMinutes(5));
@@ -135,7 +135,7 @@ public class AuthorizationService: IAuthorizationService
 
     public async Task<RegistrationResponse> RegisterUser(RegistrationRequest registrationRequest)
     {
-        var sessionJson = await _redisService.GetValueAsync(registrationRequest.SessionId);
+        var sessionJson = await _redisService.GetValue(registrationRequest.SessionId);
 
         if (sessionJson is null)
         {
@@ -168,12 +168,12 @@ public class AuthorizationService: IAuthorizationService
             ));
         
             accessToken = _tokenService.GenerateAccessToken(identityUser);
-            refreshToken = await _tokenService.GenerateRefreshTokenAsync(
+            refreshToken = await _tokenService.GenerateRefreshToken(
                  identityUser.Id,
                  registrationRequest.IpAddress,
                  registrationRequest.DeviceName);
 
-            await _redisService.DeleteValueAsync(registrationRequest.SessionId);
+            await _redisService.DeleteValue(registrationRequest.SessionId);
         });
 
         return new RegistrationResponse(accessToken, refreshToken);
@@ -201,8 +201,8 @@ public class AuthorizationService: IAuthorizationService
                 .GetTokenByUserAndIpAddress(identityUser.Id, loginRequest.IpAddress);
 
             refreshToken = identityToken is null
-                ? await _tokenService.GenerateRefreshTokenAsync(identityUser.Id, loginRequest.IpAddress, loginRequest.DeviceName)
-                : await _tokenService.UpdateRefreshTokenAsync(identityUser.Id,loginRequest.IpAddress);
+                ? await _tokenService.GenerateRefreshToken(identityUser.Id, loginRequest.IpAddress, loginRequest.DeviceName)
+                : await _tokenService.UpdateRefreshToken(identityUser.Id,loginRequest.IpAddress);
             
             accessToken = _tokenService.GenerateAccessToken(identityUser);
             
@@ -231,7 +231,7 @@ public class AuthorizationService: IAuthorizationService
             var identityUser = await _identityUserRepository.GetUserById(userId);
             
             accessToken = _tokenService.GenerateAccessToken(identityUser);
-            refreshToken = await _tokenService.UpdateRefreshTokenAsync(identityUser.Id,refreshTokenRequest.IpAddress);
+            refreshToken = await _tokenService.UpdateRefreshToken(identityUser.Id,refreshTokenRequest.IpAddress);
         });
 
         return new RefreshTokenResponse(accessToken, refreshToken);

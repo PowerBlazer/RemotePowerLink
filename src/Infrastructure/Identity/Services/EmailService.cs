@@ -35,7 +35,7 @@ public class EmailService: IEmailService
         _sendCodeToConfirmNewEmailProducer = sendCodeToConfirmNewEmailProducer;
     }
 
-    public async Task<bool> ContainEmailAsync(string email)
+    public async Task<bool> ContainEmail(string email)
     {
         var user = await _identityUserRepository.GetUserByEmail(email);
 
@@ -64,7 +64,7 @@ public class EmailService: IEmailService
             IsOk = false
         };
         
-        var isAdded = await _redisService.SetValueAsync(
+        var isAdded = await _redisService.SetValue(
             sessionId,
             verifySessionResetPassword.ToString(),
             TimeSpan.FromMinutes(5));
@@ -84,7 +84,7 @@ public class EmailService: IEmailService
 
     public async Task VerifyResetPasswordCode(string sessionId, string verifyCode)
     {
-        var sessionValue = await _redisService.GetValueAsync(sessionId);
+        var sessionValue = await _redisService.GetValue(sessionId);
         
         if (sessionValue is null)
         {
@@ -100,7 +100,7 @@ public class EmailService: IEmailService
 
         sesssionResetPassword.IsOk = true;
         
-        var isUpdate = await _redisService.UpdateValueAsync(
+        var isUpdate = await _redisService.UpdateValue(
             sessionId,
             sesssionResetPassword.ToString(),
             TimeSpan.FromMinutes(5));
@@ -113,7 +113,7 @@ public class EmailService: IEmailService
 
     public async Task<string> ResendResetPasswordCode(string sessionId, long userId)
     {
-        var sessionJson = await _redisService.GetValueAsync(sessionId);
+        var sessionJson = await _redisService.GetValue(sessionId);
 
         if (sessionJson is null)
         {
@@ -131,7 +131,7 @@ public class EmailService: IEmailService
             IsOk = false
         };
 
-        var isUpdate = await _redisService.UpdateValueAsync(
+        var isUpdate = await _redisService.UpdateValue(
             sessionId, 
             newSession.ToString(), 
             TimeSpan.FromMinutes(5));
@@ -161,7 +161,7 @@ public class EmailService: IEmailService
             IsOk = false
         };
         
-        var isAdded = await _redisService.SetValueAsync(
+        var isAdded = await _redisService.SetValue(
             sessionId,
             sessionChangeEmail.ToString(),
             TimeSpan.FromMinutes(5));
@@ -180,7 +180,7 @@ public class EmailService: IEmailService
 
     public async Task<string> ResendCodeToChangeEmail(string sessionId, long userId)
     {
-        var sessionJson = await _redisService.GetValueAsync(sessionId);
+        var sessionJson = await _redisService.GetValue(sessionId);
 
         if (sessionJson is null)
         {
@@ -198,7 +198,7 @@ public class EmailService: IEmailService
             IsOk = false
         };
         
-        var isUpdated = await _redisService.UpdateValueAsync(
+        var isUpdated = await _redisService.UpdateValue(
             sessionId,
             sessionChangeEmail.ToString(),
             TimeSpan.FromMinutes(5));
@@ -217,7 +217,7 @@ public class EmailService: IEmailService
 
     public async Task VerifyCodeToChangeEmail(string sessionId, string verifyCode)
     {
-        var sessionValue = await _redisService.GetValueAsync(sessionId);
+        var sessionValue = await _redisService.GetValue(sessionId);
         
         if (sessionValue is null)
         {
@@ -233,7 +233,7 @@ public class EmailService: IEmailService
         
         sessionVerifyEmail.IsOk = true;
         
-        var isUpdate = await _redisService.UpdateValueAsync(
+        var isUpdate = await _redisService.UpdateValue(
             sessionId,
             sessionVerifyEmail.ToString(),
             TimeSpan.FromMinutes(5));
@@ -256,7 +256,7 @@ public class EmailService: IEmailService
             IsOk = false
         };
         
-        var isAdded = await _redisService.SetValueAsync(
+        var isAdded = await _redisService.SetValue(
             sessionId,
             sessionChangeEmail.ToString(),
             TimeSpan.FromMinutes(5));
@@ -275,7 +275,7 @@ public class EmailService: IEmailService
 
     public async Task<string> ResendCodeToConfirmNewEmail(string sessionId, string newEmail)
     {
-        var sessionJson = await _redisService.GetValueAsync(sessionId);
+        var sessionJson = await _redisService.GetValue(sessionId);
 
         if (sessionJson is null)
         {
@@ -291,7 +291,7 @@ public class EmailService: IEmailService
             IsOk = false
         };
         
-        var isUpdated = await _redisService.UpdateValueAsync(
+        var isUpdated = await _redisService.UpdateValue(
             sessionId,
             sessionChangeEmail.ToString(),
             TimeSpan.FromMinutes(5));
@@ -310,7 +310,7 @@ public class EmailService: IEmailService
     
     public async Task VerifyCodeToConfirmNewEmail(string sessionId, string verifyCode)
     {
-        var sessionValue = await _redisService.GetValueAsync(sessionId);
+        var sessionValue = await _redisService.GetValue(sessionId);
         
         if (sessionValue is null)
         {
@@ -326,7 +326,7 @@ public class EmailService: IEmailService
         
         sessionVerifyEmail.IsOk = true;
         
-        var isUpdate = await _redisService.UpdateValueAsync(
+        var isUpdate = await _redisService.UpdateValue(
             sessionId,
             sessionVerifyEmail.ToString(),
             TimeSpan.FromMinutes(5));

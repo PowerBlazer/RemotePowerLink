@@ -13,7 +13,7 @@ public class SmtpEmailService: ISmtpEmailService
         _emailConfiguration = emailConfiguration;
     }
     
-    public async Task SendEmailAsync(string recipient, string subject, string body)
+    public async Task SendEmail(string recipient, string subject, string body)
     {
         var message = new MimeMessage();
         

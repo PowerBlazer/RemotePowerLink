@@ -23,7 +23,7 @@ public class ExistDirectoryOrFileHandle: IRequestHandler<ExistDirectoryOrFileCom
 
     public async Task<bool> Handle(ExistDirectoryOrFileCommand request, CancellationToken cancellationToken)
     {
-        var server = await _serverRepository.GetServerAsync(request.ServerId);
+        var server = await _serverRepository.GetServer(request.ServerId);
 
         if (server.UserId != request.UserId)
         {

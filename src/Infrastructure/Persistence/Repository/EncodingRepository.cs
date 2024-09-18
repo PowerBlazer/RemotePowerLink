@@ -15,12 +15,12 @@ public class EncodingRepository: IEncodingRepository
         _persistenceContext = persistenceContext;
     }
 
-    public async Task<IEnumerable<Encoding>> GetEncodingsAsync() => 
+    public async Task<IEnumerable<Encoding>> GetEncodings() => 
         await _persistenceContext.Encodings.ToListAsync();
     
     
 
-    public async Task<Encoding> GetEncodingAsync(long encodingId)
+    public async Task<Encoding> GetEncoding(long encodingId)
     {
         var encoding = await _persistenceContext.Encodings
             .FirstOrDefaultAsync(p => p.Id == encodingId);

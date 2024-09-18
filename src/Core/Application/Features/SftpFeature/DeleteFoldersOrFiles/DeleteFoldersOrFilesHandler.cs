@@ -25,7 +25,7 @@ public class DeleteFoldersOrFilesHandler: IRequestHandler<DeleteFoldersOrFilesCo
 
     public async Task Handle(DeleteFoldersOrFilesCommand request, CancellationToken cancellationToken)
     {
-        var server = await _serverRepository.GetServerAsync(request.ServerId);
+        var server = await _serverRepository.GetServer(request.ServerId);
 
         if (server.UserId != request.UserId)
         {

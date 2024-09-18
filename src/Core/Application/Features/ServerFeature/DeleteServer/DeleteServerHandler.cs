@@ -14,6 +14,6 @@ public class DeleteServerHandler: IRequestHandler<DeleteServerCommand>
 
     public Task Handle(DeleteServerCommand request, CancellationToken cancellationToken)
     {
-        return _serverRepository.DeleteServerAsync(request.ServerId);
+        return _serverRepository.DeleteServer(request.ServerId);
     }
 }

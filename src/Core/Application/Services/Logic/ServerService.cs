@@ -74,7 +74,7 @@ public class ServerService: IServerService
                 }
             }
 
-            var systemType = await _systemTypeRepository.GetSystemTypeAsync(systemTypeResult.SystemTypeId);
+            var systemType = await _systemTypeRepository.GetSystemType(systemTypeResult.SystemTypeId);
 
             systemTypeResult.IconPath = systemType.IconPath;
         }

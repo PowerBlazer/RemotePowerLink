@@ -2,11 +2,13 @@
 using Application.Services.Abstract.Parameters;
 using Domain.Exceptions;
 using Domain.Repository;
+using JetBrains.Annotations;
 using MediatR;
 using Renci.SshNet;
 
 namespace Application.Features.SftpFeature.RenameFolderOrFile;
 
+[UsedImplicitly]
 public class RenameFolderOrFileHandler: IRequestHandler<RenameFolderOrFileCommand>
 {
     private readonly IServerRepository _serverRepository;
@@ -21,7 +23,7 @@ public class RenameFolderOrFileHandler: IRequestHandler<RenameFolderOrFileComman
 
     public async Task Handle(RenameFolderOrFileCommand request, CancellationToken cancellationToken)
     {
-        var server = await _serverRepository.GetServerAsync(request.ServerId);
+        var server = await _serverRepository.GetServer(request.ServerId);
 
         if (server.UserId != request.UserId)
         {

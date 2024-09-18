@@ -24,7 +24,7 @@ public class IdentityRepository: IIdentityRepository
         return identities;
     }
 
-    public async Task<Identity?> GetIdentityDefaultAsync(long identityId)
+    public async Task<Identity?> GetIdentityDefault(long identityId)
     {
         var identity = await _persistenceContext.Identities
             .FirstOrDefaultAsync(p => p.Id == identityId);
@@ -32,7 +32,7 @@ public class IdentityRepository: IIdentityRepository
         return identity;
     }
 
-    public async Task<Identity> GetIdentityAsync(long identityId)
+    public async Task<Identity> GetIdentity(long identityId)
     {
         var identity = await _persistenceContext.Identities
             .FirstOrDefaultAsync(p => p.Id == identityId);
@@ -45,7 +45,7 @@ public class IdentityRepository: IIdentityRepository
         return identity;
     }
 
-    public async Task<Identity> AddIdentityAsync(Identity identity)
+    public async Task<Identity> AddIdentity(Identity identity)
     {
         await _persistenceContext.Identities.AddAsync(identity);
         await _persistenceContext.SaveChangesAsync();
@@ -53,7 +53,7 @@ public class IdentityRepository: IIdentityRepository
         return identity;
     }
 
-    public async Task<Identity> UpdateIdentityAsync(Identity identity)
+    public async Task<Identity> UpdateIdentity(Identity identity)
     {
         _persistenceContext.Attach(identity);
         _persistenceContext.Identities.Update(identity);
@@ -67,7 +67,7 @@ public class IdentityRepository: IIdentityRepository
         return identity;
     }
 
-    public async Task DeleteIdentityAsync(long identityId)
+    public async Task DeleteIdentity(long identityId)
     {
         var identity = await _persistenceContext
             .Identities

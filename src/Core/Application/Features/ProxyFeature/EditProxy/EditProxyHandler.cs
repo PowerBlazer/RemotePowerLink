@@ -24,7 +24,7 @@ public class EditProxyHandler: IRequestHandler<EditProxyCommand,EditProxyRespons
 
     public async Task<EditProxyResponse> Handle(EditProxyCommand request, CancellationToken cancellationToken)
     {
-        var identity = await _identityRepository.GetIdentityDefaultAsync(request.IdentityId);
+        var identity = await _identityRepository.GetIdentityDefault(request.IdentityId);
 
         if (identity is null)
         {
@@ -49,7 +49,7 @@ public class EditProxyHandler: IRequestHandler<EditProxyCommand,EditProxyRespons
 
         var proxy = EditProxyCommand.MapToProxy(request);
         
-        var updatedProxy = await _proxyRepository.UpdateProxyAsync(proxy);
+        var updatedProxy = await _proxyRepository.UpdateProxy(proxy);
 
         return EditProxyResponse.ProxyMapTo(updatedProxy);
     }

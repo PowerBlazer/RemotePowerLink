@@ -31,7 +31,7 @@ public class SendCodeToResetPasswordConsumer: IConsumer<SendCodeToResetPasswordE
 
         var htmlContent = await razor.CompileRenderStringAsync("template", template, context.Message);
 
-        await _smtpEmailService.SendEmailAsync(context.Message.Email, "Сброс пароля в RemotePowerLink",
+        await _smtpEmailService.SendEmail(context.Message.Email, "Сброс пароля в RemotePowerLink",
             htmlContent);
     }
 }

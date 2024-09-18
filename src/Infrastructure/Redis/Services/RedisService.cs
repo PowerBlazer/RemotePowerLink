@@ -17,22 +17,22 @@ public sealed class RedisService: IRedisService,IDisposable
         _dataBaseRedis = _redisConnection.Value.GetDatabase();
     }
 
-    public async Task<string?> GetValueAsync(string key)
+    public async Task<string?> GetValue(string key)
     {
         return await _dataBaseRedis.StringGetAsync(key);
     }
 
-    public Task<bool> SetValueAsync(string key, string value, TimeSpan? expiry = null)
+    public Task<bool> SetValue(string key, string value, TimeSpan? expiry = null)
     {
         return _dataBaseRedis.StringSetAsync(key, value,expiry);
     }
 
-    public Task<bool> DeleteValueAsync(string key)
+    public Task<bool> DeleteValue(string key)
     {
         return _dataBaseRedis.KeyDeleteAsync(key);
     }
 
-    public async Task<bool> UpdateValueAsync(string key, string value, TimeSpan? expiry = null)
+    public async Task<bool> UpdateValue(string key, string value, TimeSpan? expiry = null)
     {
         if (await _dataBaseRedis.KeyExistsAsync(key))
         {

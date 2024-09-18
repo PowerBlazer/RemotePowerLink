@@ -8,12 +8,12 @@ public interface IEncodingRepository
     /// Получает все доступные кодировки.
     /// </summary>
     /// <returns>Коллекция объектов кодировок.</returns>
-    Task<IEnumerable<Encoding>> GetEncodingsAsync();
+    Task<IEnumerable<Encoding>> GetEncodings();
     
     /// <summary>
     /// Получает информацию о кодировке по заданному идентификатору.
     /// </summary>
     /// <param name="encodingId">Идентификатор кодировки.</param>
     /// <returns>Объект кодировки.</returns>
-    Task<Encoding> GetEncodingAsync(long encodingId);
+    Task<Encoding> GetEncoding(long encodingId);
 }

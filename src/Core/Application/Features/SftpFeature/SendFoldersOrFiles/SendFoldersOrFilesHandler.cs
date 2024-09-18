@@ -43,8 +43,8 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
 
     public async Task<SendFoldersOrFilesResponse> Handle(SendFoldersOrFilesCommand request, CancellationToken cancellationToken)
     {
-        var targetServer = await _serverRepository.GetServerAsync(request.TargetServerId);
-        var sourceServer = await _serverRepository.GetServerAsync(request.SourceServerId);
+        var targetServer = await _serverRepository.GetServer(request.TargetServerId);
+        var sourceServer = await _serverRepository.GetServer(request.SourceServerId);
 
         if (targetServer.UserId != request.UserId)
         {

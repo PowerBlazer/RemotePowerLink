@@ -15,7 +15,7 @@ public class ServerRepositrory: IServerRepository
         _persistenceContext = persistenceContext;
     }
 
-    public async Task<Server> GetServerAsync(long serverId)
+    public async Task<Server> GetServer(long serverId)
     {
         var server = await _persistenceContext.Servers
             .Include(p=> p.Identity)
@@ -32,7 +32,7 @@ public class ServerRepositrory: IServerRepository
         return server;
     }
 
-    public async Task<Server?> GetServerDefaultAsync(long serverId)
+    public async Task<Server?> GetServerDefault(long serverId)
     {
         var server = await _persistenceContext.Servers
             .Include(p=> p.Identity)
@@ -44,7 +44,7 @@ public class ServerRepositrory: IServerRepository
         return server;
     }
 
-    public async Task<Server> AddServerAsync(Server server)
+    public async Task<Server> AddServer(Server server)
     {
         await _persistenceContext.Servers.AddAsync(server);
         await _persistenceContext.SaveChangesAsync();
@@ -65,7 +65,7 @@ public class ServerRepositrory: IServerRepository
         return servers;
     }
 
-    public async Task<Server> UpdateServerAsync(Server server)
+    public async Task<Server> UpdateServer(Server server)
     {
         _persistenceContext.Attach(server);
         
@@ -80,7 +80,7 @@ public class ServerRepositrory: IServerRepository
         return server;
     }
 
-    public async Task DeleteServerAsync(long serverId)
+    public async Task DeleteServer(long serverId)
     {
         var server = await _persistenceContext
             .Servers

@@ -67,7 +67,7 @@ public class UserService: IUserService
     public async Task UpdatePassword(UpdatePasswordInput updatePasswordInput)
     {
         var identityUser = await _identityUserRepository.GetUserById(updatePasswordInput.UserId);
-        var sessionJson = await _redisService.GetValueAsync(updatePasswordInput.SessionId);
+        var sessionJson = await _redisService.GetValue(updatePasswordInput.SessionId);
 
         if (sessionJson is null)
         {
@@ -93,13 +93,13 @@ public class UserService: IUserService
         await _identityUnitOfWork.ExecuteWithExecutionStrategyAsync(async () =>
         {
             await _identityUserRepository.UpdateUser(identityUser);
-            await _identityTokenRepository.DeleteTokensByUserIdAsync(identityUser.Id);
+            await _identityTokenRepository.DeleteTokensByUserId(identityUser.Id);
         });
     }
     public async Task UpdateEmail(UpdateEmailInput updateEmailInput)
     {
         var identityUser = await _identityUserRepository.GetUserById(updateEmailInput.UserId);
-        var sessionJson = await _redisService.GetValueAsync(updateEmailInput.SessionId);
+        var sessionJson = await _redisService.GetValue(updateEmailInput.SessionId);
 
         if (sessionJson is null)
         {

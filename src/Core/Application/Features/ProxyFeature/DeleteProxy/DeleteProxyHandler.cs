@@ -14,6 +14,6 @@ public class DeleteProxyHandler: IRequestHandler<DeleteProxyCommand>
 
     public Task Handle(DeleteProxyCommand request, CancellationToken cancellationToken)
     {
-        return _proxyRepository.DeleteProxyAsync(request.ProxyId);
+        return _proxyRepository.DeleteProxy(request.ProxyId);
     }
 }

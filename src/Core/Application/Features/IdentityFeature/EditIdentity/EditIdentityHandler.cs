@@ -18,7 +18,7 @@ public class EditIdentityHandler: IRequestHandler<EditIdentityCommand, EditIdent
     public async Task<EditIdentityResponse> Handle(EditIdentityCommand request, CancellationToken cancellationToken)
     {
         var identityResult = await _identityRepository
-            .UpdateIdentityAsync(EditIdentityCommand.MapToIdentity(request));
+            .UpdateIdentity(EditIdentityCommand.MapToIdentity(request));
 
         return EditIdentityResponse.IdentityMapTo(identityResult);
     }

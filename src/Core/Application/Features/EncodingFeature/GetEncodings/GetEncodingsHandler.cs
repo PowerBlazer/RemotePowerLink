@@ -17,7 +17,7 @@ public class GetEncodingsHandler: IRequestHandler<GetEncodingsCommand, IEnumerab
 
     public async Task<IEnumerable<GetEncodingResponse>> Handle(GetEncodingsCommand request, CancellationToken cancellationToken)
     {
-        var encodings = await _encodingRepository.GetEncodingsAsync();
+        var encodings = await _encodingRepository.GetEncodings();
 
         return encodings.Select(GetEncodingResponse.EncodingMapTo);
     }

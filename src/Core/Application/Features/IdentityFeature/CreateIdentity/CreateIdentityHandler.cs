@@ -19,7 +19,7 @@ public class CreateIdentityHandler: IRequestHandler<CreateIdentityCommand, Creat
     {
         var newIdentity = CreateIdentityCommand.MapToIdentity(request);
         
-        var addedIdentityResult = await _identityRepository.AddIdentityAsync(newIdentity);
+        var addedIdentityResult = await _identityRepository.AddIdentity(newIdentity);
 
         return CreateIdentityResponse.IdentityMapTo(addedIdentityResult);
     }

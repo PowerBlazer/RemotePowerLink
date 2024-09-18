@@ -24,7 +24,7 @@ public class ProxyRepository: IProxyRepository
         return proxies;
     }
 
-    public async Task<Proxy?> GetProxyDefaultAsync(long proxyId)
+    public async Task<Proxy?> GetProxyDefault(long proxyId)
     {
         var proxy = await _persistenceContext.Proxies
             .FirstOrDefaultAsync(p => p.Id == proxyId);
@@ -32,7 +32,7 @@ public class ProxyRepository: IProxyRepository
         return proxy;
     }
 
-    public async Task<Proxy> AddProxyAsync(Proxy proxy)
+    public async Task<Proxy> AddProxy(Proxy proxy)
     {
         await _persistenceContext.Proxies.AddAsync(proxy);
         await _persistenceContext.SaveChangesAsync();
@@ -40,7 +40,7 @@ public class ProxyRepository: IProxyRepository
         return proxy;
     }
 
-    public async Task<Proxy> UpdateProxyAsync(Proxy proxy)
+    public async Task<Proxy> UpdateProxy(Proxy proxy)
     {
         _persistenceContext.Attach(proxy);
         _persistenceContext.Proxies.Update(proxy);
@@ -54,7 +54,7 @@ public class ProxyRepository: IProxyRepository
         return proxy;
     }
 
-    public async Task DeleteProxyAsync(long proxyId)
+    public async Task DeleteProxy(long proxyId)
     {
         var proxy = await _persistenceContext
             .Proxies

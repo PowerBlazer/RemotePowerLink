@@ -32,8 +32,8 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
 
     public async Task<CreateServerResponse> Handle(CreateServerCommand request, CancellationToken cancellationToken)
     {
-        var identity = await _identityRepository.GetIdentityDefaultAsync(request.IdentityId);
-        var encoding = await _encodingRepository.GetEncodingAsync(request.EncodingId);
+        var identity = await _identityRepository.GetIdentityDefault(request.IdentityId);
+        var encoding = await _encodingRepository.GetEncoding(request.EncodingId);
         
         if (identity is null)
         {
@@ -51,14 +51,14 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
         
         if (request.ProxyId is not null)
         {
-            var proxy = await _proxyRepository.GetProxyDefaultAsync(request.ProxyId.Value);
+            var proxy = await _proxyRepository.GetProxyDefault(request.ProxyId.Value);
 
             if (proxy is null)
             {
                 throw new NotFoundException("Прокси сервер с указанным 'ProxyId' не найдена.", "ProxyId");
             }
             
-            var proxyIdentity = await _identityRepository.GetIdentityAsync(proxy.IdentityId);
+            var proxyIdentity = await _identityRepository.GetIdentity(proxy.IdentityId);
             
             connectionServerParameter.Proxy = new ProxyParameter
             {
@@ -80,7 +80,7 @@ public class CreateServerHandler: IRequestHandler<CreateServerCommand, CreateSer
         var systemType = await _serverService.GetSystemType(connectionServerParameter, cancellationToken);
         
         var serverResult = await _serverRepository
-            .AddServerAsync(CreateServerCommand.MapToServer(request, systemType.SystemTypeId));
+            .AddServer(CreateServerCommand.MapToServer(request, systemType.SystemTypeId));
 
         var createServerResponse = CreateServerResponse.MapToServer(serverResult);
         

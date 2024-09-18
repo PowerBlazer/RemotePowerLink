@@ -2,8 +2,8 @@
 
 public interface IRedisService
 {
-    Task<string?> GetValueAsync(string key);
-    Task<bool> SetValueAsync(string key, string value, TimeSpan? expiry = null);
-    Task<bool> DeleteValueAsync(string key);
-    Task<bool> UpdateValueAsync(string key, string value, TimeSpan? expiry = null);
+    Task<string?> GetValue(string key);
+    Task<bool> SetValue(string key, string value, TimeSpan? expiry = null);
+    Task<bool> DeleteValue(string key);
+    Task<bool> UpdateValue(string key, string value, TimeSpan? expiry = null);
 }

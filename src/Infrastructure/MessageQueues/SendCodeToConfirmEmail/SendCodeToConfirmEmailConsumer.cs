@@ -34,7 +34,7 @@ public class SendCodeToConfirmEmailConsumer: IConsumer<SendCodeToConfirmEmailEve
 
         var htmlContent = await razor.CompileRenderStringAsync("template", template, context.Message);
 
-        await _smtpEmailService.SendEmailAsync(context.Message.Email, "Подтверждение почты в RemotePowerLink",
+        await _smtpEmailService.SendEmail(context.Message.Email, "Подтверждение почты в RemotePowerLink",
             htmlContent);
     }
 }

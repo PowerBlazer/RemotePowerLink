@@ -47,7 +47,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
                                         $"{_sftpService.FormatFileSize((ulong)totalUploadFilesSize)}", "Server");
         }
         
-        var server = await _serverRepository.GetServerAsync(request.ServerId);
+        var server = await _serverRepository.GetServer(request.ServerId);
 
         if (server.UserId != request.UserId)
         {

@@ -23,7 +23,7 @@ public class BaseHub: Hub
 
     protected string ConnectionKey => Context.ConnectionId;
 
-    protected async Task HandlerOperationAsync(Func<Task> action)
+    protected async Task HandlerOperation(Func<Task> action)
     {
         try
         {

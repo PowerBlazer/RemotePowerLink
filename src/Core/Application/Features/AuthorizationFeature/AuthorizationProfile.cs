@@ -1,7 +1,6 @@
 ﻿using Application.Features.AuthorizationFeature.LoginUser;
 using Application.Features.AuthorizationFeature.RefreshToken;
 using Application.Features.AuthorizationFeature.RegisterUser;
-using Application.Layers.Identity.Models;
 using Application.Layers.Identity.Models.Authorization;
 using AutoMapper;
 

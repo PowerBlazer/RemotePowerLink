@@ -1,5 +1,4 @@
-﻿using Application.Services;
-using Application.Services.Abstract;
+﻿using Application.Services.Abstract;
 using Application.Services.Abstract.Parameters;
 using Application.Services.Logic;
 using Domain.DTOs.Sftp;
@@ -71,7 +70,7 @@ public class SftpHub: BaseHub
                 {
                     Name = "..",
                     Path = previousDirectoryPath,
-                    FileType = FileTypeEnum.BackNavigation,
+                    FileType = FileTypeEnum.BackNavigation
                 });
             }
 

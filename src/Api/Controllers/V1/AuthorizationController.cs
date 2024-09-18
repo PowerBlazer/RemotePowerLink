@@ -1,9 +1,9 @@
 ﻿using Application.Features.AuthorizationFeature.LoginUser;
 using Application.Features.AuthorizationFeature.RefreshToken;
 using Application.Features.AuthorizationFeature.RegisterUser;
-using Application.Features.AuthorizationFeature.ResendConfirmationCode;
-using Application.Features.AuthorizationFeature.SendEmailVerificationCode;
-using Application.Features.AuthorizationFeature.VerifyEmailCode;
+using Application.Features.AuthorizationFeature.ResendCodeToConfirmation;
+using Application.Features.AuthorizationFeature.SendCodeToEmailVerification;
+using Application.Features.AuthorizationFeature.VerifyEmail;
 using Application.Layers.Identity.Models.Authorization;
 using Domain.Common;
 using MediatR;
@@ -33,7 +33,7 @@ public class AuthorizationController : BaseController
     [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>), StatusCodes.Status400BadRequest)]
     public async Task<ApiActionResult<SendEmailVerificationResponse>> SendEmailVerification(
-        [FromBody] SendEmailVerificationCommand verificationCommand)
+        [FromBody] SendCodeToEmailVerificationCommand verificationCommand)
     {
         var result = await Mediator.Send(verificationCommand);
 
@@ -49,7 +49,7 @@ public class AuthorizationController : BaseController
     /// <summary>
     /// Подтверждает адрес электронной почты пользователя с использованием кода подтверждения.
     /// </summary>
-    /// <param name="verifyEmailCodeCommand">Данные для подтверждения адреса электронной почты.</param>
+    /// <param name="verifyEmailCommand">Данные для подтверждения адреса электронной почты.</param>
     /// <response code="200">Успешно подтвержден адрес электронной почты.</response>
     /// <response code="400">Неправильный формат данных.</response>
     /// <response code="500">Ошибка на сервере.</response>
@@ -57,15 +57,15 @@ public class AuthorizationController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public Task ConfirmEmailWithVerificationCode(
-        [FromBody] VerifyEmailCodeCommand verifyEmailCodeCommand)
+        [FromBody] VerifyEmailCommand verifyEmailCommand)
     {
-        return Mediator.Send(verifyEmailCodeCommand);
+        return Mediator.Send(verifyEmailCommand);
     }
 
     /// <summary>
     /// Повторно отправляет сообщение на почту с запросом подтверждения.
     /// </summary>
-    /// <param name="resendConfirmationCodeCommand">Данные для повторной отправки сообщения.</param>
+    /// <param name="resendCodeToConfirmationCommand">Данные для повторной отправки сообщения.</param>
     /// <returns>ID пересозданной сессии.</returns>
     /// <response code="200">Сообщение успешно отправлено на почту (ID сессии).</response>
     /// <response code="400">Неправильный формат почты.</response>
@@ -74,9 +74,9 @@ public class AuthorizationController : BaseController
     [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>), StatusCodes.Status400BadRequest)]
     public async Task<ApiActionResult<ResendEmailVerificationResponse>> ResendEmailVerification(
-        [FromBody] ResendConfirmationCodeCommand resendConfirmationCodeCommand)
+        [FromBody] ResendCodeToConfirmationCommand resendCodeToConfirmationCommand)
     {
-        var result = await Mediator.Send(resendConfirmationCodeCommand);
+        var result = await Mediator.Send(resendCodeToConfirmationCommand);
 
         return new ApiActionResult<ResendEmailVerificationResponse>
         {

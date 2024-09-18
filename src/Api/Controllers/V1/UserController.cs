@@ -1,13 +1,11 @@
-﻿using Application.Features.UserFeature.ChangePassword;
+﻿using Application.Features.EmailFeature.ResendCodeToResetPassword;
+using Application.Features.EmailFeature.SendCodeToResetPassword;
+using Application.Features.EmailFeature.VerifyCodeToResetPassword;
+using Application.Features.UserFeature.ChangePassword;
 using Application.Features.UserFeature.GetUserData;
-using Application.Features.UserFeature.ResendResetPasswordCode;
-using Application.Features.UserFeature.SendCodeResetPassword;
 using Application.Features.UserFeature.UpdateUserData;
-using Application.Features.UserFeature.VerifyResetPasswordCode;
-using Application.Layers.Identity.Models;
 using Application.Layers.Identity.Models.Authorization;
 using Domain.Common;
-using Domain.DTOs.User;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -114,12 +112,12 @@ public class UserController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ApiActionResult<ResendResetPasswordCodeResponse>> ResendResetPasswordCode([FromBody] ResendResetPasswordCodeCommand resendResetPasswordCodeCommand,
+    public async Task<ApiActionResult<ResendResetPasswordCodeResponse>> ResendResetPasswordCode([FromBody] ResendCodeToResetPasswordCommand resendCodeToResetPasswordCommand,
         CancellationToken cancellationToken)
     {
-        resendResetPasswordCodeCommand.UserId = UserId;
+        resendCodeToResetPasswordCommand.UserId = UserId;
         
-        var result = await Mediator.Send(resendResetPasswordCodeCommand, cancellationToken);
+        var result = await Mediator.Send(resendCodeToResetPasswordCommand, cancellationToken);
 
         return new ApiActionResult<ResendResetPasswordCodeResponse>
         {
@@ -175,10 +173,10 @@ public class UserController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ApiActionResult> VerifyResetPasswordCode([FromBody] VerifyResetPasswordCodeCommand verifyResetPasswordCodeCommand,
+    public async Task<ApiActionResult> VerifyResetPasswordCode([FromBody] VerifyCodeToResetPasswordCommand verifyCodeToResetPasswordCommand,
         CancellationToken cancellationToken)
     {
-        await Mediator.Send(verifyResetPasswordCodeCommand, cancellationToken);
+        await Mediator.Send(verifyCodeToResetPasswordCommand, cancellationToken);
 
         return new ApiActionResult();
     }

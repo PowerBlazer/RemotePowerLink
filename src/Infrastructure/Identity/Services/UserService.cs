@@ -1,14 +1,10 @@
 ﻿using System.Text.Json;
 using Application.Layers.Identity;
 using Application.Layers.Identity.Models;
-using Application.Layers.MessageQueues.SendResetPasswordCode;
 using Application.Layers.Redis;
 using Domain.Common;
-using Domain.DTOs.User;
 using Domain.Exceptions;
 using Identity.Common;
-using Identity.Entities;
-using Identity.Helpers;
 using Identity.Interfaces;
 using Identity.Models;
 using UserData = Application.Layers.Identity.Models.UserData;
@@ -20,19 +16,16 @@ public class UserService: IUserService
     private readonly IIdentityUserRepository _identityUserRepository;
     private readonly IIdentityTokenRepository _identityTokenRepository;
     private readonly IRedisService _redisService;
-    private readonly ISendResetPasswordCodeProducer _sendResetPasswordCodeProducer;
     private readonly IIdentityUnitOfWork _identityUnitOfWork;
     
     public UserService(IIdentityUserRepository identityUserRepository, 
         IIdentityTokenRepository identityTokenRepository, 
         IRedisService redisService, 
-        ISendResetPasswordCodeProducer sendResetPasswordCodeProducer, 
         IIdentityUnitOfWork identityUnitOfWork)
     {
         _identityUserRepository = identityUserRepository;
         _identityTokenRepository = identityTokenRepository;
         _redisService = redisService;
-        _sendResetPasswordCodeProducer = sendResetPasswordCodeProducer;
         _identityUnitOfWork = identityUnitOfWork;
     }
 
@@ -71,7 +64,6 @@ public class UserService: IUserService
             TwoFactorEnabled = updatedUser.TwoFactorEnabled
         };
     }
-
     public async Task UpdatePassword(UpdatePasswordInput updatePasswordInput)
     {
         var identityUser = await _identityUserRepository.GetUserById(updatePasswordInput.UserId);
@@ -104,101 +96,25 @@ public class UserService: IUserService
             await _identityTokenRepository.DeleteTokensByUserIdAsync(identityUser.Id);
         });
     }
-
-    public async Task<string> SendCodeResetPassword(long userId)
+    public async Task UpdateEmail(UpdateEmailInput updateEmailInput)
     {
-        var verificationCode = VerificationCode.GenerateVerificationCode();
-        var sessionId = Guid.NewGuid().ToString();
-
-        var user = await _identityUserRepository.GetUserById(userId);
-        
-        var verifySessionResetPassword = new SessionResetPassword
-        {
-            UserId = userId,
-            VerificationCode = verificationCode,
-            IsOk = false
-        };
-        
-        var isAdded = await _redisService.SetValueAsync(
-            sessionId,
-            verifySessionResetPassword.ToString(),
-            TimeSpan.FromMinutes(5));
-        
-        if (!isAdded)
-        {
-            throw new Exception($"Сессия не создана {sessionId}");
-        }
-        
-        await _sendResetPasswordCodeProducer.PublishEmailSend(new SendResetPasswordCodeEvent(
-            user.Email,
-            verificationCode));
-
-        return sessionId;
-
-    }
-
-    public async Task VerifyResetPasswordCode(string sessionId, string verifyCode)
-    {
-        var sessionValue = await _redisService.GetValueAsync(sessionId);
-        
-        if (sessionValue is null)
-        {
-            throw new SessionCodeNotFoundException("Сессия закончилась");
-        }
-        
-        var sesssionResetPassword = JsonSerializer.Deserialize<SessionResetPassword>(sessionValue);
-        
-        if (verifyCode != sesssionResetPassword?.VerificationCode)
-        {
-            throw new SessionCodeNotValidException("Неправильный код верификации");
-        }
-
-        sesssionResetPassword.IsOk = true;
-        
-        var isUpdate = await _redisService.UpdateValueAsync(
-            sessionId,
-            sesssionResetPassword.ToString(),
-            TimeSpan.FromMinutes(5));
-
-        if (!isUpdate)
-        {
-            throw new Exception($"Сессия не обновлена {sessionId}");
-        }
-    }
-
-    public async Task<string> ResendResetPasswordCode(string sessionId, long userId)
-    {
-        var sessionJson = await _redisService.GetValueAsync(sessionId);
+        var identityUser = await _identityUserRepository.GetUserById(updateEmailInput.UserId);
+        var sessionJson = await _redisService.GetValueAsync(updateEmailInput.SessionId);
 
         if (sessionJson is null)
         {
-            throw new SessionCodeNotFoundException("Сессия не найдена");
+            throw new SessionCodeNotFoundException("Сессия подтверждения закончилась, повторите попытку");
         }
 
-        var user = await _identityUserRepository.GetUserById(userId);
-        
-        var verificationCode = VerificationCode.GenerateVerificationCode();
+        var session = JsonSerializer.Deserialize<SessionVerifyEmail>(sessionJson);
 
-        var newSession = new SessionResetPassword
+        if (session is null || !session.IsOk)
         {
-            UserId = userId,
-            VerificationCode = verificationCode,
-            IsOk = false
-        };
-
-        var isUpdate = await _redisService.UpdateValueAsync(
-            sessionId, 
-            newSession.ToString(), 
-            TimeSpan.FromMinutes(5));
-        
-        if (!isUpdate)
-        {
-            throw new Exception($"Сессия не обновлена {sessionId}");
+            throw new SessionCodeNotValidException("Сессия не подтверждена");
         }
-        
-        await _sendResetPasswordCodeProducer.PublishEmailSend(new SendResetPasswordCodeEvent(
-            user.Email, verificationCode));
 
-        return sessionId;
+        identityUser.Email = updateEmailInput.NewEmail;
+
+        await _identityUserRepository.UpdateUser(identityUser);
     }
 }

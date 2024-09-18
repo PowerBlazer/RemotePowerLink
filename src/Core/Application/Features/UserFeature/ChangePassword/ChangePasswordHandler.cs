@@ -1,6 +1,5 @@
 ﻿using Application.Layers.Identity;
 using Application.Layers.Identity.Models;
-using Domain.DTOs.User;
 using JetBrains.Annotations;
 using MediatR;
 

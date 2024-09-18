@@ -1,5 +1,4 @@
 ﻿using Application.Layers.Identity;
-using Application.Layers.Identity.Models;
 using Application.Layers.Identity.Models.Authorization;
 using AutoMapper;
 using JetBrains.Annotations;
@@ -24,6 +23,6 @@ public class LoginUserHandler: IRequestHandler<LoginUserCommand,LoginResponse>
     {
         var loginInput = _mapper.Map<LoginUserCommand,LoginRequest>(request);
 
-        return _authorizationService.LoginUserAsync(loginInput);
+        return _authorizationService.LoginUser(loginInput);
     }
 }

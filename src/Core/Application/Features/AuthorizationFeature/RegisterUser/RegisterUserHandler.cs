@@ -1,5 +1,4 @@
 ﻿using Application.Layers.Identity;
-using Application.Layers.Identity.Models;
 using Application.Layers.Identity.Models.Authorization;
 using AutoMapper;
 using JetBrains.Annotations;
@@ -24,6 +23,6 @@ public class RegisterUserHandler: IRequestHandler<RegisterUserCommand,Registrati
     {
         var registerInput = _mapper.Map<RegisterUserCommand, RegistrationRequest>(request);
 
-        return _authorizationService.RegisterUserAsync(registerInput);
+        return _authorizationService.RegisterUser(registerInput);
     }
 }

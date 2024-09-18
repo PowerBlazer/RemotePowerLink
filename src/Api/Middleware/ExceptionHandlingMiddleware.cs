@@ -101,24 +101,6 @@ public class ExceptionHandlingMiddleware
         return response.WriteAsync(result);
     }
     
-    private static Task HandleExceptionAsync(HttpContext httpContext,
-        HttpStatusCode httpStatusCode, string error)
-    {
-        var response = httpContext.Response;
-
-        response.ContentType = "application/json";
-        response.StatusCode = (int)httpStatusCode;
-
-        var errorResult = new
-        {
-            Error = error
-        };
-        
-        var result = JsonSerializer.Serialize(errorResult);
-
-        return response.WriteAsync(result);
-    }
-
     private Dictionary<string, List<string>> GetErrorsDictionary(string key, params string[] errors)
     {
         return new Dictionary<string, List<string>>

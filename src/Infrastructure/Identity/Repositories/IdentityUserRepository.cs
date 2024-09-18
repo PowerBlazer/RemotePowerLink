@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Domain.Exceptions;
+﻿using Domain.Exceptions;
 using Identity.Contexts;
 using Identity.Entities;
 using Identity.Interfaces;

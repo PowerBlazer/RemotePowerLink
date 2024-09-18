@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Application.Features.AuthorizationFeature;
 using Application.Middlewares;
-using Application.Services;
 using Application.Services.Abstract;
 using Application.Services.Logic;
 using FluentValidation;

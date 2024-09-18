@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Application.Features.SftpFeature.SendFoldersOrFiles;
 
+[UsedImplicitly]
 public class SendFoldersOrFilesValidator: AbstractValidator<SendFoldersOrFilesCommand>
 {
     public SendFoldersOrFilesValidator()

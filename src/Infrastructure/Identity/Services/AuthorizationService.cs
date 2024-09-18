@@ -1,9 +1,8 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
 using Application.Layers.Identity;
-using Application.Layers.Identity.Models;
 using Application.Layers.Identity.Models.Authorization;
-using Application.Layers.MessageQueues.SendVerificationEmail;
+using Application.Layers.MessageQueues.SendCodeToConfirmEmail;
 using Application.Layers.MessageQueues.UserRegistered;
 using Application.Layers.Redis;
 using Domain.Common;
@@ -18,7 +17,7 @@ namespace Identity.Services;
 public class AuthorizationService: IAuthorizationService
 {
     private readonly IRedisService _redisService;
-    private readonly IVerificationEmailSendProducer _verificationEmailSendProducer;
+    private readonly ISendCodeToConfirmEmailProducer _sendCodeToConfirmEmailProducer;
     private readonly IUserRegisteredProducer _userRegisteredProducer;
     private readonly ITokenService _tokenService;
     private readonly IIdentityUserRepository _identityUserRepository;
@@ -26,7 +25,7 @@ public class AuthorizationService: IAuthorizationService
     private readonly IIdentityUnitOfWork _identityUnitOfWork;
     
     public AuthorizationService(IRedisService redisService, 
-        IVerificationEmailSendProducer verificationEmailSendProducer, 
+        ISendCodeToConfirmEmailProducer sendCodeToConfirmEmailProducer, 
         ITokenService tokenService, 
         IIdentityUserRepository identityUserRepository,
         IUserRegisteredProducer userRegisteredProducer, 
@@ -34,7 +33,7 @@ public class AuthorizationService: IAuthorizationService
         IIdentityTokenRepository tokenRepository)
     {
         _redisService = redisService;
-        _verificationEmailSendProducer = verificationEmailSendProducer;
+        _sendCodeToConfirmEmailProducer = sendCodeToConfirmEmailProducer;
         _tokenService = tokenService;
         _identityUserRepository = identityUserRepository;
         _userRegisteredProducer = userRegisteredProducer;
@@ -42,7 +41,7 @@ public class AuthorizationService: IAuthorizationService
         _tokenRepository = tokenRepository;
     }
     
-    public async Task<string> SendEmailVerificationCodeAsync(string email)
+    public async Task<string> SendCodeToEmailVerification(string email)
     {
          var verificationCode = VerificationCode.GenerateVerificationCode();
          var sessionId = Guid.NewGuid().ToString();
@@ -62,7 +61,7 @@ public class AuthorizationService: IAuthorizationService
              throw new Exception($"Сессия не создана {sessionId}");
          }
 
-         await _verificationEmailSendProducer.PublishEmailSend(new VerificationEmailSendEvent(
+         await _sendCodeToConfirmEmailProducer.PublishEmailSend(new SendCodeToConfirmEmailEvent(
              email,
              confirmLink:"",
              verificationCode));
@@ -70,7 +69,7 @@ public class AuthorizationService: IAuthorizationService
          return sessionId;
     }
 
-    public async Task<string> ResendVerificationCodeAsync(string sessionId,string email)
+    public async Task<string> ResendCodeToVerification(string sessionId,string email)
     {
         var sessionJson = await _redisService.GetValueAsync(sessionId);
 
@@ -98,14 +97,14 @@ public class AuthorizationService: IAuthorizationService
             throw new Exception($"Сессия не обновлена {sessionId}");
         }
         
-        await _verificationEmailSendProducer.PublishEmailSend(new VerificationEmailSendEvent(email,
+        await _sendCodeToConfirmEmailProducer.PublishEmailSend(new SendCodeToConfirmEmailEvent(email,
             confirmLink:"",
             verificationCode));
 
         return sessionId;
     }
 
-    public async Task VerifyEmailCodeAsync(string sessionId,string verifyCode)
+    public async Task VerifyEmail(string sessionId,string verifyCode)
     {
         var sessionValue = await _redisService.GetValueAsync(sessionId);
 
@@ -134,7 +133,7 @@ public class AuthorizationService: IAuthorizationService
         }
     }
 
-    public async Task<RegistrationResponse> RegisterUserAsync(RegistrationRequest registrationRequest)
+    public async Task<RegistrationResponse> RegisterUser(RegistrationRequest registrationRequest)
     {
         var sessionJson = await _redisService.GetValueAsync(registrationRequest.SessionId);
 
@@ -180,7 +179,7 @@ public class AuthorizationService: IAuthorizationService
         return new RegistrationResponse(accessToken, refreshToken);
     }
 
-    public async Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest)
+    public async Task<LoginResponse> LoginUser(LoginRequest loginRequest)
     {
         var identityUser = await _identityUserRepository.GetUserByEmail(loginRequest.Email);
 

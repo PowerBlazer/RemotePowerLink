@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using Application.Layers.Identity.Models;
 using Application.Layers.Identity.Models.Authorization;
 using JetBrains.Annotations;
 using MediatR;

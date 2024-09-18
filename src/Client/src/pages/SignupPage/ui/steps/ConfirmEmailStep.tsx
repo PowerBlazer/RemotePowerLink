@@ -4,11 +4,11 @@ import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { useContext, useState } from 'react';
 import { RegistrationContext, RegistrationSteps } from 'app/providers/RegistrationProvider';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
-import { ConfirmEmailModel } from 'app/services/AuthorizationService/configs/signupConfig';
 import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { Button } from 'shared/ui/Button/Button';
 import { useTimer } from 'react-timer-and-stopwatch';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
+import {VerificationService} from "app/services/VerificationService/verificationService";
 
 export function ConfirmEmailStep () {
     const { t } = useTranslation('authorization');
@@ -37,7 +37,7 @@ export function ConfirmEmailStep () {
 
     const resendEmailVerification = async () => {
         if (isResend) {
-            const result = await AuthorizationService.resendEmailVerification({
+            const result = await VerificationService.resendCodeToConfirmEmail({
                 email: stepModel.email,
                 sessionId: AuthorizationService.getSessionId()
             })
@@ -50,12 +50,12 @@ export function ConfirmEmailStep () {
     }
 
     const confirmEmailHandler = async () => {
-        const confirmEmailModel: ConfirmEmailModel = {
+        const confirmEmailModel = {
             sessionId: AuthorizationService.getSessionId(),
             verificationCode
         }
 
-        const result = await AuthorizationService.confirmEmail(confirmEmailModel);
+        const result = await VerificationService.verifyCodeToConfirmEmail(confirmEmailModel);
 
         if (result.isSuccess) {
             setStepRegistration({

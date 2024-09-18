@@ -1,13 +1,13 @@
 ﻿using Application.Layers.MessageQueues.SendCodeToChangeEmail;
 using Application.Layers.MessageQueues.SendCodeToConfirmEmail;
 using Application.Layers.MessageQueues.SendCodeToConfirmNewEmail;
-using Application.Layers.MessageQueues.SendCodeToResetPassword;
+using Application.Layers.MessageQueues.SendCodeToUpdatePassword;
 using Application.Layers.MessageQueues.UserRegistered;
 using MassTransit;
 using MessageQueues.SendCodeToChangeEmail;
 using MessageQueues.SendCodeToConfirmEmail;
 using MessageQueues.SendCodeToConfirmNewEmail;
-using MessageQueues.SendCodeToResetPassword;
+using MessageQueues.SendCodeToUpdatePassword;
 using MessageQueues.UserRegistered;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +27,7 @@ public static class DependencyInjection
         {
             x.AddConsumer<UserRegisteredConsumer>();
             x.AddConsumer<SendCodeToConfirmEmailConsumer>();
-            x.AddConsumer<SendCodeToResetPasswordConsumer>();
+            x.AddConsumer<SendCodeToUpdatePasswordConsumer>();
             x.AddConsumer<SendCodeToChangeEmailConsumer>();
             x.AddConsumer<SendCodeToConfirmNewEmailConsumer>();
 
@@ -42,16 +42,16 @@ public static class DependencyInjection
                 cfg.ReceiveEndpoint("user-registered-queue", e => 
                     e.ConfigureConsumer<UserRegisteredConsumer>(context));
 
-                cfg.ReceiveEndpoint("verification-email-send-queue", e =>
+                cfg.ReceiveEndpoint("send-code-to-confirm-email-queue", e =>
                     e.ConfigureConsumer<SendCodeToConfirmEmailConsumer>(context));
                 
-                cfg.ReceiveEndpoint("send-reset-password-code-queue", e => 
-                    e.ConfigureConsumer<SendCodeToResetPasswordConsumer>(context));
+                cfg.ReceiveEndpoint("send-code-to-update-password-queue", e => 
+                    e.ConfigureConsumer<SendCodeToUpdatePasswordConsumer>(context));
                 
-                cfg.ReceiveEndpoint("send-change-email-code-queue", e => 
+                cfg.ReceiveEndpoint("send-code-to-change-email-queue", e => 
                     e.ConfigureConsumer<SendCodeToChangeEmailConsumer>(context));
                 
-                cfg.ReceiveEndpoint("send-code-to-change-email-queue", e=> 
+                cfg.ReceiveEndpoint("send-code-to-change-new-email-queue", e=> 
                     e.ConfigureConsumer<SendCodeToConfirmNewEmailConsumer>(context));
 
             });
@@ -59,7 +59,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRegisteredProducer, UserRegisteredProducer>();
         services.AddScoped<ISendCodeToConfirmEmailProducer, SendCodeToConfirmEmailProducer>();
-        services.AddScoped<ISendCodeToResetPasswordProducer, SendCodeToToResetPasswordProducer>();
+        services.AddScoped<ISendCodeToUpdatePasswordProducer, SendCodeToUpdatePasswordProducer>();
         services.AddScoped<ISendCodeToChangeEmailProducer, SendCodeToChangeEmailProducer>();
         services.AddScoped<ISendCodeToConfirmNewEmailProducer, SendCodeToConfirmNewEmailProducer>();
 

@@ -19,19 +19,3 @@ export interface ChangePasswordData{
     sessionId: string
 }
 
-export interface SendCodeResetPasswordCodeResponse {
-    sessionId: string
-}
-
-export interface ResendResetPasswordCodeResponse{
-    sessionId:string
-}
-
-export interface ResendResetPasswordCodeData {
-    sessionId:string
-}
-
-export interface VerifyResetPasswordCodeData {
-    sessionId: string,
-    verificationCode: string
-}

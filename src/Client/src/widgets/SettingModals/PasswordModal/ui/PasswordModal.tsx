@@ -17,6 +17,7 @@ import {Button} from "shared/ui/Button/Button";
 import {ErrorList} from "shared/ui/ErrorList";
 import {useNavigate} from "react-router-dom";
 import {AppRoutes} from "app/providers/router/config/routeConfig";
+import {VerificationService} from "app/services/VerificationService/verificationService";
 
 interface PasswordModalProps {
     className?: string;
@@ -74,7 +75,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
     }
     
     const sendCodeResetPasswordHandler = async () => {
-        const codeResult = await UserService.sendCodeResetPassword();
+        const codeResult = await VerificationService.sendCodeToUpdatePassword();
         
         if(codeResult.isSuccess){
             setChangePasswordData({
@@ -93,7 +94,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
     }
     const resendCodeResetPasswordHandler = async () => {
         if (isResend) {
-            const codeResult = await UserService.resendResetPasswordCode({
+            const codeResult = await VerificationService.resendCodeToUpdatePassword({
                 sessionId: changePasswordData.sessionId
             });
 
@@ -115,7 +116,7 @@ function PasswordModal ({ className }: PasswordModalProps) {
     } 
     
     const confirmSessionHandler = async () => {
-        const verifyResult = await UserService.verifyResetPassword({
+        const verifyResult = await VerificationService.verifyCodeToUpdatePassword({
             sessionId: changePasswordData.sessionId,
             verificationCode: verificationCode
         });

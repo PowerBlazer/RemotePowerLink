@@ -1,7 +1,4 @@
-﻿using Application.Features.EmailFeature.ResendCodeToResetPassword;
-using Application.Features.EmailFeature.SendCodeToResetPassword;
-using Application.Features.EmailFeature.VerifyCodeToResetPassword;
-using Application.Features.UserFeature.ChangePassword;
+﻿using Application.Features.UserFeature.ChangePassword;
 using Application.Features.UserFeature.GetUserData;
 using Application.Features.UserFeature.UpdateUserData;
 using Application.Layers.Identity.Models.Authorization;
@@ -72,8 +69,7 @@ public class UserController : BaseController
             Result = result
         };
     }
-
-
+    
     /// <summary>
     /// Обновляет пароль у пользователя
     /// </summary>
@@ -94,89 +90,6 @@ public class UserController : BaseController
         changePasswordCommand.UserId = UserId;
         
         await Mediator.Send(changePasswordCommand, cancellationToken);
-
-        return new ApiActionResult();
-    }
-    
-    /// <summary>
-    /// Повторно отправляет код для сброса пароля пользователя
-    /// </summary>
-    /// <returns></returns>
-    /// <response code="200">Успешно повторно отправлен код для сброса пароля</response>
-    /// <response code="400">Ошибка валидации данных.</response>
-    /// <response code="401">Пользователь не авторизован.</response>
-    /// <response code="404">Пользователь не найден.</response>
-    /// <response code="500">Ошибка на сервере.</response>
-    [HttpPost("ResendResetPasswordCode")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ApiActionResult<ResendResetPasswordCodeResponse>> ResendResetPasswordCode([FromBody] ResendCodeToResetPasswordCommand resendCodeToResetPasswordCommand,
-        CancellationToken cancellationToken)
-    {
-        resendCodeToResetPasswordCommand.UserId = UserId;
-        
-        var result = await Mediator.Send(resendCodeToResetPasswordCommand, cancellationToken);
-
-        return new ApiActionResult<ResendResetPasswordCodeResponse>
-        {
-            Result = new ResendResetPasswordCodeResponse
-            {
-                SessionId = result
-            }
-        };
-    }
-    
-    /// <summary>
-    /// Отправляет код потдверждения для сброса пароля пользователя
-    /// </summary>
-    /// <returns></returns>
-    /// <response code="200">Успешно отправлен код потдверждения</response>
-    /// <response code="400">Ошибка валидации данных.</response>
-    /// <response code="401">Пользователь не авторизован.</response>
-    /// <response code="404">Пользователь не найден.</response>
-    /// <response code="500">Ошибка на сервере.</response>
-    [HttpPost("SendCodeResetPassword")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ApiActionResult<SendCodeResetPasswordResponse>> SendCodeResetPassword(CancellationToken cancellationToken)
-    {
-        var result = await Mediator.Send(new SendCodeResetPasswordCommand
-        {
-            UserId = UserId
-        }, cancellationToken);
-
-        return new ApiActionResult<SendCodeResetPasswordResponse>
-        {
-            Result = new SendCodeResetPasswordResponse
-            {
-                SessionId = result
-            }
-        };
-    }
-    
-    /// <summary>
-    /// Подтверждает операцию сброса пароля пользователя
-    /// </summary>
-    /// <returns></returns>
-    /// <response code="200">Успешно подтвержден</response>
-    /// <response code="400">Ошибка валидации данных.</response>
-    /// <response code="400">Неправильный код верификации</response>
-    /// <response code="401">Пользователь не авторизован.</response>
-    /// <response code="404">Пользователь не найден.</response>
-    /// <response code="500">Ошибка на сервере.</response>
-    [HttpPost("VerifyResetPasswordCode")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ApiActionResult> VerifyResetPasswordCode([FromBody] VerifyCodeToResetPasswordCommand verifyCodeToResetPasswordCommand,
-        CancellationToken cancellationToken)
-    {
-        await Mediator.Send(verifyCodeToResetPasswordCommand, cancellationToken);
 
         return new ApiActionResult();
     }

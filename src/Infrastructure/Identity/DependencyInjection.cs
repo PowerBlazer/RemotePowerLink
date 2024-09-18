@@ -45,6 +45,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IVerificationService, VerificationService>();
         #endregion
         
         return services;

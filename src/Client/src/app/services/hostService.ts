@@ -20,6 +20,10 @@ export interface ServiceResult<T> {
     result?: T
 }
 
+export interface AuthorizationResult {
+    isSuccess: boolean,
+    errors?: Record<string, string[]>
+}
 
 
 

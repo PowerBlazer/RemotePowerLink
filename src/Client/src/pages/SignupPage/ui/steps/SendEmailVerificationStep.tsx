@@ -3,10 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { useContext, useState } from 'react';
 import { RegistrationContext, RegistrationSteps } from 'app/providers/RegistrationProvider';
-import { SendEmailVerificationModel } from 'app/services/AuthorizationService/configs/signupConfig';
-import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
+import { VerificationService } from "app/services/VerificationService/verificationService";
 
 export function SendEmailVerificationStep () {
     const { t } = useTranslation('authorization');
@@ -16,11 +15,11 @@ export function SendEmailVerificationStep () {
     const [errors, setErrors] = useState<Record<string, string[]>>({});
 
     const sendEmailVerificationHandler = async () => {
-        const sendEmailModel: SendEmailVerificationModel = {
+        const sendEmailModel = {
             email
         };
 
-        const result = await AuthorizationService.sendEmailVerification(sendEmailModel);
+        const result = await VerificationService.sendCodeToConfirmEmail(sendEmailModel);
 
         if (result.isSuccess) {
             setStepRegistration({

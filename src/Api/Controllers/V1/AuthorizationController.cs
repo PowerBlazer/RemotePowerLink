@@ -1,9 +1,6 @@
 ﻿using Application.Features.AuthorizationFeature.LoginUser;
 using Application.Features.AuthorizationFeature.RefreshToken;
 using Application.Features.AuthorizationFeature.RegisterUser;
-using Application.Features.AuthorizationFeature.ResendCodeToConfirmation;
-using Application.Features.AuthorizationFeature.SendCodeToEmailVerification;
-using Application.Features.AuthorizationFeature.VerifyEmail;
 using Application.Layers.Identity.Models.Authorization;
 using Domain.Common;
 using MediatR;
@@ -19,74 +16,7 @@ public class AuthorizationController : BaseController
     public AuthorizationController(IMediator mediator) : base(mediator)
     {
     }
-
-    /// <summary>
-    /// Отправляет сообщение на почту с запросом подтверждения.
-    /// </summary>
-    /// <param name="verificationCommand">Данные для отправки сообщения.</param>
-    /// <remarks></remarks>
-    /// <returns>ID созданной сессии.</returns>
-    /// <response code="200">Успешно отправлено сообщение на почту (ID сессии).</response>
-    /// <response code="400">Неправильный формат почты или почта уже зарегистрирована.</response>
-    /// <response code="500">Ошибка на сервере.</response>
-    [HttpPost("SendEmailVerification")]
-    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<SendEmailVerificationResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<ApiActionResult<SendEmailVerificationResponse>> SendEmailVerification(
-        [FromBody] SendCodeToEmailVerificationCommand verificationCommand)
-    {
-        var result = await Mediator.Send(verificationCommand);
-
-        return new ApiActionResult<SendEmailVerificationResponse>
-        {
-            Result = new SendEmailVerificationResponse
-            {
-                SessionId = result
-            }
-        };
-    }
-
-    /// <summary>
-    /// Подтверждает адрес электронной почты пользователя с использованием кода подтверждения.
-    /// </summary>
-    /// <param name="verifyEmailCommand">Данные для подтверждения адреса электронной почты.</param>
-    /// <response code="200">Успешно подтвержден адрес электронной почты.</response>
-    /// <response code="400">Неправильный формат данных.</response>
-    /// <response code="500">Ошибка на сервере.</response>
-    [HttpPut("ConfirmEmail")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public Task ConfirmEmailWithVerificationCode(
-        [FromBody] VerifyEmailCommand verifyEmailCommand)
-    {
-        return Mediator.Send(verifyEmailCommand);
-    }
-
-    /// <summary>
-    /// Повторно отправляет сообщение на почту с запросом подтверждения.
-    /// </summary>
-    /// <param name="resendCodeToConfirmationCommand">Данные для повторной отправки сообщения.</param>
-    /// <returns>ID пересозданной сессии.</returns>
-    /// <response code="200">Сообщение успешно отправлено на почту (ID сессии).</response>
-    /// <response code="400">Неправильный формат почты.</response>
-    /// <response code="500">Ошибка на сервере.</response>
-    [HttpPut("ResendEmailVerification")]
-    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiActionResult<ResendEmailVerificationResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<ApiActionResult<ResendEmailVerificationResponse>> ResendEmailVerification(
-        [FromBody] ResendCodeToConfirmationCommand resendCodeToConfirmationCommand)
-    {
-        var result = await Mediator.Send(resendCodeToConfirmationCommand);
-
-        return new ApiActionResult<ResendEmailVerificationResponse>
-        {
-            Result = new ResendEmailVerificationResponse
-            {
-                SessionId = result
-            }
-        };
-    }
-
+    
     /// <summary>
     /// Регистрирует нового пользователя.
     /// </summary>

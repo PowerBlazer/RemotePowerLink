@@ -1,18 +1,14 @@
-import { ApiResult, HostService } from 'app/services/hostService';
+import { ApiResult, AuthorizationResult, HostService } from 'app/services/hostService';
 import { LocalStorageKeys } from 'app/enums/LocalStorageKeys';
-import { LoginModel, LoginResponse, RefreshTokenModel, RefreshTokenResponse } from './configs/loginConfig';
 import {
-    ConfirmEmailModel,
-    RegistrationModel,
-    RegistrationResponse, ResendEmailVerificationModel, ResendEmailVerificationResponse,
-    SendEmailVerificationModel,
-    SendEmailVerificationResponse
-} from './configs/signupConfig';
+    LoginModel,
+    LoginResponse,
+    RefreshTokenModel,
+    RefreshTokenResponse,
+    RegistrationModel, 
+    RegistrationResponse
+} from './config';
 
-interface AuthorizationResult {
-    isSuccess: boolean,
-    errors?: Record<string, string[]>
-}
 
 class AuthorizationService {
     static login = async (loginModel: LoginModel): Promise<AuthorizationResult> => {
@@ -33,46 +29,7 @@ class AuthorizationService {
             }
         }
     }
-
-    static sendEmailVerification = async (sendEmailModel: SendEmailVerificationModel): Promise<AuthorizationResult> => {
-        try {
-            const response =
-                await HostService.api.post<ApiResult<SendEmailVerificationResponse>>(
-                    '/v1/authorization/SendEmailVerification',
-                    sendEmailModel
-                );
-
-            this.setSessionId(response.data.result.sessionId);
-
-            return {
-                isSuccess: true
-            };
-        } catch (error) {
-            return {
-                isSuccess: false,
-                errors: error.response?.data.Errors
-            };
-        }
-    }
-
-    static confirmEmail = async (confirmEmailModel: ConfirmEmailModel): Promise<AuthorizationResult> => {
-        try {
-            await HostService.api.put<ApiResult<SendEmailVerificationResponse>>(
-                '/v1/authorization/ConfirmEmail',
-                confirmEmailModel
-            );
-
-            return {
-                isSuccess: true
-            };
-        } catch (error) {
-            return {
-                isSuccess: false,
-                errors: error.response?.data.Errors
-            };
-        }
-    }
-
+    
     static registration = async (registrationModel: RegistrationModel): Promise<AuthorizationResult> => {
         try {
             const response =
@@ -94,28 +51,7 @@ class AuthorizationService {
             };
         }
     }
-
-    static resendEmailVerification = async (resendEmailVerification: ResendEmailVerificationModel): Promise<AuthorizationResult> => {
-        try {
-            const response =
-                await HostService.api.put<ApiResult<ResendEmailVerificationResponse>>(
-                    '/v1/authorization/ResendEmailVerification',
-                    resendEmailVerification
-                );
-
-            this.setSessionId(response.data.result.sessionId);
-
-            return {
-                isSuccess: true
-            };
-        } catch (error) {
-            return {
-                isSuccess: false,
-                errors: error.response?.data.Errors
-            };
-        }
-    }
-
+    
     static refreshToken = async (): Promise<AuthorizationResult> => {
         const refreshTokenModel: RefreshTokenModel = {
             accessToken: this.getAccessToken(),

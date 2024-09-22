@@ -1,4 +1,6 @@
-﻿namespace Application.Layers.Identity;
+﻿using Application.Layers.Identity.Models;
+
+namespace Application.Layers.Identity;
 
 public interface IEmailService
 {
@@ -15,4 +17,11 @@ public interface IEmailService
     /// <param name="email">Адрес электронной почты для проверки.</param>
     /// <returns>Значение true, если адрес электронной почты является валидным, в противном случае — false.</returns>
     bool ValidationEmail(string email);
+    
+    /// <summary>
+    /// Обновление почтового ящика пользователя
+    /// </summary>
+    /// <param name="updateEmailInput"></param>
+    /// <returns></returns>
+    Task UpdateEmail(UpdateEmailInput updateEmailInput);
 }

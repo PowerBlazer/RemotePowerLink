@@ -25,8 +25,6 @@ export interface AuthorizationResult {
     errors?: Record<string, string[]>
 }
 
-
-
 export class HostService {
     static _apiHost: string = process.env.API_HOST;
     static _resourceHost: string = !__IS_DEV__ ? '/resource' : process.env.API_HOST;

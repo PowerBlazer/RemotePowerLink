@@ -24,12 +24,5 @@ public interface IUserService
     /// <param name="updatePasswordInput"></param>
     /// <returns></returns>
     Task UpdatePassword(UpdatePasswordInput updatePasswordInput);
-    
-    /// <summary>
-    /// Обновление почтового ящика пользователя
-    /// </summary>
-    /// <param name="updateEmailInput"></param>
-    /// <returns></returns>
-    Task UpdateEmail(UpdateEmailInput updateEmailInput);
 
 }

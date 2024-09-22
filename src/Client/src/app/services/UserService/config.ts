@@ -13,6 +13,10 @@ export interface UpdateUserData {
     phoneNumber?: string
 }
 
+export interface UpdateEmailData {
+    sessionId: string
+}
+
 export interface ChangePasswordData{
     previousPassword: string,
     newPassword: string,

@@ -13,10 +13,12 @@ using Application.Features.VerificationFeature.VerifyCodeToUpdatePassword;
 using Application.Layers.Identity.Models.Verification;
 using Domain.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.V1;
 
+[Authorize]
 [ApiController]
 [Route("api/v{version:apiVersion}/verification")]
 [ApiVersion("1.0")]
@@ -124,6 +126,7 @@ public class VerificationController: BaseController
     /// <response code="200">Успешно отправлено сообщение на почту (ID сессии).</response>
     /// <response code="400">Неправильный формат почты или почта уже зарегистрирована.</response>
     /// <response code="500">Ошибка на сервере.</response>
+    [AllowAnonymous]
     [HttpPost("SendCodeToConfirmEmail")]
     [ProducesResponseType(typeof(ApiActionResult<SendCodeToConfirmEmailResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiActionResult<SendCodeToConfirmEmailResponse>), StatusCodes.Status400BadRequest)]
@@ -148,6 +151,7 @@ public class VerificationController: BaseController
     /// <response code="200">Успешно подтвержден адрес электронной почты.</response>
     /// <response code="400">Неправильный формат данных.</response>
     /// <response code="500">Ошибка на сервере.</response>
+    [AllowAnonymous]
     [HttpPut("VerifyCodeToConfirmEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -165,6 +169,7 @@ public class VerificationController: BaseController
     /// <response code="200">Сообщение успешно отправлено на почту (ID сессии).</response>
     /// <response code="400">Неправильный формат почты.</response>
     /// <response code="500">Ошибка на сервере.</response>
+    [AllowAnonymous]
     [HttpPut("ResendCodeToConfirmEmail")]
     [ProducesResponseType(typeof(ApiActionResult<ResendCodeToConfirmEmailResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiActionResult<ResendCodeToConfirmEmailResponse>), StatusCodes.Status400BadRequest)]
@@ -200,10 +205,12 @@ public class VerificationController: BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ApiActionResult<SendCodeToChangeEmailResponse>> SendCodeToChangeEmail([FromBody] SendCodeToChangeEmailCommand sendCodeToChangeEmailCommand,
-        CancellationToken cancellationToken)
+    public async Task<ApiActionResult<SendCodeToChangeEmailResponse>> SendCodeToChangeEmail(CancellationToken cancellationToken)
     {
-        sendCodeToChangeEmailCommand.UserId = UserId;
+        var sendCodeToChangeEmailCommand = new SendCodeToChangeEmailCommand
+        {
+            UserId = UserId
+        };
         
         var result = await Mediator.Send(sendCodeToChangeEmailCommand, cancellationToken);
 

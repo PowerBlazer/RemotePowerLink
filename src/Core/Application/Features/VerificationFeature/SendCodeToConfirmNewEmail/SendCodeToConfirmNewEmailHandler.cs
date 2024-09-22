@@ -16,6 +16,6 @@ public class SendCodeToConfirmNewEmailHandler: IRequestHandler<SendCodeToConfirm
 
     public Task<string> Handle(SendCodeToConfirmNewEmailCommand request, CancellationToken cancellationToken)
     {
-        return _verificationService.SendCodeToConfirmNewEmail(request.NewEmail);
+        return _verificationService.SendCodeToConfirmNewEmail(request.NewEmail, request.SessionId);
     }
 }

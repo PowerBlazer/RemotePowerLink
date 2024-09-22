@@ -75,7 +75,7 @@ public interface IVerificationService
     /// </summary>
     /// <param name="newEmail">Новая почта</param>
     /// <returns>Id созданной сессии</returns>
-    Task<string> SendCodeToConfirmNewEmail(string newEmail);
+    Task<string> SendCodeToConfirmNewEmail(string newEmail, string sessionId);
     
     /// <summary>
     /// Повторно отправляет код потверждения для подтверждение нового электронного адреса

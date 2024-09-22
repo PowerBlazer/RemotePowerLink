@@ -5,7 +5,7 @@ import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import InfoIcon from 'shared/assets/icons/info.svg';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
-import { RegistrationModel } from 'app/services/AuthorizationService/configs/signupConfig';
+import { RegistrationModel } from 'app/services/AuthorizationService/config';
 import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { useNavigate } from 'react-router-dom';
 

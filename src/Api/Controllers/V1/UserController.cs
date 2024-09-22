@@ -1,5 +1,6 @@
 ﻿using Application.Features.UserFeature.ChangePassword;
 using Application.Features.UserFeature.GetUserData;
+using Application.Features.UserFeature.UpdateEmail;
 using Application.Features.UserFeature.UpdateUserData;
 using Application.Layers.Identity.Models.Authorization;
 using Domain.Common;
@@ -90,6 +91,30 @@ public class UserController : BaseController
         changePasswordCommand.UserId = UserId;
         
         await Mediator.Send(changePasswordCommand, cancellationToken);
+
+        return new ApiActionResult();
+    }
+    
+    /// <summary>
+    /// Обновляет почтовый ящик пользователя
+    /// </summary>
+    /// <returns></returns>
+    /// <response code="200">Успешна обновлена почта</response>
+    /// <response code="400">Ошибка валидации данных.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    /// <response code="404">Пользователь не найден.</response>
+    /// <response code="500">Ошибка на сервере.</response>
+    [HttpPut("email")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ApiActionResult> UpdateEmail([FromBody] UpdateEmailCommand updateEmailCommand,
+        CancellationToken cancellationToken)
+    {
+        updateEmailCommand.UserId = UserId;
+        
+        await Mediator.Send(updateEmailCommand, cancellationToken);
 
         return new ApiActionResult();
     }

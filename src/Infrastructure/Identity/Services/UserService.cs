@@ -96,25 +96,4 @@ public class UserService: IUserService
             await _identityTokenRepository.DeleteTokensByUserId(identityUser.Id);
         });
     }
-    public async Task UpdateEmail(UpdateEmailInput updateEmailInput)
-    {
-        var identityUser = await _identityUserRepository.GetUserById(updateEmailInput.UserId);
-        var sessionJson = await _redisService.GetValue(updateEmailInput.SessionId);
-
-        if (sessionJson is null)
-        {
-            throw new SessionCodeNotFoundException("Сессия подтверждения закончилась, повторите попытку");
-        }
-
-        var session = JsonSerializer.Deserialize<SessionVerifyEmail>(sessionJson);
-
-        if (session is null || !session.IsOk)
-        {
-            throw new SessionCodeNotValidException("Сессия не подтверждена");
-        }
-
-        identityUser.Email = updateEmailInput.NewEmail;
-
-        await _identityUserRepository.UpdateUser(identityUser);
-    }
 }

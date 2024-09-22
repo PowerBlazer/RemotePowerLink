@@ -116,6 +116,12 @@
     "Введите никнейм": "Enter a nickname",
     "Никнейм": "Nickname",
     "Изменить номер телефона": "Change the phone number",
-    "Введите номер телефона": "Enter the phone number"
+    "Введите номер телефона": "Enter the phone number",
+    "Введите новый почтовый ящик": "Enter a new email",
+    "Новый email": "New email",
+    "Отправить код потдверждения на новую почту": "Send the confirmation code to a new email",
+    "Смена почтового ящика": "Changing the email",
+    "Повторно отправить через": "Resend by",
+    "Email успешно обновлен": "Email has been successfully updated"
     
 }

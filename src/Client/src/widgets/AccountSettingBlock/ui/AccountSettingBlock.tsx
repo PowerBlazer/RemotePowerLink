@@ -17,7 +17,7 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
     const { t } = useTranslation('translation');
 
     const emailChangeHandler = () => {
-
+        userStore.settingsModalOptions.emailState = true;
     }
     
     const phoneNumberChangeHandler = () => {

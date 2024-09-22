@@ -33,6 +33,14 @@
       <Content Include="Common\ConfirmCodeResetPassword.cshtml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="Common\ConfirmChangeEmail.cshtml" />
+      <Content Include="Common\ConfirmChangeEmail.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Common\ConfirmNewEmail.cshtml" />
+      <Content Include="Common\ConfirmNewEmail.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

@@ -1,0 +1,66 @@
+.changeEmailStep{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  
+  & .verification{
+    width: 100%;
+    display: flex;  
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  & .new_email{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  & .send_verification_code{
+    font-size: 15px;
+    color: var(--button-primary-color);
+
+    &:hover{
+      text-decoration: underline;
+    }
+
+    &.resend_disabled{
+      color: #5a5e73;
+      cursor: default;
+
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.info_block{
+  display: flex;
+  align-content: center;
+  gap: 15px;
+  background-color: var(--bg-color);
+  border-radius: 10px;
+
+  & > svg {
+    width: 30px;
+  }
+
+  & path:first-child{
+    stroke: #D9143B;
+  }
+
+  & path:last-child{
+    fill: #D9143B;
+  }
+
+  & > p{
+    width: 100%;
+    color: #D9143B;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 5px 0;
+  }
+}

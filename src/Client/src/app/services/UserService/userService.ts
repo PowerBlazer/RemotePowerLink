@@ -1,5 +1,5 @@
 import {
-    ChangePasswordData,
+    ChangePasswordData, UpdateEmailData,
     UpdateUserData,
     UserData,
 } from './config';
@@ -53,4 +53,19 @@ export class UserService {
             }
         }
     }
+
+    static updateEmail = async (updateEmailData: UpdateEmailData): Promise<ServiceResult<any>> => {
+        try {
+            await HostService.api.put('/v1/user/email', updateEmailData)
+
+            return {
+                isSuccess: true,
+            };
+        } catch (error) {
+            return {
+                isSuccess: false,
+                errors: error.response?.data.Errors
+            }
+        }
+    } 
 }

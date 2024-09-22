@@ -234,7 +234,7 @@ public class VerificationService: IVerificationService
 
         var user = await _identityUserRepository.GetUserById(userId);
         
-        var sessionChangeEmail = new SessionVerifyEmail()
+        var sessionChangeEmail = new SessionVerifyEmail
         {
             Email = user.Email,
             VerificationCode = verificationCode,
@@ -325,10 +325,24 @@ public class VerificationService: IVerificationService
     }
     
 
-    public async Task<string> SendCodeToConfirmNewEmail(string newEmail)
+    public async Task<string> SendCodeToConfirmNewEmail(string newEmail, string sessionId)
     {
+        var sessionJson = await _redisService.GetValue(sessionId);
+
+        if (sessionJson is null)
+        {
+            throw new SessionCodeNotFoundException("Сессия не найдена");
+        }
+        
+        var session = JsonSerializer.Deserialize<SessionVerifyEmail>(sessionJson);
+ 
+        if (session is null || !session.IsOk)
+        {
+            throw new SessionCodeNotValidException("Сессия не подтверждена");
+        }
+        
         var verificationCode = VerificationCode.GenerateVerificationCode();
-        var sessionId = Guid.NewGuid().ToString();
+        var newSessionId = Guid.NewGuid().ToString();
         
         var sessionChangeEmail = new SessionVerifyEmail
         {
@@ -338,20 +352,20 @@ public class VerificationService: IVerificationService
         };
         
         var isAdded = await _redisService.SetValue(
-            sessionId,
+            newSessionId,
             sessionChangeEmail.ToString(),
             TimeSpan.FromMinutes(5));
         
         if (!isAdded)
         {
-            throw new Exception($"Сессия не создана {sessionId}");
+            throw new Exception($"Сессия не создана {newSessionId}");
         }
         
         await _sendCodeToConfirmNewEmailProducer.PublishEmailSend(new SendCodeToConfirmNewEmailEvent(
             newEmail,
             verificationCode));
 
-        return sessionId;
+        return newSessionId;
     }
 
     public async Task<string> ResendCodeToConfirmNewEmail(string sessionId, string newEmail)

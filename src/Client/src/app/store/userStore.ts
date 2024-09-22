@@ -4,11 +4,17 @@ import { IdentityData } from 'app/services/IdentityService/config/identityConfig
 import { UserData } from 'app/services/UserService/config';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { EncodingData } from 'app/services/EncodingService/config';
+import {UserService} from "app/services/UserService/userService";
+import {IdentityService} from "app/services/IdentityService/identityService";
+import {ProxyService} from "app/services/ProxyService/proxyService";
+import {ServerService} from "app/services/ServerService/serverService";
+import {EncodingService} from "app/services/EncodingService/encodingService";
 
 export interface SettingsModalOption {
     passwordState: boolean,
     usernameState: boolean,
-    phoneNumberState:boolean
+    phoneNumberState:boolean,
+    emailState: boolean
 }
 
 
@@ -26,7 +32,8 @@ class UserStore {
     public settingsModalOptions: SettingsModalOption = {
         passwordState: false,
         usernameState: false,
-        phoneNumberState: false
+        phoneNumberState: false,
+        emailState: false
     }
 
     constructor () {
@@ -36,7 +43,8 @@ class UserStore {
             enforceActions: 'never'
         })
     }
-
+    
+    
     setLoad (isLoad: boolean) {
         this.isLoadData = isLoad;
     }

@@ -125,6 +125,7 @@ public class SftpClientService: ISftpClientService
                 new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
         }
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        
         connectionInfo.Encoding = Encoding.GetEncoding(connectionServerParameter.EncodingCodePage);
         
         return connectionInfo;

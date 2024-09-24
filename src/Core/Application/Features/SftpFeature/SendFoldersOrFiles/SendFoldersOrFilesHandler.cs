@@ -19,7 +19,7 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
 {
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
-    private readonly ISftpService _sftpService;
+    private readonly ISftpManagerService _sftpManagerService;
     private readonly IHubContext<SftpHub> _sftpHubContext;
     
     private const long MaximumSendSizeBytes = 5368709120;
@@ -32,12 +32,12 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
     
     public SendFoldersOrFilesHandler(IServerRepository serverRepository, 
         IServerService serverService, 
-        ISftpService sftpService, 
+        ISftpManagerService sftpManagerService, 
         IHubContext<SftpHub> sftpHubContext)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
-        _sftpService = sftpService;
+        _sftpManagerService = sftpManagerService;
         _sftpHubContext = sftpHubContext;
     }
 
@@ -79,14 +79,14 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
             foreach (var fileItem in request.FoldersOrFilesToSendList)
             {
                 _totalSizeFiles += fileItem.FileType == FileTypeEnum.Folder
-                    ? (ulong)_sftpService.GetDirectorySize(sourceSftpClient, fileItem.Path)
+                    ? (ulong)_sftpManagerService.GetDirectorySize(sourceSftpClient, fileItem.Path)
                     : (ulong)(fileItem.Size ?? 0);
             }
 
             if (_totalSizeFiles >= MaximumSendSizeBytes)
             {
                 throw new NoAccessException($"Превышен лимит 5GB выбранных файлов, выделенный размер " +
-                                            $"{_sftpService.FormatFileSize(_totalSizeFiles)}", "Server");
+                                            $"{_sftpManagerService.FormatFileSize(_totalSizeFiles)}", "Server");
             }
 
             _totalRemainsSizeFiles = _totalSizeFiles;
@@ -115,7 +115,7 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
 
                 // Вычисляем скорость скачивания в байтах в секунду
                 var uploadSpeed = bytesSinceLastUpdate / elapsedTime.TotalSeconds;
-                var downloadSpeedString = $"{_sftpService.FormatFileSize((ulong)uploadSpeed)}/c";
+                var downloadSpeedString = $"{_sftpManagerService.FormatFileSize((ulong)uploadSpeed)}/c";
                 var percentComplete = (double)sendedBytes / _totalSizeFiles * 100;
 
                 //Вычисляем оставшееся время для полного скачивания
@@ -128,8 +128,8 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
                     IsProgress = true,
                     ProgressPercent = (int)Math.Round(percentComplete, 0),
                     InformationText =
-                        $"{_sftpService.FormatFileSize(sendedBytes)}/{_sftpService.FormatFileSize(_totalSizeFiles)}, " +
-                        $"{downloadSpeedString}, about ~{_sftpService.FormatTime(remainingTime)} remaining"
+                        $"{_sftpManagerService.FormatFileSize(sendedBytes)}/{_sftpManagerService.FormatFileSize(_totalSizeFiles)}, " +
+                        $"{downloadSpeedString}, about ~{_sftpManagerService.FormatTime(remainingTime)} remaining"
                 };
 
                  _sftpHubContext.Clients

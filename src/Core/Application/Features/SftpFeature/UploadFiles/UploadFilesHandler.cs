@@ -18,7 +18,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
 {
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
-    private readonly ISftpService _sftpService;
+    private readonly ISftpManagerService _sftpManagerService;
     private readonly IHubContext<SftpHub> _sftpHubContext;
     private Timer? _timer;
 
@@ -26,12 +26,12 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
     
     public UploadFilesHandler(IServerRepository serverRepository, 
         IServerService serverService, 
-        ISftpService sftpService, 
+        ISftpManagerService sftpManagerService, 
         IHubContext<SftpHub> sftpHubContext)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
-        _sftpService = sftpService;
+        _sftpManagerService = sftpManagerService;
         _sftpHubContext = sftpHubContext;
     }
 
@@ -44,7 +44,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
         if (totalUploadFilesSize >= MaximumDownloadSizeBytes)
         {
             throw new NoAccessException($"Превышен лимит 5GB выбранных файлов размера загрузки , выделенный размер " +
-                                        $"{_sftpService.FormatFileSize((ulong)totalUploadFilesSize)}", "Server");
+                                        $"{_sftpManagerService.FormatFileSize((ulong)totalUploadFilesSize)}", "Server");
         }
         
         var server = await _serverRepository.GetServer(request.ServerId);
@@ -90,7 +90,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
                 
                 // Вычисляем скорость загрузки в байтах в секунду
                 var downloadSpeed = bytesSinceLastUpdate / elapsedTime.TotalSeconds;
-                var downloadSpeedString = $"{_sftpService.FormatFileSize((ulong)downloadSpeed)}/c";
+                var downloadSpeedString = $"{_sftpManagerService.FormatFileSize((ulong)downloadSpeed)}/c";
                 var percentComplete = (double)downloadedBytes / (ulong)totalUploadFilesSize * 100;
                 
                 //Вычисляем оставшееся время для полного скачивания
@@ -103,8 +103,8 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
                     IsProgress = true,
                     ProgressPercent = (int)Math.Round(percentComplete, 0),
                     InformationText =
-                        $"{_sftpService.FormatFileSize(downloadedBytes)}/{_sftpService.FormatFileSize((ulong)totalUploadFilesSize)}, " +
-                        $"{downloadSpeedString}, about ~{_sftpService.FormatTime(remainingTime)} remaining"
+                        $"{_sftpManagerService.FormatFileSize(downloadedBytes)}/{_sftpManagerService.FormatFileSize((ulong)totalUploadFilesSize)}, " +
+                        $"{downloadSpeedString}, about ~{_sftpManagerService.FormatTime(remainingTime)} remaining"
                 };
                 
                 _sftpHubContext.Clients

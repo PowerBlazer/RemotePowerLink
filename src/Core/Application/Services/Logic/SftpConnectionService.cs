@@ -7,7 +7,7 @@ using Renci.SshNet;
 
 namespace Application.Services.Logic;
 
-public class SftpClientService: ISftpClientService
+public class SftpConnectionService: ISftpConnectionService
 {
     private readonly ConcurrentDictionary<string, SftpClientInstance> _sftpClients = new();
     private readonly object _lock = new();

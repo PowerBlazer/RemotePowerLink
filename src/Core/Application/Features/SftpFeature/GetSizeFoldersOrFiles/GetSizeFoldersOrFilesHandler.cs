@@ -14,15 +14,15 @@ public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFiles
 {
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
-    private readonly ISftpService _sftpService;
+    private readonly ISftpManagerService _sftpManagerService;
 
     public GetSizeFoldersOrFilesHandler(IServerRepository serverRepository, 
         IServerService serverService, 
-        ISftpService sftpService)
+        ISftpManagerService sftpManagerService)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
-        _sftpService = sftpService;
+        _sftpManagerService = sftpManagerService;
     }
 
     public async Task<ulong> Handle(GetSizeFoldersOrFilesCommand request, CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFiles
             foreach (var fileItem in request.FoldersOrFiles)
             {
                 totalSizeFiles += fileItem.FileType == FileTypeEnum.Folder
-                    ? (ulong)_sftpService.GetDirectorySize(sftpClient, fileItem.Path)
+                    ? (ulong)_sftpManagerService.GetDirectorySize(sftpClient, fileItem.Path)
                     : (ulong)(fileItem.Size ?? 0);
             }
 

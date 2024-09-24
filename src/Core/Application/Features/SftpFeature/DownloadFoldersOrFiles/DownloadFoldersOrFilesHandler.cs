@@ -19,7 +19,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
 {
     private readonly IServerRepository _serverRepository;
     private readonly IServerService _serverService;
-    private readonly ISftpService _sftpService;
+    private readonly ISftpManagerService _sftpManagerService;
     private readonly IHubContext<SftpHub> _sftpHubContext;
 
     private const long MaximumDownloadSizeBytes = 5368709120;
@@ -33,12 +33,12 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
     public DownloadFoldersOrFilesHandler(IServerRepository serverRepository, 
         IServerService serverService, 
         IHubContext<NotificationHub> notificationHubContext, 
-        ISftpService sftpService, 
+        ISftpManagerService sftpManagerService, 
         IHubContext<SftpHub> sftpHubContext)
     {
         _serverRepository = serverRepository;
         _serverService = serverService;
-        _sftpService = sftpService;
+        _sftpManagerService = sftpManagerService;
         _sftpHubContext = sftpHubContext;
 
         _downloadErrors = new Dictionary<string, List<string>>();
@@ -67,14 +67,14 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
             foreach (var fileItem in request.FilesOrFoldersToDownloadList)
             {
                 _totalSizeFiles += fileItem.FileType == FileTypeEnum.Folder
-                    ? (ulong)_sftpService.GetDirectorySize(sftpClient, fileItem.Path)
+                    ? (ulong)_sftpManagerService.GetDirectorySize(sftpClient, fileItem.Path)
                     : (ulong)(fileItem.Size ?? 0);
             }
 
             if (_totalSizeFiles >= MaximumDownloadSizeBytes)
             {
                 throw new NoAccessException($"Превышен лимит 5GB выбранных файлов размера скачивания , выделенный размер " +
-                                            $"{_sftpService.FormatFileSize(_totalSizeFiles)}", "Server");
+                                            $"{_sftpManagerService.FormatFileSize(_totalSizeFiles)}", "Server");
             }
 
             _totalRemainsSizeFiles = _totalSizeFiles;
@@ -109,7 +109,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
 
                 // Вычисляем скорость скачивания в байтах в секунду
                 var downloadSpeed = bytesSinceLastUpdate / elapsedTime.TotalSeconds;
-                var downloadSpeedString = $"{_sftpService.FormatFileSize((ulong)downloadSpeed)}/c";
+                var downloadSpeedString = $"{_sftpManagerService.FormatFileSize((ulong)downloadSpeed)}/c";
                 var percentComplete = (double)downloadedBytes / _totalSizeFiles * 100;
 
                 //Вычисляем оставшееся время для полного скачивания
@@ -122,8 +122,8 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                     IsProgress = true,
                     ProgressPercent = (int)Math.Round(percentComplete, 0),
                     InformationText =
-                        $"{_sftpService.FormatFileSize(downloadedBytes)}/{_sftpService.FormatFileSize(_totalSizeFiles)}, " +
-                        $"{downloadSpeedString}, about ~{_sftpService.FormatTime(remainingTime)} remaining"
+                        $"{_sftpManagerService.FormatFileSize(downloadedBytes)}/{_sftpManagerService.FormatFileSize(_totalSizeFiles)}, " +
+                        $"{downloadSpeedString}, about ~{_sftpManagerService.FormatTime(remainingTime)} remaining"
                 };
 
                  _sftpHubContext.Clients

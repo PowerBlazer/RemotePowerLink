@@ -28,8 +28,8 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(AuthorizationProfile));
 
         #region Services
-        services.AddSingleton<ISftpClientService, SftpClientService>();
-        services.AddScoped<ISftpService, SftpService>();
+        services.AddSingleton<ISftpConnectionService, SftpConnectionService>();
+        services.AddScoped<ISftpManagerService, SftpManagerService>();
         services.AddSingleton<SftpIdleDisconnectService>();
         #endregion
         

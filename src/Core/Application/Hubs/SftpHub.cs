@@ -15,16 +15,16 @@ namespace Application.Hubs;
 [Authorize]
 public class SftpHub: BaseHub
 {
-    private readonly ISftpClientService _sftpClientService;
+    private readonly ISftpConnectionService _sftpConnectionService;
     private readonly IServerRepository _serverRepository;
-    private readonly ISftpService _sftpService;
-    public SftpHub(ISftpClientService sftpClientService, 
+    private readonly ISftpManagerService _sftpManagerService;
+    public SftpHub(ISftpConnectionService sftpConnectionService, 
         IServerRepository serverRepository, 
-        ISftpService sftpService, SftpIdleDisconnectService sftpIdleDisconnectService)
+        ISftpManagerService sftpManagerService, SftpIdleDisconnectService sftpIdleDisconnectService)
     {
-        _sftpClientService = sftpClientService;
+        _sftpConnectionService = sftpConnectionService;
         _serverRepository = serverRepository;
-        _sftpService = sftpService;
+        _sftpManagerService = sftpManagerService;
         
         sftpIdleDisconnectService.StartTimer();
     }
@@ -57,12 +57,12 @@ public class SftpHub: BaseHub
                     DateModified = p.LastWriteTime,
                     FileType = p.IsDirectory ? FileTypeEnum.Folder : FileTypeEnum.File,
                     Size = p.Length,
-                    FileTypeName = _sftpService.GetFileExtension(p.Name)
+                    FileTypeName = _sftpManagerService.GetFileExtension(p.Name)
                 })
                 .ToList()
             };
 
-            var previousDirectoryPath = _sftpService.GetParentDirectory(path);
+            var previousDirectoryPath = _sftpManagerService.GetParentDirectory(path);
 
             if (!string.IsNullOrEmpty(previousDirectoryPath))
             {
@@ -88,24 +88,24 @@ public class SftpHub: BaseHub
     
     public override Task OnDisconnectedAsync(Exception? exception)
     {
-        _sftpClientService.DisconnectClient(ConnectionKey);
+        _sftpConnectionService.DisconnectClient(ConnectionKey);
         
         return base.OnDisconnectedAsync(exception);
     }
 
     private async Task<SftpClient> CreateOrGetSftpClient(long serverId)
     {
-        var isExistSftpClient = _sftpClientService.CheckExistingConnection(ConnectionKey);
+        var isExistSftpClient = _sftpConnectionService.CheckExistingConnection(ConnectionKey);
 
         if (!isExistSftpClient)
         {
             var server = await _serverRepository.GetServer(serverId);
             var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
 
-            _sftpClientService.CreateClient(connectionParameter, ConnectionKey);
+            _sftpConnectionService.CreateClient(connectionParameter, ConnectionKey);
         }
             
-        var sftpClient = _sftpClientService.GetClient(ConnectionKey);
+        var sftpClient = _sftpConnectionService.GetClient(ConnectionKey);
 
         if (sftpClient is null)
         {

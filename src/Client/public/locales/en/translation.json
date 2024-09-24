@@ -122,6 +122,7 @@
     "Отправить код потдверждения на новую почту": "Send the confirmation code to a new email",
     "Смена почтового ящика": "Changing the email",
     "Повторно отправить через": "Resend by",
-    "Email успешно обновлен": "Email has been successfully updated"
+    "Email успешно обновлен": "Email has been successfully updated",
+    "Повторно отправить на почту через": "Resend to email by"
     
 }

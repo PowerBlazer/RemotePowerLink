@@ -3,7 +3,7 @@ using Renci.SshNet;
 
 namespace Application.Services.Logic;
 
-public class SftpService: ISftpService
+public class SftpManagerService: ISftpManagerService
 {
     public string GetFileExtension(string fileName)
     {

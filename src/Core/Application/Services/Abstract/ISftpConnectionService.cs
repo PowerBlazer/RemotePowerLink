@@ -3,7 +3,7 @@ using Renci.SshNet;
 
 namespace Application.Services.Abstract;
 
-public interface ISftpClientService
+public interface ISftpConnectionService
 {
     /// <summary>
     /// Получает существующее подключение по SSH

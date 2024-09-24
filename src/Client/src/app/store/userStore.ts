@@ -4,11 +4,6 @@ import { IdentityData } from 'app/services/IdentityService/config/identityConfig
 import { UserData } from 'app/services/UserService/config';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { EncodingData } from 'app/services/EncodingService/config';
-import {UserService} from "app/services/UserService/userService";
-import {IdentityService} from "app/services/IdentityService/identityService";
-import {ProxyService} from "app/services/ProxyService/proxyService";
-import {ServerService} from "app/services/ServerService/serverService";
-import {EncodingService} from "app/services/EncodingService/encodingService";
 
 export interface SettingsModalOption {
     passwordState: boolean,
@@ -16,8 +11,6 @@ export interface SettingsModalOption {
     phoneNumberState:boolean,
     emailState: boolean
 }
-
-
 
 class UserStore {
     @observable public userProxies: ProxyData[] | null = null;

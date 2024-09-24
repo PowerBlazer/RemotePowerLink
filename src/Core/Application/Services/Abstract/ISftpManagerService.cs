@@ -2,7 +2,7 @@
 
 namespace Application.Services.Abstract;
 
-public interface ISftpService
+public interface ISftpManagerService
 {
     /// <summary>
     /// Получает формат файла 

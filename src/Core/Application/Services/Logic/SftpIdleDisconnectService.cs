@@ -4,18 +4,18 @@ namespace Application.Services.Logic;
 
 public class SftpIdleDisconnectService : IDisposable
 {
-    private readonly ISftpClientService _sftpClientService;
+    private readonly ISftpConnectionService _sftpConnectionService;
     private Timer? _timer;
 
-    public SftpIdleDisconnectService(ISftpClientService sftpClientService)
+    public SftpIdleDisconnectService(ISftpConnectionService sftpConnectionService)
     {
-        _sftpClientService = sftpClientService;
+        _sftpConnectionService = sftpConnectionService;
     }
 
     public void StartTimer()
     {
         _timer = new Timer(
-            _ => _sftpClientService.DisconnectIdleClients(), 
+            _ => _sftpConnectionService.DisconnectIdleClients(), 
             null, 
             TimeSpan.Zero, 
             TimeSpan.FromMinutes(5)); // Проверяем каждую минуту

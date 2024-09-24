@@ -37,7 +37,6 @@ class UserStore {
         })
     }
     
-    
     setLoad (isLoad: boolean) {
         this.isLoadData = isLoad;
     }

@@ -7,6 +7,7 @@ import RegistrationProvider from 'app/providers/RegistrationProvider/ui/Registra
 import { Navbar } from 'widgets/Navbar';
 import { SftpPage } from 'pages/SftpPage';
 import { SettingsPage } from 'pages/SettingsPage';
+import {TerminalPage} from "pages/TerminalPage";
 
 export enum AppRoutes {
     MAIN = '/',
@@ -14,7 +15,8 @@ export enum AppRoutes {
     LOGIN = 'login',
     SIGNUP = 'signup',
     SFTP = 'sftp',
-    SETTINGS = 'settings'
+    SETTINGS = 'settings',
+    TERMINAL = 'terminal'
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
@@ -23,7 +25,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.LOGIN]: '/login',
     [AppRoutes.SIGNUP]: '/signup',
     [AppRoutes.SFTP]: '/sftp',
-    [AppRoutes.SETTINGS]: '/settings'
+    [AppRoutes.SETTINGS]: '/settings',
+    [AppRoutes.TERMINAL]: '/terminal'
 }
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -52,6 +55,10 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.SETTINGS]: {
         path: RoutePath.settings,
         element: <SettingsPage/>
+    },
+    [AppRoutes.TERMINAL]: {
+        path: RoutePath.terminal,
+        element: <TerminalPage/>
     }
 }
 

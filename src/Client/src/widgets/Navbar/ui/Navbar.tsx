@@ -6,10 +6,11 @@ import { AppRoutes } from 'app/providers/router/config/routeConfig';
 import { useEffect } from 'react';
 import { UserService } from 'app/services/UserService/userService';
 import { observer } from 'mobx-react-lite';
-import ServerIcon from 'shared/assets/icons/navbar/server.svg';
+import ServerIcon from 'shared/assets/icons/server-minimalistic.svg';
 import FolderIcon from 'shared/assets/icons/navbar/folder.svg';
 import PersonalIcon from 'shared/assets/icons/navbar/personal.svg';
 import ClockIcon from 'shared/assets/icons/clock.svg';
+import TerminalIcon from 'shared/assets/icons/terminal.svg';
 import userStore from 'app/store/userStore';
 import style from './Navbar.module.scss';
 import { useEffectLoad } from 'app/hooks/useLoad';
@@ -90,6 +91,14 @@ function Navbar ({ className }: NavbarProps) {
                     isSelected={userStore.location === AppRoutes.MAIN}
                     navigate={AppRoutes.MAIN}
                     onNavigate={() => { userStore.location = AppRoutes.MAIN }}
+                />
+                <NavbarItem
+                    icon={<TerminalIcon width={'23px'} height={'23px'}/>}
+                    label={t('Terminal')}
+                    isSelected={userStore.location === AppRoutes.TERMINAL}
+                    navigate={`/${AppRoutes.TERMINAL}`}
+                    className={classNames(style.terminal)}
+                    onNavigate={() => { userStore.location = AppRoutes.TERMINAL }}
                 />
                 <NavbarItem
                     icon={<FolderIcon width={'21px'} height={'21px'}/>}

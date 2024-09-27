@@ -1,4 +1,4 @@
-﻿using Domain.Repository;
+﻿using Application.Layers.Persistence.Repository;
 using MediatR;
 
 namespace Application.Features.ServerFeature.DeleteServer;

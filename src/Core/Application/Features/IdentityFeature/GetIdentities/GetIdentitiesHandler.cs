@@ -1,5 +1,5 @@
-﻿using Domain.DTOs.Identity;
-using Domain.Repository;
+﻿using Application.Layers.Persistence.Repository;
+using Domain.DTOs.Identity;
 using JetBrains.Annotations;
 using MediatR;
 

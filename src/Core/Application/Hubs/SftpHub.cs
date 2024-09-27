@@ -1,10 +1,10 @@
-﻿using Application.Services.Abstract;
+﻿using Application.Layers.Persistence.Repository;
+using Application.Services.Abstract;
 using Application.Services.Abstract.Parameters;
 using Application.Services.Logic;
 using Domain.DTOs.Sftp;
 using Domain.Enums;
 using Domain.Exceptions;
-using Domain.Repository;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;

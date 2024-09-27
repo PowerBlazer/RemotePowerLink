@@ -1,5 +1,5 @@
-﻿using Domain.DTOs.Proxy;
-using Domain.Repository;
+﻿using Application.Layers.Persistence.Repository;
+using Domain.DTOs.Proxy;
 using JetBrains.Annotations;
 using MediatR;
 

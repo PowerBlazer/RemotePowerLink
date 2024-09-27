@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Identity;
+using Application.Layers.Persistence.Repository;
 using Domain.DTOs.User;
-using Domain.Repository;
 using JetBrains.Annotations;
 using MediatR;
 

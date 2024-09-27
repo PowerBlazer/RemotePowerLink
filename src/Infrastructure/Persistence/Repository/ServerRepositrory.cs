@@ -1,7 +1,7 @@
 ﻿using Application.Layers.Persistence;
+using Application.Layers.Persistence.Repository;
 using Domain.Entities;
 using Domain.Exceptions;
-using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repository;

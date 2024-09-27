@@ -1,8 +1,8 @@
-﻿using Application.Services.Abstract;
+﻿using Application.Layers.Persistence.Repository;
+using Application.Services.Abstract;
 using Application.Services.Abstract.Parameters;
 using Domain.DTOs.Server;
 using Domain.Exceptions;
-using Domain.Repository;
 using JetBrains.Annotations;
 using MediatR;
 

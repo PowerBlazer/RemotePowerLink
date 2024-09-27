@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Repository;
+namespace Application.Layers.Persistence.Repository;
 
 /// <summary>
 /// Интерфейс репозитория для получения типа системы по умолчанию.

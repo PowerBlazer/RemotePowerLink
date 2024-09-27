@@ -1,5 +1,5 @@
-﻿using Domain.DTOs.Encoding;
-using Domain.Repository;
+﻿using Application.Layers.Persistence.Repository;
+using Domain.DTOs.Encoding;
 using JetBrains.Annotations;
 using MediatR;
 

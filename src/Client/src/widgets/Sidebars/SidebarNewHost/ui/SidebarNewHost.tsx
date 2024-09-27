@@ -296,14 +296,14 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
                 <ButtonLoader
                     className={classNames(style.create_newhost)}
                     theme={ThemeButton.PRIMARY}
-                    disabled={Object.keys(errors).length > 0}
+                    disabled={Object.keys(errors).filter(p=> p !== 'Hostname').length > 0}
                     actionAsync={createServerClickHandler}
                 >
                     {t('Создать сервер')}
                 </ButtonLoader>
             </div>
         )
-    }, [createServerClickHandler])
+    }, [createServerClickHandler, errors])
 
     return (
         <Sidebar

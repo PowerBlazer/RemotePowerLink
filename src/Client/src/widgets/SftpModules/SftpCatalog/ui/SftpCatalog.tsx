@@ -28,6 +28,7 @@ import { Stack } from 'shared/lib/Stack';
 import { UploadModal } from 'widgets/SftpModules/SftpModals/UploadModal';
 import { DefaultServerIcon } from 'features/DefaultServerIcon';
 import { SendModal } from 'widgets/SftpModules/SftpModals/SendModal';
+import {PageConnectionError} from "widgets/PageConnectionError";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -286,45 +287,6 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
         </div>
     ), []);
 
-    const connectionErrorPanel = useMemo(() => (
-        <div className={classNames(style.connection_error_panel)}>
-            <div className={classNames(style.panel_inner)}>
-                <div className={classNames(style.server_logo)}>
-                    {selectedHost?.server.systemTypeIcon
-                        ? <img
-                            src={`${HostService._resourceHost}${selectedHost?.server.systemTypeIcon}`}
-                            alt={'server_logo'}
-                            width={37}
-                            height={37}
-                        />
-                        : <DefaultServerIcon width={22} height={22}/>}
-                    <div className={classNames(style.server_information)}>
-                        <div className={classNames(style.name)}>{selectedHost?.server.title}</div>
-                        <div className={classNames(style.about)}>SSH {selectedHost?.server.hostname}:{selectedHost?.server.sshPort ?? 22}</div>
-                    </div>
-                </div>
-                <div className={classNames(style.red_line)}></div>
-                <div className={classNames(style.error_message)}>{selectedHost?.error?.errors?.Connection}</div>
-                <div className={classNames(style.tools_panel)}>
-                    <div className={classNames(style.close_or_edit)}>
-                        <Button className={classNames(style.close)} onClick={closeConnectionServer}>
-                            {t('Закрыть')}
-                        </Button>
-                        <Button className={classNames(style.edit_host)} onClick={switchEditingHostMode}>
-                            {t('Редактировать сервер')}
-                        </Button>
-                    </div>
-                    <div className={classNames(style.start_over_panel)}>
-                        <Button className={classNames(style.start_over)} onClick={reconnectHost}>
-                            {t('Повторно подлючиться')}
-                        </Button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    ), [selectedHost])
-
     if (getIsSelectedServer() && !isViewServersCatalog && !isViewErrorPanel) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
@@ -347,7 +309,14 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
     return (
         <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
             { !getIsSelectedServer() && !isViewServersCatalog && selectHostInformationBlock }
-            { isViewErrorPanel && connectionErrorPanel}
+            { isViewErrorPanel && 
+                <PageConnectionError 
+                    selectedHost={selectedHost}
+                    onCloseConnectionServer={closeConnectionServer}
+                    onReconnectHost={reconnectHost}
+                    onSwitchEditingHostMode={switchEditingHostMode}
+                />
+            }
             { isViewServersCatalog && <SftpSelectHostCatalog mode={mode} onClose={() => { setIsView(false); }}/> }
         </div>
     );

@@ -324,14 +324,14 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                 <ButtonLoader
                     className={classNames(style.save_host)}
                     theme={ThemeButton.PRIMARY}
-                    disabled={Object.keys(errors).length > 0}
+                    disabled={Object.keys(errors).filter(p=> p !== 'Hostname').length > 0}
                     actionAsync={saveServerClickHandler}
                 >
                     {t('Сохранить сервер')}
                 </ButtonLoader>
             </div>
         )
-    }, [saveServerClickHandler]);
+    }, [saveServerClickHandler, errors]);
 
     const headerTools = useMemo(() => (
         <ButtonDelete dataType={DataTypeEnum.SERVER} dataId={serverData.serverId} />

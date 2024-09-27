@@ -118,7 +118,7 @@ function SidebarEditIdentity (props: SidebarEditIdentityProps) {
                 </ButtonLoader>
             </div>
         )
-    }, [saveIdentityClickHandler]);
+    }, [saveIdentityClickHandler, errors]);
 
     const headerTools = useMemo(() => (
         <ButtonDelete dataType={DataTypeEnum.IDENTITY} dataId={identityData.identityId} />

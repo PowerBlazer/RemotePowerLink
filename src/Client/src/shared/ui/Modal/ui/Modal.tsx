@@ -41,8 +41,8 @@ export function Modal (props: ModalProps) {
         }
 
         const isCloseModal = options.isCloseConfirm ?? true;
-        
-        if(isCloseModal){
+
+        if (isCloseModal) {
             setVisibleModal(false);
         }
     }, [options.onConfirm]);

@@ -1,1 +1,1 @@
-﻿export { default as UsernameModal } from './ui/UsernameModal'
+export { default as UsernameModal } from './ui/UsernameModal'

@@ -6,11 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { ThemeSwitcher } from 'features/ThemeSwitcher';
 import { LangSwitcher } from 'features/LangSwitcher';
 import { AccountSettingBlock } from 'widgets/AccountSettingBlock';
-import userStore from "app/store/userStore";
-import { PasswordModal } from "widgets/SettingModals/PasswordModal";
-import {UsernameModal} from "widgets/SettingModals/UsernameModal";
-import {PhoneNumberModal} from "widgets/SettingModals/PhoneNumberModal";
-import {EmailModal} from "widgets/SettingModals/EmailModal";
+import userStore from 'app/store/userStore';
+import { PasswordModal } from 'widgets/SettingModals/PasswordModal';
+import { UsernameModal } from 'widgets/SettingModals/UsernameModal';
+import { PhoneNumberModal } from 'widgets/SettingModals/PhoneNumberModal';
+import { EmailModal } from 'widgets/SettingModals/EmailModal';
 
 interface SettingsPageProps {
     className?: string;
@@ -39,7 +39,7 @@ function SettingsPage ({ className }: SettingsPageProps) {
             { userStore.settingsModalOptions.usernameState && <UsernameModal/> }
             { userStore.settingsModalOptions.phoneNumberState && <PhoneNumberModal/> }
             { userStore.settingsModalOptions.emailState && <EmailModal/> }
-            
+
         </div>
     );
 }

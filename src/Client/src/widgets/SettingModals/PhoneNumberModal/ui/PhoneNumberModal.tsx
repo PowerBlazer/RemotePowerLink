@@ -1,17 +1,17 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './PhoneNumberModal.module.scss';
-import {observer} from "mobx-react-lite";
-import {useTheme} from "shared/lib/Theme/useTheme";
-import {ChangeEvent, useState} from "react";
-import {useTranslation} from "react-i18next";
-import userStore from "app/store/userStore";
-import {UpdateUserData} from "app/services/UserService/config";
-import {UserService} from "app/services/UserService/userService";
-import toast from "react-hot-toast";
-import {Modal, ThemeModal, TypeModal} from "shared/ui/Modal";
-import {Theme} from "shared/lib/Theme/ThemeContext";
-import {Input} from "shared/ui/Input";
-import {ErrorList} from "shared/ui/ErrorList";
+import { observer } from 'mobx-react-lite';
+import { useTheme } from 'shared/lib/Theme/useTheme';
+import { ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import userStore from 'app/store/userStore';
+import { UpdateUserData } from 'app/services/UserService/config';
+import { UserService } from 'app/services/UserService/userService';
+import toast from 'react-hot-toast';
+import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
+import { Theme } from 'shared/lib/Theme/ThemeContext';
+import { Input } from 'shared/ui/Input';
+import { ErrorList } from 'shared/ui/ErrorList';
 
 interface PhoneNumberModalProps {
     className?: string;
@@ -26,19 +26,19 @@ function PhoneNumberModal ({ className }: PhoneNumberModalProps) {
     const changePhoneNumberHandler = async () => {
         const updateUserData: UpdateUserData = {
             username: userStore.userData.username,
-            phoneNumber: phoneNumber
+            phoneNumber
         }
 
         const updateReult = await UserService.updateUserData(updateUserData);
 
-        if(updateReult.isSuccess){
+        if (updateReult.isSuccess) {
             userStore.userData = updateReult.result
             userStore.settingsModalOptions.usernameState = false;
 
             toast.success(t('Данные успешно изменены'));
         }
 
-        if(!updateReult.isSuccess){
+        if (!updateReult.isSuccess) {
             setErrors(updateReult.errors);
         }
     }

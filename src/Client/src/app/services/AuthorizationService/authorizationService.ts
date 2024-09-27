@@ -5,10 +5,9 @@ import {
     LoginResponse,
     RefreshTokenModel,
     RefreshTokenResponse,
-    RegistrationModel, 
+    RegistrationModel,
     RegistrationResponse
 } from './config';
-
 
 class AuthorizationService {
     static login = async (loginModel: LoginModel): Promise<AuthorizationResult> => {
@@ -29,7 +28,7 @@ class AuthorizationService {
             }
         }
     }
-    
+
     static registration = async (registrationModel: RegistrationModel): Promise<AuthorizationResult> => {
         try {
             const response =
@@ -51,7 +50,7 @@ class AuthorizationService {
             };
         }
     }
-    
+
     static refreshToken = async (): Promise<AuthorizationResult> => {
         const refreshTokenModel: RefreshTokenModel = {
             accessToken: this.getAccessToken(),

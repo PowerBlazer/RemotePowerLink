@@ -2,11 +2,10 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpPage.module.scss';
 import { observer } from 'mobx-react-lite';
 import ReactSplit, { SplitDirection } from '@devbookhq/splitter';
-import { SftpCatalog } from 'widgets/SftpCatalog';
+import { SftpCatalog } from 'widgets/SftpModules/SftpCatalog';
 import { useRef } from 'react';
 import { SftpCatalogMode } from 'app/services/SftpService/config';
 import sftpStore from 'app/store/sftpStore';
-import { SftpNotificationPanel } from 'widgets/SftpNotificationPanel';
 
 export interface ChangedWidthProp {
     changedWidth?: number

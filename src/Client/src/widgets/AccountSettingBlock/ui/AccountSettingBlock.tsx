@@ -19,7 +19,7 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
     const emailChangeHandler = () => {
         userStore.settingsModalOptions.emailState = true;
     }
-    
+
     const phoneNumberChangeHandler = () => {
         userStore.settingsModalOptions.phoneNumberState = true;
     }
@@ -27,7 +27,7 @@ function AccountSettingBlock ({ className }: AccountSettingBlockProps) {
     const usernameChangeHandler = () => {
         userStore.settingsModalOptions.usernameState = true;
     }
-    
+
     const passwordChangeHandler = () => {
         userStore.settingsModalOptions.passwordState = true;
     }

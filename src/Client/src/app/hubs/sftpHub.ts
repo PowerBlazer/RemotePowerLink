@@ -53,7 +53,7 @@ class SftpHub {
             this.connection.on('uploadReceive', (sftpNotificationOptions: SftpNotificationData) => {
                 onUploadReceived(sftpNotificationOptions)
             });
-            
+
             this.connection.on('sendReceive', (sftpNotificationOptions: SftpNotificationData) => {
                 onSendReceived(sftpNotificationOptions)
             });

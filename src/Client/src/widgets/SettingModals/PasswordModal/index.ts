@@ -1,1 +1,1 @@
-﻿export { default as PasswordModal } from './ui/PasswordModal'
+export { default as PasswordModal } from './ui/PasswordModal'

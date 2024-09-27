@@ -79,14 +79,14 @@ export class SftpService {
             }
         }
     }
-    
+
     static existFolerOrFile = async (existDirectoryOrFileData: ExistDirectoryOrFileData): Promise<ServiceResult<boolean>> => {
         try {
             const response = await HostService.api.post<ApiResult<boolean>>(
                 '/v1.0/sftp/exist',
                 existDirectoryOrFileData
             );
-            
+
             return {
                 result: response.data.result,
                 isSuccess: true
@@ -217,10 +217,10 @@ export class SftpService {
             }
         }
     }
-    
+
     static sendFoldersOrFiles = async (
         sendFoldersOrFilesData: SendFoldersOrFilesData,
-        cancelToken?: CancelTokenSource,
+        cancelToken?: CancelTokenSource
     ): Promise<ServiceResult<SendFolderOrFilesResponse>> => {
         try {
             const response = await HostService.api.post<ApiResult<SendFolderOrFilesResponse>>(
@@ -228,9 +228,9 @@ export class SftpService {
                 sendFoldersOrFilesData,
                 {
                     cancelToken: cancelToken?.token,
-                    timeout: 3600000,
+                    timeout: 3600000
                 });
-            
+
             return {
                 isSuccess: true,
                 result: response.data.result

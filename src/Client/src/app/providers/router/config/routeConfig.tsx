@@ -7,7 +7,7 @@ import RegistrationProvider from 'app/providers/RegistrationProvider/ui/Registra
 import { Navbar } from 'widgets/Navbar';
 import { SftpPage } from 'pages/SftpPage';
 import { SettingsPage } from 'pages/SettingsPage';
-import {TerminalPage} from "pages/TerminalPage";
+import { TerminalPage } from 'pages/TerminalPage';
 
 export enum AppRoutes {
     MAIN = '/',

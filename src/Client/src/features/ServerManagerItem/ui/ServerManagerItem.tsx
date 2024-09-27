@@ -2,8 +2,8 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ServerManagerItem.module.scss';
 import { ServerManagerData } from 'features/ServerManagerGroup';
 import { DataTypeEnum } from 'app/enums/DataTypeEnum';
-import { ButtonConnect } from 'features/ButtonConnect';
-import { ButtonEdit } from 'features/ButtonEdit';
+import { ButtonConnect } from 'features/SidebarModules/ButtonConnect';
+import { ButtonEdit } from 'features/SidebarModules/ButtonEdit';
 import { ServerManagerCatalogMode } from 'widgets/ServerManagerCatalog/ui/ServerManagerCatalog';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 

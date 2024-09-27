@@ -6,23 +6,23 @@ import ServerIcon from 'shared/assets/icons/navbar/server.svg';
 import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
 import Card from 'shared/assets/icons/navbar/card.svg';
 import sidebarStore from 'app/store/sidebarStore';
-import { SidebarNewHost } from 'widgets/SidebarNewHost';
-import { SidebarNewProxy } from 'widgets/SidebarNewProxy';
-import SidebarNewIdentity from 'widgets/SidebarNewIdentity/ui/SidebarNewIdentity';
+import { SidebarNewHost } from 'widgets/Sidebars/SidebarNewHost';
+import { SidebarNewProxy } from 'widgets/Sidebars/SidebarNewProxy';
+import { SidebarNewIdentity } from 'widgets/Sidebars/SidebarNewIdentity';
 import { observer } from 'mobx-react-lite';
 import { CreateServerResult, EditServerResult } from 'app/services/ServerService/config/serverConfig';
 import userStore from 'app/store/userStore';
-import { SidebarEditHost } from 'widgets/SidebarEditHost';
+import { SidebarEditHost } from 'widgets/Sidebars/SidebarEditHost';
 import toast from 'react-hot-toast';
 import { CreateProxyResult, EditProxyResult, ProxyData } from 'app/services/ProxyService/config/proxyConfig';
-import { SidebarEditProxy } from 'widgets/SidebarEditProxy';
+import { SidebarEditProxy } from 'widgets/Sidebars/SidebarEditProxy';
 import {
     CreateIdentityResult,
     EditIdentityResult,
     IdentityData
 } from 'app/services/IdentityService/config/identityConfig';
-import { SidebarEditIdentity } from 'widgets/SidebarEditIdentity';
-import { ChangeEvent, useEffect } from 'react';
+import { SidebarEditIdentity } from 'widgets/Sidebars/SidebarEditIdentity';
+import { ChangeEvent } from 'react';
 import searchStore from 'app/store/searchStore';
 
 interface NavbarHostsProps {

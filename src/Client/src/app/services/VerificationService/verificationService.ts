@@ -1,4 +1,4 @@
-﻿import { ApiResult, AuthorizationResult, HostService, ServiceResult } from "app/services/hostService";
+import { ApiResult, AuthorizationResult, HostService, ServiceResult } from 'app/services/hostService';
 import {
     ResendCodeToChangeEmailData, ResendCodeToChangeEmailResponse,
     ResendCodeToConfirmEmailModel,
@@ -10,9 +10,8 @@ import {
     SendCodeToUpdatePasswordResponse, VerifyCodeToChangeEmailData,
     VerifyCodeToConfirmEmailModel, VerifyCodeToConfirmNewEmailData,
     VerifyCodeToUpdatePasswordData
-} from "./config";
-import { AuthorizationService } from "app/services/AuthorizationService/authorizationService";
-
+} from './config';
+import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 
 class VerificationService {
     static sendCodeToConfirmEmail = async (sendCodeToConfirmEmailModel: SendCodeToConfirmEmailModel): Promise<AuthorizationResult> => {
@@ -74,11 +73,9 @@ class VerificationService {
             };
         }
     }
-    
-    
-    static resendCodeToUpdatePassword = async (resendCodeToUpdatePasswordData: ResendCodeToUpdatePasswordData):
-        Promise<ServiceResult<ResendCodeToUpdatePasswordResponse>> => {
 
+    static resendCodeToUpdatePassword = async (resendCodeToUpdatePasswordData: ResendCodeToUpdatePasswordData):
+    Promise<ServiceResult<ResendCodeToUpdatePasswordResponse>> => {
         try {
             const response = await HostService.api.post<ApiResult<ResendCodeToUpdatePasswordResponse>>(
                 '/v1.0/verification/ResendCodeToUpdatePassword',
@@ -97,7 +94,6 @@ class VerificationService {
     }
 
     static sendCodeToUpdatePassword = async (): Promise<ServiceResult<SendCodeToUpdatePasswordResponse>> => {
-
         try {
             const response = await HostService.api.post<ApiResult<SendCodeToUpdatePasswordResponse>>(
                 '/v1.0/verification/SendCodeToUpdatePassword');
@@ -115,12 +111,11 @@ class VerificationService {
     }
 
     static verifyCodeToUpdatePassword = async (verifyCodeToUpdatePasswordData: VerifyCodeToUpdatePasswordData): Promise<ServiceResult<any>> => {
-
         try {
             await HostService.api.post('/v1.0/verification/VerifyCodeToUpdatePassword', verifyCodeToUpdatePasswordData);
 
             return {
-                isSuccess: true,
+                isSuccess: true
             };
         } catch (error) {
             return {
@@ -129,8 +124,7 @@ class VerificationService {
             }
         }
     }
-    
-    
+
     static sendCodeToChangeEmail = async (): Promise<ServiceResult<SendCodeToChangeEmailResponse>> => {
         try {
             const response = await HostService.api.post<ApiResult<SendCodeToChangeEmailResponse>>(
@@ -147,10 +141,9 @@ class VerificationService {
             }
         }
     }
-    
-    static resendCodeToChangeEmail = async (resendCodeToChangeEmailData: ResendCodeToChangeEmailData):
-        Promise<ServiceResult<ResendCodeToChangeEmailResponse>> => {
 
+    static resendCodeToChangeEmail = async (resendCodeToChangeEmailData: ResendCodeToChangeEmailData):
+    Promise<ServiceResult<ResendCodeToChangeEmailResponse>> => {
         try {
             const response = await HostService.api.post<ApiResult<ResendCodeToChangeEmailResponse>>(
                 '/v1.0/verification/ResendCodeToChangeEmail',
@@ -167,13 +160,13 @@ class VerificationService {
             }
         }
     }
-    
-    static verifyCodeToChangeEmail = async (verifyCodeToChangeEmailData:VerifyCodeToChangeEmailData): Promise<ServiceResult<any>> => {
+
+    static verifyCodeToChangeEmail = async (verifyCodeToChangeEmailData: VerifyCodeToChangeEmailData): Promise<ServiceResult<any>> => {
         try {
             await HostService.api.put('/v1.0/verification/VerifyCodeToChangeEmail', verifyCodeToChangeEmailData);
 
             return {
-                isSuccess: true,
+                isSuccess: true
             };
         } catch (error) {
             return {
@@ -183,10 +176,8 @@ class VerificationService {
         }
     }
 
-
-    static sendCodeToConfirmNewEmail = async (sendCodeToConfirmNewEmailData: SendCodeToConfirmNewEmailData): 
-        Promise<ServiceResult<SendCodeToConfirmNewEmailResponse>> => {
-        
+    static sendCodeToConfirmNewEmail = async (sendCodeToConfirmNewEmailData: SendCodeToConfirmNewEmailData):
+    Promise<ServiceResult<SendCodeToConfirmNewEmailResponse>> => {
         try {
             const response = await HostService.api.post<ApiResult<SendCodeToConfirmNewEmailResponse>>(
                 '/v1.0/verification/SendCodeToConfirmNewEmail', sendCodeToConfirmNewEmailData);
@@ -204,8 +195,7 @@ class VerificationService {
     }
 
     static resendCodeToConfirmNewEmail = async (resendCodeToConfirmNewEmailData: ResendCodeToConfirmNewEmailData):
-        Promise<ServiceResult<ResendCodeToConfirmNewEmailResponse>> => {
-
+    Promise<ServiceResult<ResendCodeToConfirmNewEmailResponse>> => {
         try {
             const response = await HostService.api.post<ApiResult<ResendCodeToConfirmNewEmailResponse>>(
                 '/v1.0/verification/ResendCodeToConfirmNewEmail',
@@ -225,11 +215,11 @@ class VerificationService {
 
     static verifyCodeToConfirmNewEmail = async (verifyCodeToConfirmNewEmailData: VerifyCodeToConfirmNewEmailData): Promise<ServiceResult<any>> => {
         try {
-            await HostService.api.put('/v1.0/verification/VerifyCodeToConfirmNewEmail', 
+            await HostService.api.put('/v1.0/verification/VerifyCodeToConfirmNewEmail',
                 verifyCodeToConfirmNewEmailData);
 
             return {
-                isSuccess: true,
+                isSuccess: true
             };
         } catch (error) {
             return {
@@ -238,7 +228,6 @@ class VerificationService {
             }
         }
     }
-    
 }
 
 export {

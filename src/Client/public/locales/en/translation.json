@@ -123,6 +123,14 @@
     "Смена почтового ящика": "Changing the email",
     "Повторно отправить через": "Resend by",
     "Email успешно обновлен": "Email has been successfully updated",
-    "Повторно отправить на почту через": "Resend to email by"
+    "Повторно отправить на почту через": "Resend to email by",
+    "Перетаскивайте файлы сюда": "Drag and drop files here",
+    "или": "or",
+    "Просмотр файлов": "Browse files",
+    "Добавить файл": "Add file",
+    "Размер добавленных файлов": "The size of the added files",
+    "Превышен лимит загрузки файлов (5GB)": "File download limit exceeded (5GB)",
+    "Отправка запроса на загрузку файлов": "Sending a file download request",
+    "Отправка файлов на сервер": "Sending files to the server"
     
 }

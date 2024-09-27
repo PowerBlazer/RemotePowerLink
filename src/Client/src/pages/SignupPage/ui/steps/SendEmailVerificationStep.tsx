@@ -5,7 +5,7 @@ import { useContext, useState } from 'react';
 import { RegistrationContext, RegistrationSteps } from 'app/providers/RegistrationProvider';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
-import { VerificationService } from "app/services/VerificationService/verificationService";
+import { VerificationService } from 'app/services/VerificationService/verificationService';
 
 export function SendEmailVerificationStep () {
     const { t } = useTranslation('authorization');

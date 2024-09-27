@@ -8,7 +8,7 @@ import { AuthorizationService } from 'app/services/AuthorizationService/authoriz
 import { Button } from 'shared/ui/Button/Button';
 import { useTimer } from 'react-timer-and-stopwatch';
 import style from 'pages/SignupPage/ui/Signup.module.scss';
-import {VerificationService} from "app/services/VerificationService/verificationService";
+import { VerificationService } from 'app/services/VerificationService/verificationService';
 
 export function ConfirmEmailStep () {
     const { t } = useTranslation('authorization');

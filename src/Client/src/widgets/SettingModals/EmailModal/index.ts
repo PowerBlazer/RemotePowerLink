@@ -1,1 +1,1 @@
-﻿export { default as EmailModal } from './ui/EmailModal';
+export { default as EmailModal } from './ui/EmailModal';

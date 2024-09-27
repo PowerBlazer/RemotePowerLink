@@ -29,4 +29,3 @@ export interface RegistrationResponse {
     accessToken: string,
     refreshToken: string
 }
-

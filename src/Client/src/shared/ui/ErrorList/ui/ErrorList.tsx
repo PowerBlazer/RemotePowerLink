@@ -1,6 +1,6 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ErrorList.module.scss';
-import {ErrorLabel} from "shared/ui/ErrorLabel";
+import { ErrorLabel } from 'shared/ui/ErrorLabel';
 
 interface ErrorListProps {
     className?: string;
@@ -12,14 +12,14 @@ export function ErrorList ({ className, errors, keyIgnoreList = [] }: ErrorListP
     return (
         <div className={classNames(style.errorList, {}, [className])}>
             {errors && Object.keys(errors)
-                .filter(p=> keyIgnoreList.indexOf(p) === -1)
-                .map(key=> {
+                .filter(p => !keyIgnoreList.includes(p))
+                .map(key => {
                     const errorList = errors[key];
 
                     return (
                         <ErrorLabel errors={errorList} key={key} keyName={key}/>
                     )
                 })}
-		</div>
+        </div>
     );
 }

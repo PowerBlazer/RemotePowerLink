@@ -60,12 +60,12 @@ export interface UploadFilesData {
     connectionId: string
 }
 
-export interface ExistDirectoryOrFileData{
+export interface ExistDirectoryOrFileData {
     folderOrFilePath: string,
     serverId: number
 }
 
-export interface SendFoldersOrFilesData{
+export interface SendFoldersOrFilesData {
     foldersOrFilesToSendList: SftpFile[],
     sourceServerId: number,
     targetServerId: number,
@@ -73,6 +73,6 @@ export interface SendFoldersOrFilesData{
     remotePath: string
 }
 
-export interface SendFolderOrFilesResponse{
+export interface SendFolderOrFilesResponse {
     errors?: Record<string, string[]>
 }

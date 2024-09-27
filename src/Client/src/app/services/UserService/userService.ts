@@ -1,7 +1,7 @@
 import {
     ChangePasswordData, UpdateEmailData,
     UpdateUserData,
-    UserData,
+    UserData
 } from './config';
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
@@ -21,7 +21,7 @@ export class UserService {
             }
         }
     }
-    
+
     static updateUserData = async (updateUserData: UpdateUserData): Promise<ServiceResult<UserData>> => {
         try {
             const response =
@@ -38,13 +38,13 @@ export class UserService {
             }
         }
     }
-    
+
     static changePassword = async (changePasswordData: ChangePasswordData): Promise<ServiceResult<any>> => {
         try {
             await HostService.api.put('/v1/user/password', changePasswordData)
 
             return {
-                isSuccess: true,
+                isSuccess: true
             };
         } catch (error) {
             return {
@@ -59,7 +59,7 @@ export class UserService {
             await HostService.api.put('/v1/user/email', updateEmailData)
 
             return {
-                isSuccess: true,
+                isSuccess: true
             };
         } catch (error) {
             return {
@@ -67,5 +67,5 @@ export class UserService {
                 errors: error.response?.data.Errors
             }
         }
-    } 
+    }
 }

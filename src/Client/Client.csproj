@@ -7,9 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="src\features\SftpModules\" />
+      <Folder Include="src\features\SidebarModules\" />
       <Folder Include="src\shared\assets\fonts\" />
       <Folder Include="src\shared\assets\icons\navbar\" />
-      <Folder Include="src\widgets\SftpModals\" />
+      <Folder Include="src\widgets\SftpModules\" />
+      <Folder Include="src\widgets\Sidebars\" />
     </ItemGroup>
 
 </Project>

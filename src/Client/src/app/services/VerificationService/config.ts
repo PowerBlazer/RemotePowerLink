@@ -1,5 +1,5 @@
-﻿
-//Модели подтверждения почты
+
+// Модели подтверждения почты
 
 export interface SendCodeToConfirmEmailModel {
     email: string
@@ -23,19 +23,19 @@ export interface ResendCodeToConfirmEmailResponse {
     sessionId: string
 }
 
-//------------------------------------------------------
+// ------------------------------------------------------
 
-//Модели изменения пароля пользователя
+// Модели изменения пароля пользователя
 export interface SendCodeToUpdatePasswordResponse {
     sessionId: string
 }
 
 export interface ResendCodeToUpdatePasswordResponse {
-    sessionId:string
+    sessionId: string
 }
 
 export interface ResendCodeToUpdatePasswordData {
-    sessionId:string
+    sessionId: string
 }
 
 export interface VerifyCodeToUpdatePasswordData {
@@ -43,19 +43,19 @@ export interface VerifyCodeToUpdatePasswordData {
     verificationCode: string
 }
 
-//--------------------------------------------------------
+// --------------------------------------------------------
 
-//Модели запрос на изменения почты 
+// Модели запрос на изменения почты
 export interface SendCodeToChangeEmailResponse {
     sessionId: string
 }
 
 export interface ResendCodeToChangeEmailResponse {
-    sessionId:string
+    sessionId: string
 }
 
 export interface ResendCodeToChangeEmailData {
-    sessionId:string
+    sessionId: string
 }
 
 export interface VerifyCodeToChangeEmailData {
@@ -63,7 +63,7 @@ export interface VerifyCodeToChangeEmailData {
     verificationCode: string
 }
 
-//--------------------------------------------------------
+// --------------------------------------------------------
 
 export interface SendCodeToConfirmNewEmailData {
     newEmail: string,
@@ -75,11 +75,11 @@ export interface SendCodeToConfirmNewEmailResponse {
 }
 
 export interface ResendCodeToConfirmNewEmailResponse {
-    sessionId:string
+    sessionId: string
 }
 
 export interface ResendCodeToConfirmNewEmailData {
-    sessionId:string
+    sessionId: string
 }
 
 export interface VerifyCodeToConfirmNewEmailData {

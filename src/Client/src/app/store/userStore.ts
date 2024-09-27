@@ -8,7 +8,7 @@ import { EncodingData } from 'app/services/EncodingService/config';
 export interface SettingsModalOption {
     passwordState: boolean,
     usernameState: boolean,
-    phoneNumberState:boolean,
+    phoneNumberState: boolean,
     emailState: boolean
 }
 
@@ -21,7 +21,7 @@ class UserStore {
     public userData: UserData | null = null;
     public isLoadData: boolean = false;
     public location: string = document.location.pathname;
-    
+
     public settingsModalOptions: SettingsModalOption = {
         passwordState: false,
         usernameState: false,
@@ -36,7 +36,7 @@ class UserStore {
             enforceActions: 'never'
         })
     }
-    
+
     setLoad (isLoad: boolean) {
         this.isLoadData = isLoad;
     }

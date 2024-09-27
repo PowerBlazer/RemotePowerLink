@@ -1,21 +1,21 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './EmailModal.module.scss';
-import {observer} from "mobx-react-lite";
-import {useTheme} from "shared/lib/Theme/useTheme";
-import {ChangeEvent, useMemo, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router-dom";
-import {useTimer} from "react-timer-and-stopwatch";
-import {Modal, ThemeModal, TypeModal} from "shared/ui/Modal";
-import userStore from "app/store/userStore";
-import {Theme} from "shared/lib/Theme/ThemeContext";
-import {Input} from "shared/ui/Input";
-import {ErrorList} from "shared/ui/ErrorList";
-import {Button} from "shared/ui/Button/Button";
-import {VerificationService} from "app/services/VerificationService/verificationService";
-import {VerifyCodeToChangeEmailData, VerifyCodeToConfirmNewEmailData} from "app/services/VerificationService/config";
-import {UserService} from "app/services/UserService/userService";
-import toast from "react-hot-toast";
+import { observer } from 'mobx-react-lite';
+import { useTheme } from 'shared/lib/Theme/useTheme';
+import { ChangeEvent, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useTimer } from 'react-timer-and-stopwatch';
+import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
+import userStore from 'app/store/userStore';
+import { Theme } from 'shared/lib/Theme/ThemeContext';
+import { Input } from 'shared/ui/Input';
+import { ErrorList } from 'shared/ui/ErrorList';
+import { Button } from 'shared/ui/Button/Button';
+import { VerificationService } from 'app/services/VerificationService/verificationService';
+import { VerifyCodeToChangeEmailData, VerifyCodeToConfirmNewEmailData } from 'app/services/VerificationService/config';
+import { UserService } from 'app/services/UserService/userService';
+import toast from 'react-hot-toast';
 
 interface EmailModalProps {
     className?: string;
@@ -29,26 +29,26 @@ enum StepUpdateEmail {
 function EmailModal ({ className }: EmailModalProps) {
     const [errors, setErrors] = useState<Record<string, string[]>>({});
     const [step, setStep] = useState<StepUpdateEmail>(StepUpdateEmail.VerificationChange);
-    
+
     const [verificationCode, setVerificationCode] = useState<string>('');
     const [isResend, setResendValue] = useState<boolean>(false);
 
     const { t } = useTranslation('translation');
     const location = useNavigate();
     const { theme } = useTheme();
-    
+
     const [
-        verifyCodeToChangeEmailData, 
+        verifyCodeToChangeEmailData,
         setVerifyCodeToChangeEmailData
-    ] = useState<VerifyCodeToChangeEmailData>({ sessionId:'', verificationCode:'' });
-    
+    ] = useState<VerifyCodeToChangeEmailData>({ sessionId: '', verificationCode: '' });
+
     const [
         verifyCodeToConfirmNewEmailData,
         setVerifyCodeToConfirmNewEmailData
-    ] = useState<VerifyCodeToConfirmNewEmailData>({ sessionId: '', verificationCode: ''})
-    
+    ] = useState<VerifyCodeToConfirmNewEmailData>({ sessionId: '', verificationCode: '' })
+
     const [newEmail, setNewEmail] = useState<string>('');
-    
+
     const timer = useTimer({
         create: {
             timerWithDuration: {
@@ -65,24 +65,23 @@ function EmailModal ({ className }: EmailModalProps) {
     })
 
     const { timerText, resetTimer } = timer;
-    
+
     const isSessionChangeEmailNull = verifyCodeToChangeEmailData.sessionId.length === 0;
     const isSessionConfirmNewEmailNull = verifyCodeToConfirmNewEmailData.sessionId.length === 0;
-    
+
     const sendCodeToChangeEmail = async () => {
         const sendResult = await VerificationService.sendCodeToChangeEmail();
 
-        if(sendResult.isSuccess){
+        if (sendResult.isSuccess) {
             setVerifyCodeToChangeEmailData({
                 ...verifyCodeToChangeEmailData,
                 sessionId: sendResult.result.sessionId
             });
-            
+
             resetTimer();
-            
+
             setResendValue(false);
-        }
-        else{
+        } else {
             setErrors(sendResult.errors);
         }
     }
@@ -92,7 +91,7 @@ function EmailModal ({ className }: EmailModalProps) {
             sessionId: verifyCodeToChangeEmailData.sessionId
         });
 
-        if(sendResult.isSuccess){
+        if (sendResult.isSuccess) {
             setVerifyCodeToChangeEmailData({
                 ...verifyCodeToChangeEmailData,
                 sessionId: sendResult.result.sessionId
@@ -101,39 +100,36 @@ function EmailModal ({ className }: EmailModalProps) {
             resetTimer();
 
             setResendValue(false);
-        }
-        else{
+        } else {
             setErrors(sendResult.errors);
         }
     }
-    
+
     const verifyCodeToChangeEmail = async () => {
         const verifyResult = await VerificationService
             .verifyCodeToChangeEmail({
                 ...verifyCodeToChangeEmailData,
-                verificationCode: verificationCode
+                verificationCode
             });
-        
-        if(verifyResult.isSuccess){
+
+        if (verifyResult.isSuccess) {
             setStep(StepUpdateEmail.ConfirmNewEmail);
             setVerificationCode('');
             setErrors({});
             setResendValue(false)
-        }
-        else{
+        } else {
             setErrors(verifyResult.errors)
         }
     }
 
-
     const sendCodeToConfirmNewEmail = async () => {
         const sendResult = await VerificationService.sendCodeToConfirmNewEmail({
-            newEmail: newEmail,
+            newEmail,
             sessionId: verifyCodeToChangeEmailData.sessionId
-            
+
         });
 
-        if(sendResult.isSuccess){
+        if (sendResult.isSuccess) {
             setVerifyCodeToConfirmNewEmailData({
                 ...verifyCodeToConfirmNewEmailData,
                 sessionId: sendResult.result.sessionId
@@ -142,8 +138,7 @@ function EmailModal ({ className }: EmailModalProps) {
             resetTimer();
 
             setResendValue(false);
-        }
-        else{
+        } else {
             setErrors(sendResult.errors);
         }
     }
@@ -153,7 +148,7 @@ function EmailModal ({ className }: EmailModalProps) {
             sessionId: verifyCodeToConfirmNewEmailData.sessionId
         });
 
-        if(resendResult.isSuccess){
+        if (resendResult.isSuccess) {
             setVerifyCodeToChangeEmailData({
                 ...verifyCodeToConfirmNewEmailData,
                 sessionId: resendResult.result.sessionId
@@ -162,60 +157,56 @@ function EmailModal ({ className }: EmailModalProps) {
             resetTimer();
 
             setResendValue(false);
-        }
-        else{
+        } else {
             setErrors(resendResult.errors);
         }
     }
-    
+
     const verifyCodeToConfirmNewEmail = async () => {
         const verifyResult = await VerificationService.verifyCodeToConfirmNewEmail({
             ...verifyCodeToConfirmNewEmailData,
-            verificationCode: verificationCode
+            verificationCode
         });
-        
-        if(verifyResult.isSuccess){
+
+        if (verifyResult.isSuccess) {
             const updateEmailResult = await UserService.updateEmail({
                 sessionId: verifyCodeToConfirmNewEmailData.sessionId
             })
-            
-            if(updateEmailResult.isSuccess){
+
+            if (updateEmailResult.isSuccess) {
                 userStore.settingsModalOptions.emailState = false;
-                
+
                 await delay(500);
-                
-                toast.success(t("Email успешно обновлен"));
-                
+
+                toast.success(t('Email успешно обновлен'));
+
                 userStore.isLoadData = true;
-                
+
                 const refreshedUserData = await UserService.getUserData();
-                
-                if(refreshedUserData.isSuccess){
+
+                if (refreshedUserData.isSuccess) {
                     userStore.setUserData(refreshedUserData.result);
-                    
+
                     userStore.isLoadData = false
                 }
-            }
-            else{
+            } else {
                 setErrors(updateEmailResult.errors)
             }
-        }
-        else {
+        } else {
             setErrors(verifyResult.errors);
         }
     }
-    
+
     const onChangeVerificationCode = (e: ChangeEvent<HTMLInputElement>) => {
         setErrors({});
         setVerificationCode(e.target.value);
     }
-    
-    const onChangeNewEmail =  (e: ChangeEvent<HTMLInputElement>) => {
-      setErrors({});
-      setNewEmail(e.target.value);
+
+    const onChangeNewEmail = (e: ChangeEvent<HTMLInputElement>) => {
+        setErrors({});
+        setNewEmail(e.target.value);
     }
-    
-    
+
     const changeEmailStep = useMemo(() => {
         return (
             <div className={classNames(style.changeEmailStep)}>
@@ -237,12 +228,12 @@ function EmailModal ({ className }: EmailModalProps) {
                     onClick={async () => {
                         if (isSessionChangeEmailNull) {
                             await sendCodeToChangeEmail()
-                        } else if (isResend)
-                            await resendCodeToChangeEmail()
+                        } else if (isResend) { await resendCodeToChangeEmail() }
                     }}
                 >
                     {isSessionChangeEmailNull && t('Отправить код потдверждения на почту')}
-                    {!isSessionChangeEmailNull ? isResend
+                    {!isSessionChangeEmailNull
+                        ? isResend
                             ? t('Повторно отправить код потдверждения на почту')
                             : `${t('Повторно отправить через')} ${timerText}`
                         : ''
@@ -250,17 +241,16 @@ function EmailModal ({ className }: EmailModalProps) {
                 </Button>
             </div>
         )
-        }, [
-            verificationCode,
-            errors,
-            timerText,
-            isSessionChangeEmailNull,
-            isResend
-        ]
+    }, [
+        verificationCode,
+        errors,
+        timerText,
+        isSessionChangeEmailNull,
+        isResend
+    ]
     )
-    
-    
-    const confirmNewEmailStep = useMemo(()=> {
+
+    const confirmNewEmailStep = useMemo(() => {
         return (
             <div className={classNames(style.changeEmailStep)}>
                 <div className={classNames(style.new_email)}>
@@ -274,7 +264,7 @@ function EmailModal ({ className }: EmailModalProps) {
                     />
                 </div>
                 <div className={classNames(style.verification)}>
-                <div className={classNames(style.label)}>{t('Введите код подтверждения')}</div>
+                    <div className={classNames(style.label)}>{t('Введите код подтверждения')}</div>
                     <Input
                         value={verificationCode}
                         className={classNames(style.session_confirm_input)}
@@ -283,7 +273,7 @@ function EmailModal ({ className }: EmailModalProps) {
                         errors={errors.VerificationCode}
                     />
                 </div>
-                <ErrorList errors={errors} keyIgnoreList={['Email','VerificationCode']}/>
+                <ErrorList errors={errors} keyIgnoreList={['Email', 'VerificationCode']}/>
                 <Button
                     className={classNames(style.send_verification_code, {
                         [style.resend_disabled]: !isResend && !isSessionConfirmNewEmailNull
@@ -292,12 +282,12 @@ function EmailModal ({ className }: EmailModalProps) {
                     onClick={async () => {
                         if (isSessionConfirmNewEmailNull) {
                             await sendCodeToConfirmNewEmail()
-                        } else if (isResend)
-                            await resendCodeToConfirmNewEmail()
+                        } else if (isResend) { await resendCodeToConfirmNewEmail() }
                     }}
                 >
                     {isSessionConfirmNewEmailNull && t('Отправить код потдверждения на новую почту')}
-                    {!isSessionConfirmNewEmailNull ? isResend
+                    {!isSessionConfirmNewEmailNull
+                        ? isResend
                             ? t('Повторно отправить код потдверждения на новую почту')
                             : `${t('Повторно отправить через')} ${timerText}`
                         : ''

@@ -1,0 +1,26 @@
+.terminalPage{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  border-left: 2px solid var(--main-page-color-line);
+  
+  &.information{
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.header{
+  flex-shrink: 0;
+  width: 100%;
+  background-color: var(--terminal-header-bg-color);
+}
+
+.main{
+  height: 100%;
+}
+
+.footer{
+  
+}

@@ -16,7 +16,8 @@ import { DefaultServerIcon } from 'features/DefaultServerIcon';
 
 export enum ServerManagerCatalogMode {
     Catalog = 'CATALOG',
-    Sftp = 'SFTP'
+    Sftp = 'SFTP',
+    Terminal = 'Terminal'
 }
 
 interface ServerManagerCatalogProps {

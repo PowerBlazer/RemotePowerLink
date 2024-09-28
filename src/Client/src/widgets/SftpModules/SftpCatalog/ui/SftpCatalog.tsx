@@ -18,7 +18,6 @@ import { DeleteModal } from 'widgets/SftpModules/SftpModals/DeleteModal';
 import { RenameModal } from 'widgets/SftpModules/SftpModals/RenameModal';
 import { DownloadModal } from 'widgets/SftpModules/SftpModals/DownloadModal';
 import { SftpNotificationPanel } from 'widgets/SftpModules/SftpNotificationPanel';
-import { HostService } from 'app/services/hostService';
 import sidebarStore from 'app/store/sidebarStore';
 import { SidebarEditHost } from 'widgets/Sidebars/SidebarEditHost';
 import { EditServerResult } from 'app/services/ServerService/config/serverConfig';
@@ -26,9 +25,9 @@ import userStore from 'app/store/userStore';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from 'shared/lib/Stack';
 import { UploadModal } from 'widgets/SftpModules/SftpModals/UploadModal';
-import { DefaultServerIcon } from 'features/DefaultServerIcon';
 import { SendModal } from 'widgets/SftpModules/SftpModals/SendModal';
 import {PageConnectionError} from "widgets/PageConnectionError";
+import {SelectHostBlock} from "features/SelectHostBlock/ui/SelectHostBlock";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -268,25 +267,6 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
         }
     }, [sftpStore.editableWidthSplit, catalogRef]);
 
-    const selectHostInformationBlock = useMemo(() => (
-        <div className={classNames(style.host_information_block)}>
-            <LogoIcon width={180} height={156}/>
-            <div className={classNames(style.information_content)}>
-                <div className={classNames(style.header_information)}>
-                    <h1>{t('Подключиться к серверу')}</h1>
-                    <h3>{t('Выберите из вашего сохраненного сервера')}</h3>
-                </div>
-                <Button
-                    className={classNames(style.select_server)}
-                    theme={ThemeButton.PRIMARY}
-                    onClick={() => { setIsView(true); }}
-                >
-                    {t('Выбрать сервер')}
-                </Button>
-            </div>
-        </div>
-    ), []);
-
     if (getIsSelectedServer() && !isViewServersCatalog && !isViewErrorPanel) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
@@ -308,7 +288,9 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
     return (
         <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-            { !getIsSelectedServer() && !isViewServersCatalog && selectHostInformationBlock }
+            { !getIsSelectedServer() && !isViewServersCatalog && 
+                <SelectHostBlock onClick={() => setIsView(true)} />
+            }
             { isViewErrorPanel && 
                 <PageConnectionError 
                     selectedHost={selectedHost}

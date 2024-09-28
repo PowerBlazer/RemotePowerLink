@@ -1,8 +1,8 @@
 .main_page{
     height: 100vh;
-    border-left: 2px solid var(--main-page-color-line);
     width: 100%;
     display: flex;
+    border-left: 2px solid var(--main-page-color-line);
     background-color: var(--main-page-bg-color);
 }
 

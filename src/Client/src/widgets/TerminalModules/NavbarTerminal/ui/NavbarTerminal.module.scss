@@ -1,0 +1,33 @@
+﻿.navbarTerminal{
+  height: 45px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+
+.open_session{
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all .3s;
+  border-radius:8px;
+  
+  & .plus_icon path{
+    fill: #8A919F;
+  }
+  
+  &:hover{
+    & .plus_icon path{
+      fill: white;
+    }
+    
+    background-color: rgba(255, 255, 255, 0.09);
+  }
+}

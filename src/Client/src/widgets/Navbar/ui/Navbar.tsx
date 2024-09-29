@@ -70,6 +70,7 @@ function Navbar ({ className }: NavbarProps) {
     useEffect(() => {
         userStore.setLoad(isLoad);
     }, [isLoad]);
+    
 
     return (
         <div className={classNames(style.navbar, {}, [className])}>

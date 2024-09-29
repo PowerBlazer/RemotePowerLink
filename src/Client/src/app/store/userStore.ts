@@ -20,7 +20,7 @@ class UserStore {
 
     public userData: UserData | null = null;
     public isLoadData: boolean = false;
-    public location: string = document.location.pathname;
+    public location: string = document.location.pathname.replace('/', '');
 
     public settingsModalOptions: SettingsModalOption = {
         passwordState: false,

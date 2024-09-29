@@ -5,14 +5,15 @@ import { useTranslation } from 'react-i18next';
 import {NavbarTerminal} from "widgets/TerminalModules/NavbarTerminal";
 import terminalStore from "app/store/terminalStore";
 import {SelectHostBlock} from "features/SelectHostBlock";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {TerminalSelectHostCatalog} from "widgets/TerminalModules/TerminalSelectHostCatalog";
+import userStore from "app/store/userStore";
 
 function TerminalPage () {
     const { t } = useTranslation('translation');
     
     const isSessionsNull = terminalStore.sessions.length === 0;
-    const [isSelectHost, setIsSelectHost] = useState<boolean>(isSessionsNull)
+    const [isSelectHost, setIsSelectHost] = useState<boolean>(false );
     
     if(isSessionsNull && !isSelectHost){
         return (
@@ -33,9 +34,11 @@ function TerminalPage () {
     return (
         <div className={classNames(style.terminalPage)}>
             <div className={classNames(style.header)}>
-                <NavbarTerminal/>
+                <NavbarTerminal onClickSelectHost={() => setIsSelectHost(true)}/>
             </div>
-            <div className={classNames(style.main)}></div>
+            <div className={classNames(style.main)}>
+                {terminalStore.selectedSession?.host.title}
+            </div>
             <div className={classNames(style.footer)}>
                 
             </div>

@@ -9,6 +9,7 @@ import {SearchInput} from "features/SearchInput";
 import {ServerManagerCatalog, ServerManagerCatalogMode} from "widgets/ServerManagerCatalog";
 import {ServerData} from "app/services/ServerService/config/serverConfig";
 import {useTranslation} from "react-i18next";
+import terminalStore from "app/store/terminalStore";
 
 interface TerminalSelectHostCatalogProps {
     className?: string;
@@ -31,7 +32,16 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
     }
     
     const onClickConnectHandler = async (serverData: ServerData) => {
+        terminalStore.sessions.push({
+            id: generateUniqueNumber(),
+            host: serverData,
+            histrory:'',
+            isLoad: false
+        })
         
+        if(onClose){
+            onClose()
+        }
     }
     
     useEffect(() => {

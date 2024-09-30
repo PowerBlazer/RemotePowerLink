@@ -5,9 +5,8 @@ import { useTranslation } from 'react-i18next';
 import {NavbarTerminal} from "widgets/TerminalModules/NavbarTerminal";
 import terminalStore from "app/store/terminalStore";
 import {SelectHostBlock} from "features/SelectHostBlock";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {TerminalSelectHostCatalog} from "widgets/TerminalModules/TerminalSelectHostCatalog";
-import userStore from "app/store/userStore";
 
 function TerminalPage () {
     const { t } = useTranslation('translation');

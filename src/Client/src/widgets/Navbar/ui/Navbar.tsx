@@ -20,6 +20,7 @@ import { ProxyService } from 'app/services/ProxyService/proxyService';
 import { ServerService } from 'app/services/ServerService/serverService';
 import searchStore from 'app/store/searchStore';
 import { EncodingService } from 'app/services/EncodingService/encodingService';
+import toast from "react-hot-toast";
 
 interface NavbarProps {
     className?: string
@@ -29,29 +30,49 @@ function Navbar ({ className }: NavbarProps) {
     const { t } = useTranslation('translation');
 
     const { isLoad } = useEffectLoad(async () => {
+        const loadDataResults: boolean[] = [];
+        
         if (!userStore.userData) {
             const userDataResult = await UserService.getUserData();
             userStore.setUserData(userDataResult.result);
+            
+            loadDataResults.push(userDataResult.isSuccess)
         }
 
         if (!userStore.userIdentities) {
             const identitiesResult = await IdentityService.getIdentities();
             userStore.setUserIdentities(identitiesResult.result);
+
+            loadDataResults.push(identitiesResult.isSuccess)
         }
 
         if (!userStore.userProxies) {
             const proxiesResult = await ProxyService.getProxies();
             userStore.setUserProxies(proxiesResult.result);
+
+            loadDataResults.push(proxiesResult.isSuccess)
         }
 
         if (!userStore.userServers) {
             const serversResult = await ServerService.getServers();
             userStore.setUserServers(serversResult.result);
+
+            loadDataResults.push(serversResult.isSuccess)
         }
 
         if (!userStore.encodings) {
             const encodingsResult = await EncodingService.getEncodings();
             userStore.setUserEncodings(encodingsResult.result);
+
+            loadDataResults.push(encodingsResult.isSuccess)
+        }
+        
+        if(loadDataResults.findIndex(p=> !p) !== -1){
+            const errorMessage = "Ошибка загрузка данных, перезагрузите страницу или обратитесь в тех поддержку";
+            
+            toast.error(errorMessage);
+            
+            throw new Error(errorMessage)
         }
     });
 

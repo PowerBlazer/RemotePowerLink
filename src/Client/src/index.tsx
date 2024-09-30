@@ -12,10 +12,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <BrowserRouter>
-        <ErrorBoundary>
-            <ThemeProvider>
-                <App/>
-            </ThemeProvider>
-        </ErrorBoundary>
+        <ThemeProvider>
+            <App/>
+        </ThemeProvider>
     </BrowserRouter>
 )

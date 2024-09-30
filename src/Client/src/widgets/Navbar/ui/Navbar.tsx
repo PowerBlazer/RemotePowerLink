@@ -3,7 +3,7 @@ import { NavbarSetting } from 'widgets/NavbarSetting';
 import { NavbarItem } from 'features/NavbarItem';
 import { useTranslation } from 'react-i18next';
 import { AppRoutes } from 'app/providers/router/config/routeConfig';
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import { UserService } from 'app/services/UserService/userService';
 import { observer } from 'mobx-react-lite';
 import ServerIcon from 'shared/assets/icons/server-minimalistic.svg';
@@ -28,51 +28,57 @@ interface NavbarProps {
 
 function Navbar ({ className }: NavbarProps) {
     const { t } = useTranslation('translation');
+    const [hasLoadError, setHasError] = useState(false);
 
     const { isLoad } = useEffectLoad(async () => {
-        const loadDataResults: boolean[] = [];
-        
         if (!userStore.userData) {
             const userDataResult = await UserService.getUserData();
-            userStore.setUserData(userDataResult.result);
             
-            loadDataResults.push(userDataResult.isSuccess)
+            if(!userDataResult.isSuccess){
+                setHasError(true);
+            }
+            
+            userStore.setUserData(userDataResult.result);
         }
 
         if (!userStore.userIdentities) {
             const identitiesResult = await IdentityService.getIdentities();
-            userStore.setUserIdentities(identitiesResult.result);
 
-            loadDataResults.push(identitiesResult.isSuccess)
+            if(!identitiesResult.isSuccess){
+                setHasError(true);
+            }
+            
+            userStore.setUserIdentities(identitiesResult.result);
         }
 
         if (!userStore.userProxies) {
             const proxiesResult = await ProxyService.getProxies();
-            userStore.setUserProxies(proxiesResult.result);
 
-            loadDataResults.push(proxiesResult.isSuccess)
+            if(!proxiesResult.isSuccess){
+                setHasError(true);
+            }
+            
+            userStore.setUserProxies(proxiesResult.result);
         }
 
         if (!userStore.userServers) {
             const serversResult = await ServerService.getServers();
-            userStore.setUserServers(serversResult.result);
 
-            loadDataResults.push(serversResult.isSuccess)
+            if(!serversResult.isSuccess){
+                setHasError(true);
+            }
+            
+            userStore.setUserServers(serversResult.result);
         }
 
         if (!userStore.encodings) {
             const encodingsResult = await EncodingService.getEncodings();
-            userStore.setUserEncodings(encodingsResult.result);
 
-            loadDataResults.push(encodingsResult.isSuccess)
-        }
-        
-        if(loadDataResults.findIndex(p=> !p) !== -1){
-            const errorMessage = "Ошибка загрузка данных, перезагрузите страницу или обратитесь в тех поддержку";
+            if(!encodingsResult.isSuccess){
+                setHasError(true);
+            }
             
-            toast.error(errorMessage);
-            
-            throw new Error(errorMessage)
+            userStore.setUserEncodings(encodingsResult.result);
         }
     });
 
@@ -91,6 +97,10 @@ function Navbar ({ className }: NavbarProps) {
     useEffect(() => {
         userStore.setLoad(isLoad);
     }, [isLoad]);
+
+    if (hasLoadError) {
+        throw new Error('Ошибка загрузка данных, перезагрузите страницу или обратитесь в тех поддержку')
+    }
     
 
     return (

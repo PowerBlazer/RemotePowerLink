@@ -4,26 +4,29 @@ import { AppRouter } from 'app/providers/router';
 import React, { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import './styles/index.scss';
+import {ErrorBoundary} from "app/providers/ErrorBoundary";
 
 export default function App () {
     const { theme } = useTheme();
 
     return (
         <div className={classNames('app', {}, [theme])}>
-            <Suspense fallback="">
-                <div className='content-page'>
-                    <AppRouter/>
-                    <Toaster
-                        position="bottom-right"
-                        reverseOrder={false}
-                        gutter={8}
-                        toastOptions={{
-                            className: '',
-                            duration: 3000
-                        }}
-                    />
-                </div>
-            </Suspense>
+            <ErrorBoundary>
+                <Suspense fallback="">
+                    <div className='content-page'>
+                        <AppRouter/>
+                        <Toaster
+                            position="top-center"
+                            reverseOrder={false}
+                            gutter={2}
+                            toastOptions={{
+                                className: 'notification',
+                                duration: 2000500
+                            }}
+                        />
+                    </div>
+                </Suspense>
+            </ErrorBoundary>
         </div>
     )
 }

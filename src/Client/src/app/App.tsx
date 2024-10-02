@@ -21,7 +21,7 @@ export default function App () {
                             gutter={2}
                             toastOptions={{
                                 className: 'notification',
-                                duration: 2000500
+                                duration: 2000
                             }}
                         />
                     </div>

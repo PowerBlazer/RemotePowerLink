@@ -43,8 +43,7 @@ public class Server : BaseEntity<long>
     /// Идентификатор сервера.
     /// </summary>
     public Identity? Identity { get; set; }
-
-    //User
+    
     /// <summary>
     /// Идентификатор пользователя, которому принадлежит сервер.
     /// </summary>
@@ -85,6 +84,8 @@ public class Server : BaseEntity<long>
     /// Кодировка
     /// </summary>
     public Encoding? Encoding { get; set; }
+    
+    public IList<Session>? Sessions { get; set; }
 
     #endregion
 }

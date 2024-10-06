@@ -10,4 +10,5 @@ public class User: BaseEntity<long>
     public IList<Identity>? Identities { get; set; }
     public IList<Proxy>? Proxies { get; set; }
     public IList<Server>? Servers { get; set; }
+    public IList<Session>? Sessions { get; set; }
 }

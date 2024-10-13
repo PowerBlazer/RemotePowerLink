@@ -106,7 +106,7 @@ public class ServerController: BaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ApiActionResult> DeleteServer([FromRoute] long serverId)
     {
-        await Mediator.Send(new DeleteServerCommand(serverId));
+        await Mediator.Send(new DeleteServerCommand(serverId, UserId));
 
         return new ApiActionResult();
     }

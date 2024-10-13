@@ -1,25 +1,23 @@
 ﻿
-using Domain.Entities;
+namespace Domain.DTOs.Connection;
 
-namespace Application.Services.Abstract.Parameters;
-
-public class ConnectionServerParameter
+public class ConnectionServer
 {
     public required string Hostname { get; set; }
     public int? SshPort { get; set; }
     public required string Username { get; set; }
     public required string Password { get; set; }
     public required int EncodingCodePage { get; set; }
-    public ProxyParameter? Proxy { get; set; }
+    public ConnectionProxy? ConnectionProxy { get; set; }
 
-    public static ConnectionServerParameter ServerMapTo(Server server)
+    public static ConnectionServer ServerMapTo(Entities.Server server)
     {
         if (server.Identity is null)
         {
             throw new NullReferenceException("Невозможно смапиить параметер подключения без Identity в Server");
         }
         
-        var serverParameter = new ConnectionServerParameter
+        var serverParameter = new ConnectionServer
         {
             Hostname = server.IpAddress,
             SshPort = server.SshPort,
@@ -35,7 +33,7 @@ public class ConnectionServerParameter
                 throw new NullReferenceException("Невозможно смапиить параметер подключения без Identity в Proxy");
             }
             
-            serverParameter.Proxy = new ProxyParameter
+            serverParameter.ConnectionProxy = new ConnectionProxy
             {
                 Hostname = server.Proxy.IpAddress,
                 Username = server.Proxy.Identity.Username,

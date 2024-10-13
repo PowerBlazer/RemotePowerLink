@@ -1,7 +1,7 @@
 ﻿using Application.Hubs;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Connection;
 using Domain.DTOs.Notification;
 using Domain.DTOs.Sftp;
 using Domain.Exceptions;
@@ -56,7 +56,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
                 "Server");
         }
         
-        var connectionServerParameter = ConnectionServerParameter.ServerMapTo(server);
+        var connectionServerParameter = ConnectionServer.ServerMapTo(server);
         var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);

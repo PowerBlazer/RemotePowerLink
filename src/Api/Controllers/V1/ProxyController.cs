@@ -105,7 +105,7 @@ public class ProxyController : BaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ApiActionResult<bool>> DeleteProxy([FromRoute]long proxyId)
     {
-        await Mediator.Send(new DeleteProxyCommand(proxyId));
+        await Mediator.Send(new DeleteProxyCommand(proxyId,UserId));
 
         return new ApiActionResult<bool>();
     }

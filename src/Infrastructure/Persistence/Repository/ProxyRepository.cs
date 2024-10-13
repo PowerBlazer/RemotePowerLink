@@ -32,6 +32,19 @@ public class ProxyRepository: IProxyRepository
         return proxy;
     }
 
+    public async Task<Proxy> GetProxy(long proxyId)
+    {
+        var proxy = await _persistenceContext.Proxies
+            .FirstOrDefaultAsync(p=>p.Id == proxyId);
+
+        if (proxy is null)
+        {
+            throw new NotFoundException("Идентификатор с указанным 'ProxyId' не найдена.","ProxyId");
+        }
+
+        return proxy;
+    }
+
     public async Task<Proxy> AddProxy(Proxy proxy)
     {
         await _persistenceContext.Proxies.AddAsync(proxy);

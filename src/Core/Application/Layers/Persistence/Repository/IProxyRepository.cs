@@ -19,6 +19,13 @@ public interface IProxyRepository
     Task<Proxy?> GetProxyDefault(long proxyId);
     
     /// <summary>
+    /// Получает прокси данные для подключения по SSH по указанному идентификатору.
+    /// </summary>
+    /// <param name="proxyId">Идентификатор прокси данных для подключения по SSH.</param>
+    /// <returns>Прокси данные для подключения по SSH с указанным идентификатором</returns>
+    Task<Proxy> GetProxy(long proxyId);
+    
+    /// <summary>
     /// Добавляет новую запись прокси данных для подключения по SSH в репозиторий.
     /// </summary>
     /// <param name="proxy">Прокси данные для подключения по SSH для добавления.</param>

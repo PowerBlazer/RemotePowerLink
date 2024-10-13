@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Text;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Connection;
 using Domain.Exceptions;
 using Renci.SshNet;
 
@@ -24,11 +24,11 @@ public class SftpConnectionService: ISftpConnectionService
         return null;
     }
 
-    public SftpClient CreateClient(ConnectionServerParameter connectionServerParameter, string connectionKey)
+    public SftpClient CreateClient(ConnectionServer connectionServer, string connectionKey)
     {
         var sftpClient = _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
         {
-            SftpClient = CreateNewClientInstance(connectionServerParameter),
+            SftpClient = CreateNewClientInstance(connectionServer),
             LastUsed = DateTime.Now
         }).SftpClient; 
 
@@ -39,7 +39,7 @@ public class SftpConnectionService: ISftpConnectionService
             
         var newSftpClient = _sftpClients.GetOrAdd(connectionKey, _ => new SftpClientInstance
         {
-            SftpClient = CreateNewClientInstance(connectionServerParameter),
+            SftpClient = CreateNewClientInstance(connectionServer),
             LastUsed = DateTime.Now
         }).SftpClient;
 
@@ -81,9 +81,9 @@ public class SftpConnectionService: ISftpConnectionService
         }
     }
     
-    private static SftpClient CreateNewClientInstance(ConnectionServerParameter connectionServerParameter)
+    private static SftpClient CreateNewClientInstance(ConnectionServer connectionServer)
     {
-        var connectionInfo = GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = GetConnectionInfo(connectionServer);
         
         var sftpClient = new SftpClient(connectionInfo);
         
@@ -101,32 +101,32 @@ public class SftpConnectionService: ISftpConnectionService
         return sftpClient;
     }
     
-    private static ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter)
+    private static ConnectionInfo GetConnectionInfo(ConnectionServer connectionServer)
     {
         var connectionInfo = new ConnectionInfo(
-            connectionServerParameter.Hostname,
-            connectionServerParameter.SshPort ?? 22,
-            connectionServerParameter.Username,
-            new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
+            connectionServer.Hostname,
+            connectionServer.SshPort ?? 22,
+            connectionServer.Username,
+            new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
 
-        var proxyParameter = connectionServerParameter.Proxy;
+        var proxyParameter = connectionServer.ConnectionProxy;
 
         if (proxyParameter is not null)
         {
             connectionInfo = new ConnectionInfo(
-                connectionServerParameter.Hostname,
-                connectionServerParameter.SshPort ?? 22,
-                connectionServerParameter.Username,
+                connectionServer.Hostname,
+                connectionServer.SshPort ?? 22,
+                connectionServer.Username,
                 ProxyTypes.Http,
                 proxyParameter.Hostname,
                 proxyParameter.SshPort ?? 22,
                 proxyParameter.Username,
                 proxyParameter.Password,
-                new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
+                new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
         }
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         
-        connectionInfo.Encoding = Encoding.GetEncoding(connectionServerParameter.EncodingCodePage);
+        connectionInfo.Encoding = Encoding.GetEncoding(connectionServer.EncodingCodePage);
         
         return connectionInfo;
     }

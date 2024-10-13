@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Connection;
 using Domain.DTOs.Proxy;
 using Domain.Exceptions;
 using MediatR;
@@ -25,13 +25,21 @@ public class EditProxyHandler: IRequestHandler<EditProxyCommand,EditProxyRespons
     public async Task<EditProxyResponse> Handle(EditProxyCommand request, CancellationToken cancellationToken)
     {
         var identity = await _identityRepository.GetIdentityDefault(request.IdentityId);
+        var currentProxy = await _proxyRepository.GetProxy(request.ProxyId);
+
+        if (currentProxy.UserId != request.UserId)
+        {
+            throw new NoAccessException(
+                $"У пользователя с таким {request.UserId} UserId нет доступа к прокси с таким ${request.ProxyId} ProxyId",
+                "Proxy");
+        }
 
         if (identity is null)
         {
             throw new NotFoundException("Идентификатор с указанным 'IdentityId' не найдена.","IdentityId");
         }
         
-        var checkConnectionServerParameter = new ConnectionServerParameter
+        var checkConnectionServerParameter = new ConnectionServer
         {
             Hostname = request.Hostname,
             SshPort = request.SshPort,

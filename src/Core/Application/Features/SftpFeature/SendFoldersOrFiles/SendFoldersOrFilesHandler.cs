@@ -1,7 +1,7 @@
 ﻿using Application.Hubs;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Connection;
 using Domain.DTOs.Notification;
 using Domain.DTOs.Sftp;
 using Domain.Enums;
@@ -60,8 +60,8 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
                 "Server");
         }
         
-        var targetConnectionServerParameter = ConnectionServerParameter.ServerMapTo(targetServer);
-        var sourceConnectionServerParameter = ConnectionServerParameter.ServerMapTo(sourceServer);
+        var targetConnectionServerParameter = ConnectionServer.ServerMapTo(targetServer);
+        var sourceConnectionServerParameter = ConnectionServer.ServerMapTo(sourceServer);
         var targetConnectionInfo = _serverService.GetConnectionInfo(targetConnectionServerParameter);
         var sourceConnectionInfo = _serverService.GetConnectionInfo(sourceConnectionServerParameter);
 

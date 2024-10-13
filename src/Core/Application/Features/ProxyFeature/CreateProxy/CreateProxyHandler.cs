@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Connection;
 using Domain.DTOs.Proxy;
 using Domain.Exceptions;
 using JetBrains.Annotations;
@@ -33,7 +33,7 @@ public class CreateProxyHandler: IRequestHandler<CreateProxyCommand, CreateProxy
             throw new NotFoundException("Идентификатор с указанным 'IdentityId' не найдена.","IdentityId");
         }
         
-        var checkConnectionServerParameter = new ConnectionServerParameter
+        var checkConnectionServerParameter = new ConnectionServer
         {
             Hostname = request.Hostname,
             SshPort = request.SshPort,

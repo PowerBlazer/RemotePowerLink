@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Connection;
 using Domain.DTOs.Server;
 using Domain.Exceptions;
 using JetBrains.Annotations;
@@ -34,13 +34,21 @@ public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerRes
     {
         var identity = await _identityRepository.GetIdentityDefault(request.IdentityId);
         var encoding = await _encodingRepository.GetEncoding(request.EncodingId);
+        var server = await _serverRepository.GetServer(request.ServerId);
+
+        if (server.UserId != request.UserId)
+        {
+            throw new NoAccessException(
+                $"У пользователя с таким {request.UserId} UserId нет доступа к серверу с таким ${request.ServerId} ServerId",
+                "Server");
+        }
         
         if (identity is null)
         {
             throw new NotFoundException("Идентификатор с указанным 'IdentityId' не найдена.","IdentityId");
         }
         
-        var connectionServerParameter = new ConnectionServerParameter
+        var connectionServerParameter = new ConnectionServer
         {
             Hostname = request.Hostname,
             SshPort = request.SshPort,
@@ -60,7 +68,7 @@ public class EditServerHandler: IRequestHandler<EditServerCommand, EditServerRes
             
             var proxyIdentity = await _identityRepository.GetIdentity(proxy.IdentityId);
             
-            connectionServerParameter.Proxy = new ProxyParameter
+            connectionServerParameter.ConnectionProxy = new ConnectionProxy
             {
                 Hostname = proxy.IpAddress,
                 SshPort = proxy.SshPort,

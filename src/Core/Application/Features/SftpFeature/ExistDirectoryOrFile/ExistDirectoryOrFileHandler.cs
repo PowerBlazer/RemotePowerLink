@@ -1,6 +1,6 @@
 ﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
+using Domain.DTOs.Connection;
 using Domain.Exceptions;
 using JetBrains.Annotations;
 using MediatR;
@@ -32,7 +32,7 @@ public class ExistDirectoryOrFileHandle: IRequestHandler<ExistDirectoryOrFileCom
                 "Server");
         }
         
-        var connectionServerParameter = ConnectionServerParameter.ServerMapTo(server);
+        var connectionServerParameter = ConnectionServer.ServerMapTo(server);
         var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);

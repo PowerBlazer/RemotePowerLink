@@ -1,4 +1,5 @@
 ﻿using Application.Layers.Persistence.Repository;
+using Domain.Exceptions;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -14,8 +15,17 @@ public class DeleteIdentityHandler: IRequestHandler<DeleteIdentityCommand>
         _identityRepository = identityRepository;
     }
 
-    public Task Handle(DeleteIdentityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteIdentityCommand request, CancellationToken cancellationToken)
     {
-        return _identityRepository.DeleteIdentity(request.IdentityId);
+        var identity = await _identityRepository.GetIdentity(request.IdentityId);
+
+        if (identity.UserId != request.UserId)
+        {
+            throw new NoAccessException(
+                $"У пользователя с таким {request.UserId} UserId нет доступа к идентификатору с таким ${request.IdentityId} IdentityId",
+                "Identity");
+        }
+        
+        await _identityRepository.DeleteIdentity(request.IdentityId);
     }
 }

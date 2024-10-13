@@ -1,7 +1,7 @@
 ﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
 using Application.Services.Logic;
+using Domain.DTOs.Connection;
 using Domain.DTOs.Sftp;
 using Domain.Enums;
 using Domain.Exceptions;
@@ -100,7 +100,7 @@ public class SftpHub: BaseHub
         if (!isExistSftpClient)
         {
             var server = await _serverRepository.GetServer(serverId);
-            var connectionParameter = ConnectionServerParameter.ServerMapTo(server);
+            var connectionParameter = ConnectionServer.ServerMapTo(server);
 
             _sftpConnectionService.CreateClient(connectionParameter, ConnectionKey);
         }

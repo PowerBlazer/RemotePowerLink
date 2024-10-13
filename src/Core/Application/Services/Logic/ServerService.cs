@@ -4,8 +4,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Abstract.Parameters;
 using Application.Services.Abstract.Results;
+using Domain.DTOs.Connection;
 using Domain.Enums;
 using Domain.Exceptions;
 using Renci.SshNet;
@@ -19,10 +19,10 @@ public class ServerService: IServerService
     {
         _systemTypeRepository = systemTypeRepository;
     }
-    public async Task<SystemTypeResult> GetSystemType(ConnectionServerParameter serverParameter, 
+    public async Task<SystemTypeResult> GetSystemType(ConnectionServer server, 
         CancellationToken cancellationToken)
     {
-        var connectionInfo = GetConnectionInfo(serverParameter);
+        var connectionInfo = GetConnectionInfo(server);
         
         using var client = new SshClient(connectionInfo);
         
@@ -91,10 +91,10 @@ public class ServerService: IServerService
         return systemTypeResult;
     }
 
-    public async Task<bool> CheckConnectionServer(ConnectionServerParameter serverParameter, 
+    public async Task<bool> CheckConnectionServer(ConnectionServer server, 
         CancellationToken cancellationToken)
     {
-        var connectionInfo = GetConnectionInfo(serverParameter);
+        var connectionInfo = GetConnectionInfo(server);
         
         using var client = new SshClient(connectionInfo);
 
@@ -128,32 +128,32 @@ public class ServerService: IServerService
     }
 
 
-    public ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter)
+    public ConnectionInfo GetConnectionInfo(ConnectionServer connectionServer)
     {
         var connectionInfo = new ConnectionInfo(
-            connectionServerParameter.Hostname,
-            connectionServerParameter.SshPort ?? 22,
-            connectionServerParameter.Username,
-            new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
+            connectionServer.Hostname,
+            connectionServer.SshPort ?? 22,
+            connectionServer.Username,
+            new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
 
-        var proxyParameter = connectionServerParameter.Proxy;
+        var proxyParameter = connectionServer.ConnectionProxy;
 
         if (proxyParameter is not null)
         {
             connectionInfo = new ConnectionInfo(
-                connectionServerParameter.Hostname,
-                connectionServerParameter.SshPort ?? 22,
-                connectionServerParameter.Username,
+                connectionServer.Hostname,
+                connectionServer.SshPort ?? 22,
+                connectionServer.Username,
                 ProxyTypes.Http,
                 proxyParameter.Hostname,
                 proxyParameter.SshPort ?? 22,
                 proxyParameter.Username,
                 proxyParameter.Password,
-                new PasswordAuthenticationMethod(connectionServerParameter.Username, connectionServerParameter.Password));
+                new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
         }
         
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        connectionInfo.Encoding = Encoding.GetEncoding(connectionServerParameter.EncodingCodePage);
+        connectionInfo.Encoding = Encoding.GetEncoding(connectionServer.EncodingCodePage);
         
         return connectionInfo;
     }

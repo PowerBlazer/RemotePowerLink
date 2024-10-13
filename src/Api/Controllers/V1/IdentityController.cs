@@ -105,7 +105,7 @@ public class IdentityController : BaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ApiActionResult<bool>> DeleteIdentity([FromRoute]long identityId)
     {
-        await Mediator.Send(new DeleteIdentityCommand(identityId));
+        await Mediator.Send(new DeleteIdentityCommand(identityId, UserId));
 
         return new ApiActionResult<bool>();
     }

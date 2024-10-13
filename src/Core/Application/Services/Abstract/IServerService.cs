@@ -1,5 +1,5 @@
-﻿using Application.Services.Abstract.Parameters;
-using Application.Services.Abstract.Results;
+﻿using Application.Services.Abstract.Results;
+using Domain.DTOs.Connection;
 using Renci.SshNet;
 
 namespace Application.Services.Abstract;
@@ -9,18 +9,18 @@ public interface IServerService
     /// <summary>
     /// Получает тип операционной системы сервера на основе предоставленной конфигурации.
     /// </summary>
-    /// <param name="serverParameter">Конфигурация сервера.</param>
+    /// <param name="server">Конфигурация сервера.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Тип операционной системы сервера</returns>
-    public Task<SystemTypeResult> GetSystemType(ConnectionServerParameter serverParameter, CancellationToken cancellationToken);
+    public Task<SystemTypeResult> GetSystemType(ConnectionServer server, CancellationToken cancellationToken);
 
     /// <summary>
     /// Проверяет подключение к серверу на основе предоставленной конфигурации.
     /// </summary>
-    /// <param name="serverParameter">Конфигурация сервера.</param>
+    /// <param name="server">Конфигурация сервера.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Возвращает значение true, если подключение успешно, в противном случае — false.</returns>
-    public Task<bool> CheckConnectionServer(ConnectionServerParameter serverParameter, CancellationToken cancellationToken);
+    public Task<bool> CheckConnectionServer(ConnectionServer server, CancellationToken cancellationToken);
     
     /// <summary>
     /// Проверяет строку, представляющую собой доменное имя или IP-адрес с портом, на соответствие заданному шаблону.
@@ -32,7 +32,7 @@ public interface IServerService
     /// <summary>
     /// Получает конфигурацию подключения по SSH
     /// </summary>
-    /// <param name="connectionServerParameter">Параметры для подключения</param>
+    /// <param name="connectionServer">Параметры для подключения</param>
     /// <returns></returns>
-    public ConnectionInfo GetConnectionInfo(ConnectionServerParameter connectionServerParameter);
+    public ConnectionInfo GetConnectionInfo(ConnectionServer connectionServer);
 }

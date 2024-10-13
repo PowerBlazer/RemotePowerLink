@@ -1,4 +1,4 @@
-﻿using Application.Services.Abstract.Parameters;
+﻿using Domain.DTOs.Connection;
 using Renci.SshNet;
 
 namespace Application.Services.Abstract;
@@ -15,10 +15,10 @@ public interface ISftpConnectionService
     /// <summary>
     /// Создает новое подключение по SSH или возвращает существующее
     /// </summary>
-    /// <param name="connectionServerParameter">Параметры для подключения по SSH</param>
+    /// <param name="connectionServer">Параметры для подключения по SSH</param>
     /// <param name="connectionKey">Строка подключения пользователя</param>
     /// <returns>Возвращает клиент SSH</returns>
-    SftpClient CreateClient(ConnectionServerParameter connectionServerParameter, string connectionKey);
+    SftpClient CreateClient(ConnectionServer connectionServer, string connectionKey);
     
     /// <summary>
     /// Проверяет есть ли существующее подключение по строке подключения

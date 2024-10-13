@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<IServerRepository, ServerRepositrory>();
         services.AddScoped<ISystemTypeRepository, SystemTypeRepository>();
         services.AddScoped<IEncodingRepository, EncodingRepository>();
+        services.AddScoped<ISessionRepository, SessionRepository>();
         #endregion
 
         #region Services

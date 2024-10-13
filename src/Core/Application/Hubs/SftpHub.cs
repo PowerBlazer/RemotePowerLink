@@ -20,13 +20,13 @@ public class SftpHub: BaseHub
     private readonly ISftpManagerService _sftpManagerService;
     public SftpHub(ISftpConnectionService sftpConnectionService, 
         IServerRepository serverRepository, 
-        ISftpManagerService sftpManagerService, SftpIdleDisconnectService sftpIdleDisconnectService)
+        ISftpManagerService sftpManagerService, SftpDisconnectService sftpDisconnectService)
     {
         _sftpConnectionService = sftpConnectionService;
         _serverRepository = serverRepository;
         _sftpManagerService = sftpManagerService;
         
-        sftpIdleDisconnectService.StartTimer();
+        sftpDisconnectService.StartTimer();
     }
 
     [UsedImplicitly]

@@ -30,7 +30,7 @@ public class SftpConnectionService: ISftpConnectionService
         {
             SftpClient = CreateNewClientInstance(connectionServerParameter),
             LastUsed = DateTime.Now
-        }).SftpClient;
+        }).SftpClient; 
 
         if (sftpClient.IsConnected) 
             return sftpClient;

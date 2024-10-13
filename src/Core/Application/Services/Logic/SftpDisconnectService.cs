@@ -2,12 +2,12 @@
 
 namespace Application.Services.Logic;
 
-public class SftpIdleDisconnectService : IDisposable
+public class SftpDisconnectService : IDisposable
 {
     private readonly ISftpConnectionService _sftpConnectionService;
     private Timer? _timer;
 
-    public SftpIdleDisconnectService(ISftpConnectionService sftpConnectionService)
+    public SftpDisconnectService(ISftpConnectionService sftpConnectionService)
     {
         _sftpConnectionService = sftpConnectionService;
     }

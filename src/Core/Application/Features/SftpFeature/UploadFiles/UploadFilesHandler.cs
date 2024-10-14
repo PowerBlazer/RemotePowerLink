@@ -1,4 +1,5 @@
-﻿using Application.Hubs;
+﻿using Application.Helpers;
+using Application.Hubs;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
@@ -57,7 +58,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
         }
         
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
 

@@ -1,4 +1,5 @@
-﻿using Application.Layers.Persistence.Repository;
+﻿using Application.Helpers;
+using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Enums;
@@ -37,7 +38,7 @@ public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFiles
         }
         
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
         try

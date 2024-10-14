@@ -1,4 +1,5 @@
-﻿using Application.Hubs;
+﻿using Application.Helpers;
+using Application.Hubs;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
@@ -62,8 +63,8 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
         
         var targetConnectionServerParameter = ConnectionServer.ServerMapTo(targetServer);
         var sourceConnectionServerParameter = ConnectionServer.ServerMapTo(sourceServer);
-        var targetConnectionInfo = _serverService.GetConnectionInfo(targetConnectionServerParameter);
-        var sourceConnectionInfo = _serverService.GetConnectionInfo(sourceConnectionServerParameter);
+        var targetConnectionInfo = ConnectionMapper.GetConnectionInfo(targetConnectionServerParameter);
+        var sourceConnectionInfo = ConnectionMapper.GetConnectionInfo(sourceConnectionServerParameter);
 
         using var sourceSftpClient = new SftpClient(sourceConnectionInfo);
         using var targetSftpClient = new SftpClient(targetConnectionInfo);

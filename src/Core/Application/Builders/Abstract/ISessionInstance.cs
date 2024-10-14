@@ -2,20 +2,20 @@
 
 namespace Application.Builders.Abstract;
 
-public interface ISessionInstance
+public interface ISessionInstance: IDisposable
 {
-    public long Id { get; set; }
-    public long UserId { get; set; }
-    public DateTime LastUpdated { get; set; }
-    public Action<string>? OutputCallback { get; set; }
-    public TimeSpan? UpdateDuration { get; set; } 
-    public bool IsActive { get; set; }
+    long Id { get; set; }
+    long UserId { get; set; }
+    DateTime LastUpdated { get; set; }
+    Action<string>? OutputCallback { get; set; }
+    TimeSpan UpdateDuration { get; set; } 
+    bool IsActive { get; set; }
+    string LogFilePath { get; set; }
+    long MaxBufferSize { get; set; }
     
-    Task CreateConnection(ConnectionServer connectionServer);
+    Task CreateConnection(ConnectionServer connectionServer, CancellationToken cancellationToken);
     Task DiconnectConnection();
-    
     Task WriteCommand(string command);
-    
     Task<string> GetFullSessionData();
 
 }

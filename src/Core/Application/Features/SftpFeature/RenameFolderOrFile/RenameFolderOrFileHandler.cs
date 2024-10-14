@@ -1,4 +1,5 @@
-﻿using Application.Layers.Persistence.Repository;
+﻿using Application.Helpers;
+using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Exceptions;
@@ -12,13 +13,10 @@ namespace Application.Features.SftpFeature.RenameFolderOrFile;
 public class RenameFolderOrFileHandler: IRequestHandler<RenameFolderOrFileCommand>
 {
     private readonly IServerRepository _serverRepository;
-    private readonly IServerService _serverService;
 
-    public RenameFolderOrFileHandler(IServerRepository serverRepository, 
-        IServerService serverService)
+    public RenameFolderOrFileHandler(IServerRepository serverRepository)
     {
         _serverRepository = serverRepository;
-        _serverService = serverService;
     }
 
     public async Task Handle(RenameFolderOrFileCommand request, CancellationToken cancellationToken)
@@ -33,7 +31,7 @@ public class RenameFolderOrFileHandler: IRequestHandler<RenameFolderOrFileComman
         }
 
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
         

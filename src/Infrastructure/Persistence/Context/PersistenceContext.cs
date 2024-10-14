@@ -4,6 +4,7 @@ using Domain.Entities.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Configuration;
 
+
 namespace Persistence.Context;
 
 public class PersistenceContext: DbContext, IPersistenceContext
@@ -14,7 +15,8 @@ public class PersistenceContext: DbContext, IPersistenceContext
     public DbSet<Server> Servers => Set<Server>();
     public DbSet<SystemType> SystemTypes => Set<SystemType>();
     public DbSet<Encoding> Encodings => Set<Encoding>();
-    
+    public DbSet<Session> Sessions => Set<Session>();
+
     public PersistenceContext(DbContextOptions<PersistenceContext> options): base(options)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

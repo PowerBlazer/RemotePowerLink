@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Text;
+using Application.Helpers;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Exceptions;
@@ -81,9 +82,9 @@ public class SftpConnectionService: ISftpConnectionService
         }
     }
     
-    private static SftpClient CreateNewClientInstance(ConnectionServer connectionServer)
+    private SftpClient CreateNewClientInstance(ConnectionServer connectionServer)
     {
-        var connectionInfo = GetConnectionInfo(connectionServer);
+        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServer);
         
         var sftpClient = new SftpClient(connectionInfo);
         
@@ -99,36 +100,6 @@ public class SftpConnectionService: ISftpConnectionService
         }
         
         return sftpClient;
-    }
-    
-    private static ConnectionInfo GetConnectionInfo(ConnectionServer connectionServer)
-    {
-        var connectionInfo = new ConnectionInfo(
-            connectionServer.Hostname,
-            connectionServer.SshPort ?? 22,
-            connectionServer.Username,
-            new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
-
-        var proxyParameter = connectionServer.ConnectionProxy;
-
-        if (proxyParameter is not null)
-        {
-            connectionInfo = new ConnectionInfo(
-                connectionServer.Hostname,
-                connectionServer.SshPort ?? 22,
-                connectionServer.Username,
-                ProxyTypes.Http,
-                proxyParameter.Hostname,
-                proxyParameter.SshPort ?? 22,
-                proxyParameter.Username,
-                proxyParameter.Password,
-                new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
-        }
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        
-        connectionInfo.Encoding = Encoding.GetEncoding(connectionServer.EncodingCodePage);
-        
-        return connectionInfo;
     }
     
     private class SftpClientInstance

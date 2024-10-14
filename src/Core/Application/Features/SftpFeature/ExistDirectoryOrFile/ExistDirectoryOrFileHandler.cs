@@ -1,4 +1,5 @@
-﻿using Application.Layers.Persistence.Repository;
+﻿using Application.Helpers;
+using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Exceptions;
@@ -33,7 +34,7 @@ public class ExistDirectoryOrFileHandle: IRequestHandler<ExistDirectoryOrFileCom
         }
         
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = _serverService.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
 

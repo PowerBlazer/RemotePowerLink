@@ -14,6 +14,7 @@ public interface IPersistenceContext
     DbSet<Server> Servers { get; }
     DbSet<SystemType> SystemTypes { get; }
     DbSet<Encoding> Encodings { get; }
+    DbSet<Session> Sessions { get; }
     
     Task<int> SaveChangesAsync();
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

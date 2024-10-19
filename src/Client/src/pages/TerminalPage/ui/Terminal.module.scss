@@ -24,3 +24,12 @@
 .footer{
   
 }
+
+
+
+.loader > div{
+  width: 60px;
+  height: 60px;
+  border-width: 2px;
+  border-color: var(--loader-color) transparent;
+}

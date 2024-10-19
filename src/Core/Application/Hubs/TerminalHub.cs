@@ -17,17 +17,14 @@ public class TerminalHub: BaseHub
     public Task OpenSessionConnection(long serverId)
     {
         return HandlerOperation(() => 
-            _sessionConnectionService.CreateSessionInstance(serverId, UserId, outputData =>
-            {
-                Clients.Client(ConnectionKey).SendAsync("SessionOutput", outputData);
-            })
+            _sessionConnectionService.CreateSessionInstance(serverId, UserId)
         );
     }
 
     public Task ConnectToSession(long sessionId)
     {
         return HandlerOperation(() =>
-            _sessionConnectionService.GetSessionInstance(sessionId, outputData =>
+            _sessionConnectionService.ActivateSessionInstance(sessionId, outputData =>
             {
                 Clients.Client(ConnectionKey).SendAsync("SessionOutput", outputData);
             }));
@@ -42,6 +39,11 @@ public class TerminalHub: BaseHub
     public Task DisconnectFromSession(long sessionId)
     {
         return HandlerOperation(() => _sessionConnectionService.CloseSessionInstance(sessionId));
+    }
+
+    public Task WriteToSession(long sessionId, string message)
+    {
+        return HandlerOperation(() => _sessionConnectionService.WriteCommand(sessionId, message));
     }
        
 }

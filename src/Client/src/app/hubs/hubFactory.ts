@@ -9,3 +9,9 @@ export function createHubInstance (url: string) {
         .withAutomaticReconnect()
         .build();
 }
+
+export enum ConnectionState {
+    Connected = 'Connected',
+    Disconnected = 'Disconnected',
+    Reconnecting = 'Reconnecting'
+}

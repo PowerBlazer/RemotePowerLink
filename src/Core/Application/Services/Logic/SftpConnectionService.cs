@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Text;
 using Application.Helpers;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;

@@ -4,10 +4,11 @@ namespace Application.Builders.Abstract;
 
 public interface ISessionInstanceBuilder
 {
-    ISessionInstanceBuilder SetConnectionServer(ConnectionServer connectionServer);
-    ISessionInstanceBuilder SetOutputAction(Action<string> outputAction);
+    ISessionInstanceBuilder SetUser(long userId);
+    ISessionInstanceBuilder SetServer(long serverId);
+    ISessionInstanceBuilder SetOutputAction(Func<string,Task> outputAction);
     ISessionInstanceBuilder SetUpdateDuration(TimeSpan updateDuration);
     ISessionInstanceBuilder SetLogFilePath(string logFilePath);
     ISessionInstanceBuilder SetBufferSize(int bufferSize);
-    ISessionInstance Build();
+    Task<ISessionInstance> Build();
 }

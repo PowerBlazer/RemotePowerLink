@@ -1,16 +1,14 @@
-/* eslint-disable indent */
-import * as signalR from '@microsoft/signalr';
-import { HostService } from 'app/services/hostService';
-import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
-import { SftpFileList } from 'app/services/SftpService/config';
-import { AppRoutes } from 'app/providers/router/config/routeConfig';
-import {ConnectionState, createHubInstance} from 'app/hubs/hubFactory';
-import toast from 'react-hot-toast';
-import { SftpNotificationData } from 'app/store/sftpStore';
-import { HubConnectionState } from '@microsoft/signalr';
+﻿import {HostService} from "app/services/hostService";
+import * as signalR from "@microsoft/signalr";
+import {ConnectionState, createHubInstance} from "app/hubs/hubFactory";
+import {AuthorizationService} from "app/services/AuthorizationService/authorizationService";
+import toast from "react-hot-toast";
+import {AppRoutes} from "app/providers/router/config/routeConfig";
+import {HubConnectionState} from "@microsoft/signalr";
 
-const URL = `${HostService._hubHost}/sftp`;
-class SftpHub {
+const URL = `${HostService._hubHost}/terminal`;
+
+class TerminalHub {
     private connection: signalR.HubConnection;
     constructor () {
         this.connection = createHubInstance(URL);
@@ -37,43 +35,22 @@ class SftpHub {
                 this.onError(err.toString())
             });
 
-        this.events = (onFilesReceived, onDownloadReceived, onUploadReceived, onSendReceived) => {
-            this.connection.on('receivedFiles', (files: SftpFileList) => {
-                onFilesReceived(files);
-            });
-
-            this.connection.on('downloadReceive', (sftpNotificationOptions: SftpNotificationData) => {
-                onDownloadReceived(sftpNotificationOptions);
+        this.events = (onSessionOutput) => {
+            this.connection.on("SessionOutput", (data:string) => {
+                onSessionOutput(data);
             })
-
-            this.connection.on('handleError', (message: Record<string, string[]>) => {
-                this.onError(message);
-            });
-
-            this.connection.on('uploadReceive', (sftpNotificationOptions: SftpNotificationData) => {
-                onUploadReceived(sftpNotificationOptions)
-            });
-
-            this.connection.on('sendReceive', (sftpNotificationOptions: SftpNotificationData) => {
-                onSendReceived(sftpNotificationOptions)
-            });
         };
     }
-
+    
     public events: (
-        onFilesReceived: (files: SftpFileList) => void,
-        onDownloadReceived: (sftpNotificationOptions: SftpNotificationData) => void,
-        onUploadReceived: (sftpNotificationOptions: SftpNotificationData) => void,
-        onSendReceived: (sftpNotificationOptions: SftpNotificationData) => void
+        onSessionOutput:(data: string) => void
     ) => void;
-
+    
     public onConnect: () => Promise<void> = async function connect () { };
-    public onError: (message: Record<string, string[]>) => void
-
+    public onError: (message: Record<string, string[]>) => void;
     public closeConnection = async () => {
         await this.connection.stop()
     }
-
     public getConnectionState = () => {
         switch (this.connection.state) {
             case HubConnectionState.Connected:
@@ -87,14 +64,40 @@ class SftpHub {
         }
     }
 
-    public getFilesServer = async (serverId: number, path?: string) => {
-        if (this.validateConnection()) {
-            await this.connection.send('getFilesServer', serverId, path);
+    public getConnectionId = () => {
+        return this.connection.connectionId;
+    }
+
+
+
+    public openSessionConnection = async (serverId: number) => {
+        if(this.validateConnection()){
+            await this.connection.send("openSessionConnection", serverId);
         }
     }
 
-    public getConnectionId = () => {
-        return this.connection.connectionId;
+    public connectToSession = async (sessionId: number) => {
+        if(this.validateConnection()){
+            await this.connection.send("connectToSession", sessionId);
+        }
+    }
+
+    public disactivateSession = async (sessionId: number) => {
+        if(this.validateConnection()){
+            await this.connection.send("disactivateSession", sessionId);
+        }
+    }
+
+    public disconnectFromSession = async (sessionId: number) => {
+        if(this.validateConnection()){
+            await this.connection.send("disconnectFromSession", sessionId);
+        }
+    }
+
+    public writeToSession = async (sessionId: number, command:string) => {
+        if(this.validateConnection()){
+            await this.connection.send("writeToSession", sessionId, command);
+        }
     }
 
     private validateConnection (): boolean {
@@ -118,6 +121,4 @@ class SftpHub {
     }
 }
 
-
-
-export default SftpHub;
+export default TerminalHub;

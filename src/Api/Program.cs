@@ -102,7 +102,8 @@ builder.Services.AddAuthentication(options =>
                 var path = context.HttpContext.Request.Path;
                 if (!string.IsNullOrEmpty(accessToken) && 
                     (path.StartsWithSegments("/sftp") || 
-                     path.StartsWithSegments("/notification")))
+                     path.StartsWithSegments("/notification") ||
+                     path.StartsWithSegments("/terminal")))
                 {
                     context.Token = accessToken;
                 }

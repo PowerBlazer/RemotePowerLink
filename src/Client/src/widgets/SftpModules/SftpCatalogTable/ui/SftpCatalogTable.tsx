@@ -11,7 +11,7 @@ import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import { Button } from 'shared/ui/Button/Button';
 import { SftpMenu } from 'widgets/SftpModules/SftpMenu';
 import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
-import { ConnectionState } from 'app/hubs/sftpHub';
+import {ConnectionState} from "app/hubs/hubFactory";
 
 interface SftpCatalogTableProps extends SftpCatalogModeProps {
     className?: string;

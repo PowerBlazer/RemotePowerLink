@@ -10,6 +10,7 @@ import {ServerManagerCatalog, ServerManagerCatalogMode} from "widgets/ServerMana
 import {ServerData} from "app/services/ServerService/config/serverConfig";
 import {useTranslation} from "react-i18next";
 import terminalStore from "app/store/terminalStore";
+import {ConnectionState} from "app/hubs/hubFactory";
 
 interface TerminalSelectHostCatalogProps {
     className?: string;
@@ -32,6 +33,10 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
     }
     
     const onClickConnectHandler = async (serverData: ServerData) => {
+        if(terminalStore.terminalHub && terminalStore.terminalHub.getConnectionState() === ConnectionState.Connected){
+            await terminalStore.terminalHub.openSessionConnection(serverData.serverId);
+        }
+        
         terminalStore.sessions.push({
             id: generateUniqueNumber(),
             host: serverData,

@@ -1,11 +1,11 @@
 ﻿import { ServerData } from "app/services/ServerService/config/serverConfig";
 import {makeAutoObservable} from "mobx";
-import userStore from "app/store/userStore";
+import TerminalHub from "app/hubs/terminalHub";
 
 export interface TerminalSession {
     id: number
     host?: ServerData,
-    histrory: string,
+    histrory?: string,
     isLoad: boolean
 }
 
@@ -13,6 +13,7 @@ export interface TerminalSession {
 class TerminalStore {
     sessions: TerminalSession[] = [];
     selectedSession: TerminalSession | null = null;
+    terminalHub: TerminalHub = null;
     
     
     constructor() {

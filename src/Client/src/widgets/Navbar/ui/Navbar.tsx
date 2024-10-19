@@ -21,6 +21,9 @@ import { ServerService } from 'app/services/ServerService/serverService';
 import searchStore from 'app/store/searchStore';
 import { EncodingService } from 'app/services/EncodingService/encodingService';
 import toast from "react-hot-toast";
+import terminalStore, {TerminalSession} from "app/store/terminalStore";
+import {SessionService} from "app/services/SessionService/sessionService";
+import TerminalHub from "app/hubs/terminalHub";
 
 interface NavbarProps {
     className?: string
@@ -70,7 +73,7 @@ function Navbar ({ className }: NavbarProps) {
             
             userStore.setUserServers(serversResult.result);
         }
-
+        
         if (!userStore.encodings) {
             const encodingsResult = await EncodingService.getEncodings();
 
@@ -79,6 +82,31 @@ function Navbar ({ className }: NavbarProps) {
             }
             
             userStore.setUserEncodings(encodingsResult.result);
+        }
+        
+        if(!terminalStore.sessions || terminalStore.sessions.length === 0){
+            const sessionsResult = await SessionService.getOpenedSessions();
+            
+            if(sessionsResult.isSuccess){
+                terminalStore.sessions = sessionsResult.result?.map(p => {
+                    const terminalSession: TerminalSession = {
+                        id: p.id,
+                        isLoad: false,
+                        host: userStore.userServers.find(x=> x.serverId == p.serverId)
+                    }
+                    
+                    return terminalSession;
+                });
+                
+                terminalStore.terminalHub = new TerminalHub();
+                terminalStore.terminalHub.events((data)=> {
+                    console.log(data);
+                })
+            }
+            
+            if(!sessionsResult.isSuccess){
+                setHasError(true);
+            }
         }
     });
 

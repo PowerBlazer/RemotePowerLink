@@ -55,6 +55,15 @@ public class ProxyRepository: IProxyRepository
 
     public async Task<Proxy> UpdateProxy(Proxy proxy)
     {
+        var existingEntity = _persistenceContext.Proxies.Local
+            .FirstOrDefault(e => e.Id == proxy.Id);
+
+        if (existingEntity != null)
+        {
+            _persistenceContext.Entry(existingEntity).State = EntityState.Detached;
+        }
+        
+        
         _persistenceContext.Attach(proxy);
         _persistenceContext.Proxies.Update(proxy);
         

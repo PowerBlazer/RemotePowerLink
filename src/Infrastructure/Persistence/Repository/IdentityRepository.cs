@@ -55,6 +55,15 @@ public class IdentityRepository: IIdentityRepository
 
     public async Task<Identity> UpdateIdentity(Identity identity)
     {
+        
+        var existingEntity = _persistenceContext.Identities.Local
+            .FirstOrDefault(e => e.Id == identity.Id);
+
+        if (existingEntity != null)
+        {
+            _persistenceContext.Entry(existingEntity).State = EntityState.Detached;
+        }
+        
         _persistenceContext.Attach(identity);
         _persistenceContext.Identities.Update(identity);
         

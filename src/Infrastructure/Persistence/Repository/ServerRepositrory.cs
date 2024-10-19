@@ -67,6 +67,14 @@ public class ServerRepositrory: IServerRepository
 
     public async Task<Server> UpdateServer(Server server)
     {
+        var existingEntity = _persistenceContext.Servers.Local
+            .FirstOrDefault(e => e.Id == server.Id);
+
+        if (existingEntity != null)
+        {
+            _persistenceContext.Entry(existingEntity).State = EntityState.Detached;
+        }
+        
         _persistenceContext.Attach(server);
         
         _persistenceContext.Servers.Update(server);

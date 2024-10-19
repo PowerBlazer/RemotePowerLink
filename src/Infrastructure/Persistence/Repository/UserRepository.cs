@@ -46,6 +46,15 @@ public class UserRepository: IUserRepository
 
     public async Task<User> UpdateUser(User user)
     {
+        var existingEntity = _persistenceContext.Users.Local
+            .FirstOrDefault(e => e.Id == user.Id);
+
+        if (existingEntity != null)
+        {
+            _persistenceContext.Entry(existingEntity).State = EntityState.Detached;
+        }
+        
+        
         _persistenceContext.Users.Attach(user);
         _persistenceContext.Users.Update(user);
 

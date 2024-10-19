@@ -35,6 +35,45 @@ public class BaseHub: Hub
                 .Client(Context.ConnectionId)
                 .SendAsync("HandleError", ex.Errors);
         }
+        catch (SessionException ex)
+        {
+            await Clients
+                .Client(Context.ConnectionId)
+                .SendAsync("HandleError", ex.Errors);
+        }
+        catch (Exception ex)
+        {
+            // Обработка исключения
+            await Clients
+                .Client(Context.ConnectionId)
+                .SendAsync("HandleError", new Dictionary<string, List<string>>
+                {
+                    {
+                        "Common",
+                        new List<string> { ex.Message }
+                    }
+                });
+        }
+    }
+    
+    protected async Task HandlerOperation(Action action)
+    {
+        try
+        {
+            action();
+        }
+        catch (ConnectionServerException ex)
+        {
+            await Clients
+                .Client(Context.ConnectionId)
+                .SendAsync("HandleError", ex.Errors);
+        }
+        catch (SessionException ex)
+        {
+            await Clients
+                .Client(Context.ConnectionId)
+                .SendAsync("HandleError", ex.Errors);
+        }
         catch (Exception ex)
         {
             // Обработка исключения

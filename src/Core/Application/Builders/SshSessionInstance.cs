@@ -11,12 +11,15 @@ public class SshSessionInstance: ISessionInstance
 {
     public long Id { get; set; }
     public long UserId { get; set; }
+    public long ServerId { get; set; }
     public DateTime LastUpdated { get; set; } = DateTime.Now;
-    public Action<string>? OutputCallback { get; set; }
+    public DateTime DateCreated { get; set; }
+    public Func<string,Task>? OutputCallback { get; set; }
     public TimeSpan UpdateDuration { get; set; } = TimeSpan.FromMilliseconds(200);
     public bool IsActive { get; set; }
     public string LogFilePath { get; set; } = string.Empty;
-    public long MaxBufferSize { get; set; } = 10 * 1024; 
+    public long MaxBufferSize { get; set; } = 10 * 1024;
+    public ConnectionServer? ConnectionServer { get; set; }
 
     private SshClient? _client;
     private ShellStream? _stream;
@@ -24,9 +27,14 @@ public class SshSessionInstance: ISessionInstance
     private readonly StringBuilder _sessionOutput = new();
     private bool IsConnected => _client is not null && _stream is not null && _client.IsConnected;
     
-    public async Task CreateConnection(ConnectionServer connectionServer, CancellationToken cancellationToken = default)
+    public async Task CreateConnection(CancellationToken cancellationToken = default)
     {
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServer);
+        if (ConnectionServer is null)
+        {
+            return;
+        }
+        
+        var connectionInfo = ConnectionMapper.GetConnectionInfo(ConnectionServer);
         
         _client = new SshClient(connectionInfo);
         await _client.ConnectAsync(cancellationToken);
@@ -44,7 +52,7 @@ public class SshSessionInstance: ISessionInstance
         
         _timer = new Timer(OutputDataReceived, null, TimeSpan.Zero, UpdateDuration);
     }
-
+    
     public async Task DiconnectConnection()
     {
         if (_timer is not null)
@@ -91,7 +99,7 @@ public class SshSessionInstance: ISessionInstance
         return sessionData.ToString();
     }
 
-    private void OutputDataReceived(object? _)
+    private async void OutputDataReceived(object? _)
     {
         if (IsActive && IsConnected && OutputCallback is not null)
         {
@@ -112,7 +120,7 @@ public class SshSessionInstance: ISessionInstance
                     _sessionOutput.Clear();  // Очищаем буфер
                 }
 
-                OutputCallback?.Invoke(output);
+                await OutputCallback?.Invoke(output);
             }
         }
     }

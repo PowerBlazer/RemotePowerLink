@@ -1,6 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using Application.Builders.Abstract;
+using Application.Hubs;
 using Application.Layers.Persistence.Repository;
+using Domain.Exceptions;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Logic;
@@ -8,21 +11,34 @@ namespace Application.Services.Logic;
 public class SessionConnectionService
 {
     private readonly ConcurrentDictionary<long, ISessionInstance> _sessionInstances = new();
-    private readonly object _lock = new();
-    private const int IdleTimeoutMinutes = 10;
-    
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly string? _rootPath;
+    private readonly IHubContext<TerminalHub> _terminulHubContext;
 
-    public SessionConnectionService(IServiceScopeFactory serviceScopeFactory)
+    public SessionConnectionService(IServiceScopeFactory serviceScopeFactory, string? rootPath,
+        IHubContext<TerminalHub> terminulHubContext)
     {
         _serviceScopeFactory = serviceScopeFactory;
+        _rootPath = rootPath;
+        _terminulHubContext = terminulHubContext;
     }
 
-    public async Task<ISessionInstance> CreateSessionInstance(long serverId, long userId, Action<string> outputAction)
+
+    public Task WriteCommand(long sessionId, string command)
+    {
+        if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
+            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+        
+        return sessionInstance.WriteCommand(command);
+    }
+
+    public async Task<ISessionInstance> CreateSessionInstance(long serverId, 
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         using var scope = _serviceScopeFactory.CreateScope();
-        
         var serverRepository = scope.ServiceProvider.GetRequiredService<IServerRepository>();
+        var sessionBuilder = scope.ServiceProvider.GetRequiredService<ISessionInstanceBuilder>();
         
         var server = await serverRepository.GetServer(serverId);
 
@@ -31,28 +47,62 @@ public class SessionConnectionService
             throw new UnauthorizedAccessException();
         }
         
+        var logFilePath = Path.Combine(_rootPath!,"Files", "SessionLogs", Guid.NewGuid() + ".txt");
+
+        var sessionInstance = await sessionBuilder
+            .SetUser(userId)
+            .SetServer(serverId)
+            .SetLogFilePath(logFilePath)
+            .SetOutputAction(data =>
+                _terminulHubContext.Clients
+                    .User(userId.ToString())
+                    .SendAsync("SessionOutput", data, cancellationToken: cancellationToken)
+            )
+            .Build();
         
-        throw new AggregateException();
+        _sessionInstances.AddOrUpdate(sessionInstance.Id, sessionInstance, (_, _) => sessionInstance);
+
+        await sessionInstance.CreateConnection(cancellationToken);
+
+        return sessionInstance;
     }
 
-    public Task<ISessionInstance> GetSessionInstance(long sessionId,  Action<string> outputAction)
+    public async Task<ISessionInstance> ActivateSessionInstance(long sessionId,  Action<string> outputAction)
     {
-        throw new AggregateException();
+        if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
+            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+        
+        var sessionData = await sessionInstance.GetFullSessionData();
+            
+        outputAction.Invoke(sessionData);
+            
+        sessionInstance.IsActive = true;
+        //sessionInstance.OutputCallback = outputAction;
+
+        return sessionInstance;
     }
 
-    public Task<IEnumerable<ISessionInstance>> GetSessionInstancesInUser(long userId)
+    public IEnumerable<ISessionInstance> GetSessionInstancesInUser(long userId)
     {
-        throw new AggregateException();
+        return _sessionInstances.Values.Where(s => s.UserId == userId);
     }
 
-    public Task CloseSessionInstance(long sessionId)
+    public async Task CloseSessionInstance(long sessionId)
     {
-        throw new AggregateException();
+        if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
+            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+        
+        await sessionInstance.DiconnectConnection();
+        
+        _sessionInstances.TryRemove(sessionId, out _);
     }
 
-    public Task DisactivateSessionInstance(long sessionId)
+    public void DisactivateSessionInstance(long sessionId)
     {
-        throw new AggregateException();
+        if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
+            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+        
+        sessionInstance.IsActive = false;
     }
 
 

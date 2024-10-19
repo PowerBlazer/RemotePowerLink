@@ -13,12 +13,7 @@ public class Session: BaseEntity<long>
     public DateTime DateCreated { get; set; }
     
     /// <summary>
-    /// Дата обновления
-    /// </summary>
-    public DateTime DateUpdated { get; set; }
-    
-    /// <summary>
-    /// Путь к фалу где хранится данные сессии
+    /// Путь к файлу, где хранится данные сессии
     /// </summary>
     public string? Path { get; set; }
     

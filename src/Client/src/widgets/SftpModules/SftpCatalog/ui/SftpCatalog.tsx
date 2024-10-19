@@ -7,7 +7,7 @@ import { SftpSelectHostCatalog } from 'widgets/SftpModules/SftpSelectHostCatalog
 import { NavbarSftp } from 'widgets/SftpModules/NavbarSftp';
 import { SftpCatalogTable } from 'widgets/SftpModules/SftpCatalogTable';
 import { SftpCatalogMode } from 'app/services/SftpService/config';
-import SftpHub, { ConnectionState } from 'app/hubs/sftpHub';
+import SftpHub from 'app/hubs/sftpHub';
 import toast from 'react-hot-toast';
 import sftpStore, { SftpModalOption, SftpNotificationData } from 'app/store/sftpStore';
 import LogoIcon from 'shared/assets/icons/logo.svg';
@@ -28,6 +28,7 @@ import { UploadModal } from 'widgets/SftpModules/SftpModals/UploadModal';
 import { SendModal } from 'widgets/SftpModules/SftpModals/SendModal';
 import {PageConnectionError} from "widgets/PageConnectionError";
 import {SelectHostBlock} from "features/SelectHostBlock/ui/SelectHostBlock";
+import {ConnectionState} from "app/hubs/hubFactory";
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode

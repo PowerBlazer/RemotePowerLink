@@ -1,11 +1,16 @@
 ﻿using System.Reflection;
+using Application.Builders;
+using Application.Builders.Abstract;
 using Application.Features.AuthorizationFeature;
+using Application.Hubs;
 using Application.Middlewares;
 using Application.Services.Abstract;
 using Application.Services.Logic;
 using FluentValidation;
 using JetBrains.Annotations;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,7 +37,19 @@ public static class DependencyInjection
         
         services.AddSingleton<ISftpConnectionService, SftpConnectionService>();
         services.AddSingleton<SftpDisconnectService>();
-        services.AddSingleton<SessionConnectionService>();
+        services.AddSingleton<SessionConnectionService>(p =>
+        {
+            var rootPath = configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
+            var serviceScopeFactory = p.GetRequiredService<IServiceScopeFactory>();
+            var hubContext = p.GetRequiredService<IHubContext<TerminalHub>>();
+            
+            return new SessionConnectionService(serviceScopeFactory, rootPath, hubContext);
+        });
+        #endregion
+        
+        #region Builders
+
+        services.AddScoped<ISessionInstanceBuilder, SshSessionInstanceBuilder>();
         #endregion
         
         return services;

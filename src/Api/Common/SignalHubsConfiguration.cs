@@ -8,5 +8,6 @@ public static class SignalHubsConfiguration
     {
         app.MapHub<SftpHub>("/sftp");
         app.MapHub<NotificationHub>("/notification");
+        app.MapHub<TerminalHub>("/terminal");
     }
 }

@@ -5,6 +5,7 @@ import {AuthorizationService} from "app/services/AuthorizationService/authorizat
 import toast from "react-hot-toast";
 import {AppRoutes} from "app/providers/router/config/routeConfig";
 import {HubConnectionState} from "@microsoft/signalr";
+import {TerminalOutputData} from "app/store/terminalStore";
 
 const URL = `${HostService._hubHost}/terminal`;
 
@@ -36,14 +37,18 @@ class TerminalHub {
             });
 
         this.events = (onSessionOutput) => {
-            this.connection.on("SessionOutput", (data:string) => {
-                onSessionOutput(data);
-            })
+            this.connection.on("SessionOutput", (outputData:TerminalOutputData) => {
+                onSessionOutput(outputData);
+            });
+
+            this.connection.on('HandleError', (message: Record<string, string[]>) => {
+                this.onError(message);
+            });
         };
     }
     
     public events: (
-        onSessionOutput:(data: string) => void
+        onSessionOutput:(outputData: TerminalOutputData) => void
     ) => void;
     
     public onConnect: () => Promise<void> = async function connect () { };
@@ -67,24 +72,16 @@ class TerminalHub {
     public getConnectionId = () => {
         return this.connection.connectionId;
     }
-
-
-
-    public openSessionConnection = async (serverId: number) => {
-        if(this.validateConnection()){
-            await this.connection.send("openSessionConnection", serverId);
-        }
-    }
-
-    public connectToSession = async (sessionId: number) => {
-        if(this.validateConnection()){
-            await this.connection.send("connectToSession", sessionId);
-        }
-    }
-
+    
     public disactivateSession = async (sessionId: number) => {
         if(this.validateConnection()){
             await this.connection.send("disactivateSession", sessionId);
+        }
+    }
+
+    public activateSession = async (sessionId: number) => {
+        if(this.validateConnection()){
+            await this.connection.send("activateSession", sessionId);
         }
     }
 

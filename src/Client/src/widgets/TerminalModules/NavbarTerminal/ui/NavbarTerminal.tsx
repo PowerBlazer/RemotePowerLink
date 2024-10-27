@@ -1,12 +1,15 @@
 ﻿import { classNames } from 'shared/lib/classNames/classNames';
 import style from './NavbarTerminal.module.scss';
-import {observer} from "mobx-react-lite";
-import {Button} from "shared/ui/Button/Button";
+import { observer } from 'mobx-react-lite';
+import { Button } from 'shared/ui/Button/Button';
 import PlusIcon from 'shared/assets/icons/plus.svg';
-import terminalStore from "app/store/terminalStore";
+import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import TerminalIcon from 'shared/assets/icons/terminal-cursor.svg'
 import CloseIcon from 'shared/assets/icons/close.svg';
-import {MouseEvent, useEffect, useRef} from "react";
+import { MouseEvent, useEffect, useRef } from 'react';
+import { ConnectionState } from 'app/hubs/hubFactory';
+import terminal from 'widgets/TerminalModules/Terminal/ui/Terminal';
+import { Loader } from 'shared/ui/Loader/Loader';
 
 interface NavbarTerminalProps {
     className?: string;
@@ -15,57 +18,80 @@ interface NavbarTerminalProps {
 
 function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) {
     const sessionTabsRef = useRef<HTMLDivElement>(null);
-    
-    const closeSession = async (e: MouseEvent<HTMLDivElement> ,sessionId: number) => {
+
+    const closeSession = async (e: MouseEvent<HTMLDivElement>, sessionId: number) => {
         e.stopPropagation();
-        
-        terminalStore.sessions = terminalStore.sessions.filter(p=> p.id !== sessionId);
-        
-        if(terminalStore.selectedSession?.id === sessionId && terminalStore.sessions.length > 0){
+
+        terminalStore.sessions = terminalStore.sessions.filter(p => p.id !== sessionId);
+
+        if (terminalStore.selectedSession?.id === sessionId && terminalStore.sessions.length > 0) {
             terminalStore.selectedSession = terminalStore.sessions[0];
         }
+
+        if (terminalStore.terminalHub.getConnectionState() === ConnectionState.Connected) {
+            await terminalStore.terminalHub.disconnectFromSession(sessionId);
+        }
+    }
+
+    const selectTab = async (session: TerminalSession) => {
+        if (terminalStore.selectedSession?.id === session.id) {
+            return;
+        }
+
+        if (terminalStore.selectedSession) {
+            await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
+        }
+
+        terminalStore.selectedSession = session;
+        terminalStore.selectedSession.isLoad = true;
     }
 
     useEffect(() => {
         const tabsContainer = sessionTabsRef.current;
 
-        const handleWheel = (e:any) => {
+        const handleWheel = (e: any) => {
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             tabsContainer.scrollLeft += e.deltaY;
         };
 
         if (tabsContainer) {
             tabsContainer.addEventListener('wheel', handleWheel);
         }
-        
+
         return () => {
             if (tabsContainer) {
                 tabsContainer.removeEventListener('wheel', handleWheel);
             }
         };
     }, []);
-    
+
     return (
         <div className={classNames(style.navbarTerminal, {}, [className])}>
             <div className={classNames(style.session_tabs)} ref={sessionTabsRef}>
                 {
-                    terminalStore.sessions.map(session => 
-                        <Button 
-                            className={classNames(style.session_tab,{
-                                [style.selected]: terminalStore.selectedSession && 
+                    terminalStore.sessions.map(session =>
+                        <Button
+                            className={classNames(style.session_tab, {
+                                [style.selected]: terminalStore.selectedSession &&
                                     terminalStore.selectedSession.id === session.id
-                            }, [])} 
+                            }, [])}
                             key={session.id}
-                            onClick={() => terminalStore.selectedSession = session}
+                            onClick={async () => { await selectTab(session); }}
                             type='button'
                         >
                             <div className={classNames(style.session_tab_inner)}>
-                                <TerminalIcon width={16} height={16} className={classNames(style.terminal_icon)}/>
+                                {
+                                    session.isLoad
+                                        ? <Loader className={classNames(style.loader)}/>
+                                        : <TerminalIcon width={16} height={16} className={classNames(style.terminal_icon)}/>
+
+                                }
                                 <div className={classNames(style.session_title)}>{session.host?.title}</div>
                             </div>
-                            
-                            <div 
+
+                            <div
                                 className={classNames(style.close_session)}
-                                onClick={(e) => closeSession(e, session.id)}
+                                onClick={async (e) => { await closeSession(e, session.id); }}
                             >
                                 <CloseIcon width={13} height={13}/>
                             </div>
@@ -79,7 +105,7 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
                     </Button>
                 </div>
             </div>
-		</div>
+        </div>
     );
 }
 

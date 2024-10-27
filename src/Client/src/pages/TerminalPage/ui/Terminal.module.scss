@@ -4,6 +4,7 @@
   height: 100vh;
   width: 100%;
   border-left: 2px solid var(--main-page-color-line);
+  position: relative;
   
   &.information{
     align-items: center;
@@ -31,5 +32,17 @@
   width: 60px;
   height: 60px;
   border-width: 2px;
+  border-color: var(--loader-color) transparent;
+}
+
+.terminal_loader > div{
+  width: 60px;
+  height: 60px;
+  border-width: 2px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 20px);
+  transform: translate(-50%, -50%);
+  z-index: 1000;
   border-color: var(--loader-color) transparent;
 }

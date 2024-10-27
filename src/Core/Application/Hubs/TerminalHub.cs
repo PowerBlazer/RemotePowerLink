@@ -1,6 +1,5 @@
 ﻿using Application.Services.Logic;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Application.Hubs;
 
@@ -14,22 +13,11 @@ public class TerminalHub: BaseHub
         _sessionConnectionService = sessionConnectionService;
     }
 
-    public Task OpenSessionConnection(long serverId)
+    public Task ActivateSession(long sessionId)
     {
-        return HandlerOperation(() => 
-            _sessionConnectionService.CreateSessionInstance(serverId, UserId)
-        );
+        return HandlerOperation(() => _sessionConnectionService.ActivateSessionInstance(sessionId));
     }
-
-    public Task ConnectToSession(long sessionId)
-    {
-        return HandlerOperation(() =>
-            _sessionConnectionService.ActivateSessionInstance(sessionId, outputData =>
-            {
-                Clients.Client(ConnectionKey).SendAsync("SessionOutput", outputData);
-            }));
-    }
-
+    
     public Task DisactivateSession(long sessionId)
     {
         return HandlerOperation(() => _sessionConnectionService.DisactivateSessionInstance(sessionId));
@@ -45,5 +33,16 @@ public class TerminalHub: BaseHub
     {
         return HandlerOperation(() => _sessionConnectionService.WriteCommand(sessionId, message));
     }
-       
+
+    public override Task OnDisconnectedAsync(Exception exception)
+    {
+        var openConnections = _sessionConnectionService.GetOpenedSessionsByUser(UserId);
+
+        foreach (var openConnection in openConnections)
+        {
+            _sessionConnectionService.DisactivateSessionInstance(openConnection.Id);
+        }
+        
+        return base.OnDisconnectedAsync(exception);
+    }
 }

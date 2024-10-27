@@ -14,8 +14,7 @@ public class SshSessionInstance: ISessionInstance
     public long ServerId { get; set; }
     public DateTime LastUpdated { get; set; } = DateTime.Now;
     public DateTime DateCreated { get; set; }
-    public Func<string,Task>? OutputCallback { get; set; }
-    public TimeSpan UpdateDuration { get; set; } = TimeSpan.FromMilliseconds(200);
+    public Func<string,long,Task>? OutputCallback { get; set; }
     public bool IsActive { get; set; }
     public string LogFilePath { get; set; } = string.Empty;
     public long MaxBufferSize { get; set; } = 10 * 1024;
@@ -23,8 +22,8 @@ public class SshSessionInstance: ISessionInstance
 
     private SshClient? _client;
     private ShellStream? _stream;
-    private Timer? _timer;
     private readonly StringBuilder _sessionOutput = new();
+    
     private bool IsConnected => _client is not null && _stream is not null && _client.IsConnected;
     
     public async Task CreateConnection(CancellationToken cancellationToken = default)
@@ -47,19 +46,21 @@ public class SshSessionInstance: ISessionInstance
             24, 
             800, 
             600, 
-            1024, 
+            2048, 
             terminalModes);
-        
-        _timer = new Timer(OutputDataReceived, null, TimeSpan.Zero, UpdateDuration);
+
+        _stream.DataReceived += (_, args) =>
+        {
+            var output = Encoding.UTF8.GetString(args.Data);
+
+            OutputDataReceived(output);
+        };
     }
     
     public async Task DiconnectConnection()
     {
-        if (_timer is not null)
-        {
-            await _timer.DisposeAsync();
-        }
-
+        WriteFileSessionData();
+        
         if (_stream is not null)
         {
             await _stream.DisposeAsync();
@@ -99,36 +100,27 @@ public class SshSessionInstance: ISessionInstance
         return sessionData.ToString();
     }
 
-    private async void OutputDataReceived(object? _)
+    private void OutputDataReceived(string output)
     {
-        if (IsActive && IsConnected && OutputCallback is not null)
+        if (IsConnected && OutputCallback is not null)
         {
-            var buffer = new byte[1024];
-            var bytesRead = _stream!.Read(buffer, 0, buffer.Length);
+            _sessionOutput.Append(output);
 
-            if (bytesRead > 0)  // Обновляем LastUpdated только если данные были прочитаны
+            LastUpdated = DateTime.Now; // Обновляем LastUpdated при наличии новых данных
+
+            // Если буфер превышает максимальный размер, записываем в файл и очищаем
+            if (_sessionOutput.Length > MaxBufferSize)
             {
-                var output = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                _sessionOutput.Append(output);
-
-                LastUpdated = DateTime.Now;  // Обновляем LastUpdated при наличии новых данных
-
-                // Если буфер превышает максимальный размер, записываем в файл и очищаем
-                if (_sessionOutput.Length > MaxBufferSize)
-                {
-                    WriteBufferToFileAsync();
-                    _sessionOutput.Clear();  // Очищаем буфер
-                }
-
-                await OutputCallback?.Invoke(output);
+                WriteFileSessionData();
+                
+                _sessionOutput.Clear(); // Очищаем буфер
             }
-        }
-    }
-    private void WriteBufferToFileAsync()
-    {
-        if (!string.IsNullOrEmpty(LogFilePath) && File.Exists(LogFilePath))
-        {
-             File.AppendAllText(LogFilePath, _sessionOutput.ToString());
+
+            if (IsActive)
+            {
+                OutputCallback(output, Id);
+            }
+            
         }
     }
 
@@ -136,6 +128,13 @@ public class SshSessionInstance: ISessionInstance
     {
         _client?.Dispose();
         _stream?.Dispose();
-        _timer?.Dispose();
+    }
+    
+    private void WriteFileSessionData()
+    {
+        if (!string.IsNullOrEmpty(LogFilePath) && File.Exists(LogFilePath))
+        {
+            File.AppendAllText(LogFilePath, _sessionOutput.ToString());
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Application.Builders.Abstract;
 using Application.Hubs;
 using Application.Layers.Persistence.Repository;
+using Domain.DTOs.Session;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,42 +48,54 @@ public class SessionConnectionService
             throw new UnauthorizedAccessException();
         }
         
-        var logFilePath = Path.Combine(_rootPath!,"Files", "SessionLogs", Guid.NewGuid() + ".txt");
+        var logFilePath = Path.Combine(_rootPath!, "Files", "SessionLogs", Guid.NewGuid() + ".txt");
 
         var sessionInstance = await sessionBuilder
             .SetUser(userId)
             .SetServer(serverId)
             .SetLogFilePath(logFilePath)
-            .SetOutputAction(data =>
+            .SetOutputAction((data,sessionId) =>
                 _terminulHubContext.Clients
                     .User(userId.ToString())
-                    .SendAsync("SessionOutput", data, cancellationToken: cancellationToken)
+                    .SendAsync("SessionOutput", new SessionOutputData
+                    {
+                        SessionId = sessionId,
+                        Data = data
+                    }, cancellationToken: cancellationToken)
             )
             .Build();
         
         _sessionInstances.AddOrUpdate(sessionInstance.Id, sessionInstance, (_, _) => sessionInstance);
 
+        await Task.Delay(2000);
         await sessionInstance.CreateConnection(cancellationToken);
 
         return sessionInstance;
     }
-
-    public async Task<ISessionInstance> ActivateSessionInstance(long sessionId,  Action<string> outputAction)
+    
+    public async Task<ISessionInstance> ActivateSessionInstance(long sessionId)
     {
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
             throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
         
         var sessionData = await sessionInstance.GetFullSessionData();
-            
-        outputAction.Invoke(sessionData);
+
+        await Task.Delay(2000);
+        
+        await _terminulHubContext.Clients
+            .User(sessionInstance.UserId.ToString())
+            .SendAsync("SessionOutput", new SessionOutputData
+            {
+                SessionId = sessionId,
+                Data = sessionData
+            }, cancellationToken: default);
             
         sessionInstance.IsActive = true;
-        //sessionInstance.OutputCallback = outputAction;
 
         return sessionInstance;
     }
 
-    public IEnumerable<ISessionInstance> GetSessionInstancesInUser(long userId)
+    public IEnumerable<ISessionInstance> GetOpenedSessionsByUser(long userId)
     {
         return _sessionInstances.Values.Where(s => s.UserId == userId);
     }

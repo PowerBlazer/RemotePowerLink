@@ -1,16 +1,16 @@
 ﻿import { classNames } from 'shared/lib/classNames/classNames';
 import style from './TerminalSelectHostCatalog.module.scss';
-import {observer} from "mobx-react-lite";
-import {useEffect} from "react";
-import searchStore from "app/store/searchStore";
-import {Button} from "shared/ui/Button/Button";
-import ArrowRight from "shared/assets/icons/arrow-right.svg";
-import {SearchInput} from "features/SearchInput";
-import {ServerManagerCatalog, ServerManagerCatalogMode} from "widgets/ServerManagerCatalog";
-import {ServerData} from "app/services/ServerService/config/serverConfig";
-import {useTranslation} from "react-i18next";
-import terminalStore from "app/store/terminalStore";
-import {ConnectionState} from "app/hubs/hubFactory";
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
+import searchStore from 'app/store/searchStore';
+import { Button } from 'shared/ui/Button/Button';
+import ArrowRight from 'shared/assets/icons/arrow-right.svg';
+import { SearchInput } from 'features/SearchInput';
+import { ServerManagerCatalog, ServerManagerCatalogMode } from 'widgets/ServerManagerCatalog';
+import { ServerData } from 'app/services/ServerService/config/serverConfig';
+import { useTranslation } from 'react-i18next';
+import terminalStore from 'app/store/terminalStore';
+import { SessionService } from 'app/services/SessionService/sessionService';
 
 interface TerminalSelectHostCatalogProps {
     className?: string;
@@ -31,28 +31,34 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
             onClose();
         }
     }
-    
+
     const onClickConnectHandler = async (serverData: ServerData) => {
-        if(terminalStore.terminalHub && terminalStore.terminalHub.getConnectionState() === ConnectionState.Connected){
-            await terminalStore.terminalHub.openSessionConnection(serverData.serverId);
-        }
-        
-        terminalStore.sessions.push({
-            id: generateUniqueNumber(),
-            host: serverData,
-            histrory:'',
-            isLoad: false
-        })
-        
-        if(onClose){
+        const createdSessionResult = await SessionService.createSession({
+            serverId: serverData.serverId
+        });
+
+        if (onClose) {
             onClose()
         }
+
+        if (createdSessionResult.isSuccess) {
+            // eslint-disable-next-line no-return-assign
+            const newSession = {
+                id: createdSessionResult.result.id,
+                host: serverData,
+                isLoad: true
+            };
+
+            terminalStore.sessions.push(newSession);
+            await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
+            terminalStore.selectedSession = newSession;
+        }
     }
-    
+
     useEffect(() => {
         searchStore.setFilterOption(null)
     }, []);
-    
+
     return (
         <div className={classNames(style.terminalSelectHostCatalog, {}, [className])}>
             <div className={classNames(style.select_navbar)}>
@@ -71,6 +77,5 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
         </div>
     );
 }
-
 
 export default observer(TerminalSelectHostCatalog)

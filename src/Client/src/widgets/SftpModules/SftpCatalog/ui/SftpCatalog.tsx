@@ -26,9 +26,9 @@ import { useNavigate } from 'react-router-dom';
 import { Stack } from 'shared/lib/Stack';
 import { UploadModal } from 'widgets/SftpModules/SftpModals/UploadModal';
 import { SendModal } from 'widgets/SftpModules/SftpModals/SendModal';
-import {PageConnectionError} from "widgets/PageConnectionError";
-import {SelectHostBlock} from "features/SelectHostBlock/ui/SelectHostBlock";
-import {ConnectionState} from "app/hubs/hubFactory";
+import { PageConnectionError } from 'widgets/PageConnectionError';
+import { SelectHostBlock } from 'features/SelectHostBlock/ui/SelectHostBlock';
+import { ConnectionState } from 'app/hubs/hubFactory';
 
 export interface SftpCatalogModeProps {
     mode: SftpCatalogMode
@@ -289,11 +289,11 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
 
     return (
         <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-            { !getIsSelectedServer() && !isViewServersCatalog && 
-                <SelectHostBlock onClick={() => setIsView(true)} />
+            { !getIsSelectedServer() && !isViewServersCatalog &&
+                <SelectHostBlock onClick={() => { setIsView(true); }} />
             }
-            { isViewErrorPanel && 
-                <PageConnectionError 
+            { isViewErrorPanel &&
+                <PageConnectionError
                     selectedHost={selectedHost}
                     onCloseConnectionServer={closeConnectionServer}
                     onReconnectHost={reconnectHost}

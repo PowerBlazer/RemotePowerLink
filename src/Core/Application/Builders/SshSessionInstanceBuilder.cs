@@ -34,16 +34,9 @@ public class SshSessionInstanceBuilder: ISessionInstanceBuilder
         return this;
     }
 
-    public ISessionInstanceBuilder SetOutputAction(Func<string, Task> outputAction)
+    public ISessionInstanceBuilder SetOutputAction(Func<string,long,Task> outputAction)
     {
         _sessionInstance.OutputCallback = outputAction;
-
-        return this;
-    }
-
-    public ISessionInstanceBuilder SetUpdateDuration(TimeSpan updateDuration)
-    {
-        _sessionInstance.UpdateDuration = updateDuration;
 
         return this;
     }

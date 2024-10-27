@@ -3,7 +3,7 @@ import { NavbarSetting } from 'widgets/NavbarSetting';
 import { NavbarItem } from 'features/NavbarItem';
 import { useTranslation } from 'react-i18next';
 import { AppRoutes } from 'app/providers/router/config/routeConfig';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { UserService } from 'app/services/UserService/userService';
 import { observer } from 'mobx-react-lite';
 import ServerIcon from 'shared/assets/icons/server-minimalistic.svg';
@@ -20,10 +20,10 @@ import { ProxyService } from 'app/services/ProxyService/proxyService';
 import { ServerService } from 'app/services/ServerService/serverService';
 import searchStore from 'app/store/searchStore';
 import { EncodingService } from 'app/services/EncodingService/encodingService';
-import toast from "react-hot-toast";
-import terminalStore, {TerminalSession} from "app/store/terminalStore";
-import {SessionService} from "app/services/SessionService/sessionService";
-import TerminalHub from "app/hubs/terminalHub";
+import terminalStore, { TerminalSession } from 'app/store/terminalStore';
+import { SessionService } from 'app/services/SessionService/sessionService';
+import TerminalHub from 'app/hubs/terminalHub';
+import toast from 'react-hot-toast';
 
 interface NavbarProps {
     className?: string
@@ -36,75 +36,88 @@ function Navbar ({ className }: NavbarProps) {
     const { isLoad } = useEffectLoad(async () => {
         if (!userStore.userData) {
             const userDataResult = await UserService.getUserData();
-            
-            if(!userDataResult.isSuccess){
+
+            if (!userDataResult.isSuccess) {
                 setHasError(true);
             }
-            
+
             userStore.setUserData(userDataResult.result);
         }
 
         if (!userStore.userIdentities) {
             const identitiesResult = await IdentityService.getIdentities();
 
-            if(!identitiesResult.isSuccess){
+            if (!identitiesResult.isSuccess) {
                 setHasError(true);
             }
-            
+
             userStore.setUserIdentities(identitiesResult.result);
         }
 
         if (!userStore.userProxies) {
             const proxiesResult = await ProxyService.getProxies();
 
-            if(!proxiesResult.isSuccess){
+            if (!proxiesResult.isSuccess) {
                 setHasError(true);
             }
-            
+
             userStore.setUserProxies(proxiesResult.result);
         }
 
         if (!userStore.userServers) {
             const serversResult = await ServerService.getServers();
 
-            if(!serversResult.isSuccess){
+            if (!serversResult.isSuccess) {
                 setHasError(true);
             }
-            
+
             userStore.setUserServers(serversResult.result);
         }
-        
+
         if (!userStore.encodings) {
             const encodingsResult = await EncodingService.getEncodings();
 
-            if(!encodingsResult.isSuccess){
+            if (!encodingsResult.isSuccess) {
                 setHasError(true);
             }
-            
+
             userStore.setUserEncodings(encodingsResult.result);
         }
-        
-        if(!terminalStore.sessions || terminalStore.sessions.length === 0){
+
+        if (!terminalStore.sessions || terminalStore.sessions.length === 0) {
             const sessionsResult = await SessionService.getOpenedSessions();
-            
-            if(sessionsResult.isSuccess){
+
+            if (sessionsResult.isSuccess) {
                 terminalStore.sessions = sessionsResult.result?.map(p => {
                     const terminalSession: TerminalSession = {
                         id: p.id,
                         isLoad: false,
-                        host: userStore.userServers.find(x=> x.serverId == p.serverId)
+                        host: userStore.userServers.find(x => x.serverId === p.serverId)
                     }
-                    
+
                     return terminalSession;
                 });
-                
+
                 terminalStore.terminalHub = new TerminalHub();
-                terminalStore.terminalHub.events((data)=> {
-                    console.log(data);
-                })
+                terminalStore.terminalHub.events((outputData) => {
+                    const currentSession = terminalStore.sessions.find(p => p.id === outputData.sessionId);
+
+                    if (currentSession && outputData.data) {
+                        currentSession.isLoad = false;
+                        currentSession.onOutput?.(outputData.data);
+                    }
+                });
+
+                terminalStore.terminalHub.onError = (errors) => {
+                    if (terminalStore.selectedSession) {
+                        terminalStore.selectedSession.errors = errors;
+                    }
+
+                    toast.error(JSON.stringify(errors));
+                }
             }
-            
-            if(!sessionsResult.isSuccess){
+
+            if (!sessionsResult.isSuccess) {
                 setHasError(true);
             }
         }
@@ -129,7 +142,6 @@ function Navbar ({ className }: NavbarProps) {
     if (hasLoadError) {
         throw new Error('Ошибка загрузка данных, перезагрузите страницу или обратитесь в тех поддержку')
     }
-    
 
     return (
         <div className={classNames(style.navbar, {}, [className])}>

@@ -9,8 +9,7 @@ public interface ISessionInstance: IDisposable
     long ServerId { get; set; }
     DateTime LastUpdated { get; set; }
     DateTime DateCreated { get; set; }
-    Func<string,Task>? OutputCallback { get; set; }
-    TimeSpan UpdateDuration { get; set; } 
+    Func<string,long,Task>? OutputCallback { get; set; }
     bool IsActive { get; set; }
     string LogFilePath { get; set; }
     long MaxBufferSize { get; set; }

@@ -3,7 +3,7 @@ import { BuildOptions } from './types/config';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export function buildLoaders (options: BuildOptions): RuleSetRule[] {
-    const cssLoaders = {
+    const scssLoaders = {
         test: /\.s[ac]ss$/i,
         use: [
             options.isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
@@ -23,6 +23,14 @@ export function buildLoaders (options: BuildOptions): RuleSetRule[] {
             'sass-loader'
         ]
     };
+
+    const cssLoader = {
+        test: /\.css$/i,
+        use: [
+            options.isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+            'css-loader'
+        ]
+    }
 
     const babelLoader = {
         test: /\.(js|jsx|tsx)$/,
@@ -58,7 +66,8 @@ export function buildLoaders (options: BuildOptions): RuleSetRule[] {
     return [
         babelLoader,
         typescriptLoader,
-        cssLoaders,
+        scssLoaders,
+        cssLoader,
         svgLoader,
         fileLoader
     ]

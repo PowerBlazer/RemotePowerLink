@@ -1,0 +1,56 @@
+import { classNames } from 'shared/lib/classNames/classNames';
+import './Terminal.css'
+import { Terminal as XtermTerminal } from '@xterm/xterm';
+import { FitAddon } from '@xterm/addon-fit';
+import '@xterm/xterm/css/xterm.css';
+import { useEffect, useRef } from 'react';
+import { observer } from 'mobx-react-lite';
+import terminalStore from 'app/store/terminalStore';
+import { ConnectionState } from 'app/hubs/hubFactory';
+
+interface TerminalProps {
+    className?: string;
+}
+
+function Terminal ({ className }: TerminalProps) {
+    const terminalRef = useRef<HTMLDivElement>(null);
+    const xtermRef = useRef<XtermTerminal | null>(null);
+
+    useEffect(() => {
+        if (terminalRef.current) {
+            const xterm = new XtermTerminal();
+            const fitAddon = new FitAddon();
+            xterm.loadAddon(fitAddon);
+            xterm.open(terminalRef.current);
+            fitAddon.fit(); // Подгоняем терминал под размеры контейнера
+
+            xtermRef.current = xterm; // Сохраняем ссылку на терминал для дальнейшего использования
+            xterm.onData(data => {
+                if (terminalStore.terminalHub?.getConnectionState() === ConnectionState.Connected && terminalStore.selectedSession) {
+                    terminalStore.terminalHub.writeToSession(terminalStore.selectedSession.id, data);
+                }
+            });
+
+            if (terminalStore.selectedSession) {
+                terminalStore.selectedSession.isLoad = true;
+                terminalStore.terminalHub.activateSession(terminalStore.selectedSession.id)
+                terminalStore.selectedSession.onOutput = (data) => {
+                    xterm.write(data);
+                }
+            }
+
+            // Обработка очистки при размонтировании компонента
+            return () => {
+                xterm.dispose();
+            };
+        }
+    }, [terminalStore.selectedSession]);
+
+    return <div
+        ref={terminalRef}
+        className={classNames('xterm_terminal')}
+        style={{ width: '100%', height: '100%' }}
+    />;
+}
+
+export default observer(Terminal);

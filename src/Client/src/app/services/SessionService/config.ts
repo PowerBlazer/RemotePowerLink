@@ -4,3 +4,7 @@
     serverId:number,
     dateCreated: Date
 }
+
+export interface CreateSessionData{
+    serverId:number
+}

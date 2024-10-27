@@ -71,6 +71,10 @@ public class ExceptionHandlingMiddleware
         {
             await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, GetErrorsDictionary(ex.Message));
         }
+        catch (SessionException ex)
+        {
+            await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Errors);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);

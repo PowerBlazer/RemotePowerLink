@@ -138,4 +138,17 @@
   }
 }
 
+.loader{
+  width: 20px;
+  height: 20px;
+
+
+  & div{
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+    border-color: var(--button-primary-color) transparent;
+  }
+}
+
 

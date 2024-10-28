@@ -54,10 +54,10 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Files\SessionLogs\" />
+      <None Remove="Files\SessionLogs\log.txt" />
+      <Content Include="Files\SessionLogs\log.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

@@ -460,7 +460,7 @@
     "selection": "#33415e"
   },
   {
-    "name": "ayu",
+    "name": "Ayu",
     "black": "#000000",
     "red": "#ff3333",
     "green": "#b8cc52",
@@ -483,7 +483,7 @@
     "selection": "#253340"
   },
   {
-    "name": "ayu_light",
+    "name": "Ayu Light",
     "black": "#000000",
     "red": "#ff3333",
     "green": "#86b300",
@@ -1081,7 +1081,7 @@
     "selection": "#7e6c88"
   },
   {
-    "name": "catppuccin-frappe",
+    "name": "Catppuccin Frappe",
     "black": "#51576d",
     "red": "#e78284",
     "green": "#a6d189",
@@ -1104,7 +1104,7 @@
     "selection": "#626880"
   },
   {
-    "name": "catppuccin-latte",
+    "name": "Catppuccin Latte",
     "black": "#5c5f77",
     "red": "#d20f39",
     "green": "#40a02b",
@@ -1127,7 +1127,7 @@
     "selection": "#acb0be"
   },
   {
-    "name": "catppuccin-macchiato",
+    "name": "Catppuccin Macchiato",
     "black": "#494d64",
     "red": "#ed8796",
     "green": "#a6da95",
@@ -1150,7 +1150,7 @@
     "selection": "#5b6078"
   },
   {
-    "name": "catppuccin-mocha",
+    "name": "Catppuccin Mocha",
     "black": "#45475a",
     "red": "#f38ba8",
     "green": "#a6e3a1",
@@ -1380,7 +1380,7 @@
     "selection": "#18354f"
   },
   {
-    "name": "coffee_theme",
+    "name": "Coffee Theme",
     "black": "#000000",
     "red": "#c91b00",
     "green": "#00c200",
@@ -1472,7 +1472,7 @@
     "selection": "#454d96"
   },
   {
-    "name": "cyberpunk",
+    "name": "Cyberpunk",
     "black": "#000000",
     "red": "#ff7092",
     "green": "#00fbac",
@@ -1564,7 +1564,7 @@
     "selection": "#3a3d41"
   },
   {
-    "name": "darkermatrix",
+    "name": "DarkerMatrix",
     "black": "#091013",
     "red": "#002e18",
     "green": "#6fa64c",
@@ -1587,7 +1587,7 @@
     "selection": "#0f191c"
   },
   {
-    "name": "darkmatrix",
+    "name": "DarkMatrix",
     "black": "#091013",
     "red": "#006536",
     "green": "#6fa64c",
@@ -1633,7 +1633,7 @@
     "selection": "#303333"
   },
   {
-    "name": "dayfox",
+    "name": "Dayfox",
     "black": "#352c24",
     "red": "#a5222f",
     "green": "#396847",
@@ -1656,7 +1656,7 @@
     "selection": "#e7d2be"
   },
   {
-    "name": "deep",
+    "name": "Deep",
     "black": "#000000",
     "red": "#d70005",
     "green": "#1cd915",
@@ -1932,7 +1932,7 @@
     "selection": "#44475a"
   },
   {
-    "name": "duckbones",
+    "name": "Duckbones",
     "black": "#0e101a",
     "red": "#e03600",
     "green": "#5dcd97",
@@ -2185,7 +2185,7 @@
     "selection": "#8077a8"
   },
   {
-    "name": "farmhouse-dark",
+    "name": "Farmhouse Dark",
     "black": "#1d2027",
     "red": "#ba0004",
     "green": "#549d00",
@@ -2208,7 +2208,7 @@
     "selection": "#4d5658"
   },
   {
-    "name": "farmhouse-light",
+    "name": "Farmhouse Light",
     "black": "#1d2027",
     "red": "#8d0003",
     "green": "#3a7d00",
@@ -2392,7 +2392,7 @@
     "selection": "#2b2a24"
   },
   {
-    "name": "flexoki-dark",
+    "name": "Flexoki Dark",
     "black": "#1c1b1a",
     "red": "#d14d41",
     "green": "#879a39",
@@ -2415,7 +2415,7 @@
     "selection": "#cecdc3"
   },
   {
-    "name": "flexoki-light",
+    "name": "Flexoki Light",
     "black": "#100f0f",
     "red": "#af3029",
     "green": "#66800b",
@@ -2737,7 +2737,7 @@
     "selection": "#517e50"
   },
   {
-    "name": "gruber-darker",
+    "name": "Gruber Darker",
     "black": "#181818",
     "red": "#f43841",
     "green": "#73d936",
@@ -3174,7 +3174,7 @@
     "selection": "#1e1f22"
   },
   {
-    "name": "iceberg-dark",
+    "name": "Iceberg Dark",
     "black": "#1e2132",
     "red": "#e27878",
     "green": "#b4be82",
@@ -3197,7 +3197,7 @@
     "selection": "#c6c8d1"
   },
   {
-    "name": "iceberg-light",
+    "name": "Iceberg Light",
     "black": "#dcdfe7",
     "red": "#cc517a",
     "green": "#668e3d",
@@ -3266,7 +3266,7 @@
     "selection": "#c14020"
   },
   {
-    "name": "idea",
+    "name": "Idea",
     "black": "#adadad",
     "red": "#fc5256",
     "green": "#98b61c",
@@ -3289,7 +3289,7 @@
     "selection": "#44475a"
   },
   {
-    "name": "idleToes",
+    "name": "IdleToes",
     "black": "#323232",
     "red": "#d25252",
     "green": "#7fe173",
@@ -3634,7 +3634,7 @@
     "selection": "#1a3272"
   },
   {
-    "name": "jubi",
+    "name": "Jubi",
     "black": "#3b3750",
     "red": "#cf7b98",
     "green": "#90a94b",
@@ -3657,7 +3657,7 @@
     "selection": "#5b5184"
   },
   {
-    "name": "kanagawabones",
+    "name": "Kanagawabones",
     "black": "#1f1f28",
     "red": "#e46a78",
     "green": "#98bc6d",
@@ -3749,7 +3749,7 @@
     "selection": "#060606"
   },
   {
-    "name": "kurokula",
+    "name": "Kurokula",
     "black": "#333333",
     "red": "#b66056",
     "green": "#85b1a9",
@@ -3933,7 +3933,7 @@
     "selection": "#7dbeff"
   },
   {
-    "name": "lovelace",
+    "name": "Lovelace",
     "black": "#282a36",
     "red": "#f37f97",
     "green": "#5adecd",
@@ -4140,7 +4140,7 @@
     "selection": "#555555"
   },
   {
-    "name": "matrix",
+    "name": "Matrix",
     "black": "#0f191c",
     "red": "#23755a",
     "green": "#82d967",
@@ -4209,7 +4209,7 @@
     "selection": "#2d2d2d"
   },
   {
-    "name": "midnight-in-mojave",
+    "name": "Midnight-in-mojave",
     "black": "#1e1e1e",
     "red": "#ff453a",
     "green": "#32d74b",
@@ -4416,7 +4416,7 @@
     "selection": "#4d4d4d"
   },
   {
-    "name": "neobones_dark",
+    "name": "Neobones Dark",
     "black": "#0f191f",
     "red": "#de6e7c",
     "green": "#90ff6b",
@@ -4439,7 +4439,7 @@
     "selection": "#3a3e3d"
   },
   {
-    "name": "neobones_light",
+    "name": "Neobones Light",
     "black": "#e5ede6",
     "red": "#a8334c",
     "green": "#567a30",
@@ -4554,7 +4554,7 @@
     "selection": "#f2f2f2"
   },
   {
-    "name": "nightfox",
+    "name": "Nightfox",
     "black": "#393b44",
     "red": "#c94f6d",
     "green": "#81b29a",
@@ -4623,7 +4623,7 @@
     "selection": "#b5d5ff"
   },
   {
-    "name": "niji",
+    "name": "Niji",
     "black": "#333333",
     "red": "#d23e08",
     "green": "#54ca74",
@@ -4669,7 +4669,7 @@
     "selection": "#adbdd0"
   },
   {
-    "name": "nord-light",
+    "name": "Nord Light",
     "black": "#3b4252",
     "red": "#bf616a",
     "green": "#a3be8c",
@@ -4692,7 +4692,7 @@
     "selection": "#d8dee9"
   },
   {
-    "name": "nord",
+    "name": "Nord Dark",
     "black": "#3b4252",
     "red": "#bf616a",
     "green": "#a3be8c",
@@ -5244,7 +5244,7 @@
     "selection": "#ebdbb2"
   },
   {
-    "name": "primary",
+    "name": "Primary",
     "black": "#000000",
     "red": "#db4437",
     "green": "#0f9d58",
@@ -5589,7 +5589,7 @@
     "selection": "#5a647e"
   },
   {
-    "name": "rose-pine-dawn",
+    "name": "Rose Pine Dawn",
     "black": "#f2e9e1",
     "red": "#b4637a",
     "green": "#56949f",
@@ -5612,7 +5612,7 @@
     "selection": "#faf4ed"
   },
   {
-    "name": "rose-pine-moon",
+    "name": "Rose Pine Moon",
     "black": "#393552",
     "red": "#eb6f92",
     "green": "#9ccfd8",
@@ -5635,7 +5635,7 @@
     "selection": "#232136"
   },
   {
-    "name": "rose-pine",
+    "name": "Rose Pine",
     "black": "#26233a",
     "red": "#eb6f92",
     "green": "#9ccfd8",
@@ -5819,7 +5819,7 @@
     "selection": "#1e4962"
   },
   {
-    "name": "seoulbones_dark",
+    "name": "Seoulbones Dark",
     "black": "#4b4b4b",
     "red": "#e388a3",
     "green": "#98bd99",
@@ -5842,7 +5842,7 @@
     "selection": "#777777"
   },
   {
-    "name": "seoulbones_light",
+    "name": "Deoulbones Light",
     "black": "#e2e2e2",
     "red": "#dc5284",
     "green": "#628562",
@@ -5888,7 +5888,7 @@
     "selection": "#303233"
   },
   {
-    "name": "shades-of-purple",
+    "name": "Shades Of Purple",
     "black": "#000000",
     "red": "#d90429",
     "green": "#3ad900",
@@ -6394,7 +6394,7 @@
     "selection": "#073642"
   },
   {
-    "name": "synthwave-everything",
+    "name": "Synthwave Everything",
     "black": "#fefefe",
     "red": "#f97e72",
     "green": "#72f1b8",
@@ -6417,7 +6417,7 @@
     "selection": "#181521"
   },
   {
-    "name": "synthwave",
+    "name": "Synthwave",
     "black": "#000000",
     "red": "#f6188f",
     "green": "#1ebb2b",
@@ -6532,7 +6532,7 @@
     "selection": "#4d4d4d"
   },
   {
-    "name": "terafox",
+    "name": "Terafox",
     "black": "#2f3239",
     "red": "#e85c51",
     "green": "#7aa4a1",
@@ -6670,7 +6670,7 @@
     "selection": "#ff3399"
   },
   {
-    "name": "tokyonight-day",
+    "name": "Tokyonight Day",
     "black": "#e9e9ed",
     "red": "#f52a65",
     "green": "#587539",
@@ -6693,7 +6693,7 @@
     "selection": "#99a7df"
   },
   {
-    "name": "tokyonight-storm",
+    "name": "Tokyonight Storm",
     "black": "#1d202f",
     "red": "#f7768e",
     "green": "#9ece6a",
@@ -6716,7 +6716,7 @@
     "selection": "#364a82"
   },
   {
-    "name": "tokyonight",
+    "name": "Tokyonight",
     "black": "#15161e",
     "red": "#f7768e",
     "green": "#9ece6a",
@@ -7153,7 +7153,7 @@
     "selection": "#b5d5ff"
   },
   {
-    "name": "vimbones",
+    "name": "Vimbones",
     "black": "#f0f0ca",
     "red": "#a8334c",
     "green": "#4f6c31",
@@ -7314,7 +7314,7 @@
     "selection": "#002831"
   },
   {
-    "name": "wilmersdorf",
+    "name": "Wilmersdorf",
     "black": "#34373e",
     "red": "#e06383",
     "green": "#7ebebd",
@@ -7383,7 +7383,7 @@
     "selection": "#4d4d4d"
   },
   {
-    "name": "xcodedark",
+    "name": "Xcodedark",
     "black": "#414453",
     "red": "#ff8170",
     "green": "#78c2b3",
@@ -7406,7 +7406,7 @@
     "selection": "#414453"
   },
   {
-    "name": "xcodedarkhc",
+    "name": "Xcodedarkhc",
     "black": "#43454b",
     "red": "#ff8a7a",
     "green": "#83c9bc",
@@ -7429,7 +7429,7 @@
     "selection": "#43454b"
   },
   {
-    "name": "xcodelight",
+    "name": "Xcodelight",
     "black": "#b4d8fd",
     "red": "#d12f1b",
     "green": "#3e8087",
@@ -7452,7 +7452,7 @@
     "selection": "#b4d8fd"
   },
   {
-    "name": "xcodelighthc",
+    "name": "Xcodelighthc",
     "black": "#b4d8fd",
     "red": "#ad1805",
     "green": "#355d61",
@@ -7475,7 +7475,7 @@
     "selection": "#b4d8fd"
   },
   {
-    "name": "xcodewwdc",
+    "name": "Xcodewwdc",
     "black": "#494d5c",
     "red": "#bb383a",
     "green": "#94c66e",
@@ -7498,7 +7498,7 @@
     "selection": "#494d5c"
   },
   {
-    "name": "zenbones",
+    "name": "Zenbones",
     "black": "#f0edec",
     "red": "#a8334c",
     "green": "#4f6c31",
@@ -7521,7 +7521,7 @@
     "selection": "#cbd9e3"
   },
   {
-    "name": "zenbones_dark",
+    "name": "Zenbones Dark",
     "black": "#1c1917",
     "red": "#de6e7c",
     "green": "#819b69",
@@ -7544,7 +7544,7 @@
     "selection": "#3d4042"
   },
   {
-    "name": "zenbones_light",
+    "name": "Zenbones Light",
     "black": "#f0edec",
     "red": "#a8334c",
     "green": "#4f6c31",
@@ -7590,7 +7590,7 @@
     "selection": "#21322f"
   },
   {
-    "name": "zenburned",
+    "name": "Zenburned",
     "black": "#404040",
     "red": "#e3716e",
     "green": "#819b69",
@@ -7613,7 +7613,7 @@
     "selection": "#746956"
   },
   {
-    "name": "zenwritten_dark",
+    "name": "Zenwritten Dark",
     "black": "#191919",
     "red": "#de6e7c",
     "green": "#819b69",
@@ -7636,7 +7636,7 @@
     "selection": "#404040"
   },
   {
-    "name": "zenwritten_light",
+    "name": "Zenwritten Light",
     "black": "#eeeeee",
     "red": "#a8334c",
     "green": "#4f6c31",

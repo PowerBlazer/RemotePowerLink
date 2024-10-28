@@ -15,6 +15,8 @@ public interface IPersistenceContext
     DbSet<SystemType> SystemTypes { get; }
     DbSet<Encoding> Encodings { get; }
     DbSet<Session> Sessions { get; }
+    DbSet<TerminalSetting> TerminalSettings { get; }
+    DbSet<TerminalTheme> TerminalThemes { get; }
     
     Task<int> SaveChangesAsync();
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

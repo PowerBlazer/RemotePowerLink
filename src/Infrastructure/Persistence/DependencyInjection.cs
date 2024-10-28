@@ -39,13 +39,13 @@ public static class DependencyInjection
         services.AddScoped<ISystemTypeRepository, SystemTypeRepository>();
         services.AddScoped<IEncodingRepository, EncodingRepository>();
         services.AddScoped<ISessionRepository, SessionRepository>();
+        services.AddScoped<ITerminalSettingRepository, TerminalSettingRepository>();
+        services.AddScoped<ITerminalThemeRepository, TerminalThemeRepository>();
         #endregion
 
         #region Services
         services.AddScoped<IServerService, ServerService>();
         #endregion
-        
-       
         
         return services;
     }

@@ -16,6 +16,8 @@ public class PersistenceContext: DbContext, IPersistenceContext
     public DbSet<SystemType> SystemTypes => Set<SystemType>();
     public DbSet<Encoding> Encodings => Set<Encoding>();
     public DbSet<Session> Sessions => Set<Session>();
+    public DbSet<TerminalSetting> TerminalSettings => Set<TerminalSetting>();
+    public DbSet<TerminalTheme> TerminalThemes => Set<TerminalTheme>();
 
     public PersistenceContext(DbContextOptions<PersistenceContext> options): base(options)
     {
@@ -45,5 +47,8 @@ public class PersistenceContext: DbContext, IPersistenceContext
         modelBuilder.ApplyConfiguration(new ProxyConfiguration());
         modelBuilder.ApplyConfiguration(new SystemTypeConfiguration());
         modelBuilder.ApplyConfiguration(new EncodingConfiguration());
+        modelBuilder.ApplyConfiguration(new SessionConfiguration());
+        modelBuilder.ApplyConfiguration(new TerminalThemeConfiguration());
+        modelBuilder.ApplyConfiguration(new TerminalSettingConfiguration());
     }
 }

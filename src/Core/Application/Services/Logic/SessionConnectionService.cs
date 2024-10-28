@@ -66,8 +66,7 @@ public class SessionConnectionService
             .Build();
         
         _sessionInstances.AddOrUpdate(sessionInstance.Id, sessionInstance, (_, _) => sessionInstance);
-
-        await Task.Delay(2000);
+        
         await sessionInstance.CreateConnection(cancellationToken);
 
         return sessionInstance;
@@ -79,8 +78,6 @@ public class SessionConnectionService
             throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
         
         var sessionData = await sessionInstance.GetFullSessionData();
-
-        await Task.Delay(2000);
         
         await _terminulHubContext.Clients
             .User(sessionInstance.UserId.ToString())

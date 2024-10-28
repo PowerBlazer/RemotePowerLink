@@ -9,7 +9,7 @@ import { SearchInput } from 'features/SearchInput';
 import { ServerManagerCatalog, ServerManagerCatalogMode } from 'widgets/ServerManagerCatalog';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { useTranslation } from 'react-i18next';
-import terminalStore from 'app/store/terminalStore';
+import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import { SessionService } from 'app/services/SessionService/sessionService';
 
 interface TerminalSelectHostCatalogProps {
@@ -33,25 +33,45 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
     }
 
     const onClickConnectHandler = async (serverData: ServerData) => {
-        const createdSessionResult = await SessionService.createSession({
-            serverId: serverData.serverId
-        });
+        // eslint-disable-next-line no-undef
+        const uniqueId = generateUniqueNumber();
+        const newSession: TerminalSession = {
+            id: uniqueId,
+            host: serverData,
+            isLoad: true,
+            isNew: true,
+            isCreate: true
+        };
+
+        if (terminalStore.selectedSession) {
+            await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
+        }
+
+        const countSessionForServer = terminalStore.sessions
+            .filter(p => p.host.serverId === serverData.serverId)?.length ?? 0;
+
+        newSession.name = countSessionForServer === 0
+            ? serverData.title
+            : `${serverData.title} (${countSessionForServer})`;
+
+        terminalStore.sessions.push(newSession);
+        terminalStore.selectedSession = newSession;
 
         if (onClose) {
             onClose()
         }
 
-        if (createdSessionResult.isSuccess) {
-            // eslint-disable-next-line no-return-assign
-            const newSession = {
-                id: createdSessionResult.result.id,
-                host: serverData,
-                isLoad: true
-            };
+        const createdSessionResult = await SessionService.createSession({
+            serverId: serverData.serverId
+        });
 
-            terminalStore.sessions.push(newSession);
-            await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
-            terminalStore.selectedSession = newSession;
+        if (createdSessionResult.isSuccess) {
+            const currentSession = terminalStore.sessions.find(p => p.id === uniqueId)
+
+            currentSession.id = createdSessionResult.result.id;
+            currentSession.isNew = false;
+
+            terminalStore.selectedSession = currentSession;
         }
     }
 

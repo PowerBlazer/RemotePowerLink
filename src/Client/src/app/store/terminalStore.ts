@@ -3,11 +3,14 @@ import { makeAutoObservable } from 'mobx';
 import TerminalHub from 'app/hubs/terminalHub';
 
 export interface TerminalSession {
-    id: number
+    id: number,
+    name?: string,
     host?: ServerData,
     isLoad: boolean,
     errors?: Record<string, string[]>,
-    onOutput?: (data: string) => void
+    onOutput?: (data: string) => void,
+    isNew: boolean,
+    isCreate: boolean
 }
 
 export interface TerminalOutputData {

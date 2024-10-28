@@ -25,15 +25,22 @@ function Terminal ({ className }: TerminalProps) {
             fitAddon.fit(); // Подгоняем терминал под размеры контейнера
 
             xtermRef.current = xterm; // Сохраняем ссылку на терминал для дальнейшего использования
-            xterm.onData(data => {
-                if (terminalStore.terminalHub?.getConnectionState() === ConnectionState.Connected && terminalStore.selectedSession) {
-                    terminalStore.terminalHub.writeToSession(terminalStore.selectedSession.id, data);
-                }
-            });
 
-            if (terminalStore.selectedSession) {
+            if (terminalStore.selectedSession && !terminalStore.selectedSession.isNew) {
+                xterm.onData(data => {
+                    if (terminalStore.terminalHub?.getConnectionState() === ConnectionState.Connected && terminalStore.selectedSession) {
+                        terminalStore.terminalHub.writeToSession(terminalStore.selectedSession.id, data);
+                    }
+                });
+
                 terminalStore.selectedSession.isLoad = true;
-                terminalStore.terminalHub.activateSession(terminalStore.selectedSession.id)
+
+                if (!terminalStore.selectedSession.isCreate) {
+                    terminalStore.terminalHub.activateSession(terminalStore.selectedSession.id)
+                } else {
+                    terminalStore.selectedSession.isCreate = false;
+                }
+
                 terminalStore.selectedSession.onOutput = (data) => {
                     xterm.write(data);
                 }

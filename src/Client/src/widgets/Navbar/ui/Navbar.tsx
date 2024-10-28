@@ -92,6 +92,8 @@ function Navbar ({ className }: NavbarProps) {
                     const terminalSession: TerminalSession = {
                         id: p.id,
                         isLoad: false,
+                        isNew: false,
+                        isCreate: false,
                         host: userStore.userServers.find(x => x.serverId === p.serverId)
                     }
 

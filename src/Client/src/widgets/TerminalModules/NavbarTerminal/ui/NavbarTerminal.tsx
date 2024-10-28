@@ -8,7 +8,6 @@ import TerminalIcon from 'shared/assets/icons/terminal-cursor.svg'
 import CloseIcon from 'shared/assets/icons/close.svg';
 import { MouseEvent, useEffect, useRef } from 'react';
 import { ConnectionState } from 'app/hubs/hubFactory';
-import terminal from 'widgets/TerminalModules/Terminal/ui/Terminal';
 import { Loader } from 'shared/ui/Loader/Loader';
 
 interface NavbarTerminalProps {
@@ -25,7 +24,14 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
         terminalStore.sessions = terminalStore.sessions.filter(p => p.id !== sessionId);
 
         if (terminalStore.selectedSession?.id === sessionId && terminalStore.sessions.length > 0) {
+            if (terminalStore.sessions[0].isCreate) {
+                terminalStore.sessions[0].isCreate = false;
+            }
             terminalStore.selectedSession = terminalStore.sessions[0];
+        }
+
+        if (terminalStore.sessions.length === 0) {
+            terminalStore.selectedSession = null;
         }
 
         if (terminalStore.terminalHub.getConnectionState() === ConnectionState.Connected) {
@@ -42,6 +48,7 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
             await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
         }
 
+        session.isCreate = false;
         terminalStore.selectedSession = session;
         terminalStore.selectedSession.isLoad = true;
     }
@@ -86,7 +93,7 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
                                         : <TerminalIcon width={16} height={16} className={classNames(style.terminal_icon)}/>
 
                                 }
-                                <div className={classNames(style.session_title)}>{session.host?.title}</div>
+                                <div className={classNames(style.session_title)}>{session.name ?? session.host?.title}</div>
                             </div>
 
                             <div

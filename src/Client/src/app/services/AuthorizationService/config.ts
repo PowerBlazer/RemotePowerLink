@@ -5,17 +5,14 @@ export interface LoginModel {
 
 export interface LoginResponse {
     accessToken?: string,
-    refreshToken?: string
 }
 
 export interface RefreshTokenModel {
-    accessToken: string,
-    refreshToken: string
+    accessToken: string
 }
 
 export interface RefreshTokenResponse {
-    accessToken?: string,
-    refreshToken?: string
+    accessToken?: string
 }
 
 export interface RegistrationModel {
@@ -27,5 +24,4 @@ export interface RegistrationModel {
 
 export interface RegistrationResponse {
     accessToken: string,
-    refreshToken: string
 }

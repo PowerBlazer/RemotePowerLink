@@ -1,8 +1,8 @@
 ﻿using Application.Features.AuthorizationFeature.LoginUser;
 using Application.Features.AuthorizationFeature.RefreshToken;
 using Application.Features.AuthorizationFeature.RegisterUser;
-using Application.Layers.Identity.Models.Authorization;
 using Domain.Common;
+using Domain.DTOs.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,11 +32,14 @@ public class AuthorizationController : BaseController
         [FromBody] RegisterUserCommand registerUserCommand)
     {
         registerUserCommand.IpAddress = IpAddress;
+        
         var result = await Mediator.Send(registerUserCommand);
+        
+        SetRefreshTokenCookie(result.RefreshToken);
 
         return new ApiActionResult<RegistrationResponse>
         {
-            Result = result
+            Result = new RegistrationResponse(result.AccessToken)
         };
     }
 
@@ -58,9 +61,11 @@ public class AuthorizationController : BaseController
         loginUserCommand.IpAddress = IpAddress;
         var result = await Mediator.Send(loginUserCommand);
 
+        SetRefreshTokenCookie(result.RefreshToken);
+
         return new ApiActionResult<LoginResponse>
         {
-            Result = result
+            Result = new LoginResponse(result.AccessToken)
         };
     }
 
@@ -74,16 +79,42 @@ public class AuthorizationController : BaseController
     /// <response code="401">Невалидный токен.</response>
     /// <response code="500">Ошибка на сервере.</response>
     [HttpPost("Refresh")]
-    public async Task<ApiActionResult<RefreshTokenResponse>> RefreshToken([FromBody]
+    public async Task<ApiActionResult<RefreshTokenResponse>> RefreshToken([FromBody] 
         RefreshTokenCommand refreshTokenCommand)
     {
+        
         refreshTokenCommand.IpAddress = IpAddress;
+        refreshTokenCommand.RefreshToken = GetRefreshTokenFromCookie();
+        
         var result = await Mediator.Send(refreshTokenCommand);
+        
+        SetRefreshTokenCookie(result.RefreshToken);
 
         return new ApiActionResult<RefreshTokenResponse>
         {
-            Result = result
+            Result = new RefreshTokenResponse(result.AccessToken)
         };
+    }
+    
+    
+    private void SetRefreshTokenCookie(string refreshToken)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Expires = DateTimeOffset.UtcNow.AddDays(30),
+            SameSite = SameSiteMode.Strict
+        };
+
+        HttpContext.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+    }
+
+    private string? GetRefreshTokenFromCookie()
+    {
+        return HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken) 
+            ? refreshToken 
+            : null;
     }
 }
 

@@ -50,7 +50,7 @@ public class TerminalController: BaseController
     {
         var result = await Mediator.Send(new GetTerminalSettingByUserCommand(UserId));
 
-        return new ApiActionResult<TerminalSettingResponse>()
+        return new ApiActionResult<TerminalSettingResponse>
         {
             Result = result
         };

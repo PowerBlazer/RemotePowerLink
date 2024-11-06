@@ -6,20 +6,17 @@ namespace Application.Features.AuthorizationFeature.RefreshToken;
 
 public class RefreshTokenCommand: IRequest<RefreshTokenResponse>
 {
-    public RefreshTokenCommand(string accessToken, string refreshToken)
-    {
-        AccessToken = accessToken;
-        RefreshToken = refreshToken;
-    }
-
     /// <summary>
     /// Токен доступа
     /// </summary>
-    public string AccessToken { get; }
+    public required string AccessToken { get; set; }
+    
     /// <summary>
     /// Токен обновления
     /// </summary>
-    public string RefreshToken { get; }
+    [JsonIgnore]
+    public string? RefreshToken { get; set; }
+    
     [JsonIgnore]
     public string? IpAddress { get; set; }
 }

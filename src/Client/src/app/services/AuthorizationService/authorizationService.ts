@@ -15,7 +15,6 @@ class AuthorizationService {
             const response =
                 await HostService.api.post<ApiResult<LoginResponse>>('/v1/authorization/Login', loginModel);
 
-            this.setRefreshToken(response.data.result.refreshToken);
             this.setAccessToken(response.data.result.accessToken);
 
             return {
@@ -37,7 +36,6 @@ class AuthorizationService {
                     registrationModel
                 );
 
-            this.setRefreshToken(response.data.result.refreshToken);
             this.setAccessToken(response.data.result.accessToken);
 
             return {
@@ -53,8 +51,7 @@ class AuthorizationService {
 
     static refreshToken = async (): Promise<AuthorizationResult> => {
         const refreshTokenModel: RefreshTokenModel = {
-            accessToken: this.getAccessToken(),
-            refreshToken: this.getRefreshToken()
+            accessToken: this.getAccessToken()
         }
 
         try {
@@ -64,7 +61,6 @@ class AuthorizationService {
             );
 
             this.setAccessToken(response.data.result.accessToken);
-            this.setRefreshToken(response.data.result.refreshToken);
 
             return {
                 isSuccess: true
@@ -79,7 +75,6 @@ class AuthorizationService {
 
     static logout = () => {
         this.setAccessToken('');
-        this.setRefreshToken('');
     }
 
     static getAccessToken = (): string => {
@@ -90,16 +85,6 @@ class AuthorizationService {
         window.localStorage.setItem(LocalStorageKeys.ACCESS_TOKEN, accessToken);
 
         return accessToken;
-    }
-
-    static getRefreshToken = (): string => {
-        return window.localStorage.getItem(LocalStorageKeys.REFRESH_TOKEN)
-    }
-
-    static setRefreshToken = (refreshToken: string): string => {
-        window.localStorage.setItem(LocalStorageKeys.REFRESH_TOKEN, refreshToken);
-
-        return refreshToken;
     }
 
     static getSessionId = (): string => {

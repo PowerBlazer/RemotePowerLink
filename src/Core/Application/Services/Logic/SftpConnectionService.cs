@@ -11,7 +11,7 @@ public class SftpConnectionService: ISftpConnectionService
 {
     private readonly ConcurrentDictionary<string, SftpClientInstance> _sftpClients = new();
     private readonly object _lock = new();
-    private const int IdleTimeoutMinutes = 10;
+    private const int IdleTimeoutMinutes = 60;
     
     public SftpClient? GetClient(string connectionKey)
     {

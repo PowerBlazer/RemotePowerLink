@@ -1,4 +1,4 @@
-﻿using Application.Services.Logic;
+﻿using Application.Services.Abstract;
 using Domain.Common;
 using Domain.DTOs.Session;
 using MediatR;
@@ -13,8 +13,8 @@ namespace Api.Controllers.V1;
 [ApiVersion("1.0")]
 public class SessionController: BaseController
 {
-    private readonly SessionConnectionService _sessionConnectionService;
-    public SessionController(IMediator mediator, SessionConnectionService sessionConnectionService) : base(mediator)
+    private readonly ISessionConnectionService _sessionConnectionService;
+    public SessionController(IMediator mediator, ISessionConnectionService sessionConnectionService) : base(mediator)
     {
         _sessionConnectionService = sessionConnectionService;
     }

@@ -32,6 +32,14 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
+        builder.HasMany(p => p.TerminalSettings)
+            .WithOne(p => p.User)
+            .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+        
+        
+
         #region HasData
 
         builder.HasData(

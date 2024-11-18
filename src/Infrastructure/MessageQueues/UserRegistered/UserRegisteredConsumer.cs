@@ -1,4 +1,5 @@
 ﻿using Application.Layers.MessageQueues.UserRegistered;
+using Application.Layers.Persistence;
 using Application.Layers.Persistence.Repository;
 using Domain.Entities;
 using MassTransit;
@@ -9,17 +10,35 @@ namespace MessageQueues.UserRegistered;
 public class UserRegisteredConsumer: IConsumer<UserRegisteredEvent>
 {
     private readonly IUserRepository _userRepository;
-    public UserRegisteredConsumer(IUserRepository userRepository)
+    private readonly ITerminalSettingRepository _terminalSettingRepository;
+    private readonly IPersistenceUnitOfWork _persistenceUnitOfWork;
+    public UserRegisteredConsumer(IUserRepository userRepository, 
+        IPersistenceUnitOfWork persistenceUnitOfWork, 
+        ITerminalSettingRepository terminalSettingRepository)
     {
         _userRepository = userRepository;
+        _persistenceUnitOfWork = persistenceUnitOfWork;
+        _terminalSettingRepository = terminalSettingRepository;
     }
 
-    public async Task Consume(ConsumeContext<UserRegisteredEvent> context)
+    public Task Consume(ConsumeContext<UserRegisteredEvent> context)
     {
-        await _userRepository.AddUser(new User
+        return _persistenceUnitOfWork.ExecuteWithExecutionStrategyAsync(async () =>
         {
-            UserId = context.Message.UserId,
-            Username = context.Message.UserName
+            var user = await _userRepository.AddUser(new User
+            {
+                UserId = context.Message.UserId,
+                Username = context.Message.UserName
+            });
+
+            await _terminalSettingRepository.AddTerminalSetting(new TerminalSetting
+            {
+                FontSize = 14,
+                TerminalThemeId = 1,
+                UserId = user.UserId
+            });
         });
+
+
     }
 }

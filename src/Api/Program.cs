@@ -62,6 +62,7 @@ builder.Services
     .AddPersistence(builder.Configuration);
 
 builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
+builder.Services.AddHostedService<ConnectionInitializer>();
 #endregion
 
 #region AuthenticationConfiguration

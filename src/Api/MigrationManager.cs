@@ -1,6 +1,6 @@
 ﻿using Identity.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Context;
+using Persistence;
 
 namespace Api;
 

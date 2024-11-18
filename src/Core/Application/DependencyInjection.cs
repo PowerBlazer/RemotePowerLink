@@ -37,7 +37,8 @@ public static class DependencyInjection
         
         services.AddSingleton<ISftpConnectionService, SftpConnectionService>();
         services.AddSingleton<SftpDisconnectService>();
-        services.AddSingleton<SessionConnectionService>(p =>
+        
+        services.AddSingleton<ISessionConnectionService,SessionConnectionService>(p =>
         {
             var rootPath = configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
             var serviceScopeFactory = p.GetRequiredService<IServiceScopeFactory>();
@@ -45,6 +46,8 @@ public static class DependencyInjection
             
             return new SessionConnectionService(serviceScopeFactory, rootPath, hubContext);
         });
+
+        services.AddSingleton<SessionDisconnectService>();
         #endregion
         
         #region Builders

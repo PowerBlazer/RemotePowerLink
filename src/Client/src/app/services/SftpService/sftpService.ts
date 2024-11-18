@@ -80,7 +80,7 @@ export class SftpService {
         }
     }
 
-    static existFolerOrFile = async (existDirectoryOrFileData: ExistDirectoryOrFileData): Promise<ServiceResult<boolean>> => {
+    static existFolderOrFile = async (existDirectoryOrFileData: ExistDirectoryOrFileData): Promise<ServiceResult<boolean>> => {
         try {
             const response = await HostService.api.post<ApiResult<boolean>>(
                 '/v1.0/sftp/exist',

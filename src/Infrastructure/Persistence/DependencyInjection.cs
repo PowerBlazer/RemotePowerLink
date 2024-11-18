@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence.Context;
 using Persistence.Repository;
 
 namespace Persistence;
@@ -31,6 +30,8 @@ public static class DependencyInjection
             options.UseSnakeCaseNamingConvention();
         });
 
+        services.AddScoped<IPersistenceUnitOfWork, PersistenceUnitOfWork>();
+
         #region Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IIdentityRepository, IdentityRepository>();
@@ -46,6 +47,7 @@ public static class DependencyInjection
         #region Services
         services.AddScoped<IServerService, ServerService>();
         #endregion
+        
         
         return services;
     }

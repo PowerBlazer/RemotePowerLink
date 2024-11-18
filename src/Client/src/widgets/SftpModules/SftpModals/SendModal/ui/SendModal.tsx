@@ -62,7 +62,7 @@ function SendModal ({ className, mode }: SendModalProps) {
             return;
         }
 
-        const existServiceResult = await SftpService.existFolerOrFile({
+        const existServiceResult = await SftpService.existFolderOrFile({
             serverId: server.serverId,
             folderOrFilePath: remotePath
         })

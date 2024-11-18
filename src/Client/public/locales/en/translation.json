@@ -131,6 +131,7 @@
     "Размер добавленных файлов": "The size of the added files",
     "Превышен лимит загрузки файлов (5GB)": "File download limit exceeded (5GB)",
     "Отправка запроса на загрузку файлов": "Sending a file download request",
-    "Отправка файлов на сервер": "Sending files to the server"
+    "Отправка файлов на сервер": "Sending files to the server",
+    "Терминал": "Terminal"
     
 }

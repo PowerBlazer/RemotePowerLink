@@ -20,11 +20,14 @@ function Terminal ({ className }: TerminalProps) {
         if (terminalRef.current) {
             const xterm = new XtermTerminal();
             const fitAddon = new FitAddon();
+
+            xterm.options.cursorBlink = true;
+
             xterm.loadAddon(fitAddon);
             xterm.open(terminalRef.current);
-            fitAddon.fit(); // Подгоняем терминал под размеры контейнера
+            fitAddon.fit();
 
-            xtermRef.current = xterm; // Сохраняем ссылку на терминал для дальнейшего использования
+            xtermRef.current = xterm;
 
             if (terminalStore.selectedSession && !terminalStore.selectedSession.isNew) {
                 xterm.onData(data => {
@@ -55,7 +58,7 @@ function Terminal ({ className }: TerminalProps) {
 
     return <div
         ref={terminalRef}
-        className={classNames('xterm_terminal')}
+        className={classNames('xterm_terminal', {}, [className])}
         style={{ width: '100%', height: '100%' }}
     />;
 }

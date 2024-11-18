@@ -4,8 +4,7 @@ using Domain.Entities.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Configuration;
 
-
-namespace Persistence.Context;
+namespace Persistence;
 
 public class PersistenceContext: DbContext, IPersistenceContext
 {

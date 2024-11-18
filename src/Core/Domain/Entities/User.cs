@@ -11,4 +11,5 @@ public class User: BaseEntity<long>
     public IList<Proxy>? Proxies { get; set; }
     public IList<Server>? Servers { get; set; }
     public IList<Session>? Sessions { get; set; }
+    public IList<TerminalSetting>? TerminalSettings { get; set; }
 }

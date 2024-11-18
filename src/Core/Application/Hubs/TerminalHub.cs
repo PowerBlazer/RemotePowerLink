@@ -1,4 +1,4 @@
-﻿using Application.Services.Logic;
+﻿using Application.Services.Abstract;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Application.Hubs;
@@ -6,9 +6,9 @@ namespace Application.Hubs;
 [Authorize]
 public class TerminalHub: BaseHub
 {
-    private readonly SessionConnectionService _sessionConnectionService;
+    private readonly ISessionConnectionService _sessionConnectionService;
     
-    public TerminalHub(SessionConnectionService sessionConnectionService)
+    public TerminalHub(ISessionConnectionService sessionConnectionService)
     {
         _sessionConnectionService = sessionConnectionService;
     }

@@ -55,6 +55,12 @@ public class TerminalController: BaseController
             Result = result
         };
     }
+
+    [HttpPost("update-setting")]
+    public async Task UpdateTerminalSetting()
+    {
+            
+    }
     
     
 }

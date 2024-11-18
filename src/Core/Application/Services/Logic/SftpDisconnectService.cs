@@ -12,13 +12,14 @@ public class SftpDisconnectService : IDisposable
         _sftpConnectionService = sftpConnectionService;
     }
 
-    public void StartTimer()
+    public void Start()
     {
         _timer = new Timer(
             _ => _sftpConnectionService.DisconnectIdleClients(), 
             null, 
             TimeSpan.Zero, 
-            TimeSpan.FromMinutes(5)); // Проверяем каждую минуту
+            TimeSpan.FromMinutes(5));
     }
+    
     public void Dispose() => _timer?.Dispose();
 }

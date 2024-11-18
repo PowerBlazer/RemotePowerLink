@@ -2,6 +2,7 @@
 using Application.Builders.Abstract;
 using Application.Hubs;
 using Application.Layers.Persistence.Repository;
+using Application.Services.Abstract;
 using Domain.DTOs.Session;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.SignalR;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Logic;
 
-public class SessionConnectionService
+public class SessionConnectionService: ISessionConnectionService
 {
     private readonly ConcurrentDictionary<long, ISessionInstance> _sessionInstances = new();
     private readonly IServiceScopeFactory _serviceScopeFactory;
@@ -28,7 +29,12 @@ public class SessionConnectionService
     public Task WriteCommand(long sessionId, string command)
     {
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
-            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+            throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
+
+        if (!sessionInstance.IsConnected)
+        {
+            throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
+        }
         
         return sessionInstance.WriteCommand(command);
     }
@@ -75,7 +81,7 @@ public class SessionConnectionService
     public async Task<ISessionInstance> ActivateSessionInstance(long sessionId)
     {
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
-            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+            throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
         
         var sessionData = await sessionInstance.GetFullSessionData();
         
@@ -97,10 +103,15 @@ public class SessionConnectionService
         return _sessionInstances.Values.Where(s => s.UserId == userId);
     }
 
+    public IEnumerable<ISessionInstance> GetAllOpenedSessions()
+    {
+        return _sessionInstances.Values;
+    }
+
     public async Task CloseSessionInstance(long sessionId)
     {
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
-            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+            throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
         
         await sessionInstance.DiconnectConnection();
         
@@ -110,7 +121,7 @@ public class SessionConnectionService
     public void DisactivateSessionInstance(long sessionId)
     {
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
-            throw new SessionException("SessionId", $"Сессия с таким SessionId {sessionId} не найден");
+            throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
         
         sessionInstance.IsActive = false;
     }

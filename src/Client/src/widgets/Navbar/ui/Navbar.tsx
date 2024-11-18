@@ -24,6 +24,7 @@ import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import { SessionService } from 'app/services/SessionService/sessionService';
 import TerminalHub from 'app/hubs/terminalHub';
 import toast from 'react-hot-toast';
+import { TerminalService } from 'app/services/TerminalService/terminalService';
 
 interface NavbarProps {
     className?: string
@@ -84,6 +85,26 @@ function Navbar ({ className }: NavbarProps) {
             userStore.setUserEncodings(encodingsResult.result);
         }
 
+        if (terminalStore.terminalThemes.length === 0) {
+            const terminalThemesResult = await TerminalService.getThemes();
+
+            if (!terminalThemesResult.isSuccess) {
+                setHasError(true);
+            }
+
+            terminalStore.terminalThemes = terminalThemesResult.result;
+        }
+
+        if (!terminalStore.terminalSetting) {
+            const terminalSettingResult = await TerminalService.getSetting();
+
+            if (!terminalSettingResult.isSuccess) {
+                setHasError(true);
+            }
+
+            terminalStore.terminalSetting = terminalSettingResult.result;
+        }
+
         if (!terminalStore.sessions || terminalStore.sessions.length === 0) {
             const sessionsResult = await SessionService.getOpenedSessions();
 
@@ -115,7 +136,7 @@ function Navbar ({ className }: NavbarProps) {
                         terminalStore.selectedSession.errors = errors;
                     }
 
-                    toast.error(JSON.stringify(errors));
+                    toast.error(Object.values(errors).join('\n'));
                 }
             }
 
@@ -168,7 +189,7 @@ function Navbar ({ className }: NavbarProps) {
                 />
                 <NavbarItem
                     icon={<TerminalIcon width={'23px'} height={'23px'}/>}
-                    label={t('Terminal')}
+                    label={t('Терминал')}
                     isSelected={userStore.location === AppRoutes.TERMINAL}
                     navigate={`/${AppRoutes.TERMINAL}`}
                     className={classNames(style.terminal)}

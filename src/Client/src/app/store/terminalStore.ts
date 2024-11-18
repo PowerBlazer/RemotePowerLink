@@ -1,6 +1,7 @@
 ﻿import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { makeAutoObservable } from 'mobx';
 import TerminalHub from 'app/hubs/terminalHub';
+import { TerminalSetting, TerminalTheme } from 'app/services/TerminalService/config';
 
 export interface TerminalSession {
     id: number,
@@ -26,6 +27,9 @@ class TerminalStore {
     sessions: TerminalSession[] = [];
     selectedSession: TerminalSession | null = null;
     terminalHub: TerminalHub = null;
+
+    terminalThemes: TerminalTheme[] = [];
+    terminalSetting: TerminalSetting = null;
 
     modalOptions: TerminalModalOptions = {
         errorState: false

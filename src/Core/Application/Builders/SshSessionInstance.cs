@@ -23,9 +23,9 @@ public class SshSessionInstance: ISessionInstance
     private SshClient? _client;
     private ShellStream? _stream;
     private readonly StringBuilder _sessionOutput = new();
-    
-    private bool IsConnected => _client is not null && _stream is not null && _client.IsConnected;
-    
+    public bool IsConnected => _client is not null && _stream is not null && _client.IsConnected;
+
+
     public async Task CreateConnection(CancellationToken cancellationToken = default)
     {
         if (ConnectionServer is null)

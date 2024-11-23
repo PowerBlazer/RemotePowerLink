@@ -19,7 +19,7 @@
 
     &.primary{
         width: 100%;
-        background-color: var(--button-primary-color);
+        background-color: var(--primary-color);
         border-radius: 5px;
         padding: 7px 1px;
         color: white;
@@ -29,7 +29,7 @@
     }
     
     &.primary:hover{
-        background-color: var(--button-primary-hover-color);
+        background-color: var(--primary-hover-color);
     }
     
     &.disabled{

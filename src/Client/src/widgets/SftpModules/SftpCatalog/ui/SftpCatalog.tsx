@@ -205,7 +205,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     sftpStore.firstSelectedHost.modalOption.errorState = true;
                 }
 
-                toast.error(JSON.stringify(errors))
+                toast.error(Object.values(errors).join('\n'));
             }
         }
     }, [sftpStore.firstSelectedHost]);
@@ -253,7 +253,7 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
                     sftpStore.secondSelectedHost.modalOption.errorState = true;
                 }
 
-                toast.error(JSON.stringify(errors))
+                toast.error(Object.values(errors).join('\n'));
             }
         }
     }, [sftpStore.secondSelectedHost]);

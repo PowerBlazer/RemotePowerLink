@@ -6,7 +6,7 @@ namespace Application.Services.Logic;
 
 public class SessionDisconnectService: IDisposable
 {
-    private const int IdleTimeoutMinutes = 2;
+    private const int IdleTimeoutMinutes = 20;
     private readonly ISessionConnectionService _sessionConnectionService;
     private readonly IHubContext<TerminalHub> _terminalHub;
     private Timer? _timer;
@@ -27,7 +27,7 @@ public class SessionDisconnectService: IDisposable
             _ => TimerAction(), 
             null, 
             TimeSpan.Zero, 
-            TimeSpan.FromMinutes(2));
+            TimeSpan.FromMinutes(5));
     }
 
     public void Dispose() => _timer?.Dispose();

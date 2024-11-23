@@ -72,9 +72,19 @@ public class SessionConnectionService: ISessionConnectionService
             .Build();
         
         _sessionInstances.AddOrUpdate(sessionInstance.Id, sessionInstance, (_, _) => sessionInstance);
-        
-        await sessionInstance.CreateConnection(cancellationToken);
 
+        try
+        {
+            await sessionInstance.CreateConnection(cancellationToken);
+        }
+        catch (Exception)
+        {
+            _sessionInstances.TryRemove(sessionInstance.Id, out _);
+            
+            throw;
+        }
+        
+        
         return sessionInstance;
     }
     

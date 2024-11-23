@@ -27,3 +27,8 @@ export interface TerminalSetting {
     fontSize: number,
     terminalThemeId: number
 }
+
+export interface UpdateTerminalSettingData {
+    fontSize: number,
+    terminalThemeId: number
+}

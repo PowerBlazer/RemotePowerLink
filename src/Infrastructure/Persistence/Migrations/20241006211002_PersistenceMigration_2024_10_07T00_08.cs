@@ -18,11 +18,7 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropPrimaryKey(
                 name: "pk_encoding",
-                table: "encoding");
-
-            migrationBuilder.RenameTable(
-                name: "encoding",
-                newName: "encodings");
+                table: "encodings");
 
             migrationBuilder.RenameIndex(
                 name: "ix_encoding_name",

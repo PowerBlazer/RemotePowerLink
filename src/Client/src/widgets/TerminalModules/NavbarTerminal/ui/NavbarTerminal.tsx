@@ -6,7 +6,7 @@ import PlusIcon from 'shared/assets/icons/plus.svg';
 import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import TerminalIcon from 'shared/assets/icons/terminal-cursor.svg'
 import CloseIcon from 'shared/assets/icons/close.svg';
-import { MouseEvent, useEffect, useRef } from 'react';
+import {MouseEvent, useEffect, useMemo, useRef} from 'react';
 import { ConnectionState } from 'app/hubs/hubFactory';
 import { Loader } from 'shared/ui/Loader/Loader';
 
@@ -18,6 +18,12 @@ interface NavbarTerminalProps {
 function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) {
     const sessionTabsRef = useRef<HTMLDivElement>(null);
 
+    const terminalTheme = useMemo(() => terminalStore
+            .terminalThemes
+            .find(p=>p.id === terminalStore.terminalSetting.terminalThemeId), 
+        [terminalStore.terminalSetting.terminalThemeId, terminalStore.terminalThemes]
+    );
+    
     const closeSession = async (e: MouseEvent<HTMLDivElement>, sessionId: number) => {
         e.stopPropagation();
 
@@ -44,7 +50,7 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
             return;
         }
 
-        if (terminalStore.selectedSession) {
+        if (terminalStore.selectedSession && !terminalStore.selectedSession.isLoad) {
             await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
         }
 
@@ -73,7 +79,7 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
     }, []);
 
     return (
-        <div className={classNames(style.navbarTerminal, {}, [className])}>
+        <div className={classNames(style.navbarTerminal, {}, [className])} style={{backgroundColor: terminalTheme.background}}>
             <div className={classNames(style.session_tabs)} ref={sessionTabsRef}>
                 {
                     terminalStore.sessions.map(session =>

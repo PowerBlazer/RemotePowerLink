@@ -35,4 +35,23 @@ public class TerminalSettingRepository: ITerminalSettingRepository
 
         return terminalSetting;
     }
+
+    public async Task<TerminalSetting> UpdateTerminalSetting(TerminalSetting terminalSetting)
+    {
+        var existingEntity = _persistenceContext.TerminalSettings.Local
+            .FirstOrDefault(e => e.Id == terminalSetting.Id);
+
+        if (existingEntity != null)
+        {
+            _persistenceContext.Entry(existingEntity).State = EntityState.Detached;
+        }
+        
+        _persistenceContext.Attach(terminalSetting);
+        
+        _persistenceContext.TerminalSettings.Update(terminalSetting);
+
+        await _persistenceContext.SaveChangesAsync();
+
+        return terminalSetting;
+    }
 }

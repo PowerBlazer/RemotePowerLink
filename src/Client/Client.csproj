@@ -9,7 +9,6 @@
     <ItemGroup>
       <Folder Include="src\features\SftpModules\" />
       <Folder Include="src\features\SidebarModules\" />
-      <Folder Include="src\features\TerminalModules\" />
       <Folder Include="src\shared\assets\fonts\" />
       <Folder Include="src\shared\assets\icons\navbar\" />
       <Folder Include="src\widgets\SftpModules\" />

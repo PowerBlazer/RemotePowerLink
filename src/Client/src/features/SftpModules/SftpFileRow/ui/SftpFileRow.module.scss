@@ -6,7 +6,7 @@
   
   &.select{
     background-color: var(--file-item-select-bg-color) ;
-    color: var(--button-primary-color);
+    color: var(--primary-color);
   }
 
   &:not(.disable_hover):hover{
@@ -42,7 +42,7 @@
       user-select: none;
 
       & .highlight{
-        color: var(--button-primary-color);
+        color: var(--primary-color);
       }
     }
   }

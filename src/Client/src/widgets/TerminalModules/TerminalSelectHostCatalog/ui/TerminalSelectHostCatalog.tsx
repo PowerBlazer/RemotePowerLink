@@ -11,6 +11,7 @@ import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { useTranslation } from 'react-i18next';
 import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import { SessionService } from 'app/services/SessionService/sessionService';
+import toast from "react-hot-toast";
 
 interface TerminalSelectHostCatalogProps {
     className?: string;
@@ -70,8 +71,22 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
 
             currentSession.id = createdSessionResult.result.id;
             currentSession.isNew = false;
+            
+            if(terminalStore.selectedSession && !terminalStore.selectedSession.isLoad){
+                await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
+            }
 
             terminalStore.selectedSession = currentSession;
+        }
+        
+        if(!createdSessionResult.isSuccess){
+            if(terminalStore.selectedSession && terminalStore.selectedSession.id === uniqueId){
+                terminalStore.selectedSession = null;
+            }
+            
+            terminalStore.sessions = terminalStore.sessions.filter(p => p.id !== uniqueId);
+
+            toast.error(Object.values(createdSessionResult.errors).join('\n'));
         }
     }
 

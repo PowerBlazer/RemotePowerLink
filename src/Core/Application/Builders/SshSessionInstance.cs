@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System.Net.Sockets;
+using System.Text;
 using Application.Builders.Abstract;
 using Application.Helpers;
 using Domain.DTOs.Connection;
+using Domain.Exceptions;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 
@@ -36,25 +38,34 @@ public class SshSessionInstance: ISessionInstance
         var connectionInfo = ConnectionMapper.GetConnectionInfo(ConnectionServer);
         
         _client = new SshClient(connectionInfo);
-        await _client.ConnectAsync(cancellationToken);
-        
-        var terminalModes = new Dictionary<TerminalModes, uint>();
-        
-        _stream = _client.CreateShellStream(
-            "xterm", 
-            80, 
-            24, 
-            800, 
-            600, 
-            2048, 
-            terminalModes);
 
-        _stream.DataReceived += (_, args) =>
+        try
         {
-            var output = Encoding.UTF8.GetString(args.Data);
+            await _client.ConnectAsync(cancellationToken);
+        
+            var terminalModes = new Dictionary<TerminalModes, uint>();
+        
+            _stream = _client.CreateShellStream(
+                "xterm", 
+                80, 
+                24, 
+                800, 
+                600, 
+                2048, 
+                terminalModes);
 
-            OutputDataReceived(output);
-        };
+            _stream.DataReceived += (_, args) =>
+            {
+                var output = Encoding.UTF8.GetString(args.Data);
+
+                OutputDataReceived(output);
+            };
+        }
+        catch (SocketException)
+        {
+            throw new SessionException("Connection", "Не удалось подключится к удаленному хосту");
+        }
+        
     }
     
     public async Task DiconnectConnection()

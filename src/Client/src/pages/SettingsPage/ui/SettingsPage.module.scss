@@ -4,6 +4,20 @@
   padding: 25px 18px 18px;
   background-color: var(--setting-page-bg-color);
   position: relative;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar{
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track{
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb{
+    background-color: rgba(90, 94, 115, 0.57);
+    border-radius: 5px;
+  }
 
   & .setting_inner{
     max-width: 800px;
@@ -27,7 +41,17 @@
   }
 }
 
-.terminal_setting{
-  
-  
+.loader{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% ,-50%);
+
+  & > div{
+    width: 45px;
+    height: 45px;
+    border-width: 2px;
+    border-color: var(--loader-color) transparent;
+  }
 }
+

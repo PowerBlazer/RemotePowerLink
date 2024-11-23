@@ -1,4 +1,5 @@
 ﻿using Application.Features.TerminalSettingFeature.GetTerminalSettingByUser;
+using Application.Features.TerminalSettingFeature.UpdateTerminalSetting;
 using Application.Features.TerminalThemeFeature.GetTerminalThemes;
 using Domain.Common;
 using Domain.DTOs.Terminal;
@@ -57,9 +58,17 @@ public class TerminalController: BaseController
     }
 
     [HttpPost("update-setting")]
-    public async Task UpdateTerminalSetting()
+    public async Task<ApiActionResult<TerminalSettingResponse>> UpdateTerminalSetting(
+        [FromBody] UpdateTerminalSettingCommand updateTerminalSettingCommand)
     {
-            
+        updateTerminalSettingCommand.UserId = UserId;
+        
+        var result = await Mediator.Send(updateTerminalSettingCommand);
+
+        return new ApiActionResult<TerminalSettingResponse>
+        {
+            Result = result
+        };
     }
     
     

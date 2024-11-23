@@ -2,13 +2,27 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 100%;
   border-left: 2px solid var(--main-page-color-line);
   position: relative;
+  width: 100%;
+  overflow-x: auto;
   
   &.information{
     align-items: center;
     justify-content: center;
+  }
+
+  &::-webkit-scrollbar{
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track{
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb{
+    background-color: rgba(90, 94, 115, 0.57);
+    border-radius: 5px;
   }
 }
 

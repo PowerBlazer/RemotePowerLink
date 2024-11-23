@@ -19,10 +19,6 @@ public class GetTerminalSettingByUserHandler: IRequestHandler<GetTerminalSetting
     {
         var terminalSetting = await _terminalSettingRepository.GetTerminalSettingByUser(request.UserId);
 
-        return new TerminalSettingResponse
-        {
-            FontSize = terminalSetting.FontSize,
-            TerminalThemeId = terminalSetting.TerminalThemeId
-        };
+        return TerminalSettingResponse.MapTo(terminalSetting);
     }
 }

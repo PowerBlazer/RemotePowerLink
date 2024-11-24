@@ -30,7 +30,6 @@ function Terminal ({ className }: TerminalProps) {
 
             xterm.options.cursorBlink = true;
             xterm.options.fontSize = terminalStore.terminalSetting?.fontSize;
-            xterm.options.fontWeight = '600';
             xterm.options.theme = {
                 background: terminalTheme.background,
                 foreground: terminalTheme.foreground,

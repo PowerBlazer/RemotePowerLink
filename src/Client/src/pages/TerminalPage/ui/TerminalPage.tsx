@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { NavbarTerminal } from 'widgets/TerminalModules/NavbarTerminal';
 import terminalStore from 'app/store/terminalStore';
 import { SelectHostBlock } from 'features/SelectHostBlock';
-import { useState } from 'react';
+import {useMemo, useState} from 'react';
 import { TerminalSelectHostCatalog } from 'widgets/TerminalModules/TerminalSelectHostCatalog';
 import userStore from 'app/store/userStore';
 import { Loader } from 'shared/ui/Loader/Loader';
@@ -17,6 +17,12 @@ function TerminalPage () {
 
     const isSessionsNull = terminalStore.sessions.length === 0;
     const [isSelectHost, setIsSelectHost] = useState<boolean>(false);
+
+    const terminalTheme = useMemo(() => terminalStore
+            .terminalThemes
+            .find(p=> p.id === terminalStore.terminalSetting?.terminalThemeId),
+        [terminalStore.terminalSetting?.terminalThemeId, terminalStore.terminalThemes]
+    );
 
     if (userStore.isLoadData) {
         return (
@@ -43,7 +49,7 @@ function TerminalPage () {
     }
 
     return (
-        <div className={classNames(style.terminalPage)}>
+        <div className={classNames(style.terminalPage)} style={{backgroundColor: terminalTheme?.background}}>
             <div className={classNames(style.header)}>
                 <NavbarTerminal onClickSelectHost={() => { setIsSelectHost(true); }}/>
             </div>

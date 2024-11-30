@@ -16,7 +16,7 @@ import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { Select, SelectedItem, SelectItem } from 'shared/ui/Select';
 import userStore from 'app/store/userStore';
 import { HostService } from 'app/services/hostService';
-import { DefaultServerIcon } from 'features/DefaultServerIcon';
+import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon';
 import { Input } from 'shared/ui/Input';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpService } from 'app/services/SftpService/sftpService';

@@ -111,6 +111,11 @@ public class SshSessionInstance: ISessionInstance
         return sessionData.ToString();
     }
 
+    public SshClient? GetSshClient()
+    {
+        return _client;
+    }
+
     private void OutputDataReceived(string output)
     {
         if (IsConnected && OutputCallback is not null)

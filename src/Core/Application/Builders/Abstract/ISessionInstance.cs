@@ -1,4 +1,5 @@
 ﻿using Domain.DTOs.Connection;
+using Renci.SshNet;
 
 namespace Application.Builders.Abstract;
 
@@ -20,5 +21,6 @@ public interface ISessionInstance: IDisposable
     Task DiconnectConnection();
     Task WriteCommand(string command);
     Task<string> GetFullSessionData();
+    SshClient? GetSshClient();
 
 }

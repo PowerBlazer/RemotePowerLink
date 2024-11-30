@@ -1,12 +1,11 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useContext } from 'react';
-import { Logotype } from 'features/Logotype';
+import { Logotype } from 'shared/ui/Logotype';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { RegistrationContext, RegistrationSteps, StepsElements } from 'app/providers/RegistrationProvider';
 import style from './Signup.module.scss';
 import { Button } from 'shared/ui/Button/Button';
-import { NavbarBasic } from 'widgets/NavbarBasic';
 
 export default function Signup () {
     const { t } = useTranslation('authorization')

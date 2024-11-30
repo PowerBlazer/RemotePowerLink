@@ -9,10 +9,9 @@ import { Loader } from 'shared/ui/Loader/Loader';
 import { useTranslation } from 'react-i18next';
 import { DataTypeEnum } from 'app/enums/DataTypeEnum';
 import UserCard from 'shared/assets/icons/user-card.svg';
-import ServerIcon from 'shared/assets/icons/navbar/server2.svg';
 import searchStore from 'app/store/searchStore';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
-import { DefaultServerIcon } from 'features/DefaultServerIcon';
+import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon';
 
 export enum ServerManagerCatalogMode {
     Catalog = 'CATALOG',

@@ -12,7 +12,7 @@ import { SftpCatalogNavigation } from 'features/SftpModules/SftpCatalogNavigatio
 import { SftpMenu } from 'widgets/SftpModules/SftpMenu';
 import { useMemo, useRef, useState } from 'react';
 import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
-import { DefaultServerIcon } from 'features/DefaultServerIcon'
+import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon'
 
 interface NavbarSftpProps extends SftpCatalogModeProps {
     className?: string,

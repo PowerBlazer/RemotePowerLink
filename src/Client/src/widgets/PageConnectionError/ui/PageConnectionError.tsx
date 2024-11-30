@@ -1,7 +1,7 @@
 ﻿import { classNames } from 'shared/lib/classNames/classNames';
 import style from './PageConnectionError.module.scss';
 import {HostService} from "app/services/hostService";
-import {DefaultServerIcon} from "features/DefaultServerIcon";
+import {DefaultServerIcon} from "shared/ui/DefaultServerIcon";
 import {Button} from "shared/ui/Button/Button";
 import {SftpServer} from "app/store/sftpStore";
 import {useTranslation} from "react-i18next";

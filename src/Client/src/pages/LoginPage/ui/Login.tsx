@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { classNames } from 'shared/lib/classNames/classNames';
-import { Logotype } from 'features/Logotype';
+import { Logotype } from 'shared/ui/Logotype';
 import { Link, useNavigate } from 'react-router-dom';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';

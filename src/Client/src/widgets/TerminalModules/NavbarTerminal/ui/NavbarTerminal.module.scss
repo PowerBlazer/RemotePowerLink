@@ -34,7 +34,7 @@
     display: flex;
     gap: 5px;
     align-items: center;
-    margin: 0 10px;
+    
     
     & .line{
       height: 17px;
@@ -44,7 +44,7 @@
     }
 
     .open_session{
-      width: 28px;
+      min-width: 28px;
       height: 28px;
       display: flex;
       justify-content: center;
@@ -67,6 +67,16 @@
       }
     }
 
+    
+    &.isLight{ 
+      & .open_session:hover {
+        & .plus_icon path{
+          fill: #32364A;
+        }
+
+        background-color: #C8CCD1;
+      }
+    }
   }
   
   & .session_tab{
@@ -78,23 +88,56 @@
     align-items: center;
     padding: 0 10px;
     margin-bottom: 2px;
-   
-    &:hover{
-      filter: brightness(140%);
-    }
-    
-    &.isLight:hover{
-      filter: brightness(90%);
-    }
+    background-color: rgba(149, 149, 149, 0.34);
+    transition: background-color .3s;
     
     &:not(.selected){
       margin-top: 2px;
     }
+
+    &:hover{
+      background-color: rgba(200, 200, 200, 0.34);
+    }
     
     &.selected{
-      background-color: var(--terminal-tab-hover-bg-color);
+      background-color: rgba(200, 200, 200, 0.34);
       border-bottom: 2px solid var(--terminal-tab-selected-text-color);
       margin-bottom: 0;
+      cursor: default;
+      
+      & .terminal_icon path {
+        fill: var(--terminal-tab-selected-text-color) !important;
+      }
+
+      & .session_title{
+        color: var(--terminal-tab-selected-text-color);
+      }
+    }
+
+    &.isLight {
+      background-color: #C8CCD1;
+      
+      .session_title{
+        color: #32364A;
+      }
+
+      .terminal_icon path{
+        fill: #32364A !important;
+      }
+      
+      .close_session{
+        &:hover{
+          background-color: rgba(255, 255, 255, 0.51);
+        }
+
+        & path{
+          stroke: #32364A;
+        }
+      }
+    }
+
+    &.isLight.selected{
+      background-color: rgba(168, 168, 168, 0.25);
 
       & .terminal_icon path {
         fill: var(--terminal-tab-selected-text-color) !important;
@@ -102,6 +145,16 @@
 
       & .session_title{
         color: var(--terminal-tab-selected-text-color);
+      }
+
+      .close_session{
+        &:hover{
+          background-color: rgba(197, 197, 197, 0.52);
+        }
+
+        & path{
+          stroke: #32364A;
+        }
       }
     }
     
@@ -117,7 +170,7 @@
     
     & .session_title{
       font-size: 12px;
-      color: var(--terminal-tab-text-color);
+      color: white;
       font-weight: 500;
     }
     
@@ -128,6 +181,7 @@
       justify-content: center;
       align-items: center;
       border-radius: 3px;
+      cursor: pointer;
       
       &:hover{
         background-color: rgba(255, 255, 255, 0.09);

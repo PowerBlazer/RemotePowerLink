@@ -20,9 +20,11 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
 
     const terminalTheme = useMemo(() => terminalStore
             .terminalThemes
-            .find(p=>p.id === terminalStore.terminalSetting.terminalThemeId), 
+            .find(p=> p.id === terminalStore.terminalSetting.terminalThemeId), 
         [terminalStore.terminalSetting.terminalThemeId, terminalStore.terminalThemes]
     );
+    
+    const isLight = isLightBackground(terminalTheme.background);
     
     const closeSession = async (e: MouseEvent<HTMLDivElement>, sessionId: number) => {
         e.stopPropagation();
@@ -86,9 +88,8 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
                         <Button
                             className={classNames(style.session_tab, {
                                 [style.selected]: terminalStore.selectedSession && terminalStore.selectedSession.id === session.id,
-                                [style.isLight]: isLightBackground(terminalTheme.selection)
+                                [style.isLight]: isLight
                             }, [])}
-                            style={{backgroundColor: hexToRgba(terminalTheme.selection, 0.6)}}
                             key={session.id}
                             onClick={async () => { await selectTab(session); }}
                             type='button'
@@ -100,10 +101,9 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
                                         : <TerminalIcon width={16} height={16} className={classNames(style.terminal_icon)}/>
 
                                 }
-                                <div 
-                                    className={classNames(style.session_title)}
-                                    style={{color: terminalTheme.foreground}}
-                                >{session.name ?? session.host?.title}</div>
+                                <div className={classNames(style.session_title)}>
+                                    {session.name ?? session.host?.title}
+                                </div>
                             </div>
 
                             <div
@@ -115,7 +115,7 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
                         </Button>
                     )
                 }
-                <div className={classNames(style.open_session_block)}>
+                <div className={classNames(style.open_session_block, {[style.isLight]: isLight})}>
                     <div className={classNames(style.line)}></div>
                     <Button className={classNames(style.open_session)} onClick={onClickSelectHost}>
                         <PlusIcon width={14} height={14} className={classNames(style.plus_icon)}/>

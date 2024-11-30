@@ -29,8 +29,8 @@ export function ThemeCard ({ className, terminalTheme, isSelected, onClick }: Th
                 <div 
                     className={classNames(style.line,{}, [style.stroke])} 
                     style={{
-                        boxShadow: `0px 0px 0px 3px ${hexToRgba(terminalTheme.cursor, 0.4)}`,
-                        backgroundColor: hexToRgba(terminalTheme.cursor, 0.4),
+                        boxShadow: `0px 0px 0px 3px ${hexToRgba(terminalTheme.selection)}`,
+                        backgroundColor: hexToRgba(terminalTheme.selection),
                     }}
                 >
                     <div 

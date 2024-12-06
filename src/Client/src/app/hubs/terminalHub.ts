@@ -36,9 +36,13 @@ class TerminalHub {
                 this.onError(err.toString())
             });
 
-        this.events = (onSessionOutput) => {
+        this.events = (onSessionOutput, onDisconnect) => {
             this.connection.on("SessionOutput", (outputData:TerminalOutputData) => {
                 onSessionOutput(outputData);
+            });
+            
+            this.connection.on("SessionDisconected", (sessionId: number) => {
+                onDisconnect(sessionId);
             });
 
             this.connection.on('HandleError', (message: Record<string, string[]>) => {
@@ -48,7 +52,8 @@ class TerminalHub {
     }
     
     public events: (
-        onSessionOutput:(outputData: TerminalOutputData) => void
+        onSessionOutput:(outputData: TerminalOutputData) => void,
+        onDisconnect: (sessionId: number) => void,
     ) => void;
     
     public onConnect: () => Promise<void> = async function connect () { };

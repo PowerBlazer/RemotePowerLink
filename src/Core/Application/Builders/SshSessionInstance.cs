@@ -47,9 +47,9 @@ public class SshSessionInstance: ISessionInstance
         
             _stream = _client.CreateShellStream(
                 "xterm", 
-                80, 
+                90, 
                 24, 
-                800, 
+                1000, 
                 600, 
                 2048, 
                 terminalModes);
@@ -150,7 +150,7 @@ public class SshSessionInstance: ISessionInstance
     {
         if (!string.IsNullOrEmpty(LogFilePath) && File.Exists(LogFilePath))
         {
-            File.AppendAllText(LogFilePath, _sessionOutput.ToString());
+            File.AppendAllText(LogFilePath, _sessionOutput.ToString(), Encoding.UTF8);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
-using Application.Services.Logic;
 using Domain.DTOs.Connection;
 using Domain.DTOs.Sftp;
 using Domain.Enums;

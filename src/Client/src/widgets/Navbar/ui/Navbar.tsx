@@ -25,6 +25,7 @@ import { SessionService } from 'app/services/SessionService/sessionService';
 import TerminalHub from 'app/hubs/terminalHub';
 import toast from 'react-hot-toast';
 import { TerminalService } from 'app/services/TerminalService/terminalService';
+import {ConnectionState} from "app/hubs/hubFactory";
 
 interface NavbarProps {
     className?: string
@@ -122,14 +123,34 @@ function Navbar ({ className }: NavbarProps) {
                 });
 
                 terminalStore.terminalHub = new TerminalHub();
-                terminalStore.terminalHub.events((outputData) => {
-                    const currentSession = terminalStore.sessions.find(p => p.id === outputData.sessionId);
+                terminalStore.terminalHub.events(
+                    (outputData) => {
+                        const currentSession = terminalStore.sessions.find(p => p.id === outputData.sessionId);
+    
+                        if (currentSession && outputData.data) {
+                            currentSession.isLoad = false;
+                            currentSession.onOutput?.(outputData.data);
+                        }
+                    },
+                    (sessionId) => {
+                        terminalStore.sessions = terminalStore.sessions.filter(p => p.id !== sessionId);
 
-                    if (currentSession && outputData.data) {
-                        currentSession.isLoad = false;
-                        currentSession.onOutput?.(outputData.data);
+                        if (terminalStore.selectedSession?.id === sessionId && terminalStore.sessions.length > 0) {
+                            if (terminalStore.sessions[0].isCreate) {
+                                terminalStore.sessions[0].isCreate = false;
+                            }
+                            terminalStore.selectedSession = terminalStore.sessions[0];
+                        }
+
+                        if (terminalStore.sessions.length === 0) {
+                            terminalStore.selectedSession = null;
+                        }
+
+                        if (terminalStore.terminalHub.getConnectionState() === ConnectionState.Connected) {
+                            terminalStore.terminalHub.disconnectFromSession(sessionId);
+                        }
                     }
-                });
+                );
 
                 terminalStore.terminalHub.onError = (errors) => {
                     if (terminalStore.selectedSession) {

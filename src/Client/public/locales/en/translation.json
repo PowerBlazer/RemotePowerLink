@@ -132,6 +132,10 @@
     "Превышен лимит загрузки файлов (5GB)": "File download limit exceeded (5GB)",
     "Отправка запроса на загрузку файлов": "Sending a file download request",
     "Отправка файлов на сервер": "Sending files to the server",
-    "Терминал": "Terminal"
+    "Терминал": "Terminal",
+    "Настройки терминала": "Terminal setting",
+    "Сохранить": "Save",
+    "Размер текста": "Text size",
+    "Тема терминала": "Terminal theme"
     
 }

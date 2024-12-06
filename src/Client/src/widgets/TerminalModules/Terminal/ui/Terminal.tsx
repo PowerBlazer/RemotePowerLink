@@ -40,7 +40,7 @@ function Terminal ({ className }: TerminalProps) {
                 green: terminalTheme.green,
                 yellow: terminalTheme.yellow,
                 blue: terminalTheme.blue,
-                magenta: terminalTheme.purple, // purple мапится на magenta
+                magenta: terminalTheme.purple,
                 cyan: terminalTheme.cyan,
                 white: terminalTheme.white,
                 brightBlack: terminalTheme.brightBlack,
@@ -48,7 +48,7 @@ function Terminal ({ className }: TerminalProps) {
                 brightGreen: terminalTheme.brightGreen,
                 brightYellow: terminalTheme.brightYellow,
                 brightBlue: terminalTheme.brightBlue,
-                brightMagenta: terminalTheme.brightPurple, // brightPurple мапится на brightMagenta
+                brightMagenta: terminalTheme.brightPurple, 
                 brightCyan: terminalTheme.brightCyan,
                 brightWhite: terminalTheme.brightWhite,
             };
@@ -79,8 +79,7 @@ function Terminal ({ className }: TerminalProps) {
                     xterm.write(data);
                 }
             }
-
-            // Обработка очистки при размонтировании компонента
+            
             return () => {
                 xterm.dispose();
             };

@@ -1,16 +1,21 @@
-import sftpStore, { MenuMode, SftpModalOption, SftpNotificationData, SftpServer } from 'app/store/sftpStore';
-import { SftpCatalogMode } from 'app/services/SftpService/config';
+import sftpStore, {
+    MenuMode,
+    SftpModalOption,
+    SftpNotificationData,
+    SftpServer,
+    SftpScreenSplitMode
+} from 'app/store/sftpStore';
 import SftpHub from 'app/hubs/sftpHub';
 import toast from 'react-hot-toast';
 import { ConnectionState } from 'app/hubs/hubFactory';
 import { Stack } from 'shared/lib/Stack';
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 
-const useSftp = (mode: SftpCatalogMode) => {
+const useSftp = (windowIndex: SftpScreenSplitMode) => {
     function initialSftp (onError: () => void) {
-        const host = sftpStore.getHostInMode(mode);
+        const host = sftpStore.getHostInMode(windowIndex);
 
-        if (host) {
+        if (host && !host.sftpHub) {
             const sftpHub = new SftpHub();
 
             host.isLoad = true;
@@ -21,11 +26,11 @@ const useSftp = (mode: SftpCatalogMode) => {
                     (files) => {
                         host.sftpFileList = files
                         host.isLoad = false;
-                        sftpStore.setFileItems(mode)
+                        sftpStore.setFileItems(windowIndex)
                     },
-                    (downloadData) => { notificationDownloadOrUploadHandler(downloadData, mode); },
-                    (uploadData) => { notificationDownloadOrUploadHandler(uploadData, mode); },
-                    (sendData) => { notificationDownloadOrUploadHandler(sendData, mode) }
+                    (downloadData) => { notificationDownloadOrUploadHandler(downloadData); },
+                    (uploadData) => { notificationDownloadOrUploadHandler(uploadData); },
+                    (sendData) => { notificationDownloadOrUploadHandler(sendData) }
                 );
 
                 await sftpHub.getFilesServer(host.server.serverId);
@@ -37,7 +42,7 @@ const useSftp = (mode: SftpCatalogMode) => {
                 }
 
                 if (host) {
-                    host.error = { errors };
+                    host.errors = errors;
                     host.isLoad = false;
                     host.modalOption.errorState = true;
                 }
@@ -46,17 +51,19 @@ const useSftp = (mode: SftpCatalogMode) => {
             }
         }
     }
-
+    function getHost(){
+        return sftpStore.getHostInMode(windowIndex);
+    }
     async function closeSftp () {
-        const selectedHost = sftpStore.getHostInMode(mode);
+        const selectedHost = sftpStore.getHostInMode(windowIndex);
         if (selectedHost?.sftpHub.getConnectionState() === ConnectionState.Connected) {
             await selectedHost?.sftpHub.closeConnection();
         }
 
-        sftpStore.setHostInMode(mode, null);
+        sftpStore.setHostInMode(windowIndex, null);
     }
     async function reconnectSftp () {
-        const selectedHost = sftpStore.getHostInMode(mode);
+        const selectedHost = getHost();
 
         if (selectedHost) {
             initialSftpInstance(selectedHost.server);
@@ -92,16 +99,16 @@ const useSftp = (mode: SftpCatalogMode) => {
             modalOption: modalOptions
         }
 
-        const selectedHost = sftpStore.getHostInMode(mode);
+        const selectedHost = getHost();
 
         if (selectedHost?.sftpHub) {
             selectedHost.sftpHub.closeConnection();
         }
 
-        sftpStore.setHostInMode(mode, newHostInstance);
+        sftpStore.setHostInMode(windowIndex, newHostInstance);
     }
-    const notificationDownloadOrUploadHandler = (notificationData: SftpNotificationData, mode: SftpCatalogMode) => {
-        const selectedHost = sftpStore.getHostInMode(mode);
+    const notificationDownloadOrUploadHandler = (notificationData: SftpNotificationData) => {
+        const selectedHost = getHost();
 
         if (selectedHost.notificationOptions) {
             selectedHost.notificationOptions = {
@@ -110,12 +117,13 @@ const useSftp = (mode: SftpCatalogMode) => {
             }
         }
     }
-
+    
     return {
         initialSftp,
         closeSftp,
         reconnectSftp,
-        connectSftp
+        connectSftp,
+        getHost
     }
 }
 

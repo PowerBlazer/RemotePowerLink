@@ -4,14 +4,18 @@ import { MenuOptionProp } from 'features/SftpModules/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import { useTranslation } from 'react-i18next';
 import sftpStore from 'app/store/sftpStore';
+import useSftp from "app/hooks/useSftp";
 
 interface DownloadProps extends MenuOptionProp {
     className?: string;
 }
 
-export function Download ({ className, mode, disabled, onClick }: DownloadProps) {
+export function Download ({ className, windowsIndex, disabled, onClick }: DownloadProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getHostInMode(mode);
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
+    
     const onClickDownloadHandler = () => {
         if (disabled) { return; }
 

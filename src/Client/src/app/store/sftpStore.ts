@@ -1,7 +1,7 @@
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import SftpHub from 'app/hubs/sftpHub';
 import { FileType, SftpFile, SftpFileList } from 'app/services/SftpService/config';
-import { makeAutoObservable, observable } from 'mobx';
+import {makeAutoObservable, observable, reaction} from 'mobx';
 import { Stack } from 'shared/lib/Stack';
 
 export interface SftpServer {
@@ -9,7 +9,7 @@ export interface SftpServer {
     sftpHub?: SftpHub,
     sftpFileList?: SftpFileList,
     sftpFilesOption: SftpFilesOption
-    error?: SftpError,
+    errors?: Record<string, string[]>,
     menuOption?: SftpMenuOption,
     modalOption: SftpModalOption,
     notificationOptions?: SftpNotificationOptions
@@ -71,11 +71,7 @@ export interface SftpNotificationOptions {
     onCancel?: () => void
 }
 
-export interface SftpError {
-    errors: Record<string, string[]>
-}
-
-export enum SftpWindowOption{
+export enum SftpScreenSplitMode{
     FIRST = 1,
     DOUBLE = 2,
     TRIPLE = 3,
@@ -84,11 +80,20 @@ export enum SftpWindowOption{
 
 class SftpStore {
     constructor () {
-        makeAutoObservable(this)
+        makeAutoObservable(this);
+        
+        reaction(
+            () => this.windowOption,
+            (option) => {
+                this.initializeHosts(option);
+            }
+        );
+
+        this.initializeHosts(this.windowOption);
     }
     
-    @observable public windowOption = SftpWindowOption.FIRST;
-    @observable public hosts: SftpServer[] | null[] = ;
+    @observable public windowOption = SftpScreenSplitMode.DOUBLE;
+    @observable public hosts: SftpServer[] | null[] = [];
     
     @observable public editableWidthSplit: boolean = false;
     
@@ -98,10 +103,6 @@ class SftpStore {
 
     setHostInMode (windowIndex: number, host: SftpServer | null) {
         this.hosts[windowIndex] = host;
-    }
-    
-    setWindowOption(windowOption:SftpWindowOption){
-        this.windowOption = windowOption;
     }
 
     setFileItems (windowIndex: number) {
@@ -218,6 +219,19 @@ class SftpStore {
             });
 
         selectedHost.sftpFilesOption.fileList = fileList;
+    }
+
+    private initializeHosts(option: SftpScreenSplitMode) {
+        if (this.hosts.length > option) {
+            this.hosts.slice(option).forEach((host) => {
+                if (host && typeof host.sftpHub?.closeConnection() === "function") {
+                    host.sftpHub?.closeConnection();
+                }
+            });
+        }
+        
+        const newHosts = this.hosts.slice(0, option);
+        this.hosts = newHosts.concat(Array(option - newHosts.length).fill(null));
     }
 }
 

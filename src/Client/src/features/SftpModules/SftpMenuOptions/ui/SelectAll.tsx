@@ -4,19 +4,22 @@ import { MenuOptionProp } from 'features/SftpModules/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
+import useSftp from "app/hooks/useSftp";
 
 interface SelectAllProps extends MenuOptionProp {
     className?: string;
 }
 
-export function SelectAll ({ className, disabled, mode, onClick }: SelectAllProps) {
+export function SelectAll ({ className, disabled, windowsIndex, onClick }: SelectAllProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getHostInMode(mode);
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const onClickSelectAllHandler = () => {
         if (disabled) { return; }
 
-        if (selectedHost?.sftpFileList) { sftpStore.setSelectAllInFilter(mode); }
+        if (selectedHost?.sftpFileList) { sftpStore.setSelectAllInFilter(windowsIndex); }
 
         if (onClick) {
             onClick();

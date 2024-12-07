@@ -4,14 +4,17 @@ import { MenuOptionProp } from 'features/SftpModules/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
+import useSftp from "app/hooks/useSftp";
 
 interface RefreshProps extends MenuOptionProp {
     className?: string;
 }
 
-export function Refresh ({ className, disabled, mode, onClick }: RefreshProps) {
+export function Refresh ({ className, disabled, windowsIndex, onClick }: RefreshProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getHostInMode(mode);
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const onClickRefreshHandler = () => {
         if (disabled) { return; }

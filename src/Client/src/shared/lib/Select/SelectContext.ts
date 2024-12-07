@@ -6,7 +6,9 @@ export interface SelectContextProps {
     visible?: boolean,
     setVisible?: (visible: boolean) => void,
     selectedElement?: SelectedItem,
-    setSelected?: (selectedItem: SelectedItem) => void
+    setSelected?: (selectedItem: SelectedItem) => void,
+    searchValue?: string
+    
 }
 
 export const SelectContext = createContext<SelectContextProps>({});

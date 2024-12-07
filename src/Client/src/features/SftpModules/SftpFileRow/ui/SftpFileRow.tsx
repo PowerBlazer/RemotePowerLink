@@ -6,19 +6,21 @@ import sftpStore, { MenuMode } from 'app/store/sftpStore';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg'
 import FileIcon from 'shared/assets/icons/sftp/file.svg'
 import { MouseEvent, useEffect, useRef, useState } from 'react';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { formatByteString } from 'shared/lib/formatByteString';
+import useSftp from "app/hooks/useSftp";
 
-interface SftpFileRowProps extends SftpCatalogModeProps {
+interface SftpFileRowProps extends SftpWindowsOptionProps {
     className?: string;
     fileData: SftpFile;
 }
 
-function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
+function SftpFileRow ({ className, fileData, windowsIndex }: SftpFileRowProps) {
     const [isVisibleDate, setVisibleDate] = useState<boolean>(true);
     const fileItemRef = useRef<HTMLTableRowElement>(null);
+    const { getHost } = useSftp(windowsIndex);
 
-    const selectedHost = sftpStore.getHostInMode(mode)
+    const selectedHost = getHost()
 
     const openFileHandler = async () => {
         if (fileData.fileType === FileType.Folder || fileData.fileType === FileType.BackNavigation) {
@@ -53,9 +55,9 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
 
     const selectFileHandler = (e: MouseEvent<HTMLDivElement>) => {
         if (e.ctrlKey) {
-            sftpStore.setSelectFileItem(mode, fileData.path, false)
+            sftpStore.setSelectFileItem(windowsIndex, fileData.path, false)
         } else {
-            sftpStore.setSelectFileItem(mode, fileData.path)
+            sftpStore.setSelectFileItem(windowsIndex, fileData.path)
         }
     }
 
@@ -75,7 +77,7 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        sftpStore.setSelectFileItem(mode, fileData.path, false, true);
+        sftpStore.setSelectFileItem(windowsIndex, fileData.path, false, true);
 
         const selectedItemsCount = selectedHost?.sftpFilesOption
             .fileList?.filter(p => p.isSelected)?.length;

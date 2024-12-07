@@ -4,26 +4,29 @@ import { observer } from 'mobx-react-lite';
 import sftpStore from 'app/store/sftpStore';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpFileRow } from 'features/SftpModules/SftpFileRow';
-import { SftpCatalogMode, SftpFile } from 'app/services/SftpService/config';
+import { SftpFile } from 'app/services/SftpService/config';
 import { useTranslation } from 'react-i18next';
 import { UIEvent, useEffect, useMemo, useRef, useState } from 'react';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import { Button } from 'shared/ui/Button/Button';
 import { SftpMenu } from 'widgets/SftpModules/SftpMenu';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { ConnectionState } from 'app/hubs/hubFactory';
+import useSftp from "app/hooks/useSftp";
 
-interface SftpCatalogTableProps extends SftpCatalogModeProps {
+interface SftpCatalogTableProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
+function SftpCatalogTable ({ className, windowsIndex }: SftpCatalogTableProps) {
     const { t, i18n } = useTranslation('translation')
     const [isVisibleDate, setVisibleDate] = useState<boolean>(true);
     const [scrollTop, setScrollTop] = useState<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const selectedHost = sftpStore.getHostInMode(mode)
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const createColumnSortOptions = (key: keyof SftpFile) => {
         const columnSortInstance = selectedHost.sftpFilesOption.filterOptions?.columnSort;
@@ -38,7 +41,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
 
         const setFilterOptions = () => {
             if (selectedHost?.sftpHub?.getConnectionState() === ConnectionState.Connected) {
-                sftpStore.setSftpFilterOptions(mode, {
+                sftpStore.setSftpFilterOptions(windowsIndex, {
                     ...selectedHost.sftpFilesOption.filterOptions,
                     columnSort: !columnSortInstance
                         ? { columnKey: key, isReverse: false } // Создать новый объект, если columnSortInstance равен null
@@ -199,7 +202,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                             <SftpFileRow
                                 key={file.path}
                                 fileData={file}
-                                mode={mode}
+                                windowsIndex={windowsIndex}
                             />
                         )
                         )}
@@ -207,7 +210,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
                 </table>
                 {selectedHost?.isLoad && <Loader className={classNames(style.loader)}/>}
             </div>
-            <SftpMenu mode={mode} isPosition={true} isVisible={selectedHost?.menuOption?.isVisible}/>
+            <SftpMenu windowsIndex={windowsIndex} isPosition={true} isVisible={selectedHost?.menuOption?.isVisible}/>
         </div>
     );
 }

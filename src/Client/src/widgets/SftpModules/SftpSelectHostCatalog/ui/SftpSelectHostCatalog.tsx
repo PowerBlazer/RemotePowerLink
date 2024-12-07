@@ -8,17 +8,17 @@ import { SearchInput } from 'features/SearchInput';
 import ArrowRight from 'shared/assets/icons/arrow-right.svg';
 import searchStore from 'app/store/searchStore';
 import style from './SftpSelectHostCatalog.module.scss';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import useSftp from 'app/hooks/useSftp';
 
-interface SftpSelectHostCatalogProps extends SftpCatalogModeProps {
+interface SftpSelectHostCatalogProps extends SftpWindowsOptionProps {
     className?: string,
     onClose?: () => void,
 }
 
-export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectHostCatalogProps) {
+export function SftpSelectHostCatalog ({ className, onClose, windowsIndex }: SftpSelectHostCatalogProps) {
     const { t } = useTranslation('translation');
-    const { connectSftp } = useSftp(mode)
+    const { connectSftp } = useSftp(windowsIndex);
 
     const onChangeSearchInputHandler = (value: string) => {
         searchStore.setFilterOption({

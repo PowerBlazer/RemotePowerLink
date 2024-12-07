@@ -2,22 +2,24 @@ import { observer } from 'mobx-react-lite';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
 import { Input } from 'shared/ui/Input';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
-import sftpStore from 'app/store/sftpStore';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileType } from 'app/services/SftpService/config';
 import { SftpService } from 'app/services/SftpService/sftpService';
+import useSftp from "app/hooks/useSftp";
 
-interface NewFolderModalProps extends SftpCatalogModeProps {
+interface NewFolderModalProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function NewFolderModal ({ className, mode }: NewFolderModalProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
+function NewFolderModal ({ className, windowsIndex }: NewFolderModalProps) {
     const { theme } = useTheme();
-    const { t } = useTranslation('translation')
+    const { t } = useTranslation('translation');
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const [newFolderName, setFolderName] = useState<string>('');
     const [errors, setErrors] = useState<string[]>(
@@ -41,7 +43,7 @@ function NewFolderModal ({ className, mode }: NewFolderModalProps) {
         }
 
         if (!createDirectoryResult.isSuccess) {
-            selectedHost.error = { errors: createDirectoryResult.errors }
+            selectedHost.errors = createDirectoryResult.errors;
             selectedHost.modalOption.errorState = true;
         }
 

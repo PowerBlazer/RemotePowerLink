@@ -34,6 +34,10 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
             onClose();
         }
     }
+    
+    const openConnectHandler = async (serverData: ServerData) => {
+        await openSession(serverData, onClose)
+    }
 
     useEffect(() => {
         searchStore.setFilterOption(null)
@@ -53,7 +57,7 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
                     <div className={style.tools}></div>
                 </div>
             </div>
-            <ServerManagerCatalog mode={ServerManagerCatalogMode.Terminal} onConnect={openSession}/>
+            <ServerManagerCatalog mode={ServerManagerCatalogMode.Terminal} onConnect={(serverData) => openConnectHandler(serverData)}/>
         </div>
     );
 }

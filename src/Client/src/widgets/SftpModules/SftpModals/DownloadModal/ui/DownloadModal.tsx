@@ -3,7 +3,7 @@ import style from './DownloadModal.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import React, { useEffect, useMemo, useState } from 'react';
 import sftpStore from 'app/store/sftpStore';
 import { useTheme } from 'shared/lib/Theme/useTheme';
@@ -11,16 +11,19 @@ import { useTranslation } from 'react-i18next';
 import { SftpService } from 'app/services/SftpService/sftpService';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { HostService } from 'app/services/hostService';
-import { SftpCatalogMode } from 'app/services/SftpService/config';
+import useSftp from "app/hooks/useSftp";
 
-interface DownloadModalProps extends SftpCatalogModeProps {
+interface DownloadModalProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function DownloadModal ({ className, mode }: DownloadModalProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
+function DownloadModal ({ className, windowsIndex }: DownloadModalProps) {
+    
     const { t } = useTranslation('translation');
     const { theme } = useTheme();
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const [errors, setErrors] = useState<string[]>([]);
     const [isLoad, setLoad] = useState<boolean>(false);
@@ -65,7 +68,7 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
         });
 
         if (!downloadResult.isSuccess && Boolean(downloadResult.errors)) {
-            selectedHost.error = { errors: downloadResult.errors }
+            selectedHost.errors = downloadResult.errors 
             selectedHost.modalOption.errorState = true;
         }
 
@@ -91,7 +94,7 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
                 }
 
                 if (!getSizeResult.isSuccess) {
-                    selectedHost.error = { errors: getSizeResult.errors }
+                    selectedHost.errors = getSizeResult.errors 
                     selectedHost.modalOption.downloadState = false;
                     selectedHost.modalOption.errorState = true;
                 }

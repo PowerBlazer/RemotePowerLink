@@ -1,5 +1,5 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import { Children, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import {ChangeEvent, Children, ReactElement, ReactNode, useEffect, useRef, useState} from 'react';
 import { SelectItemProps } from 'shared/ui/Select/ui/SelectItem';
 import { SelectContext } from 'shared/lib/Select/SelectContext';
 import { useOutsideClick } from 'app/hooks/useOutsideClick';
@@ -9,21 +9,35 @@ import style from './Select.module.scss';
 import ArrowCircleIcon from 'shared/assets/icons/arrow-circle-up.svg';
 import CloseIcon from 'shared/assets/icons/close.svg';
 import { useTranslation } from 'react-i18next';
+import {SearchInput} from "features/SearchInput";
 
 export enum ThemeSelect {
     CLEAR = 'clear',
     DARK = 'dark'
 }
 
+export enum SelectPosition{
+    LEFT_TOP,
+    RIGHT_TOP,
+    LEFT_BOTTOM,
+    RIGHT_BOTTOM,
+}
+
 interface SelectProps {
+    width?: number,
+    height?: number,
+    widthOptionsPanel?: number,
     className?: string;
     children?: ReactElement<SelectItemProps> | Array<ReactElement<SelectItemProps>>;
     theme?: ThemeSelect
-    selectedItem: SelectedItem | null,
+    selectedItem?: SelectedItem,
     placeholder: string,
     icon?: ReactNode,
     errors?: string[],
-    onChange?: (selectedItem?: SelectedItem) => void
+    onChange?: (selectedItem?: SelectedItem) => void,
+    isSearchable?: boolean,
+    position?: SelectPosition,
+    isLite?: boolean,
 }
 
 export interface SelectedItem {
@@ -39,11 +53,19 @@ export function Select (props: SelectProps) {
         placeholder,
         errors,
         onChange,
-        icon
+        icon,
+        position = SelectPosition.LEFT_BOTTOM,
+        isSearchable,
+        isLite = false,
+        width,
+        widthOptionsPanel,
+        height
     } = props;
 
     const [visible, setVisible] = useState<boolean>(false);
     const [selectedElement, setSelected] = useState<SelectedItem | undefined>(selectedItem);
+    const [searchValue, setSearchValue] = useState<string>(null);
+    
     const { t } = useTranslation('translation');
     const refOptions = useRef<HTMLDivElement>(null);
 
@@ -57,7 +79,8 @@ export function Select (props: SelectProps) {
         visible,
         setVisible,
         selectedItem,
-        setSelected
+        setSelected,
+        searchValue
     }
 
     const selectButtonHandler = () => {
@@ -72,6 +95,10 @@ export function Select (props: SelectProps) {
             onChange(undefined)
         }
     }
+    
+    const onChangeSearchInput = (value:string) => {
+        setSearchValue(value)
+    } 
 
     useEffect(() => {
         if (onChange && selectedElement) {
@@ -81,37 +108,59 @@ export function Select (props: SelectProps) {
 
     return (
         <SelectContext.Provider value={defaultValueContext}>
-            <div className={classNames(style.select_inner)}>
+            <div className={classNames(style.select_inner, {[style.lite]: Boolean(isLite)})}>
                 <div className={classNames(style.select_block, {
                     [style.active]: visible,
                     [style.selected]: Boolean(selectedItem || selectedElement)
                 }, [])}>
                     <button
                         className={classNames(style.select, {
-                            [style.error]: Boolean(errors)
+                            [style.error]: Boolean(errors),
                         }, [className])}
                         onClick={selectButtonHandler}
                         ref={refSelect}
+                        style={{
+                            width: width ? `${width}px` : '100%', 
+                            height: height ? `${height}px` : 'auto',
+                        }}
                     >
                         <div className={classNames(style.select_header)}>
                             <div className={classNames(style.header_content)}>
-                                {icon && <div className={classNames(style.header_icon)}>
-                                    {icon}
-                                </div>}
-                                { selectedItem
-                                    ? selectedItem.title
-                                    : (selectedElement ? selectedElement.title : placeholder)
+                                { icon && 
+                                    <div className={classNames(style.header_icon)}>
+                                        {icon}
+                                    </div>
                                 }
-                            </div>
-                            <div className={classNames(style.common)}>
-                                <div className={classNames(style.select_icon)}>
-                                    <ArrowCircleIcon width={20} height={20}/>
+                                <div className={classNames(style.title)}>
+                                    { selectedItem
+                                        ? selectedItem.title
+                                        : (selectedElement ? selectedElement.title : placeholder)
+                                    }
                                 </div>
+                                
                             </div>
                         </div>
                     </button>
-                    <div className={classNames(style.select_options, { [style.empty_options]: !isChildren })} ref={refOptions}>
-                        {isChildren ? children : <p className={classNames(style.select_null)}>{t('Отсутсвует данные')}</p>}
+                    <div 
+                        className={classNames(style.select_options, {
+                            [style.left_bottom]: position === SelectPosition.LEFT_BOTTOM,
+                            [style.left_top]: position === SelectPosition.LEFT_TOP,
+                            [style.right_bottom]: position === SelectPosition.RIGHT_BOTTOM,
+                            [style.right_top]: position === SelectPosition.RIGHT_TOP
+                        })}
+                        style={{
+                            width: widthOptionsPanel ? `${widthOptionsPanel}px` : '100%',
+                        }}
+                        ref={refOptions}
+                    >
+                        {isSearchable && 
+                            <div className={classNames(style.search_item)}>
+                                <SearchInput className={classNames(style.search_input)} onChange={onChangeSearchInput}/>
+                            </div> 
+                        }
+                        <div className={classNames(style.select_options_inner, { [style.empty_options]: !isChildren })}>
+                            {isChildren ? children : <p className={classNames(style.select_null)}>{t('Отсутсвует данные')}</p>}
+                        </div>
                     </div>
                     {
                         (selectedItem || selectedElement) &&

@@ -4,14 +4,17 @@ import { MenuOptionProp } from 'features/SftpModules/SftpMenuOptions';
 import { Button } from 'shared/ui/Button/Button';
 import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
+import useSftp from "app/hooks/useSftp";
 
 interface SendProps extends MenuOptionProp {
     className?: string;
 }
 
-export function Send ({ className, disabled, mode, onClick }: SendProps) {
+export function Send ({ className, disabled, windowsIndex, onClick }: SendProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getHostInMode(mode);
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const onClickSendHandler = () => {
         if (disabled) { return; }

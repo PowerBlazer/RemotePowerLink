@@ -6,9 +6,10 @@ import sftpStore from 'app/store/sftpStore';
 import { Button } from 'shared/ui/Button/Button';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg'
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
+import useSftp from "app/hooks/useSftp";
 
-interface SftpCatalogNavigationProps extends SftpCatalogModeProps {
+interface SftpCatalogNavigationProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
@@ -17,8 +18,9 @@ interface NavigationItem {
     path: string
 }
 
-function SftpCatalogNavigation ({ className, mode }: SftpCatalogNavigationProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
+function SftpCatalogNavigation ({ className, windowsIndex }: SftpCatalogNavigationProps) {
+    const { getHost } = useSftp(windowsIndex);
+    const selectedHost = getHost();
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [isActiveInput, setActiveInput] = useState<boolean>(false);

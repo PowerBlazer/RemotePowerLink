@@ -27,16 +27,18 @@
     --main-page-color-line: rgb(0 0 0 / 17%);
     
     --input-color: #5A5E73;
+    --input-border-color: #bfbfbf;
     
     --select-focus-color:#2091F6;
     --select-hover-bg-color: #E6EBED;
     --select-hover-color: #2091F6;
-    --select-bg-color: #E6EBED;
-    --select-box-sahdow: rgba(38, 38, 38, 0.22);
+    --select-bg-color: rgb(246, 246, 246);
+    --select-box-sahdow: rgba(38, 38, 38, 0.45);
     --select-line-color: rgba(0, 0, 0, 0.2);
+    --select-item-hover-bg-color: rgba(69, 69, 69, 0.12);
     
     --primary-color: #2091F6;
-    --button-primary-hover-color: #57ACF8;
+    --primary-hover-color: #57ACF8;
 
     --sidebar-back-button-hover-color: rgba(0, 0, 0, 0.13);
     --sidebar-bg-color: #EDF1F2;

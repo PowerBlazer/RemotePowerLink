@@ -2,7 +2,7 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { observer } from 'mobx-react-lite';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import sftpStore from 'app/store/sftpStore';
@@ -15,15 +15,18 @@ import { Loader } from 'shared/ui/Loader/Loader';
 import { formatByteString } from 'shared/lib/formatByteString';
 import { HostService } from 'app/services/hostService';
 import { SftpService } from 'app/services/SftpService/sftpService';
+import useSftp from "app/hooks/useSftp";
 
-interface UploadModalProps extends SftpCatalogModeProps {
+interface UploadModalProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function UploadModal ({ className, mode }: UploadModalProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
+function UploadModal ({ className, windowsIndex }: UploadModalProps) {
     const { t } = useTranslation('translation');
     const { theme } = useTheme();
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const [isLoad, setLoad] = useState<boolean>(false);
     const [dragActive, setDragActive] = useState<boolean>(false);
@@ -157,7 +160,7 @@ function UploadModal ({ className, mode }: UploadModalProps) {
         }
 
         if (!uploadResult.isSuccess && Boolean(uploadResult.errors)) {
-            selectedHost.error = { errors: uploadResult.errors }
+            selectedHost.errors = uploadResult.errors;
             selectedHost.modalOption.errorState = true;
         }
     }

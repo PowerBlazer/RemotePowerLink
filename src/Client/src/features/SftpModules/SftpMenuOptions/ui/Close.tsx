@@ -9,9 +9,9 @@ interface CloseProps extends MenuOptionProp {
     className?: string;
 }
 
-export function Close ({ className, mode, disabled, onClick }: CloseProps) {
+export function Close ({ className, windowsIndex, disabled, onClick }: CloseProps) {
     const { t } = useTranslation('translation');
-    const { closeSftp } = useSftp(mode);
+    const { closeSftp } = useSftp(windowsIndex);
     const onClickCloseHandler = async () => {
         if (disabled) { return; }
 

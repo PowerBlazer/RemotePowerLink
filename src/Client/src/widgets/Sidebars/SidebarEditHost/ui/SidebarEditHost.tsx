@@ -24,6 +24,7 @@ import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { ServerService } from 'app/services/ServerService/serverService';
 import { ButtonDelete } from 'features/SidebarModules/ButtonDelete';
 import { DataTypeEnum } from 'app/enums/DataTypeEnum';
+import {SelectPosition} from "shared/ui/Select/ui/Select";
 
 interface SidebarEditHostProps extends SidebarOptions<EditServerResult> {
     className?: string;
@@ -403,6 +404,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                         onChange={selectEncodingHandler}
                         errors={errors?.EncodingId ?? null}
                         selectedItem={selectedEncoding}
+                        isSearchable={true}
                     >
                         {userStore.encodings?.map((encoding) =>
                             <SelectItem
@@ -445,6 +447,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                     errors={errors?.ProxyId ?? null}
                     selectedItem={selectedProxy}
                     onChange={selectProxyHandler}
+                    position={SelectPosition.LEFT_TOP}
                 >
                     {userStore.userProxies?.map((proxy) =>
                         <SelectItem

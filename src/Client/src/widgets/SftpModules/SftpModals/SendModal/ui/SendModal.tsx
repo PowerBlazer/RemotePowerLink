@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
-import sftpStore from 'app/store/sftpStore';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -20,15 +19,18 @@ import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon';
 import { Input } from 'shared/ui/Input';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpService } from 'app/services/SftpService/sftpService';
+import useSftp from "app/hooks/useSftp";
 
-interface SendModalProps extends SftpCatalogModeProps {
+interface SendModalProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function SendModal ({ className, mode }: SendModalProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
+function SendModal ({ className, windowsIndex }: SendModalProps) {
     const { t } = useTranslation('translation');
     const { theme } = useTheme();
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const [selectedSendFiles, setSelectedFiles] = useState<SftpFile[]>();
     const [selectedItem, setSelectedItem] = useState<SelectedItem>(null);
@@ -94,13 +96,13 @@ function SendModal ({ className, mode }: SendModalProps) {
 
             if (!sendResult.isSuccess && sendResult.result?.errors) {
                 if (Object.keys(sendResult.result?.errors).length > 0) {
-                    selectedHost.error = { errors: sendResult.result?.errors }
+                    selectedHost.errors = sendResult.result?.errors;
                     selectedHost.modalOption.errorState = true;
                 }
             }
 
             if (!sendResult.isSuccess) {
-                selectedHost.error = { errors: sendResult.result?.errors }
+                selectedHost.errors = sendResult.result?.errors;
                 selectedHost.modalOption.errorState = true;
             }
 
@@ -120,7 +122,7 @@ function SendModal ({ className, mode }: SendModalProps) {
 
         if (!existServiceResult.isSuccess) {
             selectedHost.modalOption.sendState = false
-            selectedHost.error = { errors: existServiceResult.errors }
+            selectedHost.errors = existServiceResult.errors
             selectedHost.modalOption.errorState = true;
         }
     }
@@ -175,7 +177,7 @@ function SendModal ({ className, mode }: SendModalProps) {
 
                 if (!result.isSuccess) {
                     selectedHost.modalOption.sendState = false
-                    selectedHost.error = { errors: result.errors }
+                    selectedHost.errors = result.errors;
                     selectedHost.modalOption.errorState = true;
                 }
             })

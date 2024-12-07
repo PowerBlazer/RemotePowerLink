@@ -4,20 +4,23 @@ import { Theme } from 'shared/lib/Theme/ThemeContext';
 import sftpStore from 'app/store/sftpStore';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { useTranslation } from 'react-i18next';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { ChangeEvent, useMemo, useState } from 'react';
 import { FileType } from 'app/services/SftpService/config';
 import { Input } from 'shared/ui/Input';
 import { SftpService } from 'app/services/SftpService/sftpService';
+import useSftp from "app/hooks/useSftp";
 
-interface RenameModalProps extends SftpCatalogModeProps {
+interface RenameModalProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function RenameModal ({ className, mode }: RenameModalProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
+function RenameModal ({ className, windowsIndex }: RenameModalProps) {
     const { theme } = useTheme();
     const { t } = useTranslation('translation');
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const [newName, setName] = useState<string>('');
     const [errors, setErrors] = useState<string[]>(
@@ -50,7 +53,7 @@ function RenameModal ({ className, mode }: RenameModalProps) {
         }
 
         if (!renameFileOrFolderResult.isSuccess) {
-            selectedHost.error = { errors: renameFileOrFolderResult.errors }
+            selectedHost.errors = renameFileOrFolderResult.errors;
             selectedHost.modalOption.errorState = true;
         }
 

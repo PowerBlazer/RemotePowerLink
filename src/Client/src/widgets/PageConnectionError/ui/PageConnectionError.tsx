@@ -3,30 +3,31 @@ import style from './PageConnectionError.module.scss';
 import { HostService } from 'app/services/hostService';
 import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon';
 import { Button } from 'shared/ui/Button/Button';
-import sftpStore, { SftpServer } from 'app/store/sftpStore';
+import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
-import { SftpCatalogMode } from 'app/services/SftpService/config';
+import {SftpWindowsOptionProps} from "widgets/SftpModules/SftpCatalog";
+import useSftp from "app/hooks/useSftp";
 
-interface PageConnectionErrorProps {
+interface PageConnectionErrorProps extends SftpWindowsOptionProps {
     className?: string;
-    mode: SftpCatalogMode
     onCloseConnectionServer?: () => Promise<void>,
     onSwitchEditingHostMode?: () => Promise<void>,
     onReconnectHost?: () => Promise<void>
 }
 
 export function PageConnectionError (props: PageConnectionErrorProps) {
-    const { t } = useTranslation('translation');
-
     const {
         className,
-        mode,
+        windowsIndex,
         onCloseConnectionServer,
         onSwitchEditingHostMode,
         onReconnectHost
     } = props;
 
-    const selectedHost = sftpStore.getHostInMode(mode);
+    const { t } = useTranslation('translation');
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     return (
         <div className={classNames(style.connection_error_panel, {}, [className])}>
@@ -47,7 +48,7 @@ export function PageConnectionError (props: PageConnectionErrorProps) {
                     </div>
                 </div>
                 <div className={classNames(style.red_line)}></div>
-                <div className={classNames(style.error_message)}>{selectedHost?.error?.errors?.Connection}</div>
+                <div className={classNames(style.error_message)}>{selectedHost?.errors?.Connection}</div>
                 <div className={classNames(style.tools_panel)}>
                     <div className={classNames(style.close_or_edit)}>
                         <Button className={classNames(style.close)} onClick={onCloseConnectionServer}>

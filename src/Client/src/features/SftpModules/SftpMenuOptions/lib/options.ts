@@ -1,6 +1,6 @@
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 
-export interface MenuOptionProp extends SftpCatalogModeProps {
+export interface MenuOptionProp extends SftpWindowsOptionProps {
     disabled?: boolean,
     onClick?: () => void
 }

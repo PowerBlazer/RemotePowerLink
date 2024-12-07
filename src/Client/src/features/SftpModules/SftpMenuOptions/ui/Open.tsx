@@ -8,7 +8,7 @@ interface OpenProps extends MenuOptionProp {
     className?: string;
 }
 
-export function Open ({ className, disabled, mode, onClick }: OpenProps) {
+export function Open ({ className, disabled, onClick }: OpenProps) {
     const { t } = useTranslation('translation');
     const onClickOpenHandler = () => {
         if (disabled) { return; }

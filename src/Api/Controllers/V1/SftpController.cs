@@ -207,6 +207,16 @@ public class SftpController: BaseController
         
         Response.Headers.Append("Access-Control-Expose-Headers", "Content-Disposition");
         
+        Response.OnCompleted(() =>
+        {
+            if (System.IO.File.Exists(zipFilePath))
+            {
+                System.IO.File.Delete(zipFilePath);
+            }
+            
+            return Task.CompletedTask;
+        });
+        
         return PhysicalFile(zipFilePath, "application/zip", enableRangeProcessing: true, fileDownloadName:zipFileName);
     }
 

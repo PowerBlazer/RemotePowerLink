@@ -1,15 +1,16 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SftpMenu.module.scss';
 import { observer } from 'mobx-react-lite';
-import sftpStore, { MenuMode } from 'app/store/sftpStore';
+import { MenuMode } from 'app/store/sftpStore';
 import { useOutsideClick } from 'app/hooks/useOutsideClick';
 import { Close, Download, NewFolder, Reconnect, Refresh, Rename, SelectAll, Upload } from 'features/SftpModules/SftpMenuOptions';
 import { forwardRef, MutableRefObject, useEffect, useMemo, useState } from 'react';
 import { Delete } from 'features/SftpModules/SftpMenuOptions/ui/Delete';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { Send } from 'features/SftpModules/SftpMenuOptions/ui/Send';
+import useSftp from "app/hooks/useSftp";
 
-interface SftpMenuProps extends SftpCatalogModeProps {
+interface SftpMenuProps extends SftpWindowsOptionProps {
     className?: string;
     isVisible: boolean,
     isPosition?: boolean,
@@ -23,13 +24,15 @@ const SftpMenu = forwardRef(
     function SftpMenu (props: SftpMenuProps, actionButtonRef: MutableRefObject<HTMLButtonElement>) {
         const {
             className,
-            mode,
+            windowsIndex,
             isPosition = true,
             isVisible,
             onClose
         } = props;
 
-        const selectedHost = sftpStore.getHostInMode(mode);
+        const { getHost } = useSftp(windowsIndex);
+
+        const selectedHost = getHost();
         const selectedSftpFileOptions = selectedHost.sftpFilesOption;
 
         const [isVisibleMenu, setVisibleMenu] = useState<boolean>(isVisible);
@@ -72,44 +75,44 @@ const SftpMenu = forwardRef(
             const isDisabled = !selectedItemsCount || selectedItemsCount === 0;
 
             return [
-                <Rename mode={mode} key='Rename' disabled={isDisabled || selectedItemsCount > 1} onClick={onClickCloseMenuHandler}/>,
-                <Delete mode={mode} key='Delete' disabled={isDisabled} onClick={onClickCloseMenuHandler}/>,
-                <Refresh mode={mode} key='Refresh' onClick={onClickCloseMenuHandler}/>,
-                <NewFolder mode={mode} key='NewFolder' disabled={selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
-                <SelectAll mode={mode} key='SelectAll' disabled={selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
-                <Download mode={mode} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions) || selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
-                <Upload mode={mode} key='Unload' disabled={!selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-                <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={selectedItemsCount === 0 || !selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)}/>,
-                <Reconnect mode={mode} key='Reconnect' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
-                <Close mode={mode} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
+                <Rename windowsIndex={windowsIndex} key='Rename' disabled={isDisabled || selectedItemsCount > 1} onClick={onClickCloseMenuHandler}/>,
+                <Delete windowsIndex={windowsIndex} key='Delete' disabled={isDisabled} onClick={onClickCloseMenuHandler}/>,
+                <Refresh windowsIndex={windowsIndex} key='Refresh' onClick={onClickCloseMenuHandler}/>,
+                <NewFolder windowsIndex={windowsIndex} key='NewFolder' disabled={selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
+                <SelectAll windowsIndex={windowsIndex} key='SelectAll' disabled={selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
+                <Download windowsIndex={windowsIndex} key='Download' disabled={isDisabled || Boolean(selectedHost?.notificationOptions) || selectedHost.isLoad} onClick={onClickCloseMenuHandler}/>,
+                <Upload windowsIndex={windowsIndex} key='Unload' disabled={!selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+                <Send windowsIndex={windowsIndex} key='Send' onClick={onClickCloseMenuHandler} disabled={selectedItemsCount === 0 || !selectedHost.sftpFileList || selectedHost.isLoad || Boolean(selectedHost?.notificationOptions)}/>,
+                <Reconnect windowsIndex={windowsIndex} key='Reconnect' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
+                <Close windowsIndex={windowsIndex} disabled={Boolean(selectedHost?.notificationOptions)} key='Close' onClick={onClickCloseMenuHandler}/>
             ]
         }, [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions, selectedHost?.isLoad]);
 
         const fileModeMenuOptions = useMemo(() => [
-            <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
-            <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
-            <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-            <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
-            <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
-            <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
+            <Rename windowsIndex={windowsIndex} key='Rename' onClick={onClickCloseMenuHandler}/>,
+            <Delete windowsIndex={windowsIndex} key='Delete' onClick={onClickCloseMenuHandler}/>,
+            <Download windowsIndex={windowsIndex} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+            <Send windowsIndex={windowsIndex} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
+            <NewFolder windowsIndex={windowsIndex} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
+            <SelectAll windowsIndex={windowsIndex} key='SelectAll' onClick={onClickCloseMenuHandler}/>
         ], [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions]);
 
         const folderModeMenuOptions = useMemo(() => [
-            <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler}/>,
-            <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
-            <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-            <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
-            <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
-            <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler}/>
+            <Rename windowsIndex={windowsIndex} key='Rename' onClick={onClickCloseMenuHandler}/>,
+            <Delete windowsIndex={windowsIndex} key='Delete' onClick={onClickCloseMenuHandler}/>,
+            <Download windowsIndex={windowsIndex} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+            <Send windowsIndex={windowsIndex} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
+            <NewFolder windowsIndex={windowsIndex} key='NewFolder' onClick={onClickCloseMenuHandler}/>,
+            <SelectAll windowsIndex={windowsIndex} key='SelectAll' onClick={onClickCloseMenuHandler}/>
         ], [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions]);
 
         const multitudeModeMenuOptions = useMemo(() => [
-            <Rename mode={mode} key='Rename' onClick={onClickCloseMenuHandler} disabled={true}/>,
-            <Delete mode={mode} key='Delete' onClick={onClickCloseMenuHandler}/>,
-            <Download mode={mode} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
-            <NewFolder mode={mode} key='NewFolder' onClick={onClickCloseMenuHandler} disabled={true}/>,
-            <Send mode={mode} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
-            <SelectAll mode={mode} key='SelectAll' onClick={onClickCloseMenuHandler} disabled={true}/>
+            <Rename windowsIndex={windowsIndex} key='Rename' onClick={onClickCloseMenuHandler} disabled={true}/>,
+            <Delete windowsIndex={windowsIndex} key='Delete' onClick={onClickCloseMenuHandler}/>,
+            <Download windowsIndex={windowsIndex} key='Download' disabled={Boolean(selectedHost?.notificationOptions)} onClick={onClickCloseMenuHandler}/>,
+            <NewFolder windowsIndex={windowsIndex} key='NewFolder' onClick={onClickCloseMenuHandler} disabled={true}/>,
+            <Send windowsIndex={windowsIndex} key='Send' onClick={onClickCloseMenuHandler} disabled={Boolean(selectedHost?.notificationOptions)}/>,
+            <SelectAll windowsIndex={windowsIndex} key='SelectAll' onClick={onClickCloseMenuHandler} disabled={true}/>
         ], [selectedSftpFileOptions?.fileList, selectedHost?.notificationOptions])
 
         useEffect(() => {

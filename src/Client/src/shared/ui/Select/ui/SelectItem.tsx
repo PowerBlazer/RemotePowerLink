@@ -16,17 +16,30 @@ export interface SelectItemProps {
 export function SelectItem ({ className, selectedItem, isSelected, icon }: SelectItemProps) {
     const {
         setVisible,
-        setSelected
+        setSelected,
+        searchValue
     } = useContext<SelectContextProps>(SelectContext);
 
     const selectItemHandler = () => {
         setVisible(false);
         setSelected(selectedItem);
     }
+    
+    const isVisible = 
+        !searchValue || 
+        searchValue === '' || 
+        selectedItem.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
 
     return (
-        <Button className={classNames(style.selectItem, { [style.selected]: isSelected }, [className])} onClick={selectItemHandler}>
-            {icon ?? <ServerIcon className={classNames(style.server_icon)} width={15} height={15}/>}
+        <Button 
+            className={classNames(style.selectItem, { 
+                    [style.selected]: isSelected,
+                    [style.visible]: isVisible
+                }, [className])
+            } 
+            onClick={selectItemHandler}
+        >
+            {icon && <div className={classNames(style.icon)}>{icon}</div> }
             <p className={classNames(style.item_title)}>{selectedItem.title}</p>
         </Button>
     );

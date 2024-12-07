@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { SftpSelectHostCatalog } from 'widgets/SftpModules/SftpSelectHostCatalog';
 import { NavbarSftp } from 'widgets/SftpModules/NavbarSftp';
 import { SftpCatalogTable } from 'widgets/SftpModules/SftpCatalogTable';
-import { SftpCatalogMode } from 'app/services/SftpService/config';
 import toast from 'react-hot-toast';
 import sftpStore from 'app/store/sftpStore';
 import style from './SftpCatalog.module.scss';
@@ -26,24 +25,21 @@ import { PageConnectionError } from 'widgets/PageConnectionError';
 import { SelectHostBlock } from 'features/SelectHostBlock/ui/SelectHostBlock';
 import useSftp from 'app/hooks/useSftp';
 
-export interface SftpCatalogModeProps {
-    mode: SftpCatalogMode
+export interface SftpWindowsOptionProps {
+    windowsIndex: number
 }
 
-interface SftpCatalogProps extends SftpCatalogModeProps {
+interface SftpCatalogProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function SftpCatalog ({ className, mode }: SftpCatalogProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
-
-    const { initialSftp, closeSftp } = useSftp(mode);
+function SftpCatalog ({ className, windowsIndex }: SftpCatalogProps) {
+    const { initialSftp, closeSftp, getHost } = useSftp(windowsIndex);
     const { t } = useTranslation('translation');
+    const selectedHost = getHost();
 
     const [isViewServersCatalog, setIsView] = useState<boolean>(false);
-    const [isViewErrorPanel, setIsViewErrorPanel] = useState<boolean>(
-        Boolean(selectedHost?.error?.errors?.Connection)
-    );
+    const [isViewErrorPanel, setIsViewErrorPanel] = useState<boolean>(Boolean(selectedHost?.errors?.Connection));
 
     const catalogRef = createRef<HTMLDivElement>();
     const location = useNavigate();
@@ -104,19 +100,28 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
         }
     }, [sftpStore.editableWidthSplit, catalogRef]);
 
+
+    useEffect(() => {
+        return () => {
+            if(selectedHost && selectedHost.sftpHub){
+                selectedHost.sftpHub.closeConnection();
+            }
+        }
+    }, []);
+
     if (selectedHost && !isViewServersCatalog && !isViewErrorPanel) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>
-                <NavbarSftp mode={mode} onOpenCatalog={() => { setIsView(true); }}/>
-                <SftpCatalogTable mode={mode}/>
-                { selectedHost?.modalOption.newFolderState && <NewFolderModal mode={mode}/> }
-                { selectedHost?.modalOption.errorState && <ErrorModal mode={mode}/> }
-                { selectedHost?.modalOption.deleteState && <DeleteModal mode={mode}/> }
-                { selectedHost?.modalOption.renameState && <RenameModal mode={mode}/> }
-                { selectedHost?.modalOption.downloadState && <DownloadModal mode={mode}/> }
-                { selectedHost?.modalOption.uploadState && <UploadModal mode={mode}/> }
-                { selectedHost?.modalOption.sendState && <SendModal mode={mode}/> }
-                <SftpNotificationPanel mode={mode}/>
+                <NavbarSftp windowsIndex={windowsIndex} onOpenCatalog={() => { setIsView(true); }}/>
+                <SftpCatalogTable windowsIndex={windowsIndex}/>
+                { selectedHost?.modalOption.newFolderState && <NewFolderModal windowsIndex={windowsIndex}/> }
+                { selectedHost?.modalOption.errorState && <ErrorModal windowsIndex={windowsIndex}/> }
+                { selectedHost?.modalOption.deleteState && <DeleteModal windowsIndex={windowsIndex}/> }
+                { selectedHost?.modalOption.renameState && <RenameModal windowsIndex={windowsIndex}/> }
+                { selectedHost?.modalOption.downloadState && <DownloadModal windowsIndex={windowsIndex}/> }
+                { selectedHost?.modalOption.uploadState && <UploadModal windowsIndex={windowsIndex}/> }
+                { selectedHost?.modalOption.sendState && <SendModal windowsIndex={windowsIndex}/> }
+                <SftpNotificationPanel windowsIndex={windowsIndex}/>
             </div>
         )
     }
@@ -128,13 +133,13 @@ function SftpCatalog ({ className, mode }: SftpCatalogProps) {
             }
             { isViewErrorPanel &&
                 <PageConnectionError
-                    mode={mode}
+                    windowsIndex={windowsIndex}
                     onCloseConnectionServer={closeConnectionServer}
                     onReconnectHost={reconnectHost}
                     onSwitchEditingHostMode={switchEditingHostMode}
                 />
             }
-            { isViewServersCatalog && <SftpSelectHostCatalog mode={mode} onClose={() => { setIsView(false); }}/> }
+            { isViewServersCatalog && <SftpSelectHostCatalog windowsIndex={windowsIndex} onClose={() => { setIsView(false); }}/> }
         </div>
     );
 }

@@ -3,17 +3,20 @@ import style from './SftpNotificationPanel.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { Button } from 'shared/ui/Button/Button';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
-interface SftpNotificationPanelProps extends SftpCatalogModeProps {
+import useSftp from "app/hooks/useSftp";
+interface SftpNotificationPanelProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function SftpNotificationPanel ({ className, mode }: SftpNotificationPanelProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
-    const notificationOptions = selectedHost?.notificationOptions;
+function SftpNotificationPanel ({ className, windowsIndex }: SftpNotificationPanelProps) {
+    const { getHost } = useSftp(windowsIndex);
     const { t } = useTranslation('translation');
+    
+    const selectedHost = getHost();
+    const notificationOptions = selectedHost?.notificationOptions;
 
     return (
         <div className={classNames(style.sftpNotificationPanel, {

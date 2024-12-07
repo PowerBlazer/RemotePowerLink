@@ -10,26 +10,30 @@ import { SearchInput } from 'features/SearchInput';
 import { SftpCatalogSwitcher } from 'features/SftpModules/SftpCatalogSwitcher';
 import { SftpCatalogNavigation } from 'features/SftpModules/SftpCatalogNavigation';
 import { SftpMenu } from 'widgets/SftpModules/SftpMenu';
-import { useMemo, useRef, useState } from 'react';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { useRef, useState } from 'react';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon'
+import useSftp from "app/hooks/useSftp";
 
-interface NavbarSftpProps extends SftpCatalogModeProps {
+interface NavbarSftpProps extends SftpWindowsOptionProps {
     className?: string,
     onOpenCatalog: () => void
 }
 
-function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
+function NavbarSftp ({ className, windowsIndex, onOpenCatalog }: NavbarSftpProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getHostInMode(mode);
+    const { getHost } = useSftp(windowsIndex);
+    
+    const selectedHost = getHost();
 
     const selectedTitle = selectedHost?.sftpFilesOption.filterOptions.title || '';
     const server = selectedHost?.server;
 
     const [isVisibleMenu, setVisibleMenu] = useState<boolean>(false);
-    const actionButtonRef = useRef<HTMLButtonElement>(null)
+    const actionButtonRef = useRef<HTMLButtonElement>(null);
+    
     const onChangeSearchHandler = (value: string) => {
-        sftpStore.setSftpFilterOptions(mode, {
+        sftpStore.setSftpFilterOptions(windowsIndex, {
             ...selectedHost?.sftpFilesOption.filterOptions,
             title: value
         })
@@ -70,7 +74,7 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
                             </div>
                         </Button>
                         <SftpMenu
-                            mode={mode}
+                            windowsIndex={windowsIndex}
                             isPosition={false}
                             isVisible={isVisibleMenu}
                             className={classNames(style.action_menu)}
@@ -82,9 +86,10 @@ function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
                 </div>
             </div>
             <div className={classNames(style.catalog_tools)}>
-                <SftpCatalogSwitcher mode={mode}/>
-                <SftpCatalogNavigation mode={mode}/>
+                <SftpCatalogSwitcher windowsIndex={windowsIndex}/>
+                <SftpCatalogNavigation windowsIndex={windowsIndex}/>
             </div>
+            
             <SearchInput
                 className={classNames(style.search_input)}
                 onChange={(value) => { onChangeSearchHandler(value); }}

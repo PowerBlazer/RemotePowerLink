@@ -4,19 +4,22 @@ import { observer } from 'mobx-react-lite';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
 import sftpStore from 'app/store/sftpStore';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { useTranslation } from 'react-i18next';
 import { SftpService } from 'app/services/SftpService/sftpService';
+import useSftp from "app/hooks/useSftp";
 
-interface DeleteModalProps extends SftpCatalogModeProps {
+interface DeleteModalProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-function DeleteModal ({ className, mode }: DeleteModalProps) {
-    const selectedHost = sftpStore.getHostInMode(mode);
+function DeleteModal ({ className, windowsIndex }: DeleteModalProps) {
     const { theme } = useTheme();
-    const { t } = useTranslation('translation')
+    const { t } = useTranslation('translation');
+    const { getHost } = useSftp(windowsIndex);
+
+    const selectedHost = getHost();
 
     const listFilesOrFoldersToDelete = selectedHost?.sftpFilesOption
         .fileList?.filter(p => p.isSelected);
@@ -40,7 +43,7 @@ function DeleteModal ({ className, mode }: DeleteModalProps) {
             selectedHost.modalOption.deleteState = false;
 
             if (!deletedResult.isSuccess) {
-                selectedHost.error = { errors: deletedResult.errors }
+                selectedHost.errors = deletedResult.errors;
                 selectedHost.modalOption.errorState = true;
             }
         }

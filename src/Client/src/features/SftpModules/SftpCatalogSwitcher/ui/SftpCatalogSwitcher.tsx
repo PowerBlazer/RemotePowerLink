@@ -4,17 +4,19 @@ import { Button } from 'shared/ui/Button/Button';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import sftpStore from 'app/store/sftpStore';
 import { useCallback, useState } from 'react';
-import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
+import useSftp from "app/hooks/useSftp";
 
-interface SftpCatalogSwitcherProps extends SftpCatalogModeProps {
+interface SftpCatalogSwitcherProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
-export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherProps) {
+export function SftpCatalogSwitcher ({ className, windowsIndex }: SftpCatalogSwitcherProps) {
     const [, updateState] = useState({});
     const forceUpdate = useCallback(() => { updateState({}); }, []);
+    const { getHost } = useSftp(windowsIndex);
 
-    const selectedHost = sftpStore.getHostInMode(mode)
+    const selectedHost = getHost();
 
     const onClickPrevButtonHandler = async () => {
         const previousPath = selectedHost.sftpFilesOption.historyPrevPaths.pop();

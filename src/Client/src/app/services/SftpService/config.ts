@@ -4,12 +4,6 @@ export enum FileType {
     BackNavigation = 3
 }
 
-export enum SftpCatalogMode {
-    First = 'FIRST',
-    Second = 'SECOND',
-    THIRD = 'THIRD',
-}
-
 export interface SftpFile {
     name: string,
     dateModified?: string

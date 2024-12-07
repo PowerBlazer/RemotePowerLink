@@ -29,8 +29,11 @@ function SftpPage ({ className }: SftpPageProps) {
                 // eslint-disable-next-line no-return-assign
                 onResizeFinished={(_, __) => sftpStore.editableWidthSplit = !sftpStore.editableWidthSplit}
             >
-                <SftpCatalog mode={SftpCatalogMode.First}/>
-                <SftpCatalog mode={SftpCatalogMode.Second}/>
+                {Object.keys(SftpCatalogMode)
+                    .filter(key => isNaN(Number(key)))
+                    .map(key => (
+                        <SftpCatalog key={key} mode={SftpCatalogMode[key as keyof typeof SftpCatalogMode]} />
+                    ))}
             </ReactSplit>
             {/* <div className={style.footer}>
                 <LiteSelect items={[{id:'1', text:"1"}]} position={SelectPosition.TOP_LEFT}/>

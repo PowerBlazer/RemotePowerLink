@@ -1,6 +1,6 @@
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import SftpHub from 'app/hubs/sftpHub';
-import { FileType, SftpCatalogMode, SftpFile, SftpFileList } from 'app/services/SftpService/config';
+import { FileType, SftpFile, SftpFileList } from 'app/services/SftpService/config';
 import { makeAutoObservable, observable } from 'mobx';
 import { Stack } from 'shared/lib/Stack';
 
@@ -75,46 +75,37 @@ export interface SftpError {
     errors: Record<string, string[]>
 }
 
+export enum SftpWindowOption{
+    FIRST = 1,
+    DOUBLE = 2,
+    TRIPLE = 3,
+    QUADRUPLE = 4
+}
+
 class SftpStore {
     constructor () {
         makeAutoObservable(this)
     }
-
-    @observable public firstSelectedHost: SftpServer | null = null;
-    @observable public secondSelectedHost: SftpServer | null = null;
-    @observable public thirdSelectedHost: SftpServer | null = null;
-
+    
+    @observable public windowOption = SftpWindowOption.FIRST;
+    @observable public hosts: SftpServer[] | null[] = ;
+    
     @observable public editableWidthSplit: boolean = false;
-
-    getHostInMode (mode: SftpCatalogMode): SftpServer | null {
-        switch (mode) {
-            case SftpCatalogMode.First:
-                return this.firstSelectedHost;
-            case SftpCatalogMode.Second:
-                return this.secondSelectedHost;
-            case SftpCatalogMode.THIRD:
-                return this.thirdSelectedHost;
-            default:
-                return null
-        }
+    
+    getHostInMode (windowIndex: number): SftpServer | null {
+        return this.hosts[windowIndex];
     }
 
-    setHostInMode (mode: SftpCatalogMode, host: SftpServer | null) {
-        switch (mode) {
-            case SftpCatalogMode.First:
-                this.firstSelectedHost = host;
-                break;
-            case SftpCatalogMode.Second:
-                this.secondSelectedHost = host;
-                break;
-            case SftpCatalogMode.THIRD:
-                this.thirdSelectedHost = host;
-                break;
-        }
+    setHostInMode (windowIndex: number, host: SftpServer | null) {
+        this.hosts[windowIndex] = host;
+    }
+    
+    setWindowOption(windowOption:SftpWindowOption){
+        this.windowOption = windowOption;
     }
 
-    setFileItems (mode: SftpCatalogMode) {
-        const selectedHost = this.getHostInMode(mode);
+    setFileItems (windowIndex: number) {
+        const selectedHost = this.getHostInMode(windowIndex);
 
         let hostFileItems = selectedHost?.sftpFileList?.fileList;
         const filterOptions = selectedHost?.sftpFilesOption.filterOptions;
@@ -156,20 +147,20 @@ class SftpStore {
         };
     }
 
-    setSftpFilterOptions (mode: SftpCatalogMode, options: SftpFilterOptions) {
-        const selectedHost = this.getHostInMode(mode);
+    setSftpFilterOptions (windowIndex: number, options: SftpFilterOptions) {
+        const selectedHost = this.getHostInMode(windowIndex);
 
         selectedHost.sftpFilesOption = {
             ...selectedHost.sftpFilesOption,
             filterOptions: options
         }
 
-        this.setFileItems(mode);
+        this.setFileItems(windowIndex);
     }
 
-    setSelectFileItem (mode: SftpCatalogMode, path: string, isClean: boolean = true, isAlwaysSelect: boolean = false) {
-        const selectedFileItems = this.getHostInMode(mode)?.sftpFilesOption.fileList;
-        const selectedHost = this.getHostInMode(mode);
+    setSelectFileItem (windowIndex: number, path: string, isClean: boolean = true, isAlwaysSelect: boolean = false) {
+        const selectedHost = this.getHostInMode(windowIndex);
+        const selectedFileItems = selectedHost?.sftpFilesOption.fileList;
 
         if (isClean) {
             selectedHost.sftpFilesOption.fileList.forEach((file) => {
@@ -216,8 +207,8 @@ class SftpStore {
         }
     }
 
-    setSelectAllInFilter (mode: SftpCatalogMode) {
-        const selectedHost = this.getHostInMode(mode);
+    setSelectAllInFilter (windowIndex: number) {
+        const selectedHost = this.getHostInMode(windowIndex);
 
         const fileList = [...selectedHost.sftpFilesOption.fileList];
 

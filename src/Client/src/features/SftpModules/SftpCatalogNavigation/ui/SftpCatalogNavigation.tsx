@@ -18,7 +18,7 @@ interface NavigationItem {
 }
 
 function SftpCatalogNavigation ({ className, mode }: SftpCatalogNavigationProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [isActiveInput, setActiveInput] = useState<boolean>(false);

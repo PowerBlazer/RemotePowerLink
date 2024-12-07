@@ -11,7 +11,7 @@ interface UnloadProps extends MenuOptionProp {
 
 export function Upload ({ className, disabled, mode, onClick }: UnloadProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
 
     const onClickUnloadHandler = () => {
         if (disabled) { return; }

@@ -6,7 +6,7 @@ import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { FileType, SftpCatalogMode, SftpFile } from 'app/services/SftpService/config';
+import { FileType, SftpFile } from 'app/services/SftpService/config';
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SendModal.module.scss';
 import FileIcon from 'shared/assets/icons/sftp/file.svg';
@@ -26,7 +26,7 @@ interface SendModalProps extends SftpCatalogModeProps {
 }
 
 function SendModal ({ className, mode }: SendModalProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { t } = useTranslation('translation');
     const { theme } = useTheme();
 
@@ -92,42 +92,19 @@ function SendModal ({ className, mode }: SendModalProps) {
                 connectionId: selectedHost.sftpHub.getConnectionId()
             }, cancelToken);
 
-            if (sendResult.isSuccess && sendResult.result?.errors) {
-                const secondHost = sftpStore.secondSelectedHost;
-                const firstHost = sftpStore.firstSelectedHost;
-
-                if (mode === SftpCatalogMode.First &&
-                    secondHost?.server.serverId === server.serverId &&
-                    secondHost?.sftpFileList?.currentPath === remotePath) {
-                    secondHost.isLoad = true;
-                    secondHost.sftpHub.getFilesServer(secondHost.server.serverId, secondHost.sftpFileList.currentPath);
-                }
-
-                if (mode === SftpCatalogMode.Second &&
-                    firstHost?.server.serverId === server.serverId &&
-                    firstHost?.sftpFileList?.currentPath === remotePath) {
-                    firstHost.isLoad = true;
-                    firstHost.sftpHub.getFilesServer(firstHost.server.serverId, firstHost.sftpFileList.currentPath);
-                }
-
+            if (!sendResult.isSuccess && sendResult.result?.errors) {
                 if (Object.keys(sendResult.result?.errors).length > 0) {
                     selectedHost.error = { errors: sendResult.result?.errors }
                     selectedHost.modalOption.errorState = true;
                 }
             }
 
-            if (mode === SftpCatalogMode.First) {
-                sftpStore.firstSelectedHost.notificationOptions = null;
-            }
-
-            if (mode === SftpCatalogMode.Second) {
-                sftpStore.secondSelectedHost.notificationOptions = null;
-            }
-
             if (!sendResult.isSuccess) {
                 selectedHost.error = { errors: sendResult.result?.errors }
                 selectedHost.modalOption.errorState = true;
             }
+
+            selectedHost.notificationOptions = null;
         }
 
         if (existServiceResult.isSuccess && !existServiceResult.result) {

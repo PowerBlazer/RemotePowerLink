@@ -292,6 +292,12 @@ function SidebarEditHost (props: SidebarEditHostProps) {
     const saveServerClickHandler = useCallback(async () => {
         const editServerResult = await ServerService.editServer(serverData);
 
+        setErrors(prevValue => {
+            const updatedErrors = { ...prevValue };
+            delete updatedErrors.Hostname;
+            return updatedErrors;
+        });
+
         if (onSave && editServerResult.isSuccess) {
             await onSave(editServerResult.result);
         }
@@ -299,7 +305,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         if (!editServerResult.isSuccess) {
             setErrors(editServerResult?.errors);
         }
-    }, [serverData]);
+    }, [serverData, errors]);
 
     const sidebars = useMemo(() => [
         <SidebarNewProxy
@@ -324,7 +330,7 @@ function SidebarEditHost (props: SidebarEditHostProps) {
                 <ButtonLoader
                     className={classNames(style.save_host)}
                     theme={ThemeButton.PRIMARY}
-                    disabled={Object.keys(errors).filter(p=> p !== 'Hostname').length > 0}
+                    disabled={Object.keys(errors).filter(p => p !== 'Hostname').length > 0}
                     actionAsync={saveServerClickHandler}
                 >
                     {t('Сохранить сервер')}

@@ -4,7 +4,7 @@ import { AppRouter } from 'app/providers/router';
 import React, { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import './styles/index.scss';
-import {ErrorBoundary} from "app/providers/ErrorBoundary";
+import { ErrorBoundary } from 'app/providers/ErrorBoundary';
 
 export default function App () {
     const { theme } = useTheme();

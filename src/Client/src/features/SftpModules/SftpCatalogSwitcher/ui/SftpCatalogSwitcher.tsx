@@ -14,7 +14,7 @@ export function SftpCatalogSwitcher ({ className, mode }: SftpCatalogSwitcherPro
     const [, updateState] = useState({});
     const forceUpdate = useCallback(() => { updateState({}); }, []);
 
-    const selectedHost = sftpStore.getSelectedHostInMode(mode)
+    const selectedHost = sftpStore.getHostInMode(mode)
 
     const onClickPrevButtonHandler = async () => {
         const previousPath = selectedHost.sftpFilesOption.historyPrevPaths.pop();

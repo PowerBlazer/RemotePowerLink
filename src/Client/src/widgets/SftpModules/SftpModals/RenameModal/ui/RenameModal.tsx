@@ -15,7 +15,7 @@ interface RenameModalProps extends SftpCatalogModeProps {
 }
 
 function RenameModal ({ className, mode }: RenameModalProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { theme } = useTheme();
     const { t } = useTranslation('translation');
 

@@ -6,60 +6,21 @@ import sftpStore, { MenuMode, SftpModalOption, SftpServer } from 'app/store/sftp
 import { useTranslation } from 'react-i18next';
 import { Stack } from 'shared/lib/Stack';
 import { SftpCatalogMode } from 'app/services/SftpService/config';
+import useSftp from 'app/hooks/useSftp';
 
 interface ReconnectProps extends MenuOptionProp {
     className?: string;
 }
 
 export function Reconnect ({ className, mode, disabled, onClick }: ReconnectProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { t } = useTranslation('translation');
+    const { reconnectSftp } = useSftp(mode);
 
-    const onClickReconnectHandler = () => {
+    const onClickReconnectHandler = async () => {
         if (disabled) { return; }
 
-        if (selectedHost) {
-            const modalOptions: SftpModalOption = {
-                errorState: false,
-                newFolderState: false,
-                deleteState: false,
-                renameState: false,
-                downloadState: false,
-                uploadState: false,
-                sendState: false
-            }
-
-            const newHostInstance: SftpServer = {
-                server: selectedHost?.server,
-                isLoad: false,
-                menuOption: {
-                    isVisible: false,
-                    menuMode: MenuMode.Default
-                },
-                sftpFilesOption: {
-                    filterOptions: {},
-                    historyPrevPaths: new Stack<string>(),
-                    historyNextPaths: new Stack<string>()
-                },
-                modalOption: modalOptions
-            }
-
-            if (mode === SftpCatalogMode.First) {
-                if (sftpStore.firstSelectedHost?.sftpHub) {
-                    sftpStore.firstSelectedHost.sftpHub.closeConnection();
-                }
-
-                sftpStore.firstSelectedHost = newHostInstance;
-            }
-
-            if (mode === SftpCatalogMode.Second) {
-                if (sftpStore.secondSelectedHost?.sftpHub) {
-                    sftpStore.secondSelectedHost.sftpHub.closeConnection();
-                }
-
-                sftpStore.secondSelectedHost = newHostInstance;
-            }
-        }
+        await reconnectSftp();
 
         if (onClick) {
             onClick();

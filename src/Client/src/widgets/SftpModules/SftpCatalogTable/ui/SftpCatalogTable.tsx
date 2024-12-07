@@ -11,7 +11,7 @@ import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import { Button } from 'shared/ui/Button/Button';
 import { SftpMenu } from 'widgets/SftpModules/SftpMenu';
 import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
-import {ConnectionState} from "app/hubs/hubFactory";
+import { ConnectionState } from 'app/hubs/hubFactory';
 
 interface SftpCatalogTableProps extends SftpCatalogModeProps {
     className?: string;
@@ -23,7 +23,7 @@ function SftpCatalogTable ({ className, mode }: SftpCatalogTableProps) {
     const [scrollTop, setScrollTop] = useState<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const selectedHost = sftpStore.getSelectedHostInMode(mode)
+    const selectedHost = sftpStore.getHostInMode(mode)
 
     const createColumnSortOptions = (key: keyof SftpFile) => {
         const columnSortInstance = selectedHost.sftpFilesOption.filterOptions?.columnSort;

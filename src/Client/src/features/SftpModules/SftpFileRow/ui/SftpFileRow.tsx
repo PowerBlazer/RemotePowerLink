@@ -18,7 +18,7 @@ function SftpFileRow ({ className, fileData, mode }: SftpFileRowProps) {
     const [isVisibleDate, setVisibleDate] = useState<boolean>(true);
     const fileItemRef = useRef<HTMLTableRowElement>(null);
 
-    const selectedHost = sftpStore.getSelectedHostInMode(mode)
+    const selectedHost = sftpStore.getHostInMode(mode)
 
     const openFileHandler = async () => {
         if (fileData.fileType === FileType.Folder || fileData.fileType === FileType.BackNavigation) {

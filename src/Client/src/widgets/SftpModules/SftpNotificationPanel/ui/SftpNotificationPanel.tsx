@@ -11,7 +11,7 @@ interface SftpNotificationPanelProps extends SftpCatalogModeProps {
 }
 
 function SftpNotificationPanel ({ className, mode }: SftpNotificationPanelProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const notificationOptions = selectedHost?.notificationOptions;
     const { t } = useTranslation('translation');
 

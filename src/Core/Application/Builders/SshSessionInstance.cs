@@ -46,7 +46,7 @@ public class SshSessionInstance: ISessionInstance
             var terminalModes = new Dictionary<TerminalModes, uint>();
         
             _stream = _client.CreateShellStream(
-                "xterm", 
+                "xterm-256color", 
                 90, 
                 24, 
                 1000, 
@@ -122,14 +122,15 @@ public class SshSessionInstance: ISessionInstance
         {
             _sessionOutput.Append(output);
 
-            LastUpdated = DateTime.Now; // Обновляем LastUpdated при наличии новых данных
+            // Обновляем LastUpdated при наличии новых данных
+            LastUpdated = DateTime.Now; 
 
             // Если буфер превышает максимальный размер, записываем в файл и очищаем
             if (_sessionOutput.Length > MaxBufferSize)
             {
                 WriteFileSessionData();
                 
-                _sessionOutput.Clear(); // Очищаем буфер
+                _sessionOutput.Clear(); 
             }
 
             if (IsActive)

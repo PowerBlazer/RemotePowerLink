@@ -11,7 +11,7 @@ interface DeleteProps extends MenuOptionProp {
 
 export function Delete ({ className, disabled, mode, onClick }: DeleteProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const onClickDeleteHandler = () => {
         if (disabled) { return; }
 

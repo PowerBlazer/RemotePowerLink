@@ -14,7 +14,7 @@ interface DeleteModalProps extends SftpCatalogModeProps {
 }
 
 function DeleteModal ({ className, mode }: DeleteModalProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { theme } = useTheme();
     const { t } = useTranslation('translation')
 

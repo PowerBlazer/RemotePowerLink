@@ -1,1 +1,1 @@
-export { default as ErrorModal} from './ui/ErrorModal';
+export { default as ErrorModal } from './ui/ErrorModal';

@@ -15,7 +15,7 @@ interface NewFolderModalProps extends SftpCatalogModeProps {
 }
 
 function NewFolderModal ({ className, mode }: NewFolderModalProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { theme } = useTheme();
     const { t } = useTranslation('translation')
 

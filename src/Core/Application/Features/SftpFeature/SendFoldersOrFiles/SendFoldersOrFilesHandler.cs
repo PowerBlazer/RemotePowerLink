@@ -86,8 +86,9 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
 
             if (_totalSizeFiles >= MaximumSendSizeBytes)
             {
-                throw new NoAccessException($"Превышен лимит 5GB выбранных файлов, выделенный размер " +
-                                            $"{_sftpManagerService.FormatFileSize(_totalSizeFiles)}", "Server");
+                throw new NoAccessException(
+                    $"Превышен лимит 5GB выбранных файлов, выделенный размер " +
+                         $"{_sftpManagerService.FormatFileSize(_totalSizeFiles)}", "Server");
             }
 
             _totalRemainsSizeFiles = _totalSizeFiles;
@@ -123,7 +124,7 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
                 var remainingSeconds = (long)Math.Round(_remainsSize / uploadSpeed, 0, MidpointRounding.AwayFromZero);
                 var remainingTime = TimeSpan.FromSeconds(remainingSeconds >= 0 ? remainingSeconds : 0);
 
-                var downloadNotitifactionData = new SendNotification
+                var downloadNotificationData = new SendNotification
                 {
                     OperationName = "Отправка файлов",
                     IsProgress = true,
@@ -135,7 +136,7 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
 
                  _sftpHubContext.Clients
                     .Client(request.ConnectionId)
-                    .SendAsync("sendReceive", downloadNotitifactionData, cancellationToken: cancellationToken);
+                    .SendAsync("sendReceive", downloadNotificationData, cancellationToken: cancellationToken);
 
                 // Обновляем значения для следующей итерации
                 previousSendedBytes = sendedBytes;

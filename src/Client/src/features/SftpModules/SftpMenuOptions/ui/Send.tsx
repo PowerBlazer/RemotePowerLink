@@ -11,7 +11,7 @@ interface SendProps extends MenuOptionProp {
 
 export function Send ({ className, disabled, mode, onClick }: SendProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
 
     const onClickSendHandler = () => {
         if (disabled) { return; }

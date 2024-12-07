@@ -205,7 +205,7 @@ public class SftpController: BaseController
                     IsProgress = false,
                 }, cancellationToken: cancellationToken);
         
-        Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+        Response.Headers.Append("Access-Control-Expose-Headers", "Content-Disposition");
         
         return PhysicalFile(zipFilePath, "application/zip", enableRangeProcessing: true, fileDownloadName:zipFileName);
     }

@@ -1,8 +1,8 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './SelectHostBlock.module.scss';
-import LogoIcon from "shared/assets/icons/logo.svg";
-import {Button, ThemeButton} from "shared/ui/Button/Button";
-import {useTranslation} from "react-i18next";
+import LogoIcon from 'shared/assets/icons/logo.svg';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 interface SelectHostBlockProps {
     className?: string;
@@ -11,7 +11,7 @@ interface SelectHostBlockProps {
 
 export function SelectHostBlock ({ className, onClick }: SelectHostBlockProps) {
     const { t } = useTranslation('translation');
-    
+
     return (
         <div className={classNames(style.host_information_block, {}, [className])}>
             <LogoIcon width={180} height={156}/>

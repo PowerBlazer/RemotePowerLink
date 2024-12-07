@@ -18,7 +18,7 @@ interface DownloadModalProps extends SftpCatalogModeProps {
 }
 
 function DownloadModal ({ className, mode }: DownloadModalProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { t } = useTranslation('translation');
     const { theme } = useTheme();
 
@@ -64,18 +64,12 @@ function DownloadModal ({ className, mode }: DownloadModalProps) {
             }
         });
 
-        if (mode === SftpCatalogMode.First) {
-            sftpStore.firstSelectedHost.notificationOptions = null;
-        }
-
-        if (mode === SftpCatalogMode.Second) {
-            sftpStore.secondSelectedHost.notificationOptions = null;
-        }
-
         if (!downloadResult.isSuccess && Boolean(downloadResult.errors)) {
             selectedHost.error = { errors: downloadResult.errors }
             selectedHost.modalOption.errorState = true;
         }
+
+        selectedHost.notificationOptions = null;
     }
 
     useEffect(() => {

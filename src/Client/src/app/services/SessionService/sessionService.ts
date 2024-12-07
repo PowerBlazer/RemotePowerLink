@@ -1,5 +1,5 @@
-﻿import {CreateSessionData, SessionInstanceData} from "app/services/SessionService/config";
-import {ApiResult, HostService, ServiceResult} from "app/services/hostService";
+import { CreateSessionData, SessionInstanceData } from 'app/services/SessionService/config';
+import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
 
 export class SessionService {
     static getOpenedSessions = async (): Promise<ServiceResult<SessionInstanceData[]>> => {
@@ -17,7 +17,7 @@ export class SessionService {
             }
         }
     }
-    
+
     static createSession = async (createSessionData: CreateSessionData): Promise<ServiceResult<SessionInstanceData>> => {
         try {
             const response = await HostService.api.post<ApiResult<SessionInstanceData>>('v1.0/session/create', createSessionData);

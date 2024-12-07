@@ -1,8 +1,8 @@
-import {classNames} from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ErrorPage.module.scss';
-import {useTranslation} from 'react-i18next';
-import {Button, ThemeButton} from 'shared/ui/Button/Button';
-import {useTheme} from "shared/lib/Theme/useTheme";
+import { useTranslation } from 'react-i18next';
+import { Button, ThemeButton } from 'shared/ui/Button/Button';
+import { useTheme } from 'shared/lib/Theme/useTheme';
 import PageErrorImage from 'shared/assets/imgs/page_error.jpg';
 
 interface ErroPagerProps {
@@ -24,9 +24,9 @@ export function ErrorPage ({ className, error }: ErroPagerProps) {
             <div className={classNames(style.error_message)}>
                 {error ? t(error) : 'Произошла ошибка'}
             </div>
-            <Button 
-                className={classNames(style.reload_page)} 
-                onClick={reloadPage} 
+            <Button
+                className={classNames(style.reload_page)}
+                onClick={reloadPage}
                 theme={ThemeButton.PRIMARY}
             >
                 {t('Обновить страницу')}

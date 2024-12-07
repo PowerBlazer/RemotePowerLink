@@ -1,5 +1,5 @@
 import { ApiResult, HostService, ServiceResult } from 'app/services/hostService';
-import {TerminalSetting, TerminalTheme, UpdateTerminalSettingData} from 'app/services/TerminalService/config';
+import { TerminalSetting, TerminalTheme, UpdateTerminalSettingData } from 'app/services/TerminalService/config';
 
 export class TerminalService {
     static getThemes = async (): Promise<ServiceResult<TerminalTheme[]>> => {

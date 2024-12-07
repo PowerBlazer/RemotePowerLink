@@ -11,7 +11,7 @@ interface DownloadProps extends MenuOptionProp {
 
 export function Download ({ className, mode, disabled, onClick }: DownloadProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const onClickDownloadHandler = () => {
         if (disabled) { return; }
 

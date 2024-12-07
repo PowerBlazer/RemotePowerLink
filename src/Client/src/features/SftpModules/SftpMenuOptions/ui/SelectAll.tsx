@@ -11,7 +11,7 @@ interface SelectAllProps extends MenuOptionProp {
 
 export function SelectAll ({ className, disabled, mode, onClick }: SelectAllProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
 
     const onClickSelectAllHandler = () => {
         if (disabled) { return; }

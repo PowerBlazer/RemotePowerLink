@@ -1,6 +1,6 @@
-﻿using Application.Features.TerminalSettingFeature.GetTerminalSettingByUser;
+﻿using Application.Features.TerminalDataFeature.GetTerminalThemes;
+using Application.Features.TerminalSettingFeature.GetTerminalSettingByUser;
 using Application.Features.TerminalSettingFeature.UpdateTerminalSetting;
-using Application.Features.TerminalThemeFeature.GetTerminalThemes;
 using Domain.Common;
 using Domain.DTOs.Terminal;
 using MediatR;

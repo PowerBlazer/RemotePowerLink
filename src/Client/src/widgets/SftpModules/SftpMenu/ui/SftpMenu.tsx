@@ -29,7 +29,7 @@ const SftpMenu = forwardRef(
             onClose
         } = props;
 
-        const selectedHost = sftpStore.getSelectedHostInMode(mode);
+        const selectedHost = sftpStore.getHostInMode(mode);
         const selectedSftpFileOptions = selectedHost.sftpFilesOption;
 
         const [isVisibleMenu, setVisibleMenu] = useState<boolean>(isVisible);

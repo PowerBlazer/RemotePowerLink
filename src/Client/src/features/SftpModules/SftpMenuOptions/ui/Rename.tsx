@@ -11,7 +11,7 @@ interface RenameProps extends MenuOptionProp {
 
 export function Rename ({ className, disabled, mode, onClick }: RenameProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode)
+    const selectedHost = sftpStore.getHostInMode(mode)
     const onClickRenameHandler = () => {
         if (disabled) { return; }
 

@@ -1,11 +1,10 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './ErrorModal.module.scss';
 import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
-import {useTheme} from "shared/lib/Theme/useTheme";
-import {Theme} from "shared/lib/Theme/ThemeContext";
+import { useTheme } from 'shared/lib/Theme/useTheme';
+import { Theme } from 'shared/lib/Theme/ThemeContext';
 import terminalStore from 'app/store/terminalStore';
 import { observer } from 'mobx-react-lite';
-
 
 interface ErrorModalProps {
     className?: string;
@@ -13,7 +12,7 @@ interface ErrorModalProps {
 
 function ErrorModal ({ className }: ErrorModalProps) {
     const { theme } = useTheme();
-    
+
     return (
         <Modal
             options={{
@@ -34,7 +33,7 @@ function ErrorModal ({ className }: ErrorModalProps) {
                                 {key}:  {value?.join(' ')}
                             </div>
                         );
-                })}
+                    })}
             </div>
         </Modal>
     );

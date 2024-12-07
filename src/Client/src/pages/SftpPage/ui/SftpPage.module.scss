@@ -5,6 +5,17 @@
   border-left: 2px solid var(--bg-color);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer{
+  width: 100%;
+  height: 35px;
+  background-color: var(--bg-color-inverted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .gutter{

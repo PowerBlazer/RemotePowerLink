@@ -11,12 +11,12 @@ import { UsernameModal } from 'widgets/SettingModals/UsernameModal';
 import { PhoneNumberModal } from 'widgets/SettingModals/PhoneNumberModal';
 import { EmailModal } from 'widgets/SettingModals/EmailModal';
 import style from './SettingsPage.module.scss';
-import {Button} from "shared/ui/Button/Button";
-import {Input} from "shared/ui/Input";
-import terminalStore from "app/store/terminalStore";
-import {useMemo} from "react";
-import {TerminalSettingBlock} from "widgets/SettingBlocks/TerminalSettingBlock";
-import {Loader} from "shared/ui/Loader/Loader";
+import { Button } from 'shared/ui/Button/Button';
+import { Input } from 'shared/ui/Input';
+import terminalStore from 'app/store/terminalStore';
+import { useMemo } from 'react';
+import { TerminalSettingBlock } from 'widgets/SettingBlocks/TerminalSettingBlock';
+import { Loader } from 'shared/ui/Loader/Loader';
 
 interface SettingsPageProps {
     className?: string;
@@ -24,11 +24,11 @@ interface SettingsPageProps {
 
 function SettingsPage ({ className }: SettingsPageProps) {
     const { t } = useTranslation('translation');
-    
+
     return (
         <div className={classNames(style.settingsPage, {}, [className])}>
             {
-                userStore.isLoadData 
+                userStore.isLoadData
                     ? <Loader className={classNames(style.loader)}/>
                     : <div className={classNames(style.setting_inner)}>
                         <SettingBlock className={classNames(style.general_block)} headerName={t('Главная')}>

@@ -68,7 +68,7 @@ public class SshSessionInstanceBuilder: ISessionInstanceBuilder
         }
         
         var server = await _serverRepository.GetServer(_sessionInstance.ServerId);
-        var connectionServer = ConnectionServer.ServerMapTo(server);
+        var connectionServerData = ConnectionServer.ServerMapTo(server);
         
         var fileName = Path.GetFileName(_sessionInstance.LogFilePath);
 
@@ -88,7 +88,7 @@ public class SshSessionInstanceBuilder: ISessionInstanceBuilder
         var createdSession = await _sessionRepository.AddSession(newSession);
         
         _sessionInstance.Id = createdSession.Id;
-        _sessionInstance.ConnectionServer = connectionServer;
+        _sessionInstance.ConnectionServer = connectionServerData;
         _sessionInstance.IsActive = true;
         _sessionInstance.DateCreated = createdSession.DateCreated;
 

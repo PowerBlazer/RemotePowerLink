@@ -12,7 +12,7 @@ interface NewFolderProps extends MenuOptionProp {
 
 export function NewFolder ({ className, disabled, mode, onClick }: NewFolderProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
 
     const onClickNewFolderHandler = () => {
         if (disabled) { return; }

@@ -1,1 +1,1 @@
-﻿export { default as TerminalSelectHostCatalog } from './ui/TerminalSelectHostCatalog'
+export { default as TerminalSelectHostCatalog } from './ui/TerminalSelectHostCatalog'

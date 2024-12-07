@@ -15,14 +15,14 @@ public class SessionConnectionService: ISessionConnectionService
     private readonly ConcurrentDictionary<long, ISessionInstance> _sessionInstances = new();
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly string? _rootPath;
-    private readonly IHubContext<TerminalHub> _terminulHubContext;
+    private readonly IHubContext<TerminalHub> _terminalHubContext;
 
     public SessionConnectionService(IServiceScopeFactory serviceScopeFactory, string? rootPath,
-        IHubContext<TerminalHub> terminulHubContext)
+        IHubContext<TerminalHub> terminalHubContext)
     {
         _serviceScopeFactory = serviceScopeFactory;
         _rootPath = rootPath;
-        _terminulHubContext = terminulHubContext;
+        _terminalHubContext = terminalHubContext;
     }
 
 
@@ -61,7 +61,7 @@ public class SessionConnectionService: ISessionConnectionService
             .SetServer(serverId)
             .SetLogFilePath(logFilePath)
             .SetOutputAction((data,sessionId) =>
-                _terminulHubContext.Clients
+                _terminalHubContext.Clients
                     .User(userId.ToString())
                     .SendAsync("SessionOutput", new SessionOutputData
                     {
@@ -95,7 +95,7 @@ public class SessionConnectionService: ISessionConnectionService
         
         var sessionData = await sessionInstance.GetFullSessionData();
         
-        await _terminulHubContext.Clients
+        await _terminalHubContext.Clients
             .User(sessionInstance.UserId.ToString())
             .SendAsync("SessionOutput", new SessionOutputData
             {

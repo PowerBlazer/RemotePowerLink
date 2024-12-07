@@ -6,7 +6,8 @@ export enum FileType {
 
 export enum SftpCatalogMode {
     First = 'FIRST',
-    Second = 'SECOND'
+    Second = 'SECOND',
+    THIRD = 'THIRD',
 }
 
 export interface SftpFile {

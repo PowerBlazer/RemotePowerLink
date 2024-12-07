@@ -25,7 +25,9 @@ import { SessionService } from 'app/services/SessionService/sessionService';
 import TerminalHub from 'app/hubs/terminalHub';
 import toast from 'react-hot-toast';
 import { TerminalService } from 'app/services/TerminalService/terminalService';
-import {ConnectionState} from "app/hubs/hubFactory";
+import { ConnectionState } from 'app/hubs/hubFactory';
+import useTerminal from 'app/hooks/useTerminal';
+import useApp from 'app/hooks/useApp';
 
 interface NavbarProps {
     className?: string
@@ -35,137 +37,7 @@ function Navbar ({ className }: NavbarProps) {
     const { t } = useTranslation('translation');
     const [hasLoadError, setHasError] = useState(false);
 
-    const { isLoad } = useEffectLoad(async () => {
-        if (!userStore.userData) {
-            const userDataResult = await UserService.getUserData();
-
-            if (!userDataResult.isSuccess) {
-                setHasError(true);
-            }
-
-            userStore.setUserData(userDataResult.result);
-        }
-
-        if (!userStore.userIdentities) {
-            const identitiesResult = await IdentityService.getIdentities();
-
-            if (!identitiesResult.isSuccess) {
-                setHasError(true);
-            }
-
-            userStore.setUserIdentities(identitiesResult.result);
-        }
-
-        if (!userStore.userProxies) {
-            const proxiesResult = await ProxyService.getProxies();
-
-            if (!proxiesResult.isSuccess) {
-                setHasError(true);
-            }
-
-            userStore.setUserProxies(proxiesResult.result);
-        }
-
-        if (!userStore.userServers) {
-            const serversResult = await ServerService.getServers();
-
-            if (!serversResult.isSuccess) {
-                setHasError(true);
-            }
-
-            userStore.setUserServers(serversResult.result);
-        }
-
-        if (!userStore.encodings) {
-            const encodingsResult = await EncodingService.getEncodings();
-
-            if (!encodingsResult.isSuccess) {
-                setHasError(true);
-            }
-
-            userStore.setUserEncodings(encodingsResult.result);
-        }
-
-        if (terminalStore.terminalThemes.length === 0) {
-            const terminalThemesResult = await TerminalService.getThemes();
-
-            if (!terminalThemesResult.isSuccess) {
-                setHasError(true);
-            }
-
-            terminalStore.terminalThemes = terminalThemesResult.result;
-        }
-
-        if (!terminalStore.terminalSetting) {
-            const terminalSettingResult = await TerminalService.getSetting();
-
-            if (!terminalSettingResult.isSuccess) {
-                setHasError(true);
-            }
-
-            terminalStore.terminalSetting = terminalSettingResult.result;
-        }
-
-        if (!terminalStore.sessions || terminalStore.sessions.length === 0) {
-            const sessionsResult = await SessionService.getOpenedSessions();
-
-            if (sessionsResult.isSuccess) {
-                terminalStore.sessions = sessionsResult.result?.map(p => {
-                    const terminalSession: TerminalSession = {
-                        id: p.id,
-                        isLoad: false,
-                        isNew: false,
-                        isCreate: false,
-                        host: userStore.userServers.find(x => x.serverId === p.serverId)
-                    }
-
-                    return terminalSession;
-                });
-
-                terminalStore.terminalHub = new TerminalHub();
-                terminalStore.terminalHub.events(
-                    (outputData) => {
-                        const currentSession = terminalStore.sessions.find(p => p.id === outputData.sessionId);
-    
-                        if (currentSession && outputData.data) {
-                            currentSession.isLoad = false;
-                            currentSession.onOutput?.(outputData.data);
-                        }
-                    },
-                    (sessionId) => {
-                        terminalStore.sessions = terminalStore.sessions.filter(p => p.id !== sessionId);
-
-                        if (terminalStore.selectedSession?.id === sessionId && terminalStore.sessions.length > 0) {
-                            if (terminalStore.sessions[0].isCreate) {
-                                terminalStore.sessions[0].isCreate = false;
-                            }
-                            terminalStore.selectedSession = terminalStore.sessions[0];
-                        }
-
-                        if (terminalStore.sessions.length === 0) {
-                            terminalStore.selectedSession = null;
-                        }
-
-                        if (terminalStore.terminalHub.getConnectionState() === ConnectionState.Connected) {
-                            terminalStore.terminalHub.disconnectFromSession(sessionId);
-                        }
-                    }
-                );
-
-                terminalStore.terminalHub.onError = (errors) => {
-                    if (terminalStore.selectedSession) {
-                        terminalStore.selectedSession.errors = errors;
-                    }
-
-                    toast.error(Object.values(errors).join('\n'));
-                }
-            }
-
-            if (!sessionsResult.isSuccess) {
-                setHasError(true);
-            }
-        }
-    });
+    const { loadData } = useApp()
 
     useEffect(() => {
         searchStore.setSearchData({
@@ -180,8 +52,10 @@ function Navbar ({ className }: NavbarProps) {
     ]);
 
     useEffect(() => {
-        userStore.setLoad(isLoad);
-    }, [isLoad]);
+        loadData(() => {
+            setHasError(true);
+        });
+    }, []);
 
     if (hasLoadError) {
         throw new Error('Ошибка загрузка данных, перезагрузите страницу или обратитесь в тех поддержку')

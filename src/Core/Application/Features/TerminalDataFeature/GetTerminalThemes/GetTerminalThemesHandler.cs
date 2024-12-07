@@ -3,7 +3,7 @@ using Domain.DTOs.Terminal;
 using JetBrains.Annotations;
 using MediatR;
 
-namespace Application.Features.TerminalThemeFeature.GetTerminalThemes;
+namespace Application.Features.TerminalDataFeature.GetTerminalThemes;
 
 [UsedImplicitly]
 public class GetTerminalThemesHandler: IRequestHandler<GetTerminalThemesCommand, IEnumerable<TerminalThemeResponse>>

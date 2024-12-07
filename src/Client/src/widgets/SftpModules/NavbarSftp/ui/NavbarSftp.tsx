@@ -21,7 +21,7 @@ interface NavbarSftpProps extends SftpCatalogModeProps {
 
 function NavbarSftp ({ className, mode, onOpenCatalog }: NavbarSftpProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
 
     const selectedTitle = selectedHost?.sftpFilesOption.filterOptions.title || '';
     const server = selectedHost?.server;

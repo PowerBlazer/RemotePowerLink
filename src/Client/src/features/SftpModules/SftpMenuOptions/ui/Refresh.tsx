@@ -11,7 +11,7 @@ interface RefreshProps extends MenuOptionProp {
 
 export function Refresh ({ className, disabled, mode, onClick }: RefreshProps) {
     const { t } = useTranslation('translation');
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
 
     const onClickRefreshHandler = () => {
         if (disabled) { return; }

@@ -1,14 +1,15 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './PageConnectionError.module.scss';
-import {HostService} from "app/services/hostService";
-import {DefaultServerIcon} from "shared/ui/DefaultServerIcon";
-import {Button} from "shared/ui/Button/Button";
-import {SftpServer} from "app/store/sftpStore";
-import {useTranslation} from "react-i18next";
+import { HostService } from 'app/services/hostService';
+import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon';
+import { Button } from 'shared/ui/Button/Button';
+import sftpStore, { SftpServer } from 'app/store/sftpStore';
+import { useTranslation } from 'react-i18next';
+import { SftpCatalogMode } from 'app/services/SftpService/config';
 
 interface PageConnectionErrorProps {
     className?: string;
-    selectedHost: SftpServer
+    mode: SftpCatalogMode
     onCloseConnectionServer?: () => Promise<void>,
     onSwitchEditingHostMode?: () => Promise<void>,
     onReconnectHost?: () => Promise<void>
@@ -16,17 +17,19 @@ interface PageConnectionErrorProps {
 
 export function PageConnectionError (props: PageConnectionErrorProps) {
     const { t } = useTranslation('translation');
-    
+
     const {
         className,
-        selectedHost,
+        mode,
         onCloseConnectionServer,
         onSwitchEditingHostMode,
         onReconnectHost
-    } = props
-    
+    } = props;
+
+    const selectedHost = sftpStore.getHostInMode(mode);
+
     return (
-        <div className={classNames(style.connection_error_panel,{}, [className])}>
+        <div className={classNames(style.connection_error_panel, {}, [className])}>
             <div className={classNames(style.panel_inner)}>
                 <div className={classNames(style.server_logo)}>
                     {selectedHost?.server.systemTypeIcon

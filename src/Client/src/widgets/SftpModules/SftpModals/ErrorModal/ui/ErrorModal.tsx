@@ -12,7 +12,7 @@ interface ErrorModalProps extends SftpCatalogModeProps {
 }
 
 function ErrorModal ({ className, mode }: ErrorModalProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { theme } = useTheme();
 
     return (

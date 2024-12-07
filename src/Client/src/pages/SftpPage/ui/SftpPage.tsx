@@ -20,6 +20,7 @@ function SftpPage ({ className }: SftpPageProps) {
 
     return (
         <div className={classNames(style.sftpPage, {}, [className])} ref={sftpPageRef}>
+
             <ReactSplit
                 gutterClassName={classNames(style.gutter)}
                 draggerClassName={classNames(style.dragger)}
@@ -28,10 +29,14 @@ function SftpPage ({ className }: SftpPageProps) {
                 // eslint-disable-next-line no-return-assign
                 onResizeFinished={(_, __) => sftpStore.editableWidthSplit = !sftpStore.editableWidthSplit}
             >
-                <SftpCatalog mode={SftpCatalogMode.First} />
-                <SftpCatalog mode={SftpCatalogMode.Second} />
+                <SftpCatalog mode={SftpCatalogMode.First}/>
+                <SftpCatalog mode={SftpCatalogMode.Second}/>
             </ReactSplit>
+            {/* <div className={style.footer}>
+                <LiteSelect items={[{id:'1', text:"1"}]} position={SelectPosition.TOP_LEFT}/>
+            </div> */}
         </div>
     );
 }
+
 export default observer(SftpPage);

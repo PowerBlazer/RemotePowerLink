@@ -21,7 +21,7 @@ interface UploadModalProps extends SftpCatalogModeProps {
 }
 
 function UploadModal ({ className, mode }: UploadModalProps) {
-    const selectedHost = sftpStore.getSelectedHostInMode(mode);
+    const selectedHost = sftpStore.getHostInMode(mode);
     const { t } = useTranslation('translation');
     const { theme } = useTheme();
 

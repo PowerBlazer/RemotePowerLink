@@ -1,4 +1,4 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './NavbarTerminal.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Button } from 'shared/ui/Button/Button';
@@ -6,9 +6,10 @@ import PlusIcon from 'shared/assets/icons/plus.svg';
 import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import TerminalIcon from 'shared/assets/icons/terminal-cursor.svg'
 import CloseIcon from 'shared/assets/icons/close.svg';
-import {MouseEvent, useEffect, useMemo, useRef} from 'react';
+import { MouseEvent, useEffect, useMemo, useRef } from 'react';
 import { ConnectionState } from 'app/hubs/hubFactory';
 import { Loader } from 'shared/ui/Loader/Loader';
+import useTerminal from 'app/hooks/useTerminal';
 
 interface NavbarTerminalProps {
     className?: string;
@@ -16,49 +17,25 @@ interface NavbarTerminalProps {
 }
 
 function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) {
+    const { closeSession, selectSession } = useTerminal();
     const sessionTabsRef = useRef<HTMLDivElement>(null);
 
     const terminalTheme = useMemo(() => terminalStore
-            .terminalThemes
-            .find(p=> p.id === terminalStore.terminalSetting.terminalThemeId), 
-        [terminalStore.terminalSetting.terminalThemeId, terminalStore.terminalThemes]
+        .terminalThemes
+        .find(p => p.id === terminalStore.terminalSetting.terminalThemeId),
+    [terminalStore.terminalSetting.terminalThemeId, terminalStore.terminalThemes]
     );
-    
+
     const isLight = isLightBackground(terminalTheme.background);
-    
-    const closeSession = async (e: MouseEvent<HTMLDivElement>, sessionId: number) => {
+
+    const closeSessionHandler = async (e: MouseEvent<HTMLDivElement>, sessionId: number) => {
         e.stopPropagation();
 
-        terminalStore.sessions = terminalStore.sessions.filter(p => p.id !== sessionId);
-
-        if (terminalStore.selectedSession?.id === sessionId && terminalStore.sessions.length > 0) {
-            if (terminalStore.sessions[0].isCreate) {
-                terminalStore.sessions[0].isCreate = false;
-            }
-            terminalStore.selectedSession = terminalStore.sessions[0];
-        }
-
-        if (terminalStore.sessions.length === 0) {
-            terminalStore.selectedSession = null;
-        }
-
-        if (terminalStore.terminalHub.getConnectionState() === ConnectionState.Connected) {
-            await terminalStore.terminalHub.disconnectFromSession(sessionId);
-        }
+        await closeSession(sessionId);
     }
 
     const selectTab = async (session: TerminalSession) => {
-        if (terminalStore.selectedSession?.id === session.id) {
-            return;
-        }
-
-        if (terminalStore.selectedSession && !terminalStore.selectedSession.isLoad) {
-            await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
-        }
-
-        session.isCreate = false;
-        terminalStore.selectedSession = session;
-        terminalStore.selectedSession.isLoad = true;
+        await selectSession(session);
     }
 
     useEffect(() => {
@@ -81,7 +58,7 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
     }, []);
 
     return (
-        <div className={classNames(style.navbarTerminal, {}, [className])} style={{backgroundColor: terminalTheme.background}}>
+        <div className={classNames(style.navbarTerminal, {}, [className])} style={{ backgroundColor: terminalTheme.background }}>
             <div className={classNames(style.session_tabs)} ref={sessionTabsRef} >
                 {
                     terminalStore.sessions.map(session =>
@@ -108,14 +85,14 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
 
                             <div
                                 className={classNames(style.close_session)}
-                                onClick={async (e) => { await closeSession(e, session.id); }}
+                                onClick={async (e) => { await closeSessionHandler(e, session.id); }}
                             >
                                 <CloseIcon width={13} height={13}/>
                             </div>
                         </Button>
                     )
                 }
-                <div className={classNames(style.open_session_block, {[style.isLight]: isLight})}>
+                <div className={classNames(style.open_session_block, { [style.isLight]: isLight })}>
                     <div className={classNames(style.line)}></div>
                     <Button className={classNames(style.open_session)} onClick={onClickSelectHost}>
                         <PlusIcon width={14} height={14} className={classNames(style.plus_icon)}/>
@@ -126,4 +103,4 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
     );
 }
 
-export default observer(NavbarTerminal)
+export default observer(NavbarTerminal);

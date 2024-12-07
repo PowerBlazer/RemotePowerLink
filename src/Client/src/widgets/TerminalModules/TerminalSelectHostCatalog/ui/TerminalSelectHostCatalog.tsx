@@ -1,4 +1,4 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './TerminalSelectHostCatalog.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
@@ -11,7 +11,8 @@ import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { useTranslation } from 'react-i18next';
 import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import { SessionService } from 'app/services/SessionService/sessionService';
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
+import useTerminal from 'app/hooks/useTerminal';
 
 interface TerminalSelectHostCatalogProps {
     className?: string;
@@ -19,7 +20,8 @@ interface TerminalSelectHostCatalogProps {
 }
 
 function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCatalogProps) {
-    const { t } = useTranslation('translation')
+    const { t } = useTranslation('translation');
+    const { openSession } = useTerminal();
 
     const onChangeSearchInputHandler = (value: string) => {
         searchStore.setFilterOption({
@@ -30,63 +32,6 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
     const onClickCloseSelectHostCatalog = () => {
         if (onClose) {
             onClose();
-        }
-    }
-
-    const onClickConnectHandler = async (serverData: ServerData) => {
-        // eslint-disable-next-line no-undef
-        const uniqueId = generateUniqueNumber();
-        const newSession: TerminalSession = {
-            id: uniqueId,
-            host: serverData,
-            isLoad: true,
-            isNew: true,
-            isCreate: true
-        };
-
-        if (terminalStore.selectedSession) {
-            await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
-        }
-
-        const countSessionForServer = terminalStore.sessions
-            .filter(p => p.host.serverId === serverData.serverId)?.length ?? 0;
-
-        newSession.name = countSessionForServer === 0
-            ? serverData.title
-            : `${serverData.title} (${countSessionForServer})`;
-
-        terminalStore.sessions.push(newSession);
-        terminalStore.selectedSession = newSession;
-
-        if (onClose) {
-            onClose()
-        }
-
-        const createdSessionResult = await SessionService.createSession({
-            serverId: serverData.serverId
-        });
-
-        if (createdSessionResult.isSuccess) {
-            const currentSession = terminalStore.sessions.find(p => p.id === uniqueId)
-
-            currentSession.id = createdSessionResult.result.id;
-            currentSession.isNew = false;
-            
-            if(terminalStore.selectedSession && !terminalStore.selectedSession.isLoad){
-                await terminalStore.terminalHub.disactivateSession(terminalStore.selectedSession.id);
-            }
-
-            terminalStore.selectedSession = currentSession;
-        }
-        
-        if(!createdSessionResult.isSuccess){
-            if(terminalStore.selectedSession && terminalStore.selectedSession.id === uniqueId){
-                terminalStore.selectedSession = null;
-            }
-            
-            terminalStore.sessions = terminalStore.sessions.filter(p => p.id !== uniqueId);
-
-            toast.error(Object.values(createdSessionResult.errors).join('\n'));
         }
     }
 
@@ -108,7 +53,7 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
                     <div className={style.tools}></div>
                 </div>
             </div>
-            <ServerManagerCatalog mode={ServerManagerCatalogMode.Terminal} onConnect={onClickConnectHandler}/>
+            <ServerManagerCatalog mode={ServerManagerCatalogMode.Terminal} onConnect={openSession}/>
         </div>
     );
 }

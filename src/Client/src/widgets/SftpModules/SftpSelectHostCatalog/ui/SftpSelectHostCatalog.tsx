@@ -8,10 +8,8 @@ import { SearchInput } from 'features/SearchInput';
 import ArrowRight from 'shared/assets/icons/arrow-right.svg';
 import searchStore from 'app/store/searchStore';
 import style from './SftpSelectHostCatalog.module.scss';
-import sftpStore, { SftpModalOption } from 'app/store/sftpStore';
-import { SftpCatalogMode } from 'app/services/SftpService/config';
-import { Stack } from 'shared/lib/Stack';
 import { SftpCatalogModeProps } from 'widgets/SftpModules/SftpCatalog';
+import useSftp from 'app/hooks/useSftp';
 
 interface SftpSelectHostCatalogProps extends SftpCatalogModeProps {
     className?: string,
@@ -20,6 +18,8 @@ interface SftpSelectHostCatalogProps extends SftpCatalogModeProps {
 
 export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectHostCatalogProps) {
     const { t } = useTranslation('translation');
+    const { connectSftp } = useSftp(mode)
+
     const onChangeSearchInputHandler = (value: string) => {
         searchStore.setFilterOption({
             title: value
@@ -33,42 +33,7 @@ export function SftpSelectHostCatalog ({ className, onClose, mode }: SftpSelectH
     }
 
     const onClickConnectHandler = async (serverData: ServerData) => {
-        const modalOptions: SftpModalOption = {
-            errorState: false,
-            newFolderState: false,
-            deleteState: false,
-            renameState: false,
-            downloadState: false,
-            uploadState: false,
-            sendState: false
-        }
-
-        const newHostInstance = {
-            server: serverData,
-            isLoad: false,
-            sftpFilesOption: {
-                filterOptions: {},
-                historyPrevPaths: new Stack<string>(),
-                historyNextPaths: new Stack<string>()
-            },
-            modalOption: modalOptions
-        }
-
-        if (mode === SftpCatalogMode.First) {
-            if (sftpStore.firstSelectedHost?.sftpHub) {
-                sftpStore.firstSelectedHost.sftpHub.closeConnection();
-            }
-
-            sftpStore.firstSelectedHost = newHostInstance;
-        }
-
-        if (mode === SftpCatalogMode.Second) {
-            if (sftpStore.secondSelectedHost?.sftpHub) {
-                sftpStore.secondSelectedHost.sftpHub.closeConnection();
-            }
-
-            sftpStore.secondSelectedHost = newHostInstance;
-        }
+        await connectSftp(serverData)
 
         if (onClose) {
             onClose();

@@ -1,1 +1,1 @@
-﻿export { default as TerminalSettingBlock } from './ui/TerminalSettingBlock'
+export { default as TerminalSettingBlock } from './ui/TerminalSettingBlock'

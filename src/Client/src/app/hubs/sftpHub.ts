@@ -4,7 +4,7 @@ import { HostService } from 'app/services/hostService';
 import { AuthorizationService } from 'app/services/AuthorizationService/authorizationService';
 import { SftpFileList } from 'app/services/SftpService/config';
 import { AppRoutes } from 'app/providers/router/config/routeConfig';
-import {ConnectionState, createHubInstance} from 'app/hubs/hubFactory';
+import { ConnectionState, createHubInstance } from 'app/hubs/hubFactory';
 import toast from 'react-hot-toast';
 import { SftpNotificationData } from 'app/store/sftpStore';
 import { HubConnectionState } from '@microsoft/signalr';
@@ -117,7 +117,5 @@ class SftpHub {
         return true;
     }
 }
-
-
 
 export default SftpHub;

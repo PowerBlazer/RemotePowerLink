@@ -9,6 +9,7 @@ public class TerminalSetting : BaseEntity<long>
     /// Обязательное поле.
     /// </summary>
     public int FontSize { get; set; }
+    
 
     #region Relationship
 

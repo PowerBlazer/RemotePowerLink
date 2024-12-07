@@ -3,7 +3,7 @@ import './Terminal.css'
 import { Terminal as XtermTerminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
-import {useEffect, useMemo, useRef} from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import terminalStore from 'app/store/terminalStore';
 import { ConnectionState } from 'app/hubs/hubFactory';
@@ -15,12 +15,12 @@ interface TerminalProps {
 function Terminal ({ className }: TerminalProps) {
     const terminalRef = useRef<HTMLDivElement>(null);
     const xtermRef = useRef<XtermTerminal | null>(null);
-    
-    const terminalTheme = useMemo(()=> 
-            terminalStore
-                .terminalThemes
-                .find(p=> p.id === terminalStore.terminalSetting.terminalThemeId),
-        [terminalStore.terminalSetting?.terminalThemeId, terminalStore.terminalThemes]
+
+    const terminalTheme = useMemo(() =>
+        terminalStore
+            .terminalThemes
+            .find(p => p.id === terminalStore.terminalSetting.terminalThemeId),
+    [terminalStore.terminalSetting?.terminalThemeId, terminalStore.terminalThemes]
     );
 
     useEffect(() => {
@@ -48,11 +48,10 @@ function Terminal ({ className }: TerminalProps) {
                 brightGreen: terminalTheme.brightGreen,
                 brightYellow: terminalTheme.brightYellow,
                 brightBlue: terminalTheme.brightBlue,
-                brightMagenta: terminalTheme.brightPurple, 
+                brightMagenta: terminalTheme.brightPurple,
                 brightCyan: terminalTheme.brightCyan,
-                brightWhite: terminalTheme.brightWhite,
+                brightWhite: terminalTheme.brightWhite
             };
-            
 
             xterm.loadAddon(fitAddon);
             xterm.open(terminalRef.current);
@@ -79,7 +78,7 @@ function Terminal ({ className }: TerminalProps) {
                     xterm.write(data);
                 }
             }
-            
+
             return () => {
                 xterm.dispose();
             };

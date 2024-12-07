@@ -62,9 +62,10 @@
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
     "@devbookhq/splitter": "^1.4.2",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@microsoft/signalr": "^8.0.0",
+    "@mui/material": "^6.1.10",
     "@types/react-select": "^5.0.1",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",

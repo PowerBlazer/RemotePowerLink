@@ -3,6 +3,7 @@ import SftpHub from 'app/hubs/sftpHub';
 import { FileType, SftpFile, SftpFileList } from 'app/services/SftpService/config';
 import {makeAutoObservable, observable, reaction} from 'mobx';
 import { Stack } from 'shared/lib/Stack';
+import {LocalStorageKeys} from "app/enums/LocalStorageKeys";
 
 export interface SftpServer {
     server: ServerData,
@@ -86,13 +87,15 @@ class SftpStore {
             () => this.windowOption,
             (option) => {
                 this.initializeHosts(option);
+                
+                localStorage.setItem(LocalStorageKeys.SCREEN_MODE, option.toString());
             }
         );
 
         this.initializeHosts(this.windowOption);
     }
     
-    @observable public windowOption = SftpScreenSplitMode.DOUBLE;
+    @observable public windowOption = this.getScreenModeInStorage();
     @observable public hosts: SftpServer[] | null[] = [];
     
     @observable public editableWidthSplit: boolean = false;
@@ -233,6 +236,13 @@ class SftpStore {
         const newHosts = this.hosts.slice(0, option);
         this.hosts = newHosts.concat(Array(option - newHosts.length).fill(null));
     }
+
+    private getScreenModeInStorage(): SftpScreenSplitMode {
+        const screenMode = Number(localStorage.getItem(LocalStorageKeys.SCREEN_MODE));
+        
+        return screenMode ? (screenMode as SftpScreenSplitMode) : SftpScreenSplitMode.DOUBLE;
+    }
+    
 }
 
 function compare (a: any, b: any): number {

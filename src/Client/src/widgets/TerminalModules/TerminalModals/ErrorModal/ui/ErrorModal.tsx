@@ -5,14 +5,19 @@ import { useTheme } from 'shared/lib/Theme/useTheme';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
 import terminalStore from 'app/store/terminalStore';
 import { observer } from 'mobx-react-lite';
+import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
+import useTerminal from "app/hooks/useTerminal";
 
-interface ErrorModalProps {
+interface ErrorModalProps extends TerminalScreenMode{
     className?: string;
 }
 
-function ErrorModal ({ className }: ErrorModalProps) {
+function ErrorModal ({ className, index }: ErrorModalProps) {
     const { theme } = useTheme();
 
+    const { getGroupTerminalSessions } = useTerminal();
+    const groupTerminalSessions = getGroupTerminalSessions(index);
+    
     return (
         <Modal
             options={{
@@ -26,7 +31,7 @@ function ErrorModal ({ className }: ErrorModalProps) {
             isVisible={Boolean(terminalStore.modalOptions.errorState)}
         >
             <div className={classNames(style.error_panel)}>
-                {terminalStore.selectedSession?.errors && Object.entries(terminalStore.selectedSession?.errors)
+                {groupTerminalSessions.selectedSession?.errors && Object.entries(groupTerminalSessions.selectedSession?.errors)
                     .map(([key, value]) => {
                         return (
                             <div className={classNames(style.error)} key={key}>

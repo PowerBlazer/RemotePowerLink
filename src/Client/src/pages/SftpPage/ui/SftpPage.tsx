@@ -31,7 +31,7 @@ function SftpPage ({ className }: SftpPageProps) {
 
 
     const splitMods = Object.values(SftpScreenSplitMode)
-        .filter((value) => typeof value === "number") // Только числовые значения
+        .filter((value) => typeof value === "number")
         .map((value) => ({
             id: value as number, // id остаётся числом
             title: value === 1 ? "No split" : `${value} columns`,

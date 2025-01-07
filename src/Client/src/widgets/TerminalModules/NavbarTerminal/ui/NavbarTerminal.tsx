@@ -10,20 +10,24 @@ import { MouseEvent, useEffect, useMemo, useRef } from 'react';
 import { ConnectionState } from 'app/hubs/hubFactory';
 import { Loader } from 'shared/ui/Loader/Loader';
 import useTerminal from 'app/hooks/useTerminal';
+import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
 
-interface NavbarTerminalProps {
+interface NavbarTerminalProps extends TerminalScreenMode {
     className?: string;
     onClickSelectHost: () => void
 }
 
-function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) {
-    const { closeSession, selectSession } = useTerminal();
+function NavbarTerminal ({ className, onClickSelectHost, index }: NavbarTerminalProps) {
+    const { closeSession, selectSession, getGroupTerminalSessions } = useTerminal();
+    const groupTerminalSessions = getGroupTerminalSessions(index);
+
     const sessionTabsRef = useRef<HTMLDivElement>(null);
 
-    const terminalTheme = useMemo(() => terminalStore
-        .terminalThemes
-        .find(p => p.id === terminalStore.terminalSetting.terminalThemeId),
-    [terminalStore.terminalSetting.terminalThemeId, terminalStore.terminalThemes]
+    const terminalTheme = useMemo(
+        () => terminalStore
+            .terminalThemes
+            .find(p => p.id === terminalStore.terminalSetting.terminalThemeId),
+        [terminalStore.terminalSetting.terminalThemeId, terminalStore.terminalThemes]
     );
 
     const isLight = isLightBackground(terminalTheme.background);
@@ -31,11 +35,11 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
     const closeSessionHandler = async (e: MouseEvent<HTMLDivElement>, sessionId: number) => {
         e.stopPropagation();
 
-        await closeSession(sessionId);
+        await closeSession(sessionId, index);
     }
 
     const selectTab = async (session: TerminalSession) => {
-        await selectSession(session);
+        await selectSession(session, index);
     }
 
     useEffect(() => {
@@ -57,14 +61,35 @@ function NavbarTerminal ({ className, onClickSelectHost }: NavbarTerminalProps) 
         };
     }, []);
 
+
+    useEffect(() => {
+        const titleCounters: Record<string, number> = {};
+        
+        groupTerminalSessions.sessions.forEach((session) => {
+            const hostTitle = session.host.title;
+
+            if (!titleCounters[hostTitle]) {
+                titleCounters[hostTitle] = 0;
+            }
+
+            if (titleCounters[hostTitle] === 0) {
+                session.name = hostTitle;
+            } else {
+                session.name = `${hostTitle} (${titleCounters[hostTitle]})`;
+            }
+
+            titleCounters[hostTitle]++;
+        });
+    }, [groupTerminalSessions.sessions]);
+
     return (
         <div className={classNames(style.navbarTerminal, {}, [className])} style={{ backgroundColor: terminalTheme.background }}>
             <div className={classNames(style.session_tabs)} ref={sessionTabsRef} >
                 {
-                    terminalStore.sessions.map(session =>
+                    groupTerminalSessions.sessions.map(session =>
                         <Button
                             className={classNames(style.session_tab, {
-                                [style.selected]: terminalStore.selectedSession && terminalStore.selectedSession.id === session.id,
+                                [style.selected]: groupTerminalSessions.selectedSession && groupTerminalSessions.selectedSession.id === session.id,
                                 [style.isLight]: isLight
                             }, [])}
                             key={session.id}

@@ -53,7 +53,7 @@ public class SshSessionInstance: ISessionInstance
                 600, 
                 2048, 
                 terminalModes);
-
+            
             _stream.DataReceived += (_, args) =>
             {
                 var output = Encoding.UTF8.GetString(args.Data);
@@ -88,9 +88,20 @@ public class SshSessionInstance: ISessionInstance
     {
         if (IsConnected && _stream is not null)
         {
-            LastUpdated = DateTime.Now; 
-            _stream.Write(command);
-            await _stream.FlushAsync();
+            try
+            {
+                LastUpdated = DateTime.Now;
+                _stream.Write(command);
+                await _stream.FlushAsync();
+            }
+            catch (ObjectDisposedException)
+            {
+                throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{Id}");
+            }
+        }
+        else
+        {
+            throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{Id}");
         }
     }
 

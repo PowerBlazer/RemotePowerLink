@@ -89,7 +89,7 @@ public class SshSessionInstanceBuilder: ISessionInstanceBuilder
         
         _sessionInstance.Id = createdSession.Id;
         _sessionInstance.ConnectionServer = connectionServerData;
-        _sessionInstance.IsActive = true;
+        _sessionInstance.IsActive = false;
         _sessionInstance.DateCreated = createdSession.DateCreated;
 
         return _sessionInstance;

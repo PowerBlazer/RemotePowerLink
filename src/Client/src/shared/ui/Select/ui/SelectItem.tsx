@@ -15,13 +15,11 @@ export interface SelectItemProps {
 
 export function SelectItem ({ className, selectedItem, isSelected, icon }: SelectItemProps) {
     const {
-        setVisible,
         setSelected,
         searchValue
     } = useContext<SelectContextProps>(SelectContext);
 
     const selectItemHandler = () => {
-        setVisible(false);
         setSelected(selectedItem);
     }
     

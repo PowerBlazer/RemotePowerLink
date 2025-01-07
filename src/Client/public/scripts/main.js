@@ -44,3 +44,7 @@ function isLightBackground(hexColor) {
     // Если яркость больше 0.5, фон считается светлым
     return luminance > 0.5;
 }
+
+function deepEqual (obj1, obj2){
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+}

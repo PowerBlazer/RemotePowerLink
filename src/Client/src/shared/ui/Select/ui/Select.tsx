@@ -1,12 +1,11 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import {ChangeEvent, Children, ReactElement, ReactNode, useEffect, useRef, useState} from 'react';
+import { Children, ReactElement, ReactNode, useRef, useState } from 'react';
 import { SelectItemProps } from 'shared/ui/Select/ui/SelectItem';
-import { SelectContext } from 'shared/lib/Select/SelectContext';
+import {SelectContext, SelectContextProps} from 'shared/lib/Select/SelectContext';
 import { useOutsideClick } from 'app/hooks/useOutsideClick';
 import { Button } from 'shared/ui/Button/Button';
 import { ErrorLabel } from 'shared/ui/ErrorLabel';
 import style from './Select.module.scss';
-import ArrowCircleIcon from 'shared/assets/icons/arrow-circle-up.svg';
 import CloseIcon from 'shared/assets/icons/close.svg';
 import { useTranslation } from 'react-i18next';
 import {SearchInput} from "features/SearchInput";
@@ -31,7 +30,7 @@ interface SelectProps {
     children?: ReactElement<SelectItemProps> | Array<ReactElement<SelectItemProps>>;
     theme?: ThemeSelect
     selectedItem?: SelectedItem,
-    placeholder: string,
+    placeholder?: string,
     icon?: ReactNode,
     errors?: string[],
     onChange?: (selectedItem?: SelectedItem) => void,
@@ -65,7 +64,7 @@ export function Select (props: SelectProps) {
     const [visible, setVisible] = useState<boolean>(false);
     const [selectedElement, setSelected] = useState<SelectedItem | undefined>(selectedItem);
     const [searchValue, setSearchValue] = useState<string>(null);
-    
+
     const { t } = useTranslation('translation');
     const refOptions = useRef<HTMLDivElement>(null);
 
@@ -74,38 +73,35 @@ export function Select (props: SelectProps) {
     }, refOptions?.current ? [refOptions?.current] : null);
 
     const isChildren = children && Children.count(children) > 0;
-
-    const defaultValueContext = {
-        visible,
-        setVisible,
-        selectedItem,
-        setSelected,
-        searchValue
-    }
-
-    const selectButtonHandler = () => {
-        setVisible(value => !value);
-    }
-
+    
     const canselSelectedItemHandler = () => {
         setSelected(undefined);
         setVisible(false);
 
         if (onChange) {
-            onChange(undefined)
+            onChange()
         }
     }
     
     const onChangeSearchInput = (value:string) => {
         setSearchValue(value)
-    } 
+    }
+    
+    const onChangeSelectHandler = (selectedItem: SelectedItem) => {
+        setSelected(selectedItem);
+        setVisible(false);
+        
+        if(onChange)
+            onChange(selectedItem);
+    }
 
-    useEffect(() => {
-        if (onChange && selectedElement) {
-            onChange(selectedElement);
-        }
-    }, [selectedElement]);
-
+    const defaultValueContext: SelectContextProps = {
+        visible,
+        selectedElement: selectedItem,
+        setSelected: onChangeSelectHandler,
+        searchValue
+    }
+    
     return (
         <SelectContext.Provider value={defaultValueContext}>
             <div className={classNames(style.select_inner, {[style.lite]: Boolean(isLite)})}>
@@ -117,7 +113,7 @@ export function Select (props: SelectProps) {
                         className={classNames(style.select, {
                             [style.error]: Boolean(errors),
                         }, [className])}
-                        onClick={selectButtonHandler}
+                        onClick={() => setVisible(value => !value) }
                         ref={refSelect}
                         style={{
                             width: width ? `${width}px` : '100%', 
@@ -134,7 +130,7 @@ export function Select (props: SelectProps) {
                                 <div className={classNames(style.title)}>
                                     { selectedItem
                                         ? selectedItem.title
-                                        : (selectedElement ? selectedElement.title : placeholder)
+                                        : (selectedElement ? selectedElement.title : (placeholder ?? ''))
                                     }
                                 </div>
                                 
@@ -159,7 +155,7 @@ export function Select (props: SelectProps) {
                             </div> 
                         }
                         <div className={classNames(style.select_options_inner, { [style.empty_options]: !isChildren })}>
-                            {isChildren ? children : <p className={classNames(style.select_null)}>{t('Отсутсвует данные')}</p>}
+                            {isChildren ? children : <p className={classNames(style.select_null)}>{t('Отсутствуют данные')}</p>}
                         </div>
                     </div>
                     {

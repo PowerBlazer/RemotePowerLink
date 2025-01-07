@@ -31,10 +31,7 @@ public class SessionConnectionService: ISessionConnectionService
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
             throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
 
-        if (!sessionInstance.IsConnected)
-        {
-            throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
-        }
+        
         
         return sessionInstance.WriteCommand(command);
     }

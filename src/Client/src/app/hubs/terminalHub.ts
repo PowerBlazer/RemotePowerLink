@@ -58,6 +58,7 @@ class TerminalHub {
 
     public onConnect: () => Promise<void> = async function connect () { };
     public onError: (message: Record<string, string[]>) => void;
+    
     public closeConnection = async () => {
         await this.connection.stop()
     }

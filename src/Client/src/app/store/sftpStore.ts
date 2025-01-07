@@ -88,7 +88,7 @@ class SftpStore {
             (option) => {
                 this.initializeHosts(option);
                 
-                localStorage.setItem(LocalStorageKeys.SCREEN_MODE, option.toString());
+                localStorage.setItem(LocalStorageKeys.SFTP_SCREEN_MODE, option.toString());
             }
         );
 
@@ -238,7 +238,7 @@ class SftpStore {
     }
 
     private getScreenModeInStorage(): SftpScreenSplitMode {
-        const screenMode = Number(localStorage.getItem(LocalStorageKeys.SCREEN_MODE));
+        const screenMode = Number(localStorage.getItem(LocalStorageKeys.SFTP_SCREEN_MODE));
         
         return screenMode ? (screenMode as SftpScreenSplitMode) : SftpScreenSplitMode.DOUBLE;
     }

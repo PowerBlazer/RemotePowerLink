@@ -5,14 +5,17 @@ import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
 import { useEffect, useMemo, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
-import terminalStore from 'app/store/terminalStore';
+import terminalStore, {TerminalScreenSplitMode} from 'app/store/terminalStore';
 import { ConnectionState } from 'app/hubs/hubFactory';
+import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
+import useTerminal from "app/hooks/useTerminal";
+import {useEffectAsync} from "app/hooks/useEffectAsync";
 
-interface TerminalProps {
+interface TerminalProps extends TerminalScreenMode {
     className?: string;
 }
 
-function Terminal ({ className }: TerminalProps) {
+function Terminal ({ className, index }: TerminalProps) {
     const terminalRef = useRef<HTMLDivElement>(null);
     const xtermRef = useRef<XtermTerminal | null>(null);
 
@@ -20,10 +23,14 @@ function Terminal ({ className }: TerminalProps) {
         terminalStore
             .terminalThemes
             .find(p => p.id === terminalStore.terminalSetting.terminalThemeId),
-    [terminalStore.terminalSetting?.terminalThemeId, terminalStore.terminalThemes]
+        
+        [terminalStore.terminalSetting?.terminalThemeId, terminalStore.terminalThemes]
     );
 
-    useEffect(() => {
+    const { getGroupTerminalSessions } = useTerminal();
+    const groupTerminalSessions = getGroupTerminalSessions(index);
+
+    useEffectAsync(async () => {
         if (terminalRef.current) {
             const xterm = new XtermTerminal();
             const fitAddon = new FitAddon();
@@ -59,31 +66,27 @@ function Terminal ({ className }: TerminalProps) {
 
             xtermRef.current = xterm;
 
-            if (terminalStore.selectedSession && !terminalStore.selectedSession.isNew) {
+            if (groupTerminalSessions.selectedSession && !groupTerminalSessions.selectedSession.isNew) {
                 xterm.onData(data => {
-                    if (terminalStore.terminalHub?.getConnectionState() === ConnectionState.Connected && terminalStore.selectedSession) {
-                        terminalStore.terminalHub.writeToSession(terminalStore.selectedSession.id, data);
+                    if (terminalStore.terminalHub?.getConnectionState() === ConnectionState.Connected && groupTerminalSessions.selectedSession) {
+                        terminalStore.terminalHub.writeToSession(groupTerminalSessions.selectedSession.id, data);
                     }
                 });
 
-                terminalStore.selectedSession.isLoad = true;
-
-                if (!terminalStore.selectedSession.isCreate) {
-                    terminalStore.terminalHub.activateSession(terminalStore.selectedSession.id)
-                } else {
-                    terminalStore.selectedSession.isCreate = false;
-                }
-
-                terminalStore.selectedSession.onOutput = (data) => {
+                groupTerminalSessions.selectedSession.onOutput = (data) => {
                     xterm.write(data);
                 }
+
+                groupTerminalSessions.selectedSession.isLoad = true;
+
+                await terminalStore.terminalHub.activateSession(groupTerminalSessions.selectedSession.id)
             }
 
             return () => {
                 xterm.dispose();
             };
         }
-    }, [terminalStore.selectedSession, terminalStore.terminalSetting]);
+    }, [groupTerminalSessions.selectedSession, terminalStore.terminalSetting]);
 
     return <div
         ref={terminalRef}

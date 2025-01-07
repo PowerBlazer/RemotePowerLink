@@ -13,15 +13,17 @@ import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import { SessionService } from 'app/services/SessionService/sessionService';
 import toast from 'react-hot-toast';
 import useTerminal from 'app/hooks/useTerminal';
+import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
 
-interface TerminalSelectHostCatalogProps {
+interface TerminalSelectHostCatalogProps extends TerminalScreenMode {
     className?: string;
     onClose: () => void;
 }
 
-function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCatalogProps) {
-    const { t } = useTranslation('translation');
+function TerminalSelectHostCatalog ({ className, onClose, index }: TerminalSelectHostCatalogProps) {
     const { openSession } = useTerminal();
+    const { t } = useTranslation('translation');
+   
 
     const onChangeSearchInputHandler = (value: string) => {
         searchStore.setFilterOption({
@@ -36,7 +38,7 @@ function TerminalSelectHostCatalog ({ className, onClose }: TerminalSelectHostCa
     }
     
     const openConnectHandler = async (serverData: ServerData) => {
-        await openSession(serverData, onClose)
+        await openSession(serverData, index, onClose)
     }
 
     useEffect(() => {

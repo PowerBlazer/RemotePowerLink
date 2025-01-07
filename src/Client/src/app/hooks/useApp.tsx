@@ -92,7 +92,7 @@ const useApp = () => {
             terminalStore.terminalSetting = terminalSettingResult.result;
         }
 
-        if (!terminalStore.sessions || terminalStore.sessions.length === 0) {
+        if (!terminalStore.groupsTerminalSessions || terminalStore.groupsTerminalSessions.length === 0) {
             const sessionsResult = await SessionService.getOpenedSessions();
 
             if (sessionsResult.isSuccess) {

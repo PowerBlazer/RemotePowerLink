@@ -100,15 +100,6 @@ function SftpCatalog ({ className, windowsIndex }: SftpCatalogProps) {
         }
     }, [sftpStore.editableWidthSplit, catalogRef]);
 
-
-    useEffect(() => {
-        return () => {
-            if(selectedHost && selectedHost.sftpHub){
-                selectedHost.sftpHub.closeConnection();
-            }
-        }
-    }, []);
-
     if (selectedHost && !isViewServersCatalog && !isViewErrorPanel) {
         return (
             <div className={classNames(style.sftpCatalog, {}, [className])} ref={catalogRef}>

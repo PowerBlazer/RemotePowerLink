@@ -32,6 +32,11 @@ export const useTerminal = () => {
                  
                  if (currentSession && outputData.data) {
                     currentSession.isLoad = false;
+                 
+                    if(outputData.data.includes('\r') && !outputData.data.includes('\n')){
+                        outputData.data = outputData.data.replace('\r', '\r\n');
+                    }
+                    
                     currentSession.onOutput?.(outputData.data);
                  }
             },

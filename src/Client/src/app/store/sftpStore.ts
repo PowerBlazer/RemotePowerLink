@@ -227,7 +227,7 @@ class SftpStore {
     private initializeHosts(option: SftpScreenSplitMode) {
         if (this.hosts.length > option) {
             this.hosts.slice(option).forEach((host) => {
-                if (host && typeof host.sftpHub?.closeConnection() === "function") {
+                if (host) {
                     host.sftpHub?.closeConnection();
                 }
             });

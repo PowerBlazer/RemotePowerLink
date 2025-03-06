@@ -1,18 +1,28 @@
 ﻿using System.Text;
+using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Renci.SshNet;
 
-namespace Application.Helpers;
+namespace Application.Services.Logic;
 
-public class ConnectionMapper
+public class ConnectionService: IConnectionService
 {
-    public static ConnectionInfo GetConnectionInfo(ConnectionServer connectionServer)
+    private readonly IEncryptionService _encryptionService;
+
+    public ConnectionService(IEncryptionService encryptionService)
     {
+        _encryptionService = encryptionService;
+    }
+
+    public ConnectionInfo GetConnectionConfiguration(ConnectionServer connectionServer)
+    {
+        var decodedPassword = _encryptionService.Decrypt(connectionServer.Password);
+        
         var connectionInfo = new ConnectionInfo(
             connectionServer.Hostname,
             connectionServer.SshPort ?? 22,
             connectionServer.Username,
-            new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
+            new PasswordAuthenticationMethod(connectionServer.Username, decodedPassword));
 
         var proxyParameter = connectionServer.ConnectionProxy;
 
@@ -27,7 +37,7 @@ public class ConnectionMapper
                 proxyParameter.SshPort ?? 22,
                 proxyParameter.Username,
                 proxyParameter.Password,
-                new PasswordAuthenticationMethod(connectionServer.Username, connectionServer.Password));
+                new PasswordAuthenticationMethod(connectionServer.Username, decodedPassword));
         }
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         

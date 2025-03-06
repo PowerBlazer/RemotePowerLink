@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Application.Helpers;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Application.Services.Abstract.Results;
@@ -15,14 +14,16 @@ namespace Application.Services.Logic;
 public class ServerService: IServerService
 {
     private readonly ISystemTypeRepository _systemTypeRepository;
-    public ServerService(ISystemTypeRepository systemTypeRepository)
+    private readonly IConnectionService _connectionService;
+    public ServerService(ISystemTypeRepository systemTypeRepository, IConnectionService connectionService)
     {
         _systemTypeRepository = systemTypeRepository;
+        _connectionService = connectionService;
     }
     public async Task<SystemTypeResult> GetSystemType(ConnectionServer server, 
         CancellationToken cancellationToken)
     {
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(server);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(server);
         
         using var client = new SshClient(connectionInfo);
         
@@ -94,7 +95,7 @@ public class ServerService: IServerService
     public async Task<bool> CheckConnectionServer(ConnectionServer server, 
         CancellationToken cancellationToken)
     {
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(server);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(server);
         
         using var client = new SshClient(connectionInfo);
 

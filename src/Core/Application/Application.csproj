@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Abstract\Parameters\" />
+      <Folder Include="Helpers\" />
     </ItemGroup>
 
 </Project>

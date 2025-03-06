@@ -34,7 +34,7 @@ interface SftpCatalogProps extends SftpWindowsOptionProps {
 }
 
 function SftpCatalog ({ className, windowsIndex }: SftpCatalogProps) {
-    const { initialSftp, closeSftp, getHost } = useSftp(windowsIndex);
+    const { initialSftp, closeSftp, getHost, reconnectSftp } = useSftp(windowsIndex);
     const { t } = useTranslation('translation');
     const selectedHost = getHost();
 
@@ -85,7 +85,7 @@ function SftpCatalog ({ className, windowsIndex }: SftpCatalogProps) {
     const reconnectHost = async () => {
         setIsViewErrorPanel(false);
 
-        await reconnectHost();
+        await reconnectSftp()
     }
 
     useEffect(() => {

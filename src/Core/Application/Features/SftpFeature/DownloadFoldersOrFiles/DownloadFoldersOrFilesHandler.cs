@@ -1,5 +1,4 @@
-﻿using Application.Helpers;
-using Application.Hubs;
+﻿using Application.Hubs;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
@@ -19,9 +18,9 @@ namespace Application.Features.SftpFeature.DownloadFoldersOrFiles;
 public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFilesCommand, DownloadFolderOrFilesResponse>
 {
     private readonly IServerRepository _serverRepository;
-    private readonly IServerService _serverService;
     private readonly ISftpManagerService _sftpManagerService;
     private readonly IHubContext<SftpHub> _sftpHubContext;
+    private readonly IConnectionService _connectionService;
 
     private const long MaximumDownloadSizeBytes = 5368709120;
     private ulong _totalSizeFiles;
@@ -32,15 +31,15 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
     private Timer? _timer;
     
     public DownloadFoldersOrFilesHandler(IServerRepository serverRepository, 
-        IServerService serverService, 
         IHubContext<NotificationHub> notificationHubContext, 
         ISftpManagerService sftpManagerService, 
-        IHubContext<SftpHub> sftpHubContext)
+        IHubContext<SftpHub> sftpHubContext, 
+        IConnectionService connectionService)
     {
         _serverRepository = serverRepository;
-        _serverService = serverService;
         _sftpManagerService = sftpManagerService;
         _sftpHubContext = sftpHubContext;
+        _connectionService = connectionService;
 
         _downloadErrors = new Dictionary<string, List<string>>();
     }
@@ -57,7 +56,7 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
         }
         
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
 
@@ -152,15 +151,15 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                     }
                     catch (SftpPathNotFoundException ex)
                     {
-                        _downloadErrors.Add(fileItem.Path, new List<string>{ ex.Message });
+                        _downloadErrors.Add(fileItem.Path, [ex.Message]);
                     }
                     catch (SftpPermissionDeniedException ex)
                     {
-                        _downloadErrors.Add(fileItem.Path, new List<string>{ ex.Message });
+                        _downloadErrors.Add(fileItem.Path, [ex.Message]);
                     }
                     catch (SshException ex)
                     {
-                        _downloadErrors.Add(fileItem.Path, new List<string>{ ex.Message });
+                        _downloadErrors.Add(fileItem.Path, [ex.Message]);
                     }
                     
                     _totalRemainsSizeFiles -= (ulong)fileItem.Size!;
@@ -229,15 +228,15 @@ public class DownloadFoldersOrFilesHandler: IRequestHandler<DownloadFoldersOrFil
                 }
                 catch (SftpPathNotFoundException ex)
                 {
-                    _downloadErrors.Add(item.FullName, new List<string>{ ex.Message });
+                    _downloadErrors.Add(item.FullName, [ex.Message]);
                 }
                 catch (SftpPermissionDeniedException ex)
                 {
-                    _downloadErrors.Add(item.FullName, new List<string>{ ex.Message });
+                    _downloadErrors.Add(item.FullName, [ex.Message]);
                 }
                 catch (SshException ex)
                 {
-                    _downloadErrors.Add(item.FullName, new List<string>{ ex.Message });
+                    _downloadErrors.Add(item.FullName, [ex.Message]);
                 }
                 
                 _totalRemainsSizeFiles -= (ulong)item.Length;

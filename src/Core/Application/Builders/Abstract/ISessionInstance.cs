@@ -18,9 +18,7 @@ public interface ISessionInstance: IDisposable
     ConnectionServer? ConnectionServer { set; }
     
     Task CreateConnection(CancellationToken cancellationToken);
-    Task DiconnectConnection();
+    Task DisconnectConnection();
     Task WriteCommand(string command);
     Task<string> GetFullSessionData();
-    SshClient? GetSshClient();
-
 }

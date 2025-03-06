@@ -37,6 +37,8 @@ public static class DependencyInjection
         
         services.AddSingleton<ISftpConnectionService, SftpConnectionService>();
         services.AddSingleton<SftpDisconnectService>();
+        services.AddSingleton<IEncryptionService, EncryptionService>();
+        services.AddSingleton<IConnectionService, ConnectionService>();
         
         services.AddSingleton<ISessionConnectionService,SessionConnectionService>(p =>
         {

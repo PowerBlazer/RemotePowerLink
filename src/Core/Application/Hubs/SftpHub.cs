@@ -17,13 +17,17 @@ public class SftpHub: BaseHub
     private readonly ISftpConnectionService _sftpConnectionService;
     private readonly IServerRepository _serverRepository;
     private readonly ISftpManagerService _sftpManagerService;
+    private readonly IEncryptionService _encryptionService;
+    
     public SftpHub(ISftpConnectionService sftpConnectionService, 
         IServerRepository serverRepository, 
-        ISftpManagerService sftpManagerService)
+        ISftpManagerService sftpManagerService, 
+        IEncryptionService encryptionService)
     {
         _sftpConnectionService = sftpConnectionService;
         _serverRepository = serverRepository;
         _sftpManagerService = sftpManagerService;
+        _encryptionService = encryptionService;
     }
 
     [UsedImplicitly]
@@ -97,6 +101,7 @@ public class SftpHub: BaseHub
         if (!isExistSftpClient)
         {
             var server = await _serverRepository.GetServer(serverId);
+            
             var connectionParameter = ConnectionServer.ServerMapTo(server);
 
             _sftpConnectionService.CreateClient(connectionParameter, ConnectionKey);

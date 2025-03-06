@@ -1,5 +1,4 @@
-﻿using Application.Helpers;
-using Application.Hubs;
+﻿using Application.Hubs;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
@@ -18,22 +17,22 @@ namespace Application.Features.SftpFeature.UploadFiles;
 public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFilesResponse>
 {
     private readonly IServerRepository _serverRepository;
-    private readonly IServerService _serverService;
     private readonly ISftpManagerService _sftpManagerService;
     private readonly IHubContext<SftpHub> _sftpHubContext;
+    private readonly IConnectionService _connectionService;
     private Timer? _timer;
 
     private const long MaximumDownloadSizeBytes = 5368709120;
     
     public UploadFilesHandler(IServerRepository serverRepository, 
-        IServerService serverService, 
         ISftpManagerService sftpManagerService, 
-        IHubContext<SftpHub> sftpHubContext)
+        IHubContext<SftpHub> sftpHubContext,
+        IConnectionService connectionService)
     {
         _serverRepository = serverRepository;
-        _serverService = serverService;
         _sftpManagerService = sftpManagerService;
         _sftpHubContext = sftpHubContext;
+        _connectionService = connectionService;
     }
 
     public async Task<UploadFilesResponse> Handle(UploadFilesCommand request, CancellationToken cancellationToken)
@@ -58,7 +57,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
         }
         
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
 
@@ -133,19 +132,19 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
                 }
                 catch (SftpPathNotFoundException ex)
                 {
-                    uploadErrors.Add(file.FileName, new List<string> { ex.Message });
+                    uploadErrors.Add(file.FileName, [ex.Message]);
                 }
                 catch (SftpPermissionDeniedException ex)
                 {
-                    uploadErrors.Add(file.FileName, new List<string> { ex.Message });
+                    uploadErrors.Add(file.FileName, [ex.Message]);
                 }
                 catch (SshException ex)
                 {
-                    uploadErrors.Add(file.FileName, new List<string> { ex.Message });
+                    uploadErrors.Add(file.FileName, [ex.Message]);
                 }
                 catch (Exception ex)
                 {
-                    uploadErrors.Add(file.FileName, new List<string> { ex.Message });
+                    uploadErrors.Add(file.FileName, [ex.Message]);
                 }
                 
                 totalRemainsSizeFiles -= (ulong)file.Length;
@@ -165,7 +164,7 @@ public class UploadFilesHandler: IRequestHandler<UploadFilesCommand, UploadFiles
 
             if (_timer is not null)
             {
-                _timer.Dispose();
+                await _timer.DisposeAsync();
             }
         }
     }

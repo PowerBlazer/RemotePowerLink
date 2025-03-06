@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using Application.Helpers;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Exceptions;
@@ -10,7 +9,14 @@ namespace Application.Services.Logic;
 public class SftpConnectionService: ISftpConnectionService
 {
     private readonly ConcurrentDictionary<string, SftpClientInstance> _sftpClients = new();
+    private readonly IConnectionService _connectionService;
     private readonly object _lock = new();
+
+    public SftpConnectionService(IConnectionService connectionService)
+    {
+        _connectionService = connectionService;
+    }
+
     private const int IdleTimeoutMinutes = 60;
     
     public SftpClient? GetClient(string connectionKey)
@@ -83,7 +89,7 @@ public class SftpConnectionService: ISftpConnectionService
     
     private SftpClient CreateNewClientInstance(ConnectionServer connectionServer)
     {
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServer);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(connectionServer);
         
         var sftpClient = new SftpClient(connectionInfo);
         

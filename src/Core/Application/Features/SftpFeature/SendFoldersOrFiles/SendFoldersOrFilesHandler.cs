@@ -1,5 +1,4 @@
-﻿using Application.Helpers;
-using Application.Hubs;
+﻿using Application.Hubs;
 using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
@@ -19,9 +18,9 @@ namespace Application.Features.SftpFeature.SendFoldersOrFiles;
 public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesCommand,SendFoldersOrFilesResponse>
 {
     private readonly IServerRepository _serverRepository;
-    private readonly IServerService _serverService;
     private readonly ISftpManagerService _sftpManagerService;
     private readonly IHubContext<SftpHub> _sftpHubContext;
+    private readonly IConnectionService _connectionService;
     
     private const long MaximumSendSizeBytes = 5368709120;
     private ulong _totalSizeFiles;
@@ -32,14 +31,14 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
     private Timer? _timer;
     
     public SendFoldersOrFilesHandler(IServerRepository serverRepository, 
-        IServerService serverService, 
         ISftpManagerService sftpManagerService, 
-        IHubContext<SftpHub> sftpHubContext)
+        IHubContext<SftpHub> sftpHubContext, 
+        IConnectionService connectionService)
     {
         _serverRepository = serverRepository;
-        _serverService = serverService;
         _sftpManagerService = sftpManagerService;
         _sftpHubContext = sftpHubContext;
+        _connectionService = connectionService;
     }
 
     public async Task<SendFoldersOrFilesResponse> Handle(SendFoldersOrFilesCommand request, CancellationToken cancellationToken)
@@ -63,8 +62,8 @@ public class SendFoldersOrFilesHandler: IRequestHandler<SendFoldersOrFilesComman
         
         var targetConnectionServerParameter = ConnectionServer.ServerMapTo(targetServer);
         var sourceConnectionServerParameter = ConnectionServer.ServerMapTo(sourceServer);
-        var targetConnectionInfo = ConnectionMapper.GetConnectionInfo(targetConnectionServerParameter);
-        var sourceConnectionInfo = ConnectionMapper.GetConnectionInfo(sourceConnectionServerParameter);
+        var targetConnectionInfo = _connectionService.GetConnectionConfiguration(targetConnectionServerParameter);
+        var sourceConnectionInfo = _connectionService.GetConnectionConfiguration(sourceConnectionServerParameter);
 
         using var sourceSftpClient = new SftpClient(sourceConnectionInfo);
         using var targetSftpClient = new SftpClient(targetConnectionInfo);

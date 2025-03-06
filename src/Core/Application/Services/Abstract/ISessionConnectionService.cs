@@ -6,8 +6,7 @@ public interface ISessionConnectionService
 {
     Task WriteCommand(long sessionId, string command);
 
-    Task<ISessionInstance> CreateSessionInstance(long serverId, long userId,
-        CancellationToken cancellationToken = default);
+    Task<ISessionInstance> CreateSessionInstance(long serverId, long userId, CancellationToken cancellationToken = default);
 
     Task<ISessionInstance> ActivateSessionInstance(long sessionId);
 

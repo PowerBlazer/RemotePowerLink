@@ -30,8 +30,6 @@ public class SessionConnectionService: ISessionConnectionService
     {
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
             throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
-
-        
         
         return sessionInstance.WriteCommand(command);
     }
@@ -120,7 +118,7 @@ public class SessionConnectionService: ISessionConnectionService
         if (!_sessionInstances.TryGetValue(sessionId, out var sessionInstance))
             throw new SessionException("SessionId", $"Соединение закрыто с таким SessionId:{sessionId}");
         
-        await sessionInstance.DiconnectConnection();
+        await sessionInstance.DisconnectConnection();
         
         _sessionInstances.TryRemove(sessionId, out _);
     }

@@ -1,5 +1,4 @@
-﻿using Application.Helpers;
-using Application.Layers.Persistence.Repository;
+﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Exceptions;
@@ -13,13 +12,13 @@ namespace Application.Features.SftpFeature.ExistDirectoryOrFile;
 public class ExistDirectoryOrFileHandle: IRequestHandler<ExistDirectoryOrFileCommand, bool>
 {
     private readonly IServerRepository _serverRepository;
-    private readonly IServerService _serverService;
+    private readonly IConnectionService _connectionService;
 
     public ExistDirectoryOrFileHandle(IServerRepository serverRepository, 
-        IServerService serverService)
+        IConnectionService connectionService)
     {
         _serverRepository = serverRepository;
-        _serverService = serverService;
+        _connectionService = connectionService;
     }
 
     public async Task<bool> Handle(ExistDirectoryOrFileCommand request, CancellationToken cancellationToken)
@@ -34,7 +33,7 @@ public class ExistDirectoryOrFileHandle: IRequestHandler<ExistDirectoryOrFileCom
         }
         
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
 

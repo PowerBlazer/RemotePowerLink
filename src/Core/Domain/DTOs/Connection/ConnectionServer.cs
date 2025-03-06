@@ -14,7 +14,7 @@ public class ConnectionServer
     {
         if (server.Identity is null)
         {
-            throw new NullReferenceException("Невозможно смапиить параметер подключения без Identity в Server");
+            throw new NullReferenceException("Невозможно смапить параметр подключения без Identity в Server");
         }
         
         var serverParameter = new ConnectionServer
@@ -30,7 +30,7 @@ public class ConnectionServer
         {
             if (server.Proxy.Identity is null)
             {
-                throw new NullReferenceException("Невозможно смапиить параметер подключения без Identity в Proxy");
+                throw new NullReferenceException("Невозможно смапить параметр подключения без Identity в Proxy");
             }
             
             serverParameter.ConnectionProxy = new ConnectionProxy

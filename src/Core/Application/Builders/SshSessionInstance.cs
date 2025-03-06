@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Text;
 using Application.Builders.Abstract;
-using Application.Helpers;
+using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Exceptions;
 using Renci.SshNet;
@@ -21,11 +21,18 @@ public class SshSessionInstance: ISessionInstance
     public string LogFilePath { get; set; } = string.Empty;
     public long MaxBufferSize { get; set; } = 10 * 1024;
     public ConnectionServer? ConnectionServer { get; set; }
+    public bool IsConnected => _client is not null && _stream is not null && _client.IsConnected;
+
 
     private SshClient? _client;
     private ShellStream? _stream;
     private readonly StringBuilder _sessionOutput = new();
-    public bool IsConnected => _client is not null && _stream is not null && _client.IsConnected;
+    private readonly IConnectionService _connectionService;
+
+    public SshSessionInstance(IConnectionService connectionService)
+    {
+        _connectionService = connectionService;
+    }
 
 
     public async Task CreateConnection(CancellationToken cancellationToken = default)
@@ -35,7 +42,7 @@ public class SshSessionInstance: ISessionInstance
             return;
         }
         
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(ConnectionServer);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(ConnectionServer);
         
         _client = new SshClient(connectionInfo);
 
@@ -54,6 +61,8 @@ public class SshSessionInstance: ISessionInstance
                 2048, 
                 terminalModes);
             
+            
+            
             _stream.DataReceived += (_, args) =>
             {
                 var output = Encoding.UTF8.GetString(args.Data);
@@ -68,7 +77,7 @@ public class SshSessionInstance: ISessionInstance
         
     }
     
-    public async Task DiconnectConnection()
+    public async Task DisconnectConnection()
     {
         WriteFileSessionData();
         
@@ -120,11 +129,6 @@ public class SshSessionInstance: ISessionInstance
         sessionData.Append(_sessionOutput.ToString());
 
         return sessionData.ToString();
-    }
-
-    public SshClient? GetSshClient()
-    {
-        return _client;
     }
 
     private void OutputDataReceived(string output)

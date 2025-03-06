@@ -1,5 +1,4 @@
-﻿using Application.Helpers;
-using Application.Layers.Persistence.Repository;
+﻿using Application.Layers.Persistence.Repository;
 using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Enums;
@@ -14,16 +13,16 @@ namespace Application.Features.SftpFeature.GetSizeFoldersOrFiles;
 public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFilesCommand, ulong>
 {
     private readonly IServerRepository _serverRepository;
-    private readonly IServerService _serverService;
     private readonly ISftpManagerService _sftpManagerService;
+    private readonly IConnectionService _connectionService;
 
     public GetSizeFoldersOrFilesHandler(IServerRepository serverRepository, 
-        IServerService serverService, 
-        ISftpManagerService sftpManagerService)
+        ISftpManagerService sftpManagerService, 
+        IConnectionService connectionService)
     {
         _serverRepository = serverRepository;
-        _serverService = serverService;
         _sftpManagerService = sftpManagerService;
+        _connectionService = connectionService;
     }
 
     public async Task<ulong> Handle(GetSizeFoldersOrFilesCommand request, CancellationToken cancellationToken)
@@ -38,7 +37,7 @@ public class GetSizeFoldersOrFilesHandler: IRequestHandler<GetSizeFoldersOrFiles
         }
         
         var connectionServerParameter = ConnectionServer.ServerMapTo(server);
-        var connectionInfo = ConnectionMapper.GetConnectionInfo(connectionServerParameter);
+        var connectionInfo = _connectionService.GetConnectionConfiguration(connectionServerParameter);
         
         using var sftpClient = new SftpClient(connectionInfo);
         try

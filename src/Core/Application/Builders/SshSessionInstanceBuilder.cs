@@ -1,5 +1,6 @@
 ﻿using Application.Builders.Abstract;
 using Application.Layers.Persistence.Repository;
+using Application.Services.Abstract;
 using Domain.DTOs.Connection;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -10,14 +11,17 @@ public class SshSessionInstanceBuilder: ISessionInstanceBuilder
 {
     private readonly IServerRepository _serverRepository;
     private readonly ISessionRepository _sessionRepository;
-    
-    private readonly ISessionInstance _sessionInstance = new SshSessionInstance();
+
+    private readonly ISessionInstance _sessionInstance;
 
     public SshSessionInstanceBuilder(IServerRepository serverRepository,
-        ISessionRepository sessionRepository)
+        ISessionRepository sessionRepository,
+        IConnectionService connectionService)
     {
         _serverRepository = serverRepository;
         _sessionRepository = sessionRepository;
+
+        _sessionInstance = new SshSessionInstance(connectionService);
     }
     
     public ISessionInstanceBuilder SetUser(long userId)

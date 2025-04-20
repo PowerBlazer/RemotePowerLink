@@ -11,6 +11,7 @@ COPY ["Infrastructure/Email/Email.csproj", "Infrastructure/Email/"]
 COPY ["Core/Application/Application.csproj", "Core/Application/"]
 COPY ["Infrastructure/Identity/Identity.csproj", "Infrastructure/Identity/"]
 COPY ["Infrastructure/MessageQueues/MessageQueues.csproj", "Infrastructure/MessageQueues/"]
+COPY ["Infrastructure/Persistence/Persistence.csproj", "Infrastructure/Persistence/"]
 COPY ["Infrastructure/Redis/Redis.csproj", "Infrastructure/Redis/"]
 RUN dotnet restore "Api/Api.csproj"
 COPY . .

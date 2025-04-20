@@ -61,8 +61,6 @@ public class SshSessionInstance: ISessionInstance
                 2048, 
                 terminalModes);
             
-            
-            
             _stream.DataReceived += (_, args) =>
             {
                 var output = Encoding.UTF8.GetString(args.Data);

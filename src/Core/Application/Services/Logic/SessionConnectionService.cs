@@ -7,6 +7,7 @@ using Domain.DTOs.Session;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
+using Renci.SshNet.Common;
 
 namespace Application.Services.Logic;
 
@@ -71,6 +72,12 @@ public class SessionConnectionService: ISessionConnectionService
         try
         {
             await sessionInstance.CreateConnection(cancellationToken);
+        }
+        catch (SshAuthenticationException)
+        {
+            _sessionInstances.TryRemove(sessionInstance.Id, out _);
+
+            throw new SessionException("Authentication", "Ошибка аутентификации: проверьте логин и пароль");
         }
         catch (Exception)
         {

@@ -34,7 +34,9 @@ export const useTerminal = () => {
                     currentSession.isLoad = false;
                  
                     if(outputData.data.includes('\r') && !outputData.data.includes('\n')){
-                        outputData.data = outputData.data.replace('\r', '\r\n');
+                        if (!outputData.data.includes('\r\u001b')) {
+                            outputData.data = outputData.data.replace('\r', '\r\n');
+                        }
                     }
                     
                     currentSession.onOutput?.(outputData.data);

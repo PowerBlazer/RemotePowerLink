@@ -1,9 +1,9 @@
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import SftpHub from 'app/hubs/sftpHub';
 import { FileType, SftpFile, SftpFileList } from 'app/services/SftpService/config';
-import {makeAutoObservable, observable, reaction} from 'mobx';
+import { makeAutoObservable, observable, reaction } from 'mobx';
 import { Stack } from 'shared/lib/Stack';
-import {LocalStorageKeys} from "app/enums/LocalStorageKeys";
+import { LocalStorageKeys } from 'app/enums/LocalStorageKeys';
 
 export interface SftpServer {
     server: ServerData,
@@ -27,7 +27,8 @@ export enum MenuMode {
 export interface SftpMenuOption {
     x?: number,
     y?: number,
-    heightWindow?: number
+    heightWindow?: number,
+    widthWindow?: number,
     isVisible: boolean,
     menuMode: MenuMode
 }
@@ -72,7 +73,7 @@ export interface SftpNotificationOptions {
     onCancel?: () => void
 }
 
-export enum SftpScreenSplitMode{
+export enum SftpScreenSplitMode {
     FIRST = 1,
     DOUBLE = 2,
     TRIPLE = 3,
@@ -82,24 +83,24 @@ export enum SftpScreenSplitMode{
 class SftpStore {
     constructor () {
         makeAutoObservable(this);
-        
+
         reaction(
             () => this.windowOption,
             (option) => {
                 this.initializeHosts(option);
-                
+
                 localStorage.setItem(LocalStorageKeys.SFTP_SCREEN_MODE, option.toString());
             }
         );
 
         this.initializeHosts(this.windowOption);
     }
-    
+
     @observable public windowOption = this.getScreenModeInStorage();
     @observable public hosts: SftpServer[] | null[] = [];
-    
+
     @observable public editableWidthSplit: boolean = false;
-    
+
     getHostInMode (windowIndex: number): SftpServer | null {
         return this.hosts[windowIndex];
     }
@@ -224,7 +225,7 @@ class SftpStore {
         selectedHost.sftpFilesOption.fileList = fileList;
     }
 
-    private initializeHosts(option: SftpScreenSplitMode) {
+    private initializeHosts (option: SftpScreenSplitMode) {
         if (this.hosts.length > option) {
             this.hosts.slice(option).forEach((host) => {
                 if (host) {
@@ -232,17 +233,16 @@ class SftpStore {
                 }
             });
         }
-        
+
         const newHosts = this.hosts.slice(0, option);
         this.hosts = newHosts.concat(Array(option - newHosts.length).fill(null));
     }
 
-    private getScreenModeInStorage(): SftpScreenSplitMode {
+    private getScreenModeInStorage (): SftpScreenSplitMode {
         const screenMode = Number(localStorage.getItem(LocalStorageKeys.SFTP_SCREEN_MODE));
-        
+
         return screenMode ? (screenMode as SftpScreenSplitMode) : SftpScreenSplitMode.DOUBLE;
     }
-    
 }
 
 function compare (a: any, b: any): number {

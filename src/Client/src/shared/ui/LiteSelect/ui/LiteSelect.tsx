@@ -1,7 +1,7 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import style from './LiteSelect.module.scss';
 import { ReactNode, useState } from 'react';
-import {Button} from "shared/ui/Button/Button";
+import { Button } from 'shared/ui/Button/Button';
 
 export enum SelectPosition {
     TOP_LEFT,
@@ -42,12 +42,12 @@ export function LiteSelect (props: LiteSelectProps) {
     return (
         <div className={classNames(style.liteSelect, {}, [className])}>
             <Button className={classNames(style.select_button)} title={title}>{icon}</Button>
-            <div 
+            <div
                 className={classNames(style.select_list, {
                     [style.visible]: visible
                 })}
             >
-                {items.map((item) => 
+                {items.map((item) =>
                     <Button key={item.id} className={classNames(style.select_item)}>{item.text}</Button>
                 )}
             </div>

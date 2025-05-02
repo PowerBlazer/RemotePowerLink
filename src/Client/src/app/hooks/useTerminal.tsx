@@ -1,4 +1,4 @@
-import terminalStore, {GroupTerminalSessions, TerminalSession} from 'app/store/terminalStore';
+import terminalStore, { GroupTerminalSessions, TerminalSession } from 'app/store/terminalStore';
 import userStore from 'app/store/userStore';
 import TerminalHub from 'app/hubs/terminalHub';
 import { ConnectionState } from 'app/hubs/hubFactory';
@@ -8,10 +8,10 @@ import { ServerData } from 'app/services/ServerService/config/serverConfig';
 import { SessionService } from 'app/services/SessionService/sessionService';
 
 export const useTerminal = () => {
-    function getGroupTerminalSessions(index:number): GroupTerminalSessions {
+    function getGroupTerminalSessions (index: number): GroupTerminalSessions {
         return terminalStore.getGroupSessionsByIndex(index);
     }
-    
+
     async function initSessions (sessions: SessionInstanceData[]) {
         const mappedSessions = sessions.map(p => {
             const terminalSession: TerminalSession = {
@@ -27,36 +27,35 @@ export const useTerminal = () => {
         terminalStore.groupsTerminalSessions = [];
         terminalStore.terminalHub = new TerminalHub();
         terminalStore.terminalHub.events(
-             (outputData) => {
-                 const currentSession = terminalStore.getSessionBySessionId(outputData.sessionId);
-                 
-                 if (currentSession && outputData.data) {
+            (outputData) => {
+                const currentSession = terminalStore.getSessionBySessionId(outputData.sessionId);
+
+                if (currentSession && outputData.data) {
                     currentSession.isLoad = false;
-                 
-                    if(outputData.data.includes('\r') && !outputData.data.includes('\n')){
+
+                    if (outputData.data.includes('\r') && !outputData.data.includes('\n')) {
                         if (!outputData.data.includes('\r\u001b')) {
                             outputData.data = outputData.data.replace('\r', '\r\n');
                         }
                     }
-                    
+
                     currentSession.onOutput?.(outputData.data);
-                 }
+                }
             },
             (sessionId) => {
                 const groupSession = terminalStore.getGroupSessionsBySessionId(sessionId);
-                
-                if(groupSession)
-                    closeSession(sessionId, groupSession.index);
+
+                if (groupSession) { closeSession(sessionId, groupSession.index); }
             }
         );
-        
+
         terminalStore.terminalHub.onConnect = async () => {
             terminalStore.initializeGroupSessions(terminalStore.selectedMode, mappedSessions);
             terminalStore.isLoad = false;
-            
-            if(mappedSessions.length > 0) {
+
+            if (mappedSessions.length > 0) {
                 terminalStore.groupsTerminalSessions.forEach(groupSession => {
-                    if(groupSession.sessions?.length > 0) {
+                    if (groupSession.sessions?.length > 0) {
                         selectSession(groupSession.sessions[0], groupSession.index);
                     }
                 })
@@ -65,11 +64,11 @@ export const useTerminal = () => {
 
         terminalStore.terminalHub.onError = (errors) => {
             terminalStore.isLoad = false;
-            
-            //Поправить обработку ошибок
-            /*if (terminalStore.selectedSession) {
+
+            // Поправить обработку ошибок
+            /* if (terminalStore.selectedSession) {
                 terminalStore.selectedSession.errors = errors;
-            }*/
+            } */
 
             toast.error(Object.values(errors).join('\n'));
         }
@@ -77,14 +76,14 @@ export const useTerminal = () => {
 
     async function openSession (serverData: ServerData, groupIndex: number, onClose?: () => void) {
         const groupSessions = getGroupTerminalSessions(groupIndex);
-        
+
         // eslint-disable-next-line no-undef
         const uniqueId = generateUniqueNumber();
         const newSession: TerminalSession = {
             id: uniqueId,
             host: serverData,
             isLoad: true,
-            isNew: true,
+            isNew: true
         };
 
         if (groupSessions.selectedSession && !groupSessions.selectedSession.isLoad) {
@@ -98,8 +97,7 @@ export const useTerminal = () => {
         newSession.name = countSessionForServer === 0
             ? serverData.title
             : `${serverData.title} (${countSessionForServer})`;
-        
-        
+
         groupSessions.sessions.push(newSession);
         groupSessions.selectedSession = newSession;
 
@@ -125,14 +123,14 @@ export const useTerminal = () => {
 
             groupSessions.selectedSession = currentSession;
 
-           terminalStore.updateStorageGroupSessions();
+            terminalStore.updateStorageGroupSessions();
         }
 
         if (!createdSessionResult.isSuccess) {
             if (groupSessions.selectedSession && groupSessions.selectedSession.id === uniqueId) {
                 groupSessions.selectedSession = null;
             }
-            
+
             groupSessions.sessions = groupSessions.sessions.filter(p => p.id !== uniqueId);
 
             toast.error(Object.values(createdSessionResult.errors).join('\n'));
@@ -141,7 +139,7 @@ export const useTerminal = () => {
 
     async function closeSession (sessionId: number, groupIndex: number) {
         const groupSessions = getGroupTerminalSessions(groupIndex);
-        
+
         groupSessions.sessions = groupSessions.sessions.filter(p => p.id !== sessionId);
 
         if (groupSessions.selectedSession?.id === sessionId && groupSessions.sessions.length > 0) {
@@ -161,7 +159,7 @@ export const useTerminal = () => {
 
     async function selectSession (session: TerminalSession, groupIndex: number) {
         const groupSessions = getGroupTerminalSessions(groupIndex);
-        
+
         if (groupSessions.selectedSession?.id === session.id) {
             return;
         }
@@ -169,7 +167,7 @@ export const useTerminal = () => {
         if (groupSessions.selectedSession && !groupSessions.selectedSession.isLoad) {
             await terminalStore.terminalHub.disactivateSession(groupSessions.selectedSession.id);
         }
-        
+
         groupSessions.selectedSession = session;
         groupSessions.selectedSession.isLoad = true;
     }

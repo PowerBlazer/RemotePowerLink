@@ -5,7 +5,7 @@ import ArrowIcon from 'shared/assets/icons/arrow-prev.svg';
 import sftpStore from 'app/store/sftpStore';
 import { useCallback, useState } from 'react';
 import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface SftpCatalogSwitcherProps extends SftpWindowsOptionProps {
     className?: string;

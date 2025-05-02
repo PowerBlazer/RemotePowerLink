@@ -22,9 +22,8 @@ export function SearchInput ({ className, onChange, value }: FilterInputProps) {
                 className={classNames(style.search_input)}
                 placeholder={t('Поиск')}
                 value={value}
-                onChange={(e) => { 
-                    if(onChange) 
-                        onChange(e.target.value); 
+                onChange={(e) => {
+                    if (onChange) { onChange(e.target.value); }
                 }}
             />
         </div>

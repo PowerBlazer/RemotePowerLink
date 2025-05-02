@@ -10,7 +10,7 @@ import { MouseEvent, useEffect, useMemo, useRef } from 'react';
 import { ConnectionState } from 'app/hubs/hubFactory';
 import { Loader } from 'shared/ui/Loader/Loader';
 import useTerminal from 'app/hooks/useTerminal';
-import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
+import { TerminalScreenMode } from 'widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog';
 
 interface NavbarTerminalProps extends TerminalScreenMode {
     className?: string;
@@ -61,10 +61,9 @@ function NavbarTerminal ({ className, onClickSelectHost, index }: NavbarTerminal
         };
     }, []);
 
-
     useEffect(() => {
         const titleCounters: Record<string, number> = {};
-        
+
         groupTerminalSessions.sessions.forEach((session) => {
             const hostTitle = session.host.title;
 

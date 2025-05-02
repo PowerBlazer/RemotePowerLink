@@ -17,12 +17,17 @@ import { Input } from 'shared/ui/Input';
 import { FormBlock } from 'features/FormBlock';
 import { ButtonDelete } from 'features/SidebarModules/ButtonDelete';
 import { DataTypeEnum } from 'app/enums/DataTypeEnum';
+import userStore from 'app/store/userStore';
+import { IdentityDataMapper } from 'app/mappers/identityDataMapper';
+import toast from 'react-hot-toast';
 
 interface SidebarEditIdentityProps extends SidebarOptions<EditIdentityResult> {
     className?: string;
 }
 
 function SidebarEditIdentity (props: SidebarEditIdentityProps) {
+    const { t } = useTranslation('translation');
+
     const {
         className,
         isMain = true,
@@ -31,9 +36,7 @@ function SidebarEditIdentity (props: SidebarEditIdentityProps) {
         isVisible
     } = props;
 
-    const { t } = useTranslation('translation');
-
-    const identity = sidebarStore.editIdentityData.identity;
+    const identity = sidebarStore.mainSidebar.editIdentityData.data;
 
     const [identityData, setIdentityData] = useState<EditIdentityData>({
         identityId: identity.identityId,
@@ -50,7 +53,7 @@ function SidebarEditIdentity (props: SidebarEditIdentityProps) {
         }
 
         if (!isMain) {
-            sidebarStore.editIdentityData.isVisible = false;
+            sidebarStore.mainSidebar.editIdentityData.isVisible = false;
         }
     }
 
@@ -96,8 +99,12 @@ function SidebarEditIdentity (props: SidebarEditIdentityProps) {
     const saveIdentityClickHandler = useCallback(async () => {
         const editIdentityResult = await IdentityService.editIdentity(identityData);
 
-        if (onSave && editIdentityResult.isSuccess) {
-            await onSave(editIdentityResult.result);
+        if (editIdentityResult.isSuccess) {
+            userStore.setUserIdentity(IdentityDataMapper.fromEditIdentityResult(editIdentityResult.result));
+
+            toast.success(t('Успешно сохранено'));
+
+            await onSave?.(editIdentityResult.result);
         }
 
         if (!editIdentityResult.isSuccess) {
@@ -127,7 +134,7 @@ function SidebarEditIdentity (props: SidebarEditIdentityProps) {
     return (
         <Sidebar
             className={classNames(style.sidebarEditIdentity, {
-                [style.active]: sidebarStore.newIdentityData?.isVisible || isVisible
+                [style.active]: sidebarStore.mainSidebar.newIdentityData?.isVisible || isVisible
             }, [className])}
             isMain={isMain}
             footer={footerPanel}

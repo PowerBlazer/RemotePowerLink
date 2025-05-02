@@ -12,7 +12,7 @@ function MainPage () {
                 <NavbarHosts/>
                 <ServerManagerCatalog/>
             </div>
-            {sidebarStore.mainSideBar?.sidebar}
+            {sidebarStore.mainSidebar.sidebar?.element}
         </div>
     );
 }

@@ -21,12 +21,16 @@ import PortIcon from 'shared/assets/icons/code-working.svg';
 import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
 import { ButtonDelete } from 'features/SidebarModules/ButtonDelete/ui/ButtonDelete';
 import { DataTypeEnum } from 'app/enums/DataTypeEnum';
+import toast from 'react-hot-toast';
+import { ProxyDataMapper } from 'app/mappers/proxyDataMapper';
 
 interface SidebarEditProxyProps extends SidebarOptions<EditProxyResult> {
     className?: string;
 }
 
 function SidebarEditProxy (props: SidebarEditProxyProps) {
+    const { t } = useTranslation('translation');
+
     const {
         className,
         isMain = false,
@@ -35,10 +39,8 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
         isVisible
     } = props;
 
-    const proxy = sidebarStore.editProxyData.proxy;
+    const proxy = sidebarStore.mainSidebar.editProxyData.data;
     const identity = userStore.userIdentities.find(p => p.identityId === proxy.identityId);
-
-    const { t } = useTranslation('translation');
 
     const [proxyData, setProxyData] = useState<EditProxyData>({
         proxyId: proxy.proxyId,
@@ -63,7 +65,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
         }
 
         if (!isMain) {
-            sidebarStore.newProxyData.isVisible = false;
+            sidebarStore.mainSidebar.newProxyData.isVisible = false;
         }
     }
 
@@ -150,8 +152,12 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
     const saveProxyClickHandler = useCallback(async () => {
         const editProxyResult = await ProxyService.editProxy(proxyData);
 
-        if (onSave && editProxyResult.isSuccess) {
-            await onSave(editProxyResult.result);
+        if (editProxyResult.isSuccess) {
+            userStore.setUserProxy(ProxyDataMapper.fromEditProxyResult(editProxyResult.result));
+
+            toast.success(t('Успешно сохранено'));
+
+            await onSave?.(editProxyResult.result);
         }
 
         if (!editProxyResult.isSuccess) {
@@ -215,7 +221,7 @@ function SidebarEditProxy (props: SidebarEditProxyProps) {
     return (
         <Sidebar
             className={classNames(style.sidebarNewProxy, {
-                [style.active]: ((sidebarStore.editProxyData?.isVisible || isVisible) && !isMain)
+                [style.active]: ((sidebarStore.mainSidebar.editProxyData?.isVisible || isVisible) && !isMain)
             }, [className])}
             sidebars={sidebars}
             footer={footerPanel}

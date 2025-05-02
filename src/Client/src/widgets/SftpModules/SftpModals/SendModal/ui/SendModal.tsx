@@ -19,7 +19,7 @@ import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon';
 import { Input } from 'shared/ui/Input';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { SftpService } from 'app/services/SftpService/sftpService';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface SendModalProps extends SftpWindowsOptionProps {
     className?: string;

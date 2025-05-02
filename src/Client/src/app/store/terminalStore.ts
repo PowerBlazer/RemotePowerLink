@@ -1,8 +1,8 @@
 import { ServerData } from 'app/services/ServerService/config/serverConfig';
-import {makeAutoObservable, reaction} from 'mobx';
+import { makeAutoObservable, reaction } from 'mobx';
 import TerminalHub from 'app/hubs/terminalHub';
 import { TerminalSetting, TerminalTheme } from 'app/services/TerminalService/config';
-import {LocalStorageKeys} from "app/enums/LocalStorageKeys";
+import { LocalStorageKeys } from 'app/enums/LocalStorageKeys';
 
 export interface TerminalSession {
     id: number,
@@ -23,7 +23,7 @@ export interface TerminalModalOptions {
     errorState: boolean
 }
 
-export enum TerminalScreenSplitMode{
+export enum TerminalScreenSplitMode {
     FIRST = 1,
     DOUBLE = 2,
     TRIPLE = 3,
@@ -44,7 +44,7 @@ export interface LocalGroupTerminalSessions {
 class TerminalStore {
     selectedMode = this.getScreenModeInStorage();
     groupsTerminalSessions: GroupTerminalSessions[] = [];
-   
+
     terminalHub: TerminalHub = null;
     terminalThemes: TerminalTheme[] = [];
     terminalSetting: TerminalSetting = null;
@@ -52,7 +52,7 @@ class TerminalStore {
     modalOptions: TerminalModalOptions = {
         errorState: false
     }
-    
+
     isLoad: boolean = true;
 
     constructor () {
@@ -65,34 +65,33 @@ class TerminalStore {
             }
         );
     }
-    
-    getGroupSessionsByIndex(index: number): GroupTerminalSessions {
+
+    getGroupSessionsByIndex (index: number): GroupTerminalSessions {
         return this.groupsTerminalSessions[index];
     }
-    
-    getGroupSessionsBySessionId(sessionId: number): GroupTerminalSessions {
-       return this.groupsTerminalSessions.find(p=> 
-           p.sessions.findIndex(x=> x.id == sessionId) !== -1);
+
+    getGroupSessionsBySessionId (sessionId: number): GroupTerminalSessions {
+        return this.groupsTerminalSessions.find(p =>
+            p.sessions.findIndex(x => x.id == sessionId) !== -1);
     }
-    
-    getSessionBySessionId(sessionId: number): TerminalSession {
+
+    getSessionBySessionId (sessionId: number): TerminalSession {
         let result: TerminalSession = null
         this.groupsTerminalSessions.forEach(sessionGroup => {
-            const session = sessionGroup.sessions.find(p=> p.id == sessionId);
+            const session = sessionGroup.sessions.find(p => p.id == sessionId);
             if (session) {
                 result = session;
-                return;
             }
         });
-        
+
         return result;
     }
-    
-    initializeGroupSessions(option: TerminalScreenSplitMode , sessions?: TerminalSession[]) {
-        if(this.groupsTerminalSessions.length > option && this.groupsTerminalSessions.length !== 0) {
+
+    initializeGroupSessions (option: TerminalScreenSplitMode, sessions?: TerminalSession[]) {
+        if (this.groupsTerminalSessions.length > option && this.groupsTerminalSessions.length !== 0) {
             const currentTerminalSessions = this.groupsTerminalSessions;
             const slicedSessions = currentTerminalSessions.slice(option);
-            
+
             slicedSessions.forEach((sessionGroup) => {
                 currentTerminalSessions[option - 1].sessions = currentTerminalSessions[option - 1].sessions
                     .concat(sessionGroup.sessions);
@@ -100,8 +99,8 @@ class TerminalStore {
 
             this.groupsTerminalSessions = currentTerminalSessions.slice(0, option);
         }
-        
-        if(this.groupsTerminalSessions.length < option && this.groupsTerminalSessions.length !== 0){
+
+        if (this.groupsTerminalSessions.length < option && this.groupsTerminalSessions.length !== 0) {
             for (let i = this.groupsTerminalSessions.length; i < option; i++) {
                 this.groupsTerminalSessions.push({
                     index: i,
@@ -110,107 +109,106 @@ class TerminalStore {
             }
         }
 
-        if(this.groupsTerminalSessions.length === 0 && sessions){
+        if (this.groupsTerminalSessions.length === 0 && sessions) {
             const localGroupsSession = this.getLocalGroupsTerminalSession(option, sessions);
             const newGroupsSession: GroupTerminalSessions[] = []
-            
+
             const foundedSessionIds: number[] = [];
-            
+
             localGroupsSession.forEach((session, index) => {
-                let newGroupSessions: TerminalSession[] = [];
-                
+                const newGroupSessions: TerminalSession[] = [];
+
                 session.sessionIds.forEach((sessionId) => {
-                    const currentSession = sessions.find(p=> p.id === sessionId);
-                    
-                    if(currentSession){
+                    const currentSession = sessions.find(p => p.id === sessionId);
+
+                    if (currentSession) {
                         foundedSessionIds.push(currentSession.id);
                         newGroupSessions.push(currentSession);
                     }
-                        
                 });
 
                 newGroupsSession.push({
-                    index:index, 
+                    index,
                     sessions: newGroupSessions
                 })
             })
 
             const notPresentSessionsInLocalGroup = sessions.filter(
-                p=> foundedSessionIds.indexOf(p.id) === -1
+                p => !foundedSessionIds.includes(p.id)
             );
 
             newGroupsSession[0].sessions = newGroupsSession[0].sessions.concat(notPresentSessionsInLocalGroup);
 
             this.groupsTerminalSessions = newGroupsSession;
         }
-        
-        this.setLocalGroupsTerminalSession();
-    }
-    
-    updateStorageGroupSessions(){
+
         this.setLocalGroupsTerminalSession();
     }
 
-    private getScreenModeInStorage(): TerminalScreenSplitMode {
+    updateStorageGroupSessions () {
+        this.setLocalGroupsTerminalSession();
+    }
+
+    private getScreenModeInStorage (): TerminalScreenSplitMode {
         const screenMode = Number(localStorage.getItem(LocalStorageKeys.TERMINAL_SCREEN_MODE));
 
         return screenMode ? (screenMode as TerminalScreenSplitMode) : TerminalScreenSplitMode.FIRST;
     }
-    
-    private getLocalGroupsTerminalSession(option: TerminalScreenSplitMode, sessions: TerminalSession[]): LocalGroupTerminalSessions[] {
+
+    private getLocalGroupsTerminalSession (option: TerminalScreenSplitMode, sessions: TerminalSession[]): LocalGroupTerminalSessions[] {
         const localGroupJson = localStorage.getItem(LocalStorageKeys.TERMINAL_SESSIONS_GROUPS);
-        
-        if(!localGroupJson){
+
+        if (!localGroupJson) {
             const localGroupArray: LocalGroupTerminalSessions[] = [];
-            for (let i = 0; i < option; i++){
+            for (let i = 0; i < option; i++) {
                 localGroupArray.push({
                     index: i,
                     sessionIds: []
                 })
             }
-            
+
             localStorage.setItem(LocalStorageKeys.TERMINAL_SESSIONS_GROUPS, JSON.stringify(localGroupArray));
-            
+
             return localGroupArray;
         }
-        
+
         const localGroupSessions = JSON.parse(localGroupJson) as LocalGroupTerminalSessions[];
-        
-        if(localGroupJson && localGroupSessions){
+
+        if (localGroupJson && localGroupSessions) {
             const localGroupArray: LocalGroupTerminalSessions[] = [];
-            for (let i = 0; i < option; i++){
-                const localGroup = localGroupSessions.find(p=> p.index === i);
+            for (let i = 0; i < option; i++) {
+                const localGroup = localGroupSessions.find(p => p.index === i);
                 const newLocalGroup: LocalGroupTerminalSessions = {
                     index: i,
                     sessionIds: [] as number[]
                 }
-                
-                if(localGroup){
+
+                if (localGroup) {
                     localGroup.sessionIds.forEach(sessionId => {
-                        if(sessions.find(p => p.id === sessionId)){
+                        if (sessions.find(p => p.id === sessionId)) {
                             newLocalGroup.sessionIds.push(sessionId);
                         }
                     })
                 }
-                
+
                 localGroupArray.push(newLocalGroup);
             }
 
             localStorage.setItem(LocalStorageKeys.TERMINAL_SESSIONS_GROUPS, JSON.stringify(localGroupArray));
-            
+
             return localGroupArray;
         }
-        
+
         return null;
     }
-    
-    private setLocalGroupsTerminalSession() {
+
+    private setLocalGroupsTerminalSession () {
         const localGroupsSession: LocalGroupTerminalSessions[] = [];
-        
+
         this.groupsTerminalSessions.forEach((sessionGroup) => {
             localGroupsSession.push({
                 index: sessionGroup.index,
-                sessionIds: sessionGroup.sessions.map(p=> p.id)
+                sessionIds: sessionGroup.sessions.map(p => p.id)
             });
         })
 

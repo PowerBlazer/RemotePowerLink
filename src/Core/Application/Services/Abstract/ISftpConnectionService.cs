@@ -28,7 +28,7 @@ public interface ISftpConnectionService
     bool CheckExistingConnection(string connectionKey);
     
     /// <summary>
-    /// Удаление существущего подключение SSH
+    /// Удаление существующего подключение SSH
     /// </summary>
     /// <param name="connectionKey">Строка подключения для отключения клиента SSH</param>
     void DisconnectClient(string connectionKey);

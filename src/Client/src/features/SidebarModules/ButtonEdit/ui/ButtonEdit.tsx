@@ -7,13 +7,9 @@ import { DataTypeEnum } from 'app/enums/DataTypeEnum';
 import userStore from 'app/store/userStore';
 import sidebarStore from 'app/store/sidebarStore';
 import { SidebarEditHost } from 'widgets/Sidebars/SidebarEditHost';
-import { EditServerResult } from 'app/services/ServerService/config/serverConfig';
-import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { SidebarEditProxy } from 'widgets/Sidebars/SidebarEditProxy';
-import { EditProxyResult } from 'app/services/ProxyService/config/proxyConfig';
 import { SidebarEditIdentity } from 'widgets/Sidebars/SidebarEditIdentity';
-import { EditIdentityResult } from 'app/services/IdentityService/config/identityConfig';
 
 interface ButtonEditProps {
     className?: string;
@@ -22,47 +18,6 @@ interface ButtonEditProps {
 
 export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
     const { t } = useTranslation('translation')
-    const onSaveServerHandler = async (editServerData: EditServerResult) => {
-        userStore.setUserServer({
-            serverId: editServerData.serverId,
-            hostname: editServerData.hostname,
-            title: editServerData.title,
-            identityId: editServerData.identityId,
-            proxyId: editServerData.proxyId,
-            sshPort: editServerData.sshPort,
-            startupCommand: editServerData.startupCommand,
-            systemTypeIcon: editServerData.systemTypeIcon,
-            systemTypeName: editServerData.systemTypeName,
-            dateCreated: editServerData.dateCreated,
-            encodingId: editServerData.encodingId
-        });
-
-        toast.success(t('Успешно сохранено'));
-    }
-
-    const onSaveProxyHandler = async (editProxyData: EditProxyResult) => {
-        userStore.setUserProxy({
-            proxyId: editProxyData.proxyId,
-            hostname: editProxyData.hostname,
-            title: editProxyData.title,
-            identityId: editProxyData.identityId,
-            sshPort: editProxyData.sshPort,
-            dateCreated: editProxyData.dateCreated
-        });
-
-        toast.success(t('Успешно сохранено'));
-    }
-
-    const onSaveIdentityHandler = async (editIdentityData: EditIdentityResult) => {
-        userStore.setUserIdentity({
-            identityId: editIdentityData.identityId,
-            title: editIdentityData.title,
-            username: editIdentityData.username,
-            dateCreated: editIdentityData.dateCreated
-        });
-
-        toast.success(t('Успешно сохранено'));
-    }
 
     const editDataClickHandler = async () => {
         if (serverManagerData.dataType === DataTypeEnum.SERVER) {
@@ -70,10 +25,11 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
                 .find(p => p.serverId === serverManagerData.id);
 
             if (serverData) {
-                sidebarStore.editHostData.server = serverData;
-                await sidebarStore.setSidebar({
+                sidebarStore.mainSidebar.editHostData.data = serverData;
+
+                await sidebarStore.setSidebar(sidebarStore.mainSidebar, {
                     name: `SidebarEditHost ${serverManagerData.id}`,
-                    sidebar: <SidebarEditHost isMain={true} onSave={onSaveServerHandler}/>
+                    element: <SidebarEditHost isMain={true}/>
                 })
             }
         }
@@ -83,10 +39,10 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
                 .find(p => p.proxyId === serverManagerData.id);
 
             if (proxyData) {
-                sidebarStore.editProxyData.proxy = proxyData;
-                await sidebarStore.setSidebar({
+                sidebarStore.mainSidebar.editProxyData.data = proxyData;
+                await sidebarStore.setSidebar(sidebarStore.mainSidebar, {
                     name: `SidebarEditProxy ${serverManagerData.id}`,
-                    sidebar: <SidebarEditProxy isMain={true} onSave={onSaveProxyHandler}/>
+                    element: <SidebarEditProxy isMain={true} />
                 })
             }
         }
@@ -96,10 +52,10 @@ export function ButtonEdit ({ className, serverManagerData }: ButtonEditProps) {
                 .find(p => p.identityId === serverManagerData.id);
 
             if (identityData) {
-                sidebarStore.editIdentityData.identity = identityData;
-                await sidebarStore.setSidebar({
+                sidebarStore.mainSidebar.editIdentityData.data = identityData;
+                await sidebarStore.setSidebar(sidebarStore.mainSidebar, {
                     name: `SidebarEditIdentity ${serverManagerData.id}`,
-                    sidebar: <SidebarEditIdentity isMain={true} onSave={onSaveIdentityHandler}/>
+                    element: <SidebarEditIdentity isMain={true} />
                 })
             }
         }

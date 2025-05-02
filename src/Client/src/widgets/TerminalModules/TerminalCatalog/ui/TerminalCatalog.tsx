@@ -1,28 +1,27 @@
-﻿import { classNames } from 'shared/lib/classNames/classNames';
+import { classNames } from 'shared/lib/classNames/classNames';
 import style from './TerminalCatalog.module.scss';
-import { observer } from "mobx-react-lite";
-import { NavbarTerminal } from "widgets/TerminalModules/NavbarTerminal";
-import terminalStore from "app/store/terminalStore";
-import { Loader } from "shared/ui/Loader/Loader";
-import { Terminal } from "widgets/TerminalModules/Terminal";
-import { useMemo, useState } from "react";
-import { SelectHostBlock } from "features/SelectHostBlock";
-import { TerminalSelectHostCatalog } from "widgets/TerminalModules/TerminalSelectHostCatalog";
-import { ErrorModal } from "widgets/TerminalModules/TerminalModals/ErrorModal";
-import useTerminal from "app/hooks/useTerminal";
-
+import { observer } from 'mobx-react-lite';
+import { NavbarTerminal } from 'widgets/TerminalModules/NavbarTerminal';
+import terminalStore from 'app/store/terminalStore';
+import { Loader } from 'shared/ui/Loader/Loader';
+import { Terminal } from 'widgets/TerminalModules/Terminal';
+import { useMemo, useState } from 'react';
+import { SelectHostBlock } from 'features/SelectHostBlock';
+import { TerminalSelectHostCatalog } from 'widgets/TerminalModules/TerminalSelectHostCatalog';
+import { ErrorModal } from 'widgets/TerminalModules/TerminalModals/ErrorModal';
+import useTerminal from 'app/hooks/useTerminal';
 
 export interface TerminalScreenMode {
     index: number;
 }
 
-interface TerminalCatalogProps extends TerminalScreenMode{
+interface TerminalCatalogProps extends TerminalScreenMode {
     className?: string;
 }
 
 function TerminalCatalog ({ className, index }: TerminalCatalogProps) {
     const [isSelectHost, setIsSelectHost] = useState<boolean>(false);
-    
+
     const { getGroupTerminalSessions } = useTerminal();
     const groupTerminalSessions = getGroupTerminalSessions(index);
 
@@ -51,9 +50,9 @@ function TerminalCatalog ({ className, index }: TerminalCatalogProps) {
             </div>
         )
     }
-    
+
     return (
-        <div className={classNames(style.terminalCatalog, {}, [className])}  style={{backgroundColor: terminalTheme?.background}}>
+        <div className={classNames(style.terminalCatalog, {}, [className])} style={{ backgroundColor: terminalTheme?.background }}>
             <div className={classNames(style.header)}>
                 <NavbarTerminal index={index} onClickSelectHost={() => { setIsSelectHost(true); }}/>
             </div>

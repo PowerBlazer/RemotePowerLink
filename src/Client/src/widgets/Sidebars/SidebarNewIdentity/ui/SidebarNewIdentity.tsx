@@ -3,7 +3,11 @@ import style from './SidebarNewIdentity.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Sidebar, SidebarOptions } from 'widgets/Sidebars/Sidebar';
 import sidebarStore from 'app/store/sidebarStore';
-import { CreateIdentityData, CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
+import {
+    CreateIdentityData,
+    CreateIdentityResult,
+    IdentityData
+} from 'app/services/IdentityService/config/identityConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { ThemeButton } from 'shared/ui/Button/Button';
 import { ChangeEvent, useCallback, useMemo, useState } from 'react';
@@ -12,6 +16,9 @@ import { Input } from 'shared/ui/Input';
 import { FormBlock } from 'features/FormBlock';
 import UserCard from 'shared/assets/icons/user-card.svg';
 import { IdentityService } from 'app/services/IdentityService/identityService';
+import { IdentityDataMapper } from 'app/mappers/identityDataMapper';
+import userStore from 'app/store/userStore';
+import toast from 'react-hot-toast';
 
 interface SidebarNewIdentityProps extends SidebarOptions<CreateIdentityResult> {
     className?: string;
@@ -42,7 +49,7 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
         }
 
         if (!isMain) {
-            sidebarStore.newIdentityData.isVisible = false;
+            sidebarStore.mainSidebar.newIdentityData.isVisible = false;
         }
     }
 
@@ -88,8 +95,15 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
     const createIdentityClickHandler = useCallback(async () => {
         const createIdentityResult = await IdentityService.createIdentity(identityData);
 
-        if (onSave && createIdentityResult.isSuccess) {
-            await onSave(createIdentityResult.result);
+        if (createIdentityResult.isSuccess) {
+            const createdIdentityData: IdentityData = IdentityDataMapper.fromCreateIdentityResult(createIdentityResult.result);
+
+            userStore.setUserIdentity(createdIdentityData);
+            sidebarStore.mainSidebar.editIdentityData.data = createdIdentityData;
+
+            await onSave?.(createIdentityResult.result);
+
+            toast.success(t('Успешно создано'));
         }
 
         if (!createIdentityResult.isSuccess) {
@@ -115,7 +129,7 @@ function SidebarNewIdentity (props: SidebarNewIdentityProps) {
     return (
         <Sidebar
             className={classNames(style.sidebarNewProxy, {
-                [style.active]: sidebarStore.newIdentityData?.isVisible || isVisible
+                [style.active]: sidebarStore.mainSidebar.newIdentityData?.isVisible || isVisible
             }, [className])}
             isMain={isMain}
             footer={footerPanel}

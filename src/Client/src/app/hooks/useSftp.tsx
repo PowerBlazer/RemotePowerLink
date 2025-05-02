@@ -51,7 +51,7 @@ const useSftp = (windowIndex: SftpScreenSplitMode) => {
             }
         }
     }
-    function getHost(){
+    function getHost () {
         return sftpStore.getHostInMode(windowIndex);
     }
     async function closeSftp () {
@@ -117,7 +117,7 @@ const useSftp = (windowIndex: SftpScreenSplitMode) => {
             }
         }
     }
-    
+
     return {
         initialSftp,
         closeSftp,

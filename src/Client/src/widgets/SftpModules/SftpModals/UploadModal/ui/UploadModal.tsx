@@ -15,7 +15,7 @@ import { Loader } from 'shared/ui/Loader/Loader';
 import { formatByteString } from 'shared/lib/formatByteString';
 import { HostService } from 'app/services/hostService';
 import { SftpService } from 'app/services/SftpService/sftpService';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface UploadModalProps extends SftpWindowsOptionProps {
     className?: string;

@@ -1,4 +1,4 @@
-﻿import { DependencyList, useEffect } from 'react';
+import { DependencyList, useEffect } from 'react';
 
 export const useEffectAsync = (
     callback: () => Promise<void> | Promise<() => void> | void,
@@ -7,7 +7,7 @@ export const useEffectAsync = (
     useEffect(() => {
         let cleanupFn: (() => void) | undefined;
 
-        async function requestAsync() {
+        async function requestAsync () {
             const result = await callback();
             if (typeof result === 'function') {
                 cleanupFn = result;

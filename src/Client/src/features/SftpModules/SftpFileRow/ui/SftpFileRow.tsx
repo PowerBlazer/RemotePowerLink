@@ -8,7 +8,7 @@ import FileIcon from 'shared/assets/icons/sftp/file.svg'
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { formatByteString } from 'shared/lib/formatByteString';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface SftpFileRowProps extends SftpWindowsOptionProps {
     className?: string;
@@ -95,6 +95,7 @@ function SftpFileRow ({ className, fileData, windowsIndex }: SftpFileRowProps) {
                 isVisible: true,
                 menuMode: mode,
                 heightWindow: e.currentTarget.parentElement.parentElement.parentElement.clientHeight,
+                widthWindow: e.currentTarget.parentElement.parentElement.parentElement.clientWidth,
                 x,
                 y
             }

@@ -8,7 +8,7 @@ import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { useTheme } from 'shared/lib/Theme/useTheme';
 import { useTranslation } from 'react-i18next';
 import { SftpService } from 'app/services/SftpService/sftpService';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface DeleteModalProps extends SftpWindowsOptionProps {
     className?: string;

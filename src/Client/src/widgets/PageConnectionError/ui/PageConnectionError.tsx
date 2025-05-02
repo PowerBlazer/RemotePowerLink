@@ -5,8 +5,8 @@ import { DefaultServerIcon } from 'shared/ui/DefaultServerIcon';
 import { Button } from 'shared/ui/Button/Button';
 import sftpStore from 'app/store/sftpStore';
 import { useTranslation } from 'react-i18next';
-import {SftpWindowsOptionProps} from "widgets/SftpModules/SftpCatalog";
-import useSftp from "app/hooks/useSftp";
+import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
+import useSftp from 'app/hooks/useSftp';
 
 interface PageConnectionErrorProps extends SftpWindowsOptionProps {
     className?: string;

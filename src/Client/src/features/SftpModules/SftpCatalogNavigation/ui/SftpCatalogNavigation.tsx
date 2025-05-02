@@ -7,7 +7,7 @@ import { Button } from 'shared/ui/Button/Button';
 import FolderIcon from 'shared/assets/icons/sftp/folder.svg';
 import ArrowIcon from 'shared/assets/icons/arrow-prev.svg'
 import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface SftpCatalogNavigationProps extends SftpWindowsOptionProps {
     className?: string;

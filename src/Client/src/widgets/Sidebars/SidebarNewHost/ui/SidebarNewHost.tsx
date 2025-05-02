@@ -22,6 +22,9 @@ import DoubleArrow from 'shared/assets/icons/double-arrow.svg';
 import style from './SidebarNewHost.module.scss';
 import sidebarStore from 'app/store/sidebarStore';
 import userStore from 'app/store/userStore';
+import { SidebarEditHost } from 'widgets/Sidebars/SidebarEditHost';
+import toast from 'react-hot-toast';
+import { ServerDataMapper } from 'app/mappers/serverDataMapper';
 
 interface SidebarNewHostProps extends SidebarOptions<ServerData> {
     className?: string;
@@ -50,7 +53,7 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
         }
 
         if (!isMain) {
-            sidebarStore.newHostData.isVisible = false;
+            sidebarStore.mainSidebar.newHostData.isVisible = false;
         }
     }
 
@@ -214,8 +217,15 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
     const createServerClickHandler = useCallback(async () => {
         const createServerResult = await ServerService.createServer(serverData);
 
-        if (onSave && createServerResult.isSuccess) {
-            await onSave(createServerResult.result);
+        if (createServerResult.isSuccess) {
+            const createdServerData = ServerDataMapper.fromCreateServerResult(createServerResult.result);
+
+            userStore.setUserServer(createdServerData);
+            sidebarStore.mainSidebar.editHostData.data = createdServerData;
+
+            await onSave?.(createServerResult.result);
+
+            toast.success(t('Успешно создано'));
         }
 
         if (!createServerResult.isSuccess) {
@@ -224,15 +234,6 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
     }, [serverData]);
 
     const createProxyOnSaveHandler = async (createProxyResult: CreateProxyResult) => {
-        userStore.setUserProxy({
-            proxyId: createProxyResult.proxyId,
-            title: createProxyResult.title,
-            hostname: createProxyResult.hostname,
-            identityId: createProxyResult.identityId,
-            sshPort: createProxyResult.sshPort,
-            dateCreated: createProxyResult.dateCreated
-        });
-
         setVisibleProxy(false);
 
         setProxy({ id: createProxyResult.proxyId.toString(), title: createProxyResult.title });
@@ -250,13 +251,6 @@ function SidebarNewHost ({ className, isMain = false, onSave, onClose }: Sidebar
     }
 
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
-        userStore.setUserIdentity({
-            identityId: createIdentityResult.identityId,
-            title: createIdentityResult.title,
-            username: createIdentityResult.username,
-            dateCreated: createIdentityResult.dateCreated
-        });
-
         setVisibleIdentity(false);
 
         setIdentity({ id: createIdentityResult.identityId.toString(), title: createIdentityResult.title });

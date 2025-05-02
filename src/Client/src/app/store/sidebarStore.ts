@@ -1,108 +1,65 @@
 import { makeAutoObservable } from 'mobx';
-import { ReactNode } from 'react';
-import { ServerData } from 'app/services/ServerService/config/serverConfig';
-import { ProxyData } from 'app/services/ProxyService/config/proxyConfig';
-import { IdentityData } from 'app/services/IdentityService/config/identityConfig';
-
-export interface SidebarOptions {
-    isVisible: boolean;
-    title?: string;
-}
-
-export interface SidebarState {
-    name: string,
-    sidebar?: ReactNode
-}
-
-export abstract class SidebarData implements SidebarOptions {
-    isVisible: boolean;
-}
-
-export class SidebarNewHostData extends SidebarData {
-}
-
-export class SidebarNewProxyData extends SidebarData {
-}
-
-export class SidebarNewIdentityData extends SidebarData {
-}
-
-export class SidebarEditHostData extends SidebarData {
-    server?: ServerData = undefined;
-}
-
-export class SidebarEditProxyData extends SidebarData {
-    proxy?: ProxyData = undefined;
-}
-
-export class SidebarEditIdentityData extends SidebarData {
-    identity?: IdentityData = undefined;
-}
+import { MainSidebar } from 'app/store/sidebar/mainSidebar';
+import { SftpSidebar } from 'app/store/sidebar/sftpSidebar';
+import { SidebarData, SidebarState } from 'app/store/sidebar/sidebarData';
 
 class SidebarStore {
-    newHostData: SidebarNewHostData = { isVisible: false };
-    newProxyData: SidebarNewProxyData = { isVisible: false };
-    newIdentityData: SidebarNewIdentityData = { isVisible: false };
-
-    editHostData: SidebarEditHostData = { isVisible: false };
-    editProxyData: SidebarEditProxyData = { isVisible: false };
-    editIdentityData: SidebarEditIdentityData = { isVisible: false };
-
-    mainSideBar: SidebarState | undefined = undefined;
-    isVisible: boolean = false;
+    mainSidebar: MainSidebar;
+    sftpSidebar: SftpSidebar;
 
     constructor () {
+        this.mainSidebar = new MainSidebar();
+        this.sftpSidebar = new SftpSidebar();
+
         makeAutoObservable(this);
     }
 
-    resetVisibleSidebars () {
-        const sidebarsData: SidebarData[] = [
-            this.newHostData,
-            this.newProxyData,
-            this.newIdentityData,
-            this.editHostData,
-            this.editProxyData,
-            this.editIdentityData
-        ];
+    resetVisibleSidebars (sidebarData: SidebarData) {
+        Object.keys(sidebarData).forEach((key) => {
+            const property = (sidebarData as any)[key];
 
-        sidebarsData.forEach(sidebarData => {
-            sidebarData.isVisible = false;
-        })
+            if (property && typeof property === 'object') {
+                if ('isVisible' in property) {
+                    property.isVisible = false;
+                }
+                this.resetVisibleSidebars(property);
+            }
+        });
     }
 
-    async setVisible (value: boolean) {
-        this.isVisible = value;
+    async setVisible (sidebarData: SidebarData, value: boolean) {
+        sidebarData.isVisible = value;
         await delay(200);
     }
 
-    async setSidebar (sideBar?: SidebarState) {
-        if (this.mainSideBar == null && sideBar !== null) {
-            this.isVisible = false;
-            this.mainSideBar = sideBar;
+    async setSidebar (sidebarData: SidebarData, sideBar?: SidebarState) {
+        if (sidebarData?.sidebar == null && sideBar !== null) {
+            sidebarData.isVisible = false;
+            sidebarData.sidebar = sideBar;
 
             setTimeout(() => {
-                this.isVisible = true;
+                sidebarData.isVisible = true;
             }, 0);
 
             return;
         }
 
-        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar?.name !== sideBar?.name) {
-            this.mainSideBar = sideBar;
+        if ((sidebarData.sidebar !== null && sideBar !== null) && sidebarData.sidebar?.name !== sideBar?.name) {
+            sidebarData.sidebar = sideBar;
             return;
         }
 
-        if ((this.mainSideBar !== null && sideBar !== null) && this.mainSideBar?.name === sideBar?.name) {
-            await this.setVisible(false);
-            this.mainSideBar = undefined;
-            this.resetVisibleSidebars();
+        if ((sidebarData.sidebar !== null && sideBar !== null) && sidebarData.sidebar?.name === sideBar?.name) {
+            await this.setVisible(sidebarData, false);
+            sidebarData.sidebar = undefined;
+            this.resetVisibleSidebars(sidebarData);
             return;
         }
 
         if (sideBar === null) {
-            this.isVisible = false
-            this.mainSideBar = undefined;
-            this.resetVisibleSidebars();
+            sidebarData.isVisible = false
+            sidebarData.sidebar = undefined;
+            this.resetVisibleSidebars(sidebarData);
         }
     }
 }

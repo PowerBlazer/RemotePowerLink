@@ -12,7 +12,7 @@ import { Button } from 'shared/ui/Button/Button';
 import { SftpMenu } from 'widgets/SftpModules/SftpMenu';
 import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { ConnectionState } from 'app/hubs/hubFactory';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface SftpCatalogTableProps extends SftpWindowsOptionProps {
     className?: string;

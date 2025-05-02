@@ -22,19 +22,19 @@ export function SelectItem ({ className, selectedItem, isSelected, icon }: Selec
     const selectItemHandler = () => {
         setSelected(selectedItem);
     }
-    
-    const isVisible = 
-        !searchValue || 
-        searchValue === '' || 
+
+    const isVisible =
+        !searchValue ||
+        searchValue === '' ||
         selectedItem.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
 
     return (
-        <Button 
-            className={classNames(style.selectItem, { 
-                    [style.selected]: isSelected,
-                    [style.visible]: isVisible
-                }, [className])
-            } 
+        <Button
+            className={classNames(style.selectItem, {
+                [style.selected]: isSelected,
+                [style.visible]: isVisible
+            }, [className])
+            }
             onClick={selectItemHandler}
         >
             {icon && <div className={classNames(style.icon)}>{icon}</div> }

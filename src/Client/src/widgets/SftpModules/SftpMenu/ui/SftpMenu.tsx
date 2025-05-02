@@ -8,7 +8,7 @@ import { forwardRef, MutableRefObject, useEffect, useMemo, useState } from 'reac
 import { Delete } from 'features/SftpModules/SftpMenuOptions/ui/Delete';
 import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { Send } from 'features/SftpModules/SftpMenuOptions/ui/Send';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface SftpMenuProps extends SftpWindowsOptionProps {
     className?: string;
@@ -38,9 +38,7 @@ const SftpMenu = forwardRef(
         const [isVisibleMenu, setVisibleMenu] = useState<boolean>(isVisible);
 
         const menuRef = useOutsideClick<HTMLDivElement>(() => {
-            if (onClose) {
-                onClose();
-            }
+            onClose?.()
 
             if (isPosition && selectedHost.menuOption) {
                 selectedHost.menuOption.isVisible = false
@@ -50,23 +48,29 @@ const SftpMenu = forwardRef(
         }, [actionButtonRef?.current]);
 
         let yPx = selectedHost?.menuOption?.y;
+        let xPx = selectedHost?.menuOption?.x;
+
         if (menuRef && selectedHost && selectedHost.menuOption) {
             const sizeY = selectedHost.menuOption.heightWindow - yPx;
+            const sizeX = selectedHost.menuOption.widthWindow - xPx;
 
             if (sizeY < menuRef.current?.clientHeight) {
-                yPx = yPx - menuRef.current?.clientHeight - 15
+                yPx = yPx - menuRef.current?.clientHeight - topPaddingMenu
+            }
+
+            if (sizeX < menuRef.current?.clientWidth) {
+                xPx = xPx - menuRef.current?.clientWidth - leftPaddingMenu
             }
         }
 
         const onClickCloseMenuHandler = () => {
             setVisibleMenu(false);
+
             if (isPosition && selectedHost?.menuOption) {
                 selectedHost.menuOption.isVisible = false
             }
 
-            if (onClose) {
-                onClose();
-            }
+            onClose?.()
         }
 
         const defaultModeMenuOptions = useMemo(() => {
@@ -123,11 +127,9 @@ const SftpMenu = forwardRef(
             <div
                 style={{
                     top: yPx && isPosition ? yPx + topPaddingMenu : '',
-                    left: selectedHost?.menuOption?.x && isPosition ? selectedHost?.menuOption?.x + leftPaddingMenu : ''
+                    left: xPx && isPosition ? xPx + leftPaddingMenu : ''
                 }}
-                className={classNames(style.sftpMenuOptions, {
-                    [style.visible]: isVisibleMenu
-                }, [className])}
+                className={ classNames(style.sftpMenuOptions, { [style.visible]: isVisibleMenu }, [className]) }
                 ref={menuRef}
             >
                 {selectedHost?.menuOption?.menuMode === MenuMode.Default && defaultModeMenuOptions}

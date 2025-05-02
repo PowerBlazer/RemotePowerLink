@@ -24,13 +24,17 @@ import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { ServerService } from 'app/services/ServerService/serverService';
 import { ButtonDelete } from 'features/SidebarModules/ButtonDelete';
 import { DataTypeEnum } from 'app/enums/DataTypeEnum';
-import {SelectPosition} from "shared/ui/Select/ui/Select";
+import { SelectPosition } from 'shared/ui/Select/ui/Select';
+import { ServerDataMapper } from 'app/mappers/serverDataMapper';
+import toast from 'react-hot-toast';
 
 interface SidebarEditHostProps extends SidebarOptions<EditServerResult> {
     className?: string;
 }
 
 function SidebarEditHost (props: SidebarEditHostProps) {
+    const { t } = useTranslation('translation');
+
     const {
         className,
         onClose,
@@ -38,12 +42,11 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         isMain = false
     } = props;
 
-    const server = sidebarStore.editHostData.server;
+    const server = sidebarStore.mainSidebar.editHostData.data;
     const identity = userStore.userIdentities.find(p => p.identityId === server.identityId);
     const proxy = userStore.userProxies.find(p => p.proxyId === server.proxyId);
     const encoding = userStore.encodings.find(p => p.encodingId === server.encodingId);
 
-    const { t } = useTranslation('translation');
     const [errors, setErrors] = useState<Record<string, string[]>>({});
 
     const [serverData, setServerData] = useState<EditServerData>({
@@ -80,9 +83,10 @@ function SidebarEditHost (props: SidebarEditHostProps) {
         }
 
         if (!isMain) {
-            sidebarStore.editHostData.isVisible = false;
+            sidebarStore.mainSidebar.editHostData.isVisible = false;
         }
     }
+
     const createProxyOnSaveHandler = async (createProxyResult: CreateProxyResult) => {
         userStore.setUserProxy({
             proxyId: createProxyResult.proxyId,
@@ -299,8 +303,12 @@ function SidebarEditHost (props: SidebarEditHostProps) {
             return updatedErrors;
         });
 
-        if (onSave && editServerResult.isSuccess) {
-            await onSave(editServerResult.result);
+        if (editServerResult.isSuccess) {
+            userStore.setUserServer(ServerDataMapper.fromEditServerResult(editServerResult.result));
+
+            toast.success(t('Успешно сохранено'));
+
+            await onSave?.(editServerResult.result);
         }
 
         if (!editServerResult.isSuccess) {

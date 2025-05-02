@@ -5,7 +5,7 @@ import { Modal, ThemeModal, TypeModal } from 'shared/ui/Modal';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
 import { SftpWindowsOptionProps } from 'widgets/SftpModules/SftpCatalog';
 import { useTheme } from 'shared/lib/Theme/useTheme';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface ErrorModalProps extends SftpWindowsOptionProps {
     className?: string;

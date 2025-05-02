@@ -11,14 +11,13 @@ import { useTranslation } from 'react-i18next';
 import { SftpService } from 'app/services/SftpService/sftpService';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { HostService } from 'app/services/hostService';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface DownloadModalProps extends SftpWindowsOptionProps {
     className?: string;
 }
 
 function DownloadModal ({ className, windowsIndex }: DownloadModalProps) {
-    
     const { t } = useTranslation('translation');
     const { theme } = useTheme();
     const { getHost } = useSftp(windowsIndex);
@@ -68,7 +67,7 @@ function DownloadModal ({ className, windowsIndex }: DownloadModalProps) {
         });
 
         if (!downloadResult.isSuccess && Boolean(downloadResult.errors)) {
-            selectedHost.errors = downloadResult.errors 
+            selectedHost.errors = downloadResult.errors
             selectedHost.modalOption.errorState = true;
         }
 
@@ -94,7 +93,7 @@ function DownloadModal ({ className, windowsIndex }: DownloadModalProps) {
                 }
 
                 if (!getSizeResult.isSuccess) {
-                    selectedHost.errors = getSizeResult.errors 
+                    selectedHost.errors = getSizeResult.errors
                     selectedHost.modalOption.downloadState = false;
                     selectedHost.modalOption.errorState = true;
                 }

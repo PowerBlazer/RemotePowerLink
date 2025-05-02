@@ -7,7 +7,7 @@ export interface SelectContextProps {
     selectedElement?: SelectedItem,
     setSelected?: (selectedItem: SelectedItem) => void,
     searchValue?: string
-    
+
 }
 
 export const SelectContext = createContext<SelectContextProps>({});

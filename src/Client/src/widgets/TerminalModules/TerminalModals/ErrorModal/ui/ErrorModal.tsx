@@ -5,10 +5,10 @@ import { useTheme } from 'shared/lib/Theme/useTheme';
 import { Theme } from 'shared/lib/Theme/ThemeContext';
 import terminalStore from 'app/store/terminalStore';
 import { observer } from 'mobx-react-lite';
-import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
-import useTerminal from "app/hooks/useTerminal";
+import { TerminalScreenMode } from 'widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog';
+import useTerminal from 'app/hooks/useTerminal';
 
-interface ErrorModalProps extends TerminalScreenMode{
+interface ErrorModalProps extends TerminalScreenMode {
     className?: string;
 }
 
@@ -17,7 +17,7 @@ function ErrorModal ({ className, index }: ErrorModalProps) {
 
     const { getGroupTerminalSessions } = useTerminal();
     const groupTerminalSessions = getGroupTerminalSessions(index);
-    
+
     return (
         <Modal
             options={{

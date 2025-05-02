@@ -5,11 +5,11 @@ import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
 import { useEffect, useMemo, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
-import terminalStore, {TerminalScreenSplitMode} from 'app/store/terminalStore';
+import terminalStore, { TerminalScreenSplitMode } from 'app/store/terminalStore';
 import { ConnectionState } from 'app/hubs/hubFactory';
-import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
-import useTerminal from "app/hooks/useTerminal";
-import {useEffectAsync} from "app/hooks/useEffectAsync";
+import { TerminalScreenMode } from 'widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog';
+import useTerminal from 'app/hooks/useTerminal';
+import { useEffectAsync } from 'app/hooks/useEffectAsync';
 
 interface TerminalProps extends TerminalScreenMode {
     className?: string;
@@ -23,8 +23,8 @@ function Terminal ({ className, index }: TerminalProps) {
         terminalStore
             .terminalThemes
             .find(p => p.id === terminalStore.terminalSetting.terminalThemeId),
-        
-        [terminalStore.terminalSetting?.terminalThemeId, terminalStore.terminalThemes]
+
+    [terminalStore.terminalSetting?.terminalThemeId, terminalStore.terminalThemes]
     );
 
     const { getGroupTerminalSessions } = useTerminal();

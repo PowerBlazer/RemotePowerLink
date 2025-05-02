@@ -10,10 +10,9 @@ interface ReconnectProps extends MenuOptionProp {
 }
 
 export function Reconnect ({ className, windowsIndex, disabled, onClick }: ReconnectProps) {
-   
     const { t } = useTranslation('translation');
     const { reconnectSftp, getHost } = useSftp(windowsIndex);
-    
+
     const selectedHost = getHost();
 
     const onClickReconnectHandler = async () => {

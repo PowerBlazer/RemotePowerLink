@@ -9,7 +9,7 @@ import { ChangeEvent, useMemo, useState } from 'react';
 import { FileType } from 'app/services/SftpService/config';
 import { Input } from 'shared/ui/Input';
 import { SftpService } from 'app/services/SftpService/sftpService';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface RenameModalProps extends SftpWindowsOptionProps {
     className?: string;

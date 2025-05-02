@@ -13,7 +13,7 @@ import terminalStore, { TerminalSession } from 'app/store/terminalStore';
 import { SessionService } from 'app/services/SessionService/sessionService';
 import toast from 'react-hot-toast';
 import useTerminal from 'app/hooks/useTerminal';
-import {TerminalScreenMode} from "widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog";
+import { TerminalScreenMode } from 'widgets/TerminalModules/TerminalCatalog/ui/TerminalCatalog';
 
 interface TerminalSelectHostCatalogProps extends TerminalScreenMode {
     className?: string;
@@ -23,7 +23,6 @@ interface TerminalSelectHostCatalogProps extends TerminalScreenMode {
 function TerminalSelectHostCatalog ({ className, onClose, index }: TerminalSelectHostCatalogProps) {
     const { openSession } = useTerminal();
     const { t } = useTranslation('translation');
-   
 
     const onChangeSearchInputHandler = (value: string) => {
         searchStore.setFilterOption({
@@ -36,7 +35,7 @@ function TerminalSelectHostCatalog ({ className, onClose, index }: TerminalSelec
             onClose();
         }
     }
-    
+
     const openConnectHandler = async (serverData: ServerData) => {
         await openSession(serverData, index, onClose)
     }
@@ -59,7 +58,7 @@ function TerminalSelectHostCatalog ({ className, onClose, index }: TerminalSelec
                     <div className={style.tools}></div>
                 </div>
             </div>
-            <ServerManagerCatalog mode={ServerManagerCatalogMode.Terminal} onConnect={(serverData) => openConnectHandler(serverData)}/>
+            <ServerManagerCatalog mode={ServerManagerCatalogMode.Terminal} onConnect={async (serverData) => { await openConnectHandler(serverData); }}/>
         </div>
     );
 }

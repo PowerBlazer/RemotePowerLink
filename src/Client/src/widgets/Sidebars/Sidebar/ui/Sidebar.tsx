@@ -49,14 +49,14 @@ function Sidebar (props: SidebarProps) {
         }
 
         if (isMain) {
-            await sidebarStore.setVisible(false);
-            await sidebarStore.setSidebar(undefined);
+            await sidebarStore.setVisible(sidebarStore.mainSidebar, false);
+            await sidebarStore.setSidebar(sidebarStore.mainSidebar, null);
         }
     }
     return (
         <div className={classNames(style.sidebar, {
             [style.main]: Boolean(isMain),
-            [style.main_active]: Boolean(sidebarStore.isVisible && isMain)
+            [style.main_active]: Boolean(sidebarStore.mainSidebar.isVisible && isMain)
         }, [className])}>
             {headerName && (
                 <div className={classNames(style.header)}>

@@ -1,1 +1,1 @@
-﻿export {default as TerminalCatalog} from './ui/TerminalCatalog'
+export { default as TerminalCatalog } from './ui/TerminalCatalog'

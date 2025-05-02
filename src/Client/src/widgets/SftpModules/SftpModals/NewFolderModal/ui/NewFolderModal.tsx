@@ -8,7 +8,7 @@ import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileType } from 'app/services/SftpService/config';
 import { SftpService } from 'app/services/SftpService/sftpService';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface NewFolderModalProps extends SftpWindowsOptionProps {
     className?: string;

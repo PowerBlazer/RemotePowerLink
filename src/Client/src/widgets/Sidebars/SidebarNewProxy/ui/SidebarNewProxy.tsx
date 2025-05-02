@@ -15,10 +15,12 @@ import TitleIcon from 'shared/assets/icons/title.svg';
 import PortIcon from 'shared/assets/icons/code-working.svg';
 import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import SidebarNewIdentity from 'widgets/Sidebars/SidebarNewIdentity/ui/SidebarNewIdentity';
-import { CreateProxyData, CreateProxyResult } from 'app/services/ProxyService/config/proxyConfig';
+import { CreateProxyData, CreateProxyResult, ProxyData } from 'app/services/ProxyService/config/proxyConfig';
 import { ButtonLoader } from 'shared/ui/ButtonLoader';
 import { CreateIdentityResult } from 'app/services/IdentityService/config/identityConfig';
 import userStore from 'app/store/userStore';
+import { ProxyDataMapper } from 'app/mappers/proxyDataMapper';
+import toast from 'react-hot-toast';
 
 interface SidebarNewProxyProps extends SidebarOptions<CreateProxyResult> {
     className?: string;
@@ -45,7 +47,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
         }
 
         if (!isMain) {
-            sidebarStore.newProxyData.isVisible = false;
+            sidebarStore.mainSidebar.newProxyData.isVisible = false;
         }
     }
 
@@ -138,8 +140,15 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
     const createProxyClickHandler = useCallback(async () => {
         const createProxyResult = await ProxyService.createProxy(proxyData);
 
-        if (onSave && createProxyResult.isSuccess) {
-            await onSave(createProxyResult.result);
+        if (createProxyResult.isSuccess) {
+            const createdProxyData = ProxyDataMapper.fromCreateProxyResult(createProxyResult.result);
+
+            userStore.setUserProxy(createdProxyData);
+            sidebarStore.mainSidebar.editProxyData.data = createdProxyData;
+
+            await onSave?.(createProxyResult.result);
+
+            toast.success(t('Успешно создано'));
         }
 
         if (!createProxyResult.isSuccess) {
@@ -148,13 +157,6 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
     }, [proxyData])
 
     const createIdentityOnSaveHandler = async (createIdentityResult: CreateIdentityResult) => {
-        userStore.setUserIdentity({
-            title: createIdentityResult.title,
-            identityId: createIdentityResult.identityId,
-            username: createIdentityResult.username,
-            dateCreated: createIdentityResult.dateCreated
-        })
-
         setVisibleIdentity(false);
 
         setIdentity({ id: createIdentityResult.identityId.toString(), title: createIdentityResult.title });
@@ -199,7 +201,7 @@ function SidebarNewProxy ({ className, isMain = true, onSave, onClose, isVisible
     return (
         <Sidebar
             className={classNames(style.sidebarNewProxy, {
-                [style.active]: ((sidebarStore.newProxyData?.isVisible || isVisible) && !isMain)
+                [style.active]: ((sidebarStore.mainSidebar.newProxyData?.isVisible || isVisible) && !isMain)
             }, [className])}
             sidebars={sidebars}
             footer={footerPanel}

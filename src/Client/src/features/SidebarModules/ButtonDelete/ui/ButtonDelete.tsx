@@ -35,7 +35,7 @@ export function ButtonDelete ({ className, dataType, dataId }: ButtonDeleteProps
 
                 if (deleteResult.isSuccess) {
                     userStore.removeUserServer(dataId);
-                    await sidebarStore.setSidebar(null);
+                    await sidebarStore.setSidebar(sidebarStore.mainSidebar, null);
                 }
 
                 if (!deleteResult.isSuccess) {
@@ -48,7 +48,7 @@ export function ButtonDelete ({ className, dataType, dataId }: ButtonDeleteProps
 
                 if (deleteResult.isSuccess) {
                     userStore.removeUserProxy(dataId);
-                    await sidebarStore.setSidebar(null);
+                    await sidebarStore.setSidebar(sidebarStore.mainSidebar, null);
                 }
 
                 if (!deleteResult.isSuccess) {
@@ -61,7 +61,7 @@ export function ButtonDelete ({ className, dataType, dataId }: ButtonDeleteProps
 
                 if (deleteResult.isSuccess) {
                     userStore.removeUserIdentity(dataId);
-                    await sidebarStore.setSidebar(null);
+                    await sidebarStore.setSidebar(sidebarStore.mainSidebar, null);
                 }
 
                 if (!deleteResult.isSuccess) {

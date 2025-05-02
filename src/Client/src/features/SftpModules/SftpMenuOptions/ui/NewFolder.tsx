@@ -5,7 +5,7 @@ import { Button } from 'shared/ui/Button/Button';
 import sftpStore from 'app/store/sftpStore';
 import { Tr } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import useSftp from "app/hooks/useSftp";
+import useSftp from 'app/hooks/useSftp';
 
 interface NewFolderProps extends MenuOptionProp {
     className?: string;
